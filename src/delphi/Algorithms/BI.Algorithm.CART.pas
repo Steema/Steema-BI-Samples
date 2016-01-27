@@ -15,8 +15,6 @@ type
   TBICART=class(TRSupervisedModel)
   protected
     procedure BuildScript; override;
-  public
-    procedure Calculate; override;
   end;
 
 implementation

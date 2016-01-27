@@ -9,18 +9,11 @@ unit BI.Plugins.R;
 interface
 
 // Note:
-// The TBIR class detects if R is installed or not by looking at system
-// Registry or "R_HOME" environmental variable.
-
-// When compiling this unit in x64 bits, the R x64 bits version is used.
-
-// TBIR.Create constructor can be called passing a custom path of the R bin
-// folder.
-
 
 // "R language" installer for Windows (32bit and 64bit) can be downloaded from:
-
 // https://cran.r-project.org/bin/windows/base
+
+// When compiling this unit in x64 bits, the R x64 bits version is used.
 
 uses
   System.Classes, BI.Arrays, BI.Data, BI.Algorithm.Model,
@@ -38,7 +31,8 @@ type
     function Finish:Boolean; virtual;
     procedure Start; virtual;
   public
-    Output : TStrings;
+    class var
+      Output : TStrings;
 
     procedure AddVariable(const AName:String; const Index:TInt64Array;
                           const ADatas:TDataArray; const UseMissing:Boolean=True); overload; virtual; abstract;
@@ -57,7 +51,7 @@ type
 
   TRBaseAlgorithm=class(TBaseAlgorithm)
   protected
-    procedure BuildRScript; virtual; abstract;
+    procedure BuildScript; virtual; abstract;
     function R:TBIREngine;
   public
     procedure Calculate; override;
@@ -66,8 +60,10 @@ type
   TRSupervisedModel=class(TSupervisedModel)
   protected
     procedure BuildScript; virtual; abstract;
-    procedure Fit;
     function R:TBIREngine;
+  public
+    procedure Calculate; override;
+    procedure Plot; virtual;
   end;
 
 implementation

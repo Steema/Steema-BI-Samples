@@ -54,13 +54,13 @@ type
     procedure CheckTextIndices(const AData:TDataItem);
     procedure FilterIndices(const AData:TDataItem; const Index:TInteger; var Indices:TBooleanArray);
     function GuessBest(const Attributes:TDataArray):TDataItem;
-    function IsContinous(const Data:TDataItem):Boolean;
+    function IsContinous(const AData:TDataItem):Boolean;
   public
     Root : TDecisionNode;
     ColumnData : Array of TColumnData;
     MaxData : TInteger; // 0=all data
 
-    Constructor Create(const Data:TDataItem); override;
+    Constructor Create; override;
     Destructor Destroy; override;
 
     procedure Calculate; override;

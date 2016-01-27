@@ -60,6 +60,7 @@ type
     procedure SetBIData(const Value: TDataItem);
     procedure SetPlugin(const Value: TBIGridPlugin);
     procedure WriteOrigin(Writer: TWriter);
+    procedure SetDataSet(const Value: TBIDataSet);
   protected
     procedure DefineProperties(Filer: TFiler); override;
   public
@@ -75,7 +76,7 @@ type
 
     class function Embedd(const AOwner:TComponent; const AParent:TFmxObject):TBIGrid; static;
 
-    property DataSet:TBIDataSet read IDataSet;
+    property DataSet:TBIDataSet read IDataSet write SetDataSet;
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
   published
     property Data:TDataItem read GetBIData write SetBIData;

@@ -9,15 +9,13 @@ unit BI.Algorithm.Bayes;
 interface
 
 uses
-  System.Classes, BI.Plugins.R;
+  BI.Plugins.R;
 
 type
   TBINaiveBayes=class(TRSupervisedModel)
   protected
     procedure BuildScript; override;
   public
-    procedure Calculate; override;
-
     // property Laplace
   end;
 

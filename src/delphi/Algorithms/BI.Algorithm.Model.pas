@@ -12,12 +12,42 @@ uses
   BI.Arrays, BI.Data;
 
 type
+  TQuantityStyle=(Exact, Minimum, Maximum);
+
+  TDataKinds=set of TDataKind;
+
+  TDataKindsHelper=record helper for TDataKinds
+  public
+    const Numeric:TDataKinds=[dkInt32,dkInt64,dkSingle,dkDouble,dkExtended];
+  end;
+
+  TAlgorithmNeed=record
+  public
+    Data : TDataArray;
+    Kinds : TDataKinds;
+    Quantity : Integer;
+    Style : TQuantityStyle;
+
+    procedure CheckData;
+    procedure Verify;
+  end;
+
+  // Describes the input parameter an algorithm requires
+  TAlgorithmNeeds=Array of TAlgorithmNeed;
+
+  TAlgorithmNeedsHelper=record helper for TAlgorithmNeeds
+  public
+    procedure Add(const ANeed:TAlgorithmNeed);
+    function Count:Integer; inline;
+    procedure Verify;
+  end;
+
+  // Base class for all algorithms
   TBaseAlgorithm=class
   public
-    Data : TDataItem;
-    Attributes : TDataArray;
+    Needs : TAlgorithmNeeds;
 
-    Constructor Create(const AData:TDataItem); virtual;
+    Constructor Create; virtual;
     procedure Calculate; virtual; abstract;
   end;
 
@@ -34,7 +64,7 @@ type
     class procedure NormalizeBoolean(const AData:TDataItem); static;
     class procedure NormalizeText(const AData:TDataItem); static;
   public
-    Target : TDataItem;
+    Constructor Create; override;
 
     class procedure Normalize(const AData:TDataItem); overload; static;
     class procedure Normalize(const ADatas:TDataArray); overload; static;
@@ -77,6 +107,11 @@ type
 
   // Model class supporting "train" and "test" of an algorithm
   TSupervisedModel=class(TModel)
+  private
+    function GetTarget: TDataItem;
+    procedure SetTarget(const Value: TDataItem);
+    function GetAttributes: TDataArray;
+    procedure SetAttributes(const Value: TDataArray);
   protected
     FPredicted : TPredictedData;
 
@@ -94,7 +129,9 @@ type
     procedure Split(const Train,Test:TInteger; const Mode:TSplitMode=TSplitMode.Random); overload;
     procedure Split(const Ratio:Single; const Mode:TSplitMode=TSplitMode.Random); overload;
 
+    property Attributes:TDataArray read GetAttributes write SetAttributes;
     property Predicted:TPredictedData read GetPredicted;
+    property Target:TDataItem read GetTarget write SetTarget;
   end;
 
   // Base class for interfaces to frameworks like R and Python

@@ -68,7 +68,7 @@ type
     Options : TBIProvider;
     Output : TCluster;
 
-    Constructor Create(const AData:TDataItem); override;
+    Constructor Create; override;
     Destructor Destroy; override;
 
     procedure Calculate; override;

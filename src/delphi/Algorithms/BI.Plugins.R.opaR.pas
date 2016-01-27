@@ -23,19 +23,17 @@ unit BI.Plugins.R.opaR;
 interface
 
 uses
-  BI.Arrays, BI.Data, BI.Plugins.R, opaR.Interfaces, opaR.Engine;
+  System.Classes, BI.Arrays, BI.Data, BI.Plugins.R,
+  opaR.Interfaces, opaR.Engine, opaR.Devices.NullCharacterDevice, opaR.Utils;
 
 type
   TopaR=class(TBIREngine)
   private
-    R : IREngine;
-
     function CreateArray<T>(const Index:TInt64Array; const Value:TArray<T>):TArray<T>;
   protected
     function Finish:Boolean; override;
   public
-    Constructor Create(const KeepOutput:Boolean=False);
-    Destructor Destroy; override;
+    Constructor Create;
 
     procedure AddVariable(const AName:String; const Index:TInt64Array;
                           const ADatas:TDataArray; const UseMissing:Boolean=True); override;

@@ -12,11 +12,17 @@ uses
   BI.Data, BI.Arrays, BI.Plugins.R, BI.Algorithm.Model, System.Classes;
 
 type
-  TRegression=class
+  TRegression=class(TBaseAlgorithm)
   end;
 
   TLinearRegression=class(TRegression)
+  private
+    function GetX: TDataItem; inline;
+    function GetY: TDataItem; inline;
+    procedure SetX(const Value: TDataItem); inline;
+    procedure SetY(const Value: TDataItem); inline;
   public
+    // Output
     Coefficient,
     M,B : TFloat;
 
@@ -30,8 +36,14 @@ type
 
     Count : TInteger;
 
-    procedure Calculate(const X,Y:TDataItem);
+    Constructor Create; override;
+
+    procedure Calculate; override;
     function MeanSquaredError(const X,Y:TDataItem):TFloat;
+
+    // Input data
+    property X:TDataItem read GetX write SetX;
+    property Y:TDataItem read GetY write SetY;
   end;
 
   TRegressionMatrix=class

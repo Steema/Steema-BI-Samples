@@ -223,6 +223,8 @@ type
     procedure TryCreateLink;
     procedure WriteOrigin(Writer: TWriter);
   protected
+    Index : TInt64Array;
+
     function BookMarkToIndex(const ABookMark:TInteger):TInteger; override;
     procedure DefineProperties(Filer: TFiler); override;
     procedure DoAfterOpen; override;

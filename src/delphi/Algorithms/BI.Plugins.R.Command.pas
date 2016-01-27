@@ -1,9 +1,31 @@
-unit BI.Plugins.R.Command;
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Plugin for R language "cmd batch" mode     }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
+unit BI.Plugins.R.Command deprecated;
+
+// Important NOTE:
+(*
+   This unit is now obsolete, superseded by BI.Plugins.R.opaR unit.
+
+   opaR is a native integration between R.dll and Delphi,
+   offering much more capable performance and, most important,
+   removing the "cmd batch" mode limitations of single outputs
+   from R scripts.
+*)
 
 interface
 
 uses
   System.Classes, BI.Arrays, BI.Data, BI.Plugins.R;
+
+// The TRCommand class detects if R is installed or not by looking at system
+// Registry or "R_HOME" environmental variable.
+
+// TRCommand.Create constructor can be called passing a custom path of the R bin
+// folder.
 
 type
   TR_getDLLVersion=function: IntPtr; cdecl;
@@ -22,6 +44,11 @@ type
     ILine,
     IPos : Integer;
 
+    IOutputs : TDataArray;
+
+    IScript : TStrings;
+
+    procedure DoGetOutputs;
     class function FindDLL(const APath:String): String; static;
     procedure LoadDLL;
   protected

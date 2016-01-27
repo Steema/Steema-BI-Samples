@@ -9,14 +9,12 @@ unit BI.Algorithm.Ensemble;
 interface
 
 uses
-  System.Classes, BI.Plugins.R;
+  BI.Plugins.R;
 
 type
   TBIRandomForest=class(TRSupervisedModel)
   protected
     procedure BuildScript; override;
-  public
-    procedure Calculate; override;
   end;
 
 implementation
