@@ -7,7 +7,7 @@
 
 [Installing](https://github.com/Steema/BI/wiki/Installing-TeeBI)
 
-[Release Notes](docs/releasenoted.md)
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md)
 
 [Documentation](https://github.com/Steema/BI/wiki)
 
