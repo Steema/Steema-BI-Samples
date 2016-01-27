@@ -3,98 +3,98 @@
 
 ## 22-Dec-2015  Beta 6
 
--New TBIVisualizer control (VCL and FMX), first beta.
+- New TBIVisualizer control (VCL and FMX), first beta.
 
--New TBIVisualizer editor dialog.
+- New TBIVisualizer editor dialog.
 
--TBICSV can now import 1 billion cells using the 64bit compiler.
+- TBICSV can now import 1 billion cells using the 64bit compiler.
 
--MariaDB database now supported (using the MySQL driver)
+- MariaDB database now supported (using the MySQL driver)
 
--Support for customizing database server port in Data Manager.
+- Support for customizing database server port in Data Manager.
 
--Support for Excel exporting of sub-sub-dataitem tables.
+- Support for Excel exporting of sub-sub-dataitem tables.
 
--Binding a TBIDataset to a TBIGrid is now much faster.
+- Binding a TBIDataset to a TBIGrid is now much faster.
 
--Added "R Datasets" in binary format to "Sample Data" folder.
+- Added "R Datasets" in binary format to "Sample Data" folder.
 
--Support for Geographical (World maps) charts.
+- Support for Geographical (World maps) charts.
 
--Initial support for sub-folders in TStore folders.
+- Initial support for sub-folders in TStore folders.
 
--Updated documentation and examples with new features.
+- Updated documentation and examples with new features.
 
--Bug fixing and speed optimizations in base TDataItem class.
+- Bug fixing and speed optimizations in base TDataItem class.
 
 
 ## 27-Nov-2015  Beta 5
 
--Encryption mechanism using TurboPack LockBox (optional).
+- Encryption mechanism using TurboPack LockBox (optional).
 
--Summary "Having" filter property (same as SQL).
+- Summary "Having" filter property (same as SQL).
 
--Microsoft Excel exporting using TMS Flexcel (optional).
+- Microsoft Excel exporting using TMS Flexcel (optional).
 
--Support for remote TDataSelect queries in BIWeb http server.
+- Support for remote TDataSelect queries in BIWeb http server.
 
--Multiple expressions are now allowed for SortBy data ordering.
+- Multiple expressions are now allowed for SortBy data ordering.
 
--TBIGrid Colorize properties to fill cell backgrounds based on values.
+- TBIGrid Colorize properties to fill cell backgrounds based on values.
 
--Helper method to convert select and summary queries to SQL language.
+- Helper method to convert select and summary queries to SQL language.
 
--Delphi unit generator emits Pascal code from any TDataItem or database.
+- Delphi unit generator emits Pascal code from any TDataItem or database.
 
--FreePascal v3.0 initial support for TeeBI core units.
+- FreePascal v3.0 initial support for TeeBI core units.
 
--Design-time IDE top menu "TeeBI" to access the "Data Manager", etc.
+- Design-time IDE top menu "TeeBI" to access the "Data Manager", etc.
 
--Updated documentation and examples with new features.
+- Updated documentation and examples with new features.
 
--Bug fixing and speed optimizations, specially for big Summary queries.
+- Bug fixing and speed optimizations, specially for big Summary queries.
 
 
 ## 20-Nov-2015  Beta 4
 
--New TDataSelect class, implements a big part of SQL language in native Delphi code.
+- New TDataSelect class, implements a big part of SQL language in native Delphi code.
 
--Cumulative and/or percentage calculations in summaries.
+- Cumulative and/or percentage calculations in summaries.
 
--microOLAP DAC MySQL import support.
+- microOLAP DAC MySQL import support.
 
--Links between data in different storage locations or www servers.
+- Links between data in different storage locations or www servers.
 
--Extra data Links can be created at import time using TDataDefinition.SetMasters method.
+- Extra data Links can be created at import time using TDataDefinition.SetMasters method.
 
--Enabled Sorting data reordering the source rows.
+- Enabled Sorting data reordering the source rows.
 
--Updated Starting Guide doc with new content in beta4
+- Updated Starting Guide doc with new content in beta4
 
--Starting Guide doc in Spanish: "Guía de Introducción"
+- Starting Guide doc in Spanish: "Guía de Introducción"
 
--Convert from queries and summaries to SQL language.
+- Convert from queries and summaries to SQL language.
 
--Percent format for BIDataset numeric columns.
+- Percent format for BIDataset numeric columns.
 
--Optional "raw" persistence mode (BI.Streams.pas).
+- Optional "raw" persistence mode (BI.Streams.pas).
 
--Fixes and speed optimizations.
+- Fixes and speed optimizations.
 
 ## 6-Nov-2015  Beta 3
 
--Initial support for "R" language and Python Scikit-learn machine-learning algorithms. 
+- Initial support for "R" language and Python Scikit-learn machine-learning algorithms. 
  Several algorithms included.
 
--"Starting Guide" document has been updated.
+- "Starting Guide" document has been updated.
 
--Many fixes and small improvements.
+- Many fixes and small improvements.
 
--Design-time debug visualizer for TDataItem objects.
+- Design-time debug visualizer for TDataItem objects.
 
--More demos included.
+- More demos included.
 
--TeeBIRecompile automatic recompilation tool improved.
+- TeeBIRecompile automatic recompilation tool improved.
 
 
 ## 8-Oct-2015 Initial Betas (1 and 2)
