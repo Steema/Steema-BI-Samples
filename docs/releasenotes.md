@@ -49,7 +49,7 @@
  
     Adding the "sql=select * from customers" tag to the BIWeb URL request.
 
-    [Live Example](http://steema.cat:15015/?data=SQLite_demo&format=.htm&sql=select * from Customers")
+    [Live Example](http://steema.cat:15015/?data=SQLite_demo&format=.htm&sql=select * from Customers)
 
   * Remote query by code
   
@@ -72,7 +72,53 @@ begin
 end;
   ```
   
+- Data Provider
+  * A new class TDataProvider enables automatic nested TDataItem data loading.
+  
+   For example, a TDataItem might be filled with data that is the output result of a query, which in turn is using other TDataItem datas that might have also a Provider (recursively).
 
+  This mechanism has been added to queries, summaries and other classes that are now capable of doing "select ... from select ..." nested queries.  Other classes also have been refactored to be "Providers" of data, like the class that handles remote Web requests of TDataItem data streams.
+  
+  With this new change, its no longer necessary to "calculate" queries or summaries. Simply construct a TDataItem passing a Provider parameter, and the summary or query will be automatically calculated "just-in-time" when its necessary:
+  
+  ```pascal
+  BIGrid1.Data:= TDataItem.Create( MyQuery );
+  ```
+- Lazarus and FreePascal
+  * Fixes and improvements to support TeeBI with Lazarus and FreePascal
+  
+    TeeBI can be used in Lazarus 1.7 (FreePascal 3.0) under Windows and Linux.
+
+    Note: Lazarus TDataset field does not support nested "ADT" dataset fields.
+    
+
+- BI.Arrays
+  * New helper method "Append" for all TxxxArray classes to append another array into it.
+
+- Data Comparison
+  * The TDataCompare class has been improved alot. It can be used to test if two TDataItem instances are equal or not (in both structure and data), and optionally obtain the differences in an output TDataItem.
+  
+  ```pascal
+  uses BI.Compare;
+  var Diff : TDataItem;
+  if not TDataCompare.Same( MyData1, MyData2, Diff) then
+     BIGrid1.Data:= Diff;
+  ```
+  
+- CSV format
+ * Improvements in CSV data import.
+ 
+   Several new features in TBICSV class enable importing huge amounts of data at fast speed (1 billion cells in 120 seconds).
+
+   For detailed CSV data import usage, please [follow this link](https://github.com/Steema/BI/wiki/Importing-CSV-data)
+   
+   
+ 
+
+- Other changes and fixes
+  * Fixes for XE4 Firemonkey forms
+  * BIWeb server project support for XE4, using SQLExpress instead of FireDAC
+  * 
 
 ## 22-Dec-2015  Beta 6
 
