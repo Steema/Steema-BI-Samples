@@ -170,6 +170,7 @@ end;
  
     Optional OnProgress event is called while data is being imported, enabling cancelling the import.
 
+  * Executables TeeBIRecompile and BIWeb now codesigned using SHA256 secure hash.
 
   
 ## 22-Dec-2015  Beta 6
