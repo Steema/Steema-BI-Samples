@@ -65,6 +65,7 @@ type
 
   TDataCursorItemsHelper=record helper for TDataCursorItems
   public
+    function Count:Integer;
     procedure Delete(const AIndex:Integer);
     procedure Exchange(const A,B:Integer);
   end;
@@ -285,7 +286,10 @@ type
 
     procedure AddItem(const AResult,AItem:TDataItem);
     function FoundLast(const AResult:TDataItem):Boolean;
+    procedure ReplaceSortDatas(const AData:TDataItem);
     function SetupHops(const Hops:TDataHops):TInt32Array;
+  protected
+    procedure GetItems(const AData:TDataItem); override;
   public
     Destructor Destroy; override;
 
@@ -297,7 +301,6 @@ type
     function Calculate:TDataItem; overload;
     procedure Calculate(const AData:TDataItem); overload;
 
-    procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     function MainData:TDataItem;
 

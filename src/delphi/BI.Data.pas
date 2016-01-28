@@ -214,8 +214,6 @@ type
     // or when this DataItem is the output of a query or algorithm calculation.
     FProvider : TDataProvider;
 
-    FStats   : TDataStats;
-
     FStartTime: TStopwatch;
 
     IKeepParent : Boolean;
@@ -235,6 +233,8 @@ type
     procedure SetProvider(const Value: TDataProvider);
   protected
     FCount   : TInteger;
+
+    FStats   : TDataStats;
 
     //[Weak]
     TagObject : TObject;

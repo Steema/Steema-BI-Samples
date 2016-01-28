@@ -502,6 +502,10 @@ type
 
   TGroupMultiScroll=(Automatic,Yes,No);
 
+  // Redefine TCoordinate here (it is also at VCLTee.TeeCanvas and FMXTee.Canvas)
+  // to not depend on a recent TeeChart version.
+  TCoordinate={$IFDEF FMX}Single{$ELSE}Integer{$ENDIF};
+
   TGroupMultiControl=class(TGroupControl)
   private
     FColumns : Integer;
