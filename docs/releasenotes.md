@@ -68,7 +68,7 @@
  var D : TDataItem; 
  D:= TDataItem.Create( TTypeProvider<TCustomer>.Create( MyCustomers ));
  
- // "MyCustomers" can be an "array of TCustomer" etc
+ // "MyCustomers" can be an "array of TCustomer", TList<TCustomer>, etc
  ```
  
  The TTypeProvider class has methods to Add, Find, Remove and Update items, so its basically mapping a TDataItem and its children Items with your custom record or class fields.
@@ -78,9 +78,9 @@
 - BIWeb server
   * Remote query execution
  
-    Adding the "sql=select * from customers" tag to the [TBIWebClient](https://github.com/Steema/BI/blob/master/src/delphi/BI.Web.pas) URL request.
+    Adding the "sql=select * from customers..." tag to the [TBIWebClient](https://github.com/Steema/BI/blob/master/src/delphi/BI.Web.pas) URL request.
 
-    [Live Example](http://steema.cat:15015/?data=SQLite_demo&format=.htm&sql=select * from Customers)
+    [Live Example](http://steema.cat:15015/?data=SQLite_demo&format=.htm&sql=select * from Customers where City="Madrid")
 
   * Remote query by code
   
@@ -104,6 +104,7 @@ end;
   ```
   
 - Data Provider
+
   * A new class TDataProvider enables automatic nested TDataItem data loading.
   
    For example, a TDataItem might be filled with data that is the output result of a query, which in turn is using other TDataItem datas that might have also a Provider (recursively).
