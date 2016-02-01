@@ -1,0 +1,2 @@
+TeeBIAbout.dfm
+TeeBIDebugFrame.dfm

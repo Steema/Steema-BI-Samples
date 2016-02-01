@@ -1,0 +1,13 @@
+BI_Images.res
+DclFmxTeeBI.res
+DclTeeBI.res
+FireDACTeeBI.res
+FMXChartProTeeBI.res
+FMXChartTeeBI.res
+FMXTeeBI.res
+SQLExprTeeBI.res
+TeeBI.res
+TeeBIAlgorithms.res
+VCLChartProTeeBI.res
+VCLChartTeeBI.res
+VCLTeeBI.res
