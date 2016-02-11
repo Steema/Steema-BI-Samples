@@ -9,6 +9,8 @@ uses
   TestInsight.DUnitX,
   {$ENDIF }
   DUnitX.Loggers.Console,
+  //DUnitX.Loggers.GUIX, // <-- pending missing Firemonkey fmx file
+  DUnitX.TestRunner,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
   BI.Tests.TDataItem in 'BI.Tests.TDataItem.pas',
@@ -41,7 +43,7 @@ begin
     runner.UseRTTI := True;
     //tell the runner how we will log things
     //Log to the console window
-    logger := TDUnitXConsoleLogger.Create(true);
+    logger := TDUnitXConsoleLogger.Create(true); // TDUnitXGuiTestRunner
     runner.AddLogger(logger);
     //Generate an NUnit compatible XML File
     nunitLogger := TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);

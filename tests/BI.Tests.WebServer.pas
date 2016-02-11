@@ -31,14 +31,18 @@ implementation
 { TWebServer_Test }
 
 const
-  Steema='Steema';
+  Steema='Steema'; // localhost
 
 procedure TWebServer_Test.RemoteQuery;
 var Data : TDataItem;
 begin
-  Data:=TBIWebClient.Query(Steema,'SQLite_demo','select count(*) of Customers');
+  Data:=TBIWebClient.Query(Steema,'SQLite_demo','select count(*) from Customers');
   try
     Assert.IsNotNull(Data);
+    Assert.AreEqual<Int64>(Data.Count,1);
+    Assert.AreEqual(Data.Items.Count,1);
+    Assert.AreEqual<TDataKind>(Data[0].Kind, TDataKind.dkInt64);
+    Assert.AreEqual<Int64>(Data[0].Int64Data[0], 91);
   finally
     Data.Free;
   end;
