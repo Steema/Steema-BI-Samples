@@ -1,6 +1,9 @@
 ## TeeBI Unit Tests
 
 Automated test project to verify TeeBI features.
+This project can run inside the IDE using TestInsight plugin, and also outside the IDE as a standalone executable.
+
+!["TeeBI DUnitX TestInsight](https://github.com/Steema/BI/blob/master/docs/img/TeeBI_DUnitX_TestInsight_Tests.png)
 
 Using:
 
@@ -8,7 +11,7 @@ Using:
 
 https://github.com/VSoftTechnologies/DUnitX
 
-Copyright Vincent Parret, VSoft Technologies
+Copyright Vincent Parret et al., VSoft Technologies
 
 DUnitX Google+ community:
 
