@@ -1,6 +1,96 @@
 # TeeBI Release Notes
 -------------------
 
+## 12-Feb-2016  Beta 8
+
+- Installation
+
+  * A new checkbox at TeeBIRecompile.exe installer tool determines if TeeBI packages will be recompiled using TeeChart (any version, Lite or Pro)
+  
+- TDataSearch
+
+  * New class to perform data search on any TDataItem.
+    
+    It returns the array of row indices with search matches and also the array of individual "cell hits".
+
+    The [Data Search demo](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Search) shows how to use it to filter and/or highlight grid cells.
+    
+    Several properties control case-sensitive text, partial matches and if the search is performed using a background thread to not block typing in the search box when searching in huge data quantities (millions of cells).
+    
+    ```delphi
+    uses BI.Data.Search;
+    var Search : TDataSearch;
+        Search.Source := MyData;
+        BIDataset1.PrepareIndex( Search.Find('Hello') );
+    ```
+
+- PDF Exporting
+
+  * New TBIPDFExport class generates a PDF file or stream from a TDataItem.
+  
+    Several properties can be used to define PDF font styles, headers, footers and page numbering.
+    Note: PDF exporting uses the TPDFCanvas class which is available in TeeChart version Pro only.
+
+
+    ```delphi
+    uses BI.VCL.PDF;  // or BI.FMX.PDF for Firemonkey
+    TBIPDFExport.SaveToFile( MyData, 'test.pdf' );
+    ```
+
+- BIWeb server
+
+  * Data can be returned in PDF format using ".pdf" in the URL request:
+ 
+    http://steema.cat:15015/?data=SQLite_demo|Customers&format=.pdf
+  
+- BI.Arrays
+ 
+  * Speed optimizations and a new overload Copy method in all array classes
+ 
+- TDataItem
+
+  * New optional parameter "Count" at Delete method to delete multiples rows
+  
+- Database
+
+  * Support for FireDAC "ADS" (Advantadge Database Server) driver
+  * TBIDB.ImportFile now supports Microsoft Access (*.mdb and *.accdb) database files
+  * New TBIDataset PrepareIndex method, enables setting the array of row indices that BIDataset uses to filter records
+  
+- Queries and SQL
+
+  * New support for "offset" SQL clause, to specify the first row to return after the query is finished. Default "offset" is zero.
+  * More combinations of queries supported (queries from summaries with TDataItem complex structures)
+  * Big speed optimization, data items are directly copied (cloned) when possible, instead of looping all rows
+  
+- XML
+
+  * New TBIXML ExcludeNodes property
+  
+    Defines the node <tags> in the source xml content that should be excluded from importing.
+
+  * Fixed bug when importing nested master-detail xml tags (sub-tags)
+
+- Microsoft Excel
+
+  * New tab at Data Manager dialog enabled specifying the number of rows of an Excel spreadsheet that will be used as the "header" of the imported columns.  This option corresponds to TBIExcel.HeaderCount property
+  
+- Expressions
+
+  * New TDateTimeExpression Date and Time properties, return only the current date or current time, and not both
+  
+- Additional
+
+  * New TStores.Exist function, returns True if a given store is registered
+  * New TBIREngine Version property returns the "R Language" engine version
+  * Several fixes in BI.Data.CSV import class
+  * Fixed saving a multi-line SQL string in the Data Manager dialog
+  * Fixed in the TBISQL parser
+  * Fix for TSummary queries that involve datetime expressions using "Decade"
+  * Fix when renaming a data item at the Data Manager dialog, renames its associated folder if it exists
+  * Several fixes for FreePascal / Lazarus
+  
+
 ## 27-Jan-2016  Beta 7
 
 - Algorithms
