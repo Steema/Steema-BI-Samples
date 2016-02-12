@@ -1,2 +1,12 @@
 *.dcu
 *.dproj.local
+*.identcache
+tests/__history/
+tests/Win32/
+tests/dunitx-results.xml
+*.otares
+*.stat
+tests/TestInsightSettings.ini
+*.~1~
+demos/delphi/vcl/Import/__history/
+demos/delphi/vcl/Import/__recovery/__recovery.ini
