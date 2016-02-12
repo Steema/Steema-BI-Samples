@@ -42,11 +42,11 @@ type
   TBIChartMode=(ByRows, ByColumns, XYZ);
 
   {$IFDEF FMX}
-  {$IFDEF VER230}
+  {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
-              {$IFDEF VER250}or pidiOSSimulator or pidiOSDevice{$ENDIF}
-              {$IFDEF VER260}or pidAndroid{$ENDIF}
-              {$IFDEF VER290}or pidiOSDevice64{$ENDIF}
+              {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
+              {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
+              {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
   {$ENDIF}

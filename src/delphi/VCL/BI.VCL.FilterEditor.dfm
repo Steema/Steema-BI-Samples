@@ -9,6 +9,7 @@ BI.VCL.Editor.Formats.dfm
 BI.VCL.Editor.Grid.dfm
 BI.VCL.Editor.Stores.dfm
 BI.VCL.Editor.Summary.dfm
+BI.VCL.Editor.Visualizer.Chart.dfm
 BI.VCL.Editor.Visualizer.dfm
 BI.VCL.FilterEditor.dfm
 BI.VCL.GridChart.dfm

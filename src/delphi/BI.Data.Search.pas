@@ -8,16 +8,28 @@ unit BI.Data.Search;
 
 interface
 
+{$IFNDEF FPC}
+{$IF CompilerVersion>27}
+{$DEFINE THREADING}
+{$ENDIF}
+{$ENDIF}
+
+
 uses
-  System.Classes, System.Threading,
+  System.Classes,
+
+  {$IFDEF THREADING}
+  System.Threading,
+  {$ENDIF}
+
   BI.Data, BI.Arrays, BI.DataSource;
 
 // TDataSearch returns a copy of the Source data with rows that match
 // content as text of one field or all fields.
 
 type
-  TSearchFinished=reference to procedure(const AIndex:TCursorIndex);
-  TSearchProgress=reference to procedure(var Stop:Boolean);
+  TSearchFinished={$IFNDEF FPC}reference to{$ENDIF} procedure(const AIndex:TCursorIndex);
+  TSearchProgress={$IFNDEF FPC}reference to{$ENDIF} procedure(var Stop:Boolean);
 
   TDataSearchPart=(Anywhere, AtStart, AtEnd, Exact);
 
@@ -39,7 +51,9 @@ type
     FOnFinished : TSearchFinished;
     FOnProgress : TSearchProgress;
 
+    {$IFDEF THREADING}
     Task : ITask;
+    {$ENDIF}
 
     function AsString(const AItem:TDataItem; const AIndex:TInteger):String;
     function DoFind(const AText:String):TCursorIndex;

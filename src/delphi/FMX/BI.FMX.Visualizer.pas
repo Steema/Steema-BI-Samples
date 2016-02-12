@@ -15,41 +15,13 @@ uses
   BI.Data, BI.Arrays, BI.DataSource,
 
   {$IFDEF FMX}
-  FMXTee.Constants,
-  {$ELSE}
-  VCLTee.TeeConst,
-  {$ENDIF}
-
-  {$IFDEF FPC}
-  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
-  {$ELSE}
-
-  {$IF TeeMsg_TeeChartPalette='TeeChart'}
-  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
-  {$ENDIF}
-
-  {$ENDIF}
-
-  {$IFDEF FMX}
   System.Types,
   Fmx.Types, Fmx.Controls, Fmx.StdCtrls, Fmx.ListBox, Fmx.TabControl,
-  Fmx.Layouts, Fmx.Objects, Fmx.TreeView,
-
-  FMXTee.Canvas, FMXTee.Engine, FMXTee.Chart, BI.FMX.Grid
-
-  {$IFDEF TEEPRO}
-  , FMXTee.Tools.SubChart
-  {$ENDIF}
-
+  Fmx.Layouts, Fmx.Objects, Fmx.TreeView, BI.FMX.Grid
   {$ELSE}
 
   Vcl.Controls, VCL.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.Forms,
-  VCLTee.TeCanvas, VCLTee.TeEngine, VCLTee.Chart, BI.VCL.Grid
-
-  {$IFDEF TEEPRO}
-  , VCLTee.TeeSubChart
-  {$ENDIF}
-
+  BI.VCL.Grid
   {$ENDIF}
   ;
 
@@ -126,10 +98,15 @@ type
 
   TGroupProc<T>={$IFNDEF FPC}reference to{$ENDIF} procedure(const AGroup:T);
 
+  TGroupClasses=Array of TGroupClass;
+
+  TGroupClassesHelper=record helper for TGroupClasses
+  public
+    procedure Add(const Value:TGroupClass);
+  end;
+
   TGroup=class(TComponent)
   private
-    CanAddValues : Boolean;
-
   type
     TPendingItem=record
     public
@@ -143,30 +120,34 @@ type
 
   var
     FGroups : Array of TGroup;
-    FItems : Array of TPendingItem;
-
-    FVisualizer : TBIVisualizer;
 
     procedure AddGroup(const AGroup:TGroup);
   protected
-    Position : TInteger;
+    CanAddValues : Boolean;
+
+    FItems : Array of TPendingItem;
+    FVisualizer : TBIVisualizer;
 
     FixedWidth : Boolean;
+    Position : TInteger;
 
     function AddItem(const AData:TDataItem; const ANext:Integer;
                   const ARows:TCursorIndex; const APos:TInteger):TInteger;
 
-    procedure Init; virtual;
-    procedure Finished; virtual;
     function AsString(const AData:TDataItem):String; overload;
     function AsString(const AIndex:TInteger):String; overload;
+
+    procedure Init; virtual;
+    procedure Finished; virtual;
+
+    function GetDataString:String;
 
     {$IFNDEF FPC}
     procedure Traverse<T:Class>(const AProc:TGroupProc<T>);
     {$ENDIF}
   public
   class var
-    GroupClasses:Array of TGroupClass;
+    GroupClasses:TGroupClasses;
 
   var
     Parent : TGroup;
@@ -185,7 +166,10 @@ type
                         const AGroup:TVisualizerItem;
                         const ARows:TCursorIndex); virtual;
 
+    class function BestControl(const AIndex,ATotal,AValues:Integer):TGroupClass; virtual;
+
     class function ClassIndexOf(const AClass:TGroupClass):Integer; static;
+    function MapToString:String;
   end;
 
   {$IFDEF FMX}
@@ -264,6 +248,8 @@ type
   private
     FCombo : TComboBox;
 
+    IComboLabel : TLabel;
+
     procedure ClickedCombo(Sender:TObject);
     procedure CreateCombo;
     procedure SetComboLeft;
@@ -307,6 +293,8 @@ type
     FData : TDataItem;
     FGrid : TBIGrid;
 
+    ISplitter : TSplitter;
+
     procedure DataChange(Sender: TObject; Field: TField);
   protected
     procedure Finished; override;
@@ -315,6 +303,11 @@ type
     Destructor Destroy; override;
 
     procedure Add(const AIndex:TInteger); override;
+
+    procedure AddValues(const AComponent: TComponent;
+                        const Values:TVisualizerItems;
+                        const AGroup:TVisualizerItem;
+                        const ARows: TCursorIndex); override;
 
     property Grid:TBIGrid read FGrid;
   end;
@@ -344,160 +337,6 @@ type
   public
     Constructor CreateData(const AItem:TVisualizerItem; const AParent:TGroup); override;
     procedure Add(const AIndex:TInteger); override;
-  end;
-
-  TGroupSeries=class;
-
-  TAutoStackSeries=(Automatic,Yes,Yes100,No);
-
-  TGroupSeriesStyle=(Automatic,Series2D,Series3D,Geographic);
-
-  TGroupSeriesOptions=class(TPersistent)
-  private
-    FAddNulls : Boolean;
-    FAutoStack : TAutoStackSeries;
-    FSeries2D : TChartSeriesClass;
-    FSeries3D : TChartSeriesClass;
-    FStyle : TGroupSeriesStyle;
-
-    IParent : TGroupSeries;
-
-    procedure SetAutoStack(const Value: TAutoStackSeries);
-    procedure SetSeries2D(const Value: TChartSeriesClass);
-    procedure SetSeries3D(const Value: TChartSeriesClass);
-    procedure SetStyle(const Value: TGroupSeriesStyle);
-    procedure SetAddNulls(const Value: Boolean);
-  public
-    Constructor Create(const AParent:TGroupSeries);
-
-    procedure Assign(Source:TPersistent); override;
-  published
-    property AddNulls:Boolean read FAddNulls write SetAddNulls default True;
-    property AutoStack:TAutoStackSeries read FAutoStack write SetAutoStack default TAutoStackSeries.Automatic;
-
-    property Series2D:TChartSeriesClass read FSeries2D write SetSeries2D;
-    property Series3D:TChartSeriesClass read FSeries3D write SetSeries3D;
-
-    property Style:TGroupSeriesStyle read FStyle write SetStyle default TGroupSeriesStyle.Automatic;
-  end;
-
-  TGroupChart=class;
-
-  TBIMultiAxis=(Automatic,Single,Two,Multiple);
-
-  TGroupChartOptions=class(TPersistent)
-  private
-    FMultiAxes : TBIMultiAxis;
-    FRender   : TCanvas3DClass;
-    FSettings : Boolean;
-    FTemplate : TChart;
-
-    IParent : TGroupChart;
-
-    function GetLegend: Boolean;
-    function GetMarks: Boolean;
-    function GetTemplate:TChart;
-    procedure SetLegend(const Value: Boolean);
-    procedure SetMarks(const Value: Boolean);
-    procedure SetMultiAxes(const Value: TBIMultiAxis);
-    procedure SetRender(const Value:TCanvas3DClass);
-    procedure SetSettings(const Value: Boolean);
-  public
-    Constructor Create;
-
-    procedure Assign(Source:TPersistent); override;
-  published
-    property Settings:Boolean read FSettings write SetSettings default True;
-    property Legend:Boolean read GetLegend write SetLegend default True;
-    property Marks:Boolean read GetMarks write SetMarks;
-    property MultiAxes:TBIMultiAxis read FMultiAxes write SetMultiAxes default TBIMultiAxis.Automatic;
-    property Render:TCanvas3DClass read FRender write SetRender;
-    property Template:TChart read GetTemplate;
-  end;
-
-  TGroupChart=class(TGroup)
-  private
-    FChart : TCustomChart;
-    FNext : TGroup;
-    FOptions : TGroupChartOptions;
-
-    IParent : TGroupChart;
-
-    procedure ClickedSettings(Sender: TObject);
-    procedure EnteredChart(Sender:TObject);
-    class procedure InitChart(const AChart:TChart); static;
-    procedure LeavedChart(Sender:TObject);
-    function NewChart:TChart;
-    procedure ShowSettingsButton(const Sender:TObject; const AShow:Boolean);
-    procedure TryMultipleAxes(const AMulti:TBIMultiAxis);
-    procedure SetCanvas(const AChart:TCustomChart);
-  protected
-    function AddItem:TComponent; virtual;
-    procedure ApplyTemplate(const AChart,ATemplate:TCustomChart); overload; virtual;
-
-    procedure ChartResized(Sender:TObject); virtual;
-
-    procedure Init; override;
-    procedure Finished; override;
-
-    function NewSeries(const AName:String; const AOptions:TGroupSeriesOptions): TChartSeries;
-    class procedure SetAxisTitle(const ASeries:TChartSeries; const AData:TDataItem); static;
-  public
-    Constructor CreateData(const AItem:TVisualizerItem; const AParent:TGroup); override;
-    Destructor Destroy; override;
-
-    procedure Add(const AIndex:TInteger); override;
-    procedure ApplyTemplate; overload;
-
-    procedure Assign(Source:TPersistent); override;
-
-    property Chart:TCustomChart read FChart;
-    property Group:TGroupChart read IParent;
-  published
-    property Options:TGroupChartOptions read FOptions; // write SetOptions
-  end;
-
-  TGroupSeries=class(TGroupChart)
-  private
-    type
-      TSaveParams=record
-        Component:TComponent;
-        Values:TVisualizerItems;
-        Group:TVisualizerItem;
-        Rows:TCursorIndex;
-      end;
-
-    var
-    FOptions : TGroupSeriesOptions;
-
-    SingleSeries : TChartSeries;
-
-    ISave : TSaveParams;
-
-    function AddSeries(const AName:String):TChartSeries;
-    function AddSingleSeries:TChartSeries;
-    procedure CheckAutoStack;
-    procedure DisableStack(const ASeries:TChartSeries);
-    procedure EnableStack(const AStack:TAutoStackSeries; const ASeries:TChartSeries);
-    function GetParentDataString:String;
-    function MultipleNormalColumns(const Values:TVisualizerItems):Boolean;
-    procedure Reset;
-    procedure SetOptions(const Value: TGroupSeriesOptions);
-    procedure TrySetTitles(const AGroup:TVisualizerItem; const Values:TVisualizerItems);
-  protected
-    procedure Finished; override;
-  public
-    Constructor CreateData(const AItem:TVisualizerItem; const AParent:TGroup); override;
-    Destructor Destroy; override;
-
-    procedure AddValues(const AComponent:TComponent;
-                        const Values:TVisualizerItems;
-                        const AGroup:TVisualizerItem;
-                        const ARows:TCursorIndex); override;
-
-    procedure Assign(Source:TPersistent); override;
-  published
-    property Options:TGroupSeriesOptions read FOptions write SetOptions;
   end;
 
   TGroupMultiScroll=(Automatic,Yes,No);
@@ -553,44 +392,6 @@ type
     property Splitters:Boolean read FSplitters write SetSplitters default False;
   end;
 
-  {$IFDEF TEEPRO}
-  // Uses TSubChart tool items, one for each item in the group dimension
-  TGroupSubChart=class(TGroupChart)
-  private
-    FColumns : Integer;
-    FSameAxisRange : Boolean;
-    FTool : TSubChartTool;
-
-    procedure HideChartParts;
-    procedure RecalcAxisRange;
-    procedure SetColumns(const Value: Integer);
-    procedure SetSameAxisRange(const Value: Boolean);
-  protected
-    function AddItem:TComponent; override;
-    procedure ApplyTemplate(const AChart,ATemplate:TCustomChart); override;
-    procedure ChartResized(Sender:TObject); override;
-    procedure Finished; override;
-  public
-    Constructor CreateData(const AItem:TVisualizerItem; const AParent:TGroup); override;
-
-    procedure Assign(Source:TPersistent); override;
-
-    property SubChart:TSubChartTool read FTool;
-  published
-    property Columns:Integer read FColumns write SetColumns default 0;
-    property SameAxisRange:Boolean read FSameAxisRange write SetSameAxisRange default True;
-  end;
-  {$ENDIF}
-
-  {
-  // Uses a TChartScroller Tool as a way to group a dimension
-  TGroupChartScroller=class(TGroup)
-  public
-    Constructor Create(const AParent:TWinControl); override;
-    function Add(const AName:String):TComponent; override;
-  end;
-  }
-
   {$IFDEF FMX}
   TTreeNode=TTreeViewItem;
   {$ENDIF}
@@ -626,11 +427,11 @@ type
   end;
 
   {$IFDEF FMX}
-  {$IFDEF VER230}
+  {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
-              {$IFDEF VER250}or pidiOSSimulator or pidiOSDevice{$ENDIF}
-              {$IFDEF VER260}or pidAndroid{$ENDIF}
-              {$IFDEF VER290}or pidiOSDevice64{$ENDIF}
+              {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
+              {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
+              {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
   {$ENDIF}
@@ -643,11 +444,6 @@ type
 
     FMain : TGroup;
 
-    function AddGroup(const APrevious:TGroup; const AIndex:Integer;
-             const AParent:TComponent;
-             const ARows:TCursorIndex):TGroup;
-
-    function BestControl:TGroupClass;
     function BestGroup(const AItem:TVisualizerItem; const AIndex:Integer; const APrevious:TGroup):TGroup;
 
     procedure CreateCurrent;
@@ -663,10 +459,17 @@ type
     procedure SetValues(const Value: TVisualizerItems);
     procedure SortGroups;
   protected
+    function AddGroup(const APrevious:TGroup; const AIndex:Integer;
+             const AParent:TComponent;
+             const ARows:TCursorIndex):TGroup;
+
     procedure AddItems;
     procedure DefineProperties(Filer: TFiler); override;
     procedure Loaded; override;
   public
+    class var
+      ValuesGroupClass : TGroupClass;
+
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
@@ -793,21 +596,9 @@ type
 
     function ChangeClass(const AGroup,AClass:Integer):Boolean;
 
-    class function CurrentSeriesClass(const AItems:TComboBox):TChartSeriesClass; static;
-
-    class procedure Fill2DSeries(const AItems:TStrings); static;
-    class procedure Fill3DSeries(const AItems:TStrings); static;
-    class function FindSeries(const AItems:TStrings; const AClass:TChartSeriesClass):Integer; static;
-
-    function GetChart(const AIndex:Integer):TGroupChart;
     function GetControl(const AIndex:Integer):TGroupControl;
     function GetList(const AIndex:Integer):TGroupList;
     function GetMulti(const AIndex:Integer):TGroupMultiControl;
-    function GetSeries(const AIndex:Integer):TGroupSeries;
-
-    {$IFDEF TEEPRO}
-    function GetSubChart(const AIndex:Integer):TGroupSubChart;
-    {$ENDIF}
   end;
 
 implementation

@@ -13,7 +13,7 @@ uses
   {$IFDEF MSWINDOWS}
   WinAPI.ActiveX, System.Win.ComObj,
   {$ENDIF}
-  BI.DataSource, BI.Data, BI.Arrays;
+  BI.DataSource, BI.Data, BI.Arrays, BI.Persist;
 
 type
   EExcelException=class(EBIException);
@@ -22,9 +22,11 @@ type
   protected
     function DoImportFile(const FileName:String):TDataArray; override;
   public
-    WorkSheet : String;
+    HeaderCount : Integer;
     Range     : String;
-    TitleCount : Integer;
+    WorkSheet : String;
+
+    Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;
 
     class function ExportFormat:TBIExport; override;
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;

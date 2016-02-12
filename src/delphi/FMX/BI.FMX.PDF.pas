@@ -27,7 +27,7 @@ uses
   {$ELSE}
   VCL.Graphics, VCLTee.TeCanvas, VCLTee.TeePDFCanvas, VCLTee.TeeConst,
   {$ENDIF}
-  System.Classes;
+  System.Classes, System.Types;
 
 type
   TBIPDFExport=class;

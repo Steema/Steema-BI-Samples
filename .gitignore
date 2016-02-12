@@ -10,3 +10,5 @@ tests/TestInsightSettings.ini
 *.~1~
 demos/delphi/vcl/Import/__history/
 demos/delphi/vcl/Import/__recovery/__recovery.ini
+*.~2~
+*.~3~

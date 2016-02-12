@@ -9,7 +9,7 @@ unit BI.FMX.Editor.Visualizer;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
   FMX.Types, FMX.Controls, FMX.Forms,
 
   {$IF CompilerVersion<26} // Cannot use FireMonkeyVersion<21 (or 21.0)
@@ -59,27 +59,15 @@ type
     Label1: TLabel;
     CBGroupBy: TComboBox;
     TabMulti: TTabItem;
-    TabChart: TTabItem;
     TabList: TTabItem;
-    TabSeries: TTabItem;
     Label2: TLabel;
     CBComboAlign: TComboBox;
     Label3: TLabel;
     CBMultiScroll: TComboBox;
     Label4: TLabel;
     UDColumns: TSpinBox;
-    Button2: TButton;
     Label5: TLabel;
     CBListAlign: TComboBox;
-    Label6: TLabel;
-    CBAutoStack: TComboBox;
-    CBAddNulls: TCheckBox;
-    Label7: TLabel;
-    CB2D: TComboBox;
-    Label8: TLabel;
-    CB3D: TComboBox;
-    CBSeriesStyle: TComboBox;
-    Label9: TLabel;
     procedure SBUpGroupClick(Sender: TObject);
     procedure SBDownGroupClick(Sender: TObject);
     procedure SBUpValueClick(Sender: TObject);
@@ -93,14 +81,8 @@ type
     procedure CBComboAlignChange(Sender: TObject);
     procedure CBMultiScrollChange(Sender: TObject);
     procedure UDColumnsChangeTracking(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
     procedure CBListAlignChange(Sender: TObject);
-    procedure CBAddNullsChange(Sender: TObject);
-    procedure CBAutoStackChange(Sender: TObject);
-    procedure CB2DChange(Sender: TObject);
-    procedure CB3DChange(Sender: TObject);
     procedure CBClassChange(Sender: TObject);
-    procedure CBSeriesStyleChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -116,6 +98,7 @@ type
 
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl):TVisualizerEditor;
     procedure Refresh(const AVisualizer:TBIVisualizer);
+    procedure ShowSettings(const ATab:TTabItem);
   end;
 
 implementation

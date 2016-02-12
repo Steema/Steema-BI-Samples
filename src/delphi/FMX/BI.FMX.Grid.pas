@@ -35,18 +35,18 @@ type
     procedure BindTo(const ADataSet:TDataSet); virtual; abstract;
     procedure Colorize(const AItems:TDataColorizers); virtual; abstract;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); virtual; abstract;
-    function GetControl:TControl; virtual; abstract;
+    function GetObject:TObject; virtual; abstract;
 
     property DataSource:TDataSource read GetDataSource write SetDataSource;
     property Totals:Boolean read GetTotals write SetTotals;
   end;
 
   // Generic Grid control that "links" a TDataItem with a Grid.
-  {$IFDEF VER230}
+  {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
-              {$IFDEF VER250}or pidiOSSimulator or pidiOSDevice{$ENDIF}
-              {$IFDEF VER260}or pidAndroid{$ENDIF}
-              {$IFDEF VER290}or pidiOSDevice64{$ENDIF}
+              {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
+              {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
+              {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
   TBIGrid = class(TLayout)

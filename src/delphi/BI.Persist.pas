@@ -77,6 +77,8 @@ type
     procedure LoadFromFile(const FileName:String);
     procedure LoadFromText(const AText:String);
 
+    function MultiLineText(const ATag:String):String;
+
     function Name: String;
 
     function NextRefresh:TDateTime;
@@ -185,6 +187,7 @@ type
     class function All(const APart:Integer=0):TStringDynArray; static;
     class procedure ChangeName(const AOld,ANew:String); static;
     class procedure ChangePath(const AName,AOrigin:String); static;
+    class function Exists(const AName:String):Boolean; static;
     class function GlobalCache:TDataItem; static;
     class function IndexOf(const AName:String):Integer; static;
     class function NewName:String; static;
@@ -281,6 +284,13 @@ type
     class procedure WriteBoolean(const Key,Name:String; const Value:Boolean); static;
     class procedure WriteInteger(const Key,Name:String; const Value:Integer); static;
     class procedure WriteString(const Key,Name,Value:String); static;
+  end;
+
+  EBILoadVersionException=class(Exception)
+  public
+    WrongVersion : Integer;
+
+    Constructor CreateVersion(const AVersion:Integer);
   end;
 
 implementation

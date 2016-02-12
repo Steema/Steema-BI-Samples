@@ -24,10 +24,10 @@ type
 
   TCSVHeader=record
   private
+    Detected : Boolean;
     HasHeader : TTextHeaders;
   public
     Count : Integer;
-    Detected : Boolean;
     Headers : TTextHeaders;
   end;
 
@@ -42,6 +42,8 @@ type
 
     Data : TDataItem;
     Start : TInteger;
+
+    FItems : TDataItems;
 
     t1 : TStopwatch;
 
@@ -72,6 +74,8 @@ type
 
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
     function Import(const Strings:TStrings):TDataArray; override;
+    function ImportFile(const AFileName:String):TDataArray; override;
+    function ImportText(const AText:String):TDataItem;
 
     class function Supports(const Extension:String):Boolean; override;
   end;

@@ -172,6 +172,7 @@ type
     procedure RefreshSettings;
     procedure ResetWebTest;
     procedure TryChange(const ATag,AText:String);
+    procedure TryChangeMultiLine(const ATag,AText:String);
     procedure TryWebChange(const ATag,AText:String);
     procedure TryFillWebDatas;
     procedure WebSettings;

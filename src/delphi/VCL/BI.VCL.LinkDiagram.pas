@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Data Diagram of Relationships              }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.LinkDiagram;
 
 interface

@@ -70,8 +70,9 @@ type
 
   TTypeProvider<T>=class(TRTTIProvider)
   private
-    procedure TryResize(const ACount:TInteger);
+    procedure GetError(const AIndex:TInteger);
     procedure Put(const AIndex:TInteger; const AData:T); inline;
+    procedure TryResize(const ACount:TInteger);
   public
     Primary : TDataItem;
 

@@ -13,6 +13,7 @@ interface
 
   {$DEFINE HASFIREDAC_SQLite}
   {$DEFINE HASFIREDAC_IB}
+  {$DEFINE HASFIREDAC_ADS}
 
   {$IFNDEF ANDROID}
   {$DEFINE HASFIREDAC_MSSQL}
@@ -116,6 +117,13 @@ uses
   FireDAC.Phys.SQLite,
   {$IF CompilerVersion>27}
   FireDAC.Phys.SQLiteDef,
+  {$ENDIF}
+  {$ENDIF}
+
+  {$IFDEF HASFIREDAC_ADS} // ADS
+  FireDAC.Phys.ADS,
+  {$IF CompilerVersion>27}
+  FireDAC.Phys.ADSMeta,
   {$ENDIF}
   {$ENDIF}
 

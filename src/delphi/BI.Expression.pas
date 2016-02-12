@@ -10,8 +10,15 @@ unit BI.Expression;
 
 interface
 
+{.$DEFINE BIVARIANT} // Experimental, replacing Variant with a faster alternative
+
 uses
-  System.Variants, System.SysUtils;
+  {$IFDEF BIVARIANT}
+  BI.Variants,
+  {$ELSE}
+  System.Variants,
+  {$ENDIF}
+  System.SysUtils;
 
 type
   EExpressionParse=class(Exception)
@@ -21,7 +28,7 @@ type
     Constructor Create(APos:Integer; const AMessage:String);
   end;
 
-  TData=Variant;
+  TData={$IFDEF BIVARIANT}BIVariant{$ELSE}Variant{$ENDIF};
 
   TExpression=class;
 
@@ -88,7 +95,9 @@ type
     function Value:TData; override;
     function ToString:String; override;
 
+    class function Date:TDateTimeExpression; static;
     class function Now:TDateTimeExpression; static;
+    class function Time:TDateTimeExpression; static;
   end;
 
   TTextExpression=class(TExpression)
@@ -139,6 +148,14 @@ type
   end;
 
   TArithmeticExpression=class(TOperandExpression)
+  private
+     // do not inline
+    function Add: TData;
+    function Subtract: TData;
+    function Multiply: TData;
+    function Divide: TData;
+    function Modulus: TData;
+    function Power: TData;
   public
     Operand : TArithmeticOperand;
 
@@ -160,6 +177,15 @@ type
   end;
 
   TLogicalExpression=class(TBaseLogicalExpression)
+  private
+    function CalcAnd:Boolean;
+    function CalcOr:Boolean;
+    function IsEqual:Boolean;
+    function IsGreater:Boolean;
+    function IsGreaterOrEqual:Boolean;
+    function IsLower:Boolean;
+    function IsLowerOrEqual:Boolean;
+    function LeftInRight:Boolean;
   public
     Operand : TLogicalOperand;
 
@@ -236,11 +262,14 @@ type
   end;
 
   TDateTimePartExpression=class(TUnaryExpression)
+  private
+    function AsInteger(const AValue:TDateTime):Integer;
   public
     Part : TDateTimePart;
 
     class function FromString(const S:String; out APart:TDateTimePart):Boolean; static;
     class function FromData(const Value:TData):TDateTime; static;
+    class function TimeFromData(const Value:TData):TDateTime; static;
 
     function Value:TData; override;
     function ToString:String; override;

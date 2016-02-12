@@ -54,10 +54,10 @@ type
   TMissingData=record
   private
     // Returns True if the data value at Index position is null (missing)
-    function GetItem(Index:TInteger):Boolean; inline;
+    function GetItem(const Index:TInteger):Boolean; inline;
 
     // Sets a data value at Index position to missing (True) or not missing (False)
-    procedure SetItem(Index:TInteger; const Value:Boolean);
+    procedure SetItem(const Index:TInteger; const Value:Boolean);
   public
     Count : TInteger; // <-- this exists to load it from *.bi streams.
     Items : TBooleanArray;
@@ -65,7 +65,7 @@ type
     function All:Boolean;
     procedure Init(const ACount:TInteger);
 
-    property Item[Index:TInteger]:Boolean read GetItem write SetItem; default;
+    property Item[const Index:TInteger]:Boolean read GetItem write SetItem; default;
   end;
 
   // Simple array of TDataItem (ie: the equivalent of a database connection or group of datasets)
@@ -260,8 +260,11 @@ type
     procedure CheckEmptyName;
     procedure ClearData;
     procedure ClearDelay;
+    procedure CloneData(const ASource:TDataItem; const AStart,ACount:TInteger);
     function CreateMap:TDataMap;
     function CreateStats:TDataStats;
+
+    function ExistsBefore(const AIndex:TInteger):Boolean;
 
     function HasItems:Boolean; inline;
     function HasMaster:Boolean;
@@ -315,7 +318,7 @@ type
     procedure CreateIndexMulti(const Items:TDataArray);
     procedure CreateMasterIndex;
 
-    procedure Delete(const Row:TInteger);
+    procedure Delete(const Row:TInteger; const ACount:TInteger=1);
     function DataToString(const Index:TInteger):String;
     function FindInMap(const Index:TInteger; out ABin:TInteger):Boolean;
     procedure Finish;
@@ -524,7 +527,7 @@ type
     class procedure LookupFill(const ASource,ADest:TDataItem); static;
     class function NewLookup(const AName:String; const ADetail:TDataItem; const AMaster:TDataItem):TDataItem;
     function ToString:String; override;
-    function Value:Variant; override;
+    function Value:TData; override;
 
     property Data:TDataItem read FData;
   end;

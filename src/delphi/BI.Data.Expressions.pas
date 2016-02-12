@@ -23,7 +23,7 @@ type
     MissingAsZero : Boolean;
 
     function ToString:String; override;
-    function Value:Variant; override;
+    function Value:TData; override;
   end;
 
   TColumnOperand=(Percent,PercentChange,Cumulative,MovingAverage);
@@ -43,7 +43,7 @@ type
   public
     Operand : TColumnOperand;
 
-    function Value:Variant; override;
+    function Value:TData; override;
     function ToString:String; override;
   end;
 

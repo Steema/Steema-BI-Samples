@@ -37,6 +37,8 @@ type
 
   {$IFDEF FPC}
   TProc<T>=procedure(const Value:T);
+
+  TDrawCellEvent=TOnDrawCell;
   {$ENDIF}
 
   TBIDBGrid=class(TDBGrid)
@@ -46,8 +48,10 @@ type
 
   var
     FAlternate: TAlternate;
-
     FColorizers : TDataColorizers;
+
+    FOnAfterDrawCell,
+    FOnBeforeDrawCell :  TDrawCellEvent;
 
     FTotals: Boolean;
 
@@ -56,7 +60,6 @@ type
     FLastFontStyle : TFontStyles;
 
     function CalcSortWidth:Integer;
-    function ColumnOf(const X:Integer):TColumn; overload;
     function ParentsOf(AField:TField):Integer;
     procedure RepaintTotals;
     procedure SetAlternate(const Value: TAlternate);
@@ -68,7 +71,8 @@ type
     procedure WMNCPaint(var Message: TMessage); message WM_NCPaint;
     {$ENDIF}
   protected
-    function  CreateColumns: TDBGridColumns; override;
+    function ColumnOf(const X:Integer):TColumn; overload;
+    function CreateColumns: TDBGridColumns; override;
 
     {$IFDEF FPC}
     procedure DoPrepareCanvas(aCol,aRow:Integer; aState: TGridDrawState); override;
@@ -88,7 +92,7 @@ type
     Destructor Destroy; override;
 
     function ColumnOf(const AField:TField):TColumn; overload;
-    function ColumnOf(const AColumn:TDataItem):TColumn; overload;
+    function ColumnOf(const AData:TDataItem):TColumn; overload;
     procedure Traverse(const AColumn:TColumn; const AProc:TProc<TColumn>);
 
     property TopRow;
@@ -106,6 +110,9 @@ type
     property IndicatorOffset;
     {$ENDIF}
     property ReadOnly default True;
+
+    property OnAfterDrawCell:TDrawCellEvent read FOnAfterDrawCell write FOnAfterDrawCell;
+    property OnBeforeDrawCell:TDrawCellEvent read FOnBeforeDrawCell write FOnBeforeDrawCell;
   end;
 
   TBIDBGridPlugin=class(TBIGridPlugin)
@@ -125,7 +132,7 @@ type
     procedure BindTo(const ADataSet:TDataSet); override;
     procedure Colorize(const AItems:TDataColorizers); override;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); override;
-    function GetControl:TControl; override;
+    function GetObject:TObject; override;
   end;
 
 implementation

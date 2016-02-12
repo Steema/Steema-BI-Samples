@@ -36,6 +36,8 @@ type
 
   TBIXML=class(TBITextSource)
   private
+    FExclude : TTextArray;
+
     XML : TXmlEngine;
 
     procedure DoAppend(const Data:TDataItem; const XML:TXmlEngine; const CallProgress:Boolean);
@@ -51,6 +53,8 @@ type
     function ImportText(const Text:String): TDataItem;
 
     class function Supports(const Extension:String):Boolean; override;
+
+    property ExcludeNodes:TTextArray read FExclude;
   end;
 
   TBIXMLEmit=(Header,Simple);

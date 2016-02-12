@@ -14,7 +14,9 @@ uses
   BI.Data, FMX.Controls, Data.DB, System.UITypes, BI.UI;
 
 type
-  TBIFMXGrid=class(TGrid)
+  // Unfortunately, it is not possible to derive this class from FMX TGrid.
+  // Bindings work partially, columns are created but the grid shows empty.
+  TBIFMXGrid=class
   private
     FBindingEditor: TBindListGridEditor;
     FLastTitle : Integer;
@@ -26,21 +28,28 @@ type
 
     IDataSet : TBIDataSet;
 
+    // Necessary because TBIFMXGrid does not derive from TGrid,
+    // so encapsulation instead of inheritance is needed.
+    IFMXGrid : TGrid;
+
     FColorizers : TDataColorizers;
 
     {$IF CompilerVersion>25}
     procedure ClickedHeader(Column:TColumn);
     {$ENDIF}
 
+    procedure CreateBindings;
     procedure DataChange(Sender: TObject; Field: TField);
     procedure SetHeaderStyle(const AStyle:TFontStyles);
   protected
     BindSource : TBindSourceDB;
   public
-    Constructor Create(AOwner:TComponent); override;
+    Constructor Create(AOwner:TComponent);
     Destructor Destroy; override;
 
     procedure AutoSizeColumns;
+
+    property Grid:TGrid read IFMXGrid;
 
     property OnRowChanged:TNotifyEvent read FOnRowChanged write FOnRowChanged;
   end;
@@ -59,7 +68,7 @@ type
     procedure BindTo(const ADataSet:TDataSet); override;
     procedure Colorize(const AItems:TDataColorizers); override;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); override;
-    function GetControl:TControl; override;
+    function GetObject:TObject; override;
   end;
 
 implementation

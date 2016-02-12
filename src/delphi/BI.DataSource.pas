@@ -82,6 +82,7 @@ type
   protected
     Parent : TObject; // see TBIExport.Destroy
 
+    OwnsFilter,
     ValidIndex : Boolean;
 
     procedure ApplyFilter;
@@ -160,6 +161,12 @@ type
     function AsString:String; overload;
     class function AsString(const AData:TDataItem):String; overload;
 
+    procedure SaveToFile(const AFileName:String); overload;
+
+    class procedure SaveToFile(const AData:TDataItem; const AFileName:String); overload;
+
+    procedure SaveToStream(const AStream:TStream);
+
     function ToStrings:TStrings; overload;
     class function ToStrings(const AData:TDataItem):TStrings; overload;
 
@@ -212,7 +219,7 @@ type
   public
     class function ExportFormat:TBIExport; virtual;
 
-    class function FromFile(const AFileName:String):TDataItem;
+    class function FromFile(const AFileName:String):TDataItem; overload;
     class function FromStrings(const AStrings:TStrings):TDataItem;
     class function FromText(const AText:String):TDataItem;
 
@@ -231,6 +238,8 @@ type
     class function Supports(const Extension:String):Boolean; virtual;
   end;
 
+  TFileShareMode=(Exclusive, DenyWrite, DenyRead, DenyNone);
+
   TBITextSource=class(TBIFileSource)
   protected
     ISettings : TFormatSettings;
@@ -242,6 +251,10 @@ type
 
     // Internal use, to detect "Zero Based Strings"
     class var ZBS : Boolean; // Zero-based strings
+
+    // 0 or 1, indicates the index of the first char of strings
+    // Windows = 1,  Mobile = 0
+    class var FirstStringChar : Integer;
 
     function DoImportFile(const FileName:String):TDataArray; override;
     function GuessKind(const Value:String):TDataKind;
@@ -256,9 +269,9 @@ type
     Constructor Create(const Definition:TDataDefinition=nil;
                        const MultiThread:Boolean=False); override;
 
-    class var FirstStringChar : Integer;
+    class function LoadFromFile(const FileName:String):String; overload;
+    class function LoadFromFile(const FileName:String; const ShareMode:TFileShareMode):String; overload;
 
-    class function LoadFromFile(const FileName:String):String;
     class function StringsFrom(const FileName:String):TStrings;
 
     property Text:String read FText;
@@ -285,7 +298,7 @@ type
     IMain : TDataItem;
 
     procedure AddItem(const AResult,AItem:TDataItem);
-    function FoundLast(const AResult:TDataItem):Boolean;
+    function FoundLast(const AResult:TDataItem; const ACount:TInteger):Boolean;
     procedure ReplaceSortDatas(const AData:TDataItem);
     function SetupHops(const Hops:TDataHops):TInt32Array;
   protected

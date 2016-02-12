@@ -252,7 +252,7 @@ type
 
     function GetExpression(const AData:TDataItem):TExpression;
     function ToString:String; override;
-    function Value:Variant; override;
+    function Value:TData; override;
   end;
 
   TSummary=class;

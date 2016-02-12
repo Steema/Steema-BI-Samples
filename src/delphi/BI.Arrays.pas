@@ -158,12 +158,6 @@ type
     property Item[const Index:TInteger]:TDateTime read GetItem; default;
   end;
 
-  TTextItem=record
-    Text : String;
-  end;
-
-  TTextItemArray=Array of TTextItem;
-
   TTextMap=class(TDataMap)
   private
     type
@@ -171,7 +165,7 @@ type
 
     function GetItem(const Index:TInteger):String; inline;
   public
-    Items : TTextItemArray;
+    Items : TTextArray;
     IgnoreCase : Boolean;
 
     procedure AddMap(const Value:String);
@@ -273,16 +267,18 @@ type
     procedure Append(const Value:Boolean); overload;
     procedure Append(const Value:TBooleanArray); overload;
     function Compare(const A,B:TInteger):SmallInt; inline;
-    function Copy:TBooleanArray;
+    function Copy:TBooleanArray; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TBooleanArray; overload; inline;
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     function Map(const Missing:TBooleanArray):TBooleanMap;
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending:Boolean=True); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
-    function Stats:TBooleanStats;
-    procedure Swap(const A,B:TInteger);
+    function Stats:TBooleanStats; inline;
+    procedure Swap(const A,B:TInteger); inline;
     procedure Zero(const Value:Boolean=False);
   end;
 
@@ -292,18 +288,20 @@ type
   public
     procedure Append(const Value:String); overload;
     procedure Append(const Value:TTextArray); overload;
-    function Copy:TTextArray;
+    function Copy:TTextArray; overload;
+    function Copy(const AIndex,ACount:TInteger):TTextArray; overload;
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:String):TInteger;
     function Map(const Missing:TBooleanArray; const IgnoreCase:Boolean=False):TTextMap;
     function MaxLength:Integer;
     procedure Resize(const Count:TInteger); inline;
     procedure Sort(const Ascending:Boolean=True; const IgnoreCase:Boolean=False); overload;
     procedure Sort(const Ascending,IgnoreCase:Boolean; const Swap:TSwapProc); overload;
-    function Stats:TTextStats;
-    procedure Swap(const A,B:TInteger);
+    function Stats:TTextStats; inline;
+    procedure Swap(const A,B:TInteger); inline;
     procedure Zero;
   end;
 
@@ -312,23 +310,25 @@ type
     function Distribution(const Mean:TDateTime; const StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:TDateTime); overload;
+    procedure Append(const Value:TDateTime); overload; inline;
     procedure Append(const Value:TDateTimeArray); overload;
-    function Copy:TDateTimeArray;
+    function Copy:TDateTimeArray; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TDateTimeArray; overload; inline;
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:TDateTime);
     function Map(const Missing:TBooleanArray; out Median,Mode:TDateTime):TDateTimeMap; overload;
     function Maximum:TDateTime;
     function Mean:TDateTime;
     function Minimum:TDateTime;
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending:Boolean=True); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     function Stats:TDateTimeStats;
     function StdDeviation(const Mean:TDateTime):TFloat;
-    procedure Swap(const A,B:TInteger);
+    procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:TDateTime):TFloat;
     procedure Zero;
   end;
@@ -340,12 +340,14 @@ type
   public
     procedure Append(const Value:Integer); overload;
     procedure Append(const Value:TInt32Array); overload;
-    function Copy:TInt32Array;
+    function Copy:TInt32Array; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TInt32Array; overload; inline;
     function Count:TInteger; inline;
     function Correlation(const Y: TInt32Array; const XMean,YMean: TFloat): TFloat;
     function CoVariance(const Y: TInt32Array; const XMean,YMean: TFloat):TFloat;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:Integer):TInteger;
     function IndexOfMax:TInteger;
     procedure Insert(const Index:TInteger; const Value:Integer);
@@ -355,13 +357,13 @@ type
     function Minimum:Integer;
     procedure RemoveValue(const Value:Integer);
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending:Boolean=True); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     function Stats:TInt32Stats;
     function StdDeviation(const Mean:TFloat):TFloat;
     function Sum:TFloat;
     function SumOfSquares: TFloat;
-    procedure Swap(const A,B:TInteger);
+    procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:TFloat):TFloat;
     procedure Zero;
   end;
@@ -373,12 +375,14 @@ type
   public
     procedure Append(const Value:Int64); overload;
     procedure Append(const Value:TInt64Array); overload;
-    function Copy:TInt64Array;
+    function Copy:TInt64Array; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TInt64Array; overload; inline;
     function Count:TInteger; inline;
     function Correlation(const Y: TInt64Array; const XMean,YMean: TFloat): TFloat;
     function CoVariance(const Y: TInt64Array; const XMean,YMean: TFloat):TFloat;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:Int64):TInteger;
     function IndexOfMax:TInteger;
     procedure Insert(const Index:TInteger; const Value:Int64);
@@ -388,13 +392,13 @@ type
     function Minimum:Int64;
     procedure RemoveValue(const Value:Int64);
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending:Boolean=True); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     function Stats:TInt64Stats;
     function StdDeviation(const Mean:TFloat):TFloat;
     function Sum:TFloat;
     function SumOfSquares: TFloat;
-    procedure Swap(const A,B:TInteger);
+    procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:TFloat):TFloat;
     procedure Zero;
   end;
@@ -406,12 +410,14 @@ type
   public
     procedure Append(const Value:Single); overload;
     procedure Append(const Value:TSingleArray); overload;
-    function Copy:TSingleArray;
+    function Copy:TSingleArray; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TSingleArray; overload; inline;
     function Count:TInteger; inline;
     function Correlation(const Y: TSingleArray; const XMean,YMean: Single): Single;
     function CoVariance(const Y: TSingleArray; const XMean,YMean: Single):Single;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Single);
     function Map(const Missing:TBooleanArray; out Median,Mode:Single):TSingleMap; overload;
     function Maximum:Single;
@@ -419,13 +425,13 @@ type
     function Minimum:Single;
     procedure Normalize(const Mean:Single);
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending: Boolean=True); overload;
+    procedure Sort(const Ascending: Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     function Stats:TSingleStats;
     function StdDeviation(const Mean:Single):Single;
     function Sum:Single;
     function SumOfSquares: Single;
-    procedure Swap(const A,B:TInteger);
+    procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:Single):Single;
     procedure Zero;
   end;
@@ -437,12 +443,14 @@ type
   public
     procedure Append(const Value:Double); overload;
     procedure Append(const Value:TDoubleArray); overload;
-    function Copy:TDoubleArray;
+    function Copy:TDoubleArray; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TDoubleArray; overload; inline;
     function Count:TInteger; inline;
     function Correlation(const Y: TDoubleArray; const XMean,YMean: Double): Double;
     function CoVariance(const Y: TDoubleArray; const XMean,YMean: Double):Double;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Double);
     function Map(const Missing:TBooleanArray; out Median,Mode:Double):TDoubleMap; overload;
     function Maximum:Double;
@@ -450,13 +458,13 @@ type
     function Minimum:Double;
     procedure Normalize(const Mean:Double);
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending: Boolean=True); overload;
+    procedure Sort(const Ascending: Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     function Stats:TDoubleStats;
     function StdDeviation(const Mean:Double):Double;
     function Sum:Double;
     function SumOfSquares: Double;
-    procedure Swap(const A,B:TInteger);
+    procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:Double):Double;
     procedure Zero;
   end;
@@ -469,12 +477,14 @@ type
   public
     procedure Append(const Value:Extended); overload;
     procedure Append(const Value:TExtendedArray); overload;
-    function Copy:TExtendedArray;
+    function Copy:TExtendedArray; overload; inline;
+    function Copy(const AIndex,ACount:TInteger):TExtendedArray; overload; inline;
     function Count:TInteger; inline;
     function Correlation(const Y: TExtendedArray; const XMean,YMean: Extended): Extended;
     function CoVariance(const Y: TExtendedArray; const XMean,YMean: Extended):Extended;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Extended);
     function Map(const Missing:TBooleanArray; out Median,Mode:Extended):TExtendedMap; overload;
     function Maximum:Extended;
@@ -482,13 +492,13 @@ type
     function Minimum:Extended;
     procedure Normalize(const Mean:Extended);
     procedure Resize(const Count:TInteger); inline;
-    procedure Sort(const Ascending: Boolean=True); overload;
+    procedure Sort(const Ascending: Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     function Stats:TExtendedStats;
     function StdDeviation(const Mean:Extended):Extended;
     function Sum:Extended;
     function SumOfSquares: Extended;
-    procedure Swap(const A,B:TInteger);
+    procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:Extended):Extended;
     procedure Zero;
   end;

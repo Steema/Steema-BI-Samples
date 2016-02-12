@@ -65,7 +65,7 @@ type
     procedure BindTo(const ADataSet:TDataSet); override;
     procedure Colorize(const AItems:TDataColorizers); override;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); override;
-    function GetControl:TControl; override;
+    function GetObject:TObject; override;
   end;
 
 implementation

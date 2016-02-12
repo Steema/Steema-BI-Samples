@@ -45,6 +45,7 @@ type
     procedure ParseOutput(const ADest:TDataItem); virtual; abstract;
     procedure ParseRawMap(const AMap,ADest:TDataItem); virtual; abstract;
     procedure Statement(const AStatement:String); virtual; abstract;
+    function Version:String; virtual; abstract;
 
     class property Engine:TBIREngine read FEngine write SetEngine;
   end;

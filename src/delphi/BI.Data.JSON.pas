@@ -53,6 +53,8 @@ type
 
     class function ExportFormat:TBIExport; override;
 
+    class function FromFile(const AFileName:String; const AFormat:TBIJSONFormat):TDataItem; overload;
+
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
     function Import(const Strings:TStrings):TDataArray; overload; override;
     function ImportFile(const FileName:String):TDataArray; override;

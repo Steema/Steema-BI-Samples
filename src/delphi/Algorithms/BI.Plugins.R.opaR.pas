@@ -43,6 +43,7 @@ type
     procedure ParseOutput(const ADest:TDataItem); override;
     procedure ParseRawMap(const AMap,ADest:TDataItem); override;
     procedure Statement(const AStatement:String); override;
+    function Version:String; override;
   end;
 
 implementation

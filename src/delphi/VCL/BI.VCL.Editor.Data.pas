@@ -153,6 +153,7 @@ type
     procedure ResetWebTest;
     procedure ShowSingleTab(const ATab:TTabSheet);
     procedure TryChange(const ATag,AText:String);
+    procedure TryChangeMultiLine(const ATag,AText:String);
     procedure TryWebChange(const ATag, AText: String);
     procedure TryFillWebDatas;
     procedure WebSettings;

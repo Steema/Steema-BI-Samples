@@ -33,10 +33,12 @@ type
   end;
 
 const
-  TeeBI_Version=20160128;
-  TeeBI_VersionString='v1 20160128';
-  TeeBI_VersionMode='(BETA 7.1)';
+  TeeBI_Version=20160212;
+  TeeBI_VersionString='v1 20160212';
+  TeeBI_VersionMode='(BETA 8)';
   TeeBI_Description='TeeBI';
   TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2016 by Steema Software';
+
+procedure TeeBIGotoURL(const Handle:HWND; const URL:String);
 
 implementation

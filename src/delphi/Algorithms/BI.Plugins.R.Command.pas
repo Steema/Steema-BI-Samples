@@ -75,7 +75,7 @@ type
 
     procedure Start; override;
     procedure Statement(const AStatement:String); override;
-    function Version:String;
+    function Version:String; override;
   end;
 
 implementation

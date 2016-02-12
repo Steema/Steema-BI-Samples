@@ -88,6 +88,8 @@ type
   TPredictedData=class(TDataItem)
   private
     FConfusion : TDataItem;
+    FPredicted : TDataItem;
+    FReal : TDataItem;
 
     function GetConfusion:TDataItem;
     function GetCorrect:TInteger;
@@ -99,6 +101,8 @@ type
 
     property Confusion:TDataItem read GetConfusion;
     property Correct:TInteger read GetCorrect;
+    property Predicted:TDataItem read FPredicted;
+    property Real:TDataItem read FReal;
   end;
 
   TSupervisedModelClass=class of TSupervisedModel;

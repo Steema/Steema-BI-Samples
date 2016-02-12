@@ -49,6 +49,7 @@ type
     class function Exists(const AFolder:String):Boolean; static;
     class function GetFiles(const APath,APattern:String):TStringArray; static;
     class function GetDirectories(const AFolder:String):TStringArray; static;
+    class procedure Move(const AFromDir,AToDir:String); static; static;
   end;
 
   TZipMode=(zmRead, zmWrite);

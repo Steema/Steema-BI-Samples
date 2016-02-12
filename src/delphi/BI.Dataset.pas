@@ -274,6 +274,8 @@ type
     procedure OpenSelect;
     procedure OpenSummary;
 
+    procedure PrepareIndex(const AIndex:TCursorIndex);
+
     procedure SetItems(const ADatas:TDataArray);
     procedure SetFieldOnGetText(const AField:TField; const Hide:Boolean);
 

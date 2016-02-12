@@ -35,6 +35,10 @@ type
     TabZip: TTabSheet;
     EZipPassword: TEdit;
     Label6: TLabel;
+    TabExcel: TTabSheet;
+    Label7: TLabel;
+    EExcelHeader: TEdit;
+    UDExcelHeader: TUpDown;
     procedure CBDelimiterChange(Sender: TObject);
     procedure ECustomDelimiterChange(Sender: TObject);
     procedure CBQuoteChange(Sender: TObject);
@@ -42,11 +46,13 @@ type
     procedure Edit1Change(Sender: TObject);
     procedure EMissingChange(Sender: TObject);
     procedure EZipPasswordChange(Sender: TObject);
+    procedure EExcelHeaderChange(Sender: TObject);
   private
     { Private declarations }
     IData : TDataDefinition;
 
     procedure RefreshCSV;
+    procedure RefreshExcel;
     procedure RefreshZip;
   public
     { Public declarations }

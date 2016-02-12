@@ -11,7 +11,12 @@ unit BI.FMX.Visualizer.Chart;
 interface
 
 uses
-  System.Classes, System.Types, System.UITypes,
+  System.Classes, System.Types,
+
+  {$IFNDEF FPC}
+  System.UITypes,
+  {$ENDIF}
+  
   BI.Arrays, BI.Data, BI.DataSource,
 
   {$IFDEF FMX}

@@ -40,7 +40,7 @@ type
     procedure Colorize(const AItems:TDataColorizers); virtual; abstract;
     procedure BindTo(const ADataSet:TDataSet); virtual; abstract;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); virtual; abstract;
-    function GetControl:TControl; virtual; abstract;
+    function GetObject:TObject; virtual; abstract;
 
     property DataSource:TDataSource read GetDataSource write SetDataSource;
     property ReadOnly:Boolean read GetReadOnly write SetReadOnly;
@@ -85,6 +85,7 @@ type
 
     procedure BindTo(const Data:TDataItem);
     procedure Colorize(const AItems:TDataColorizers);
+    procedure DestroyData;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);
 
     property DockManager;
@@ -194,6 +195,7 @@ type
     class procedure LoadPosition(const AForm:TCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AParent:TControl); static;
     class procedure SavePosition(const AForm:TCustomForm; const Key:String); static;
+    class function SelectFolder(var AFolder:String):Boolean; static;
     class function YesNo(const Message:String):Boolean; static;
   end;
 
