@@ -7,21 +7,21 @@
 
 A simple class to implement in-memory database complex structures to provide:
 
-- Ultra fast speed (every column or field is a simple array)
+- [Ultra fast](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Speed) speed (every column or field is a simple array)
 
-- Import data from files, databases, objects (ORM) in one or few lines of code
+- [Import data](https://github.com/Steema/BI/wiki/importing) from files, databases, objects (ORM) in one or few lines of code
 
 - Automatic relationships between columns (master-detail), indexes and foreign keys
 
-- SQL-like high-speed queries and summaries by code or "select" scripts
+- SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
 - Transparent remote web server fast data access (compressed binary streams)
 
-- Automatic visualizations of complex structures (charts, grids and more)
+- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids and more)
 
-- Data export (csv,pdf,html,xml,excel,json), comparisons and manipulations
+- Data [export](https://github.com/Steema/BI/wiki/exporting) (csv,pdf,html,xml,excel,json), comparisons and manipulations
 
-- Machine-learning and statistics (native data pass to R Language and Python Scikit)
+- [Machine-learning](https://github.com/Steema/BI/wiki/machine-learning) and [statistics](https://github.com/Steema/BI/wiki/statistics) (native data pass to R Language and Python Scikit)
 
 - Big-data ready, billions of cells supported
 
