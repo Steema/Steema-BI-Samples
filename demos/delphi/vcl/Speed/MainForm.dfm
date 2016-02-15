@@ -24,9 +24,6 @@ object FormSpeed: TFormSpeed
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 288
-    ExplicitTop = 200
-    ExplicitWidth = 185
     object Button1: TButton
       Left = 24
       Top = 9
@@ -36,5 +33,19 @@ object FormSpeed: TFormSpeed
       TabOrder = 0
       OnClick = Button1Click
     end
+  end
+  object BIGrid1: TBIGrid
+    Left = 0
+    Top = 41
+    Width = 738
+    Height = 356
+    Align = alClient
+    UseDockManager = False
+    ParentBackground = False
+    TabOrder = 1
+    ExplicitLeft = 376
+    ExplicitTop = 216
+    ExplicitWidth = 100
+    ExplicitHeight = 40
   end
 end
