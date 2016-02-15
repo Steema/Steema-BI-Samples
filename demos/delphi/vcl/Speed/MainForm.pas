@@ -11,16 +11,19 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.VCL.Grid, BI.Data, BI.DataSource, BI.Summary, BI.Persist;
+  BI.VCL.Grid, BI.Data, BI.DataSource, BI.Summary, BI.Persist, BI.Data.HTML;
 
 type
   TFormSpeed = class(TForm)
     Panel1: TPanel;
     Button1: TButton;
     BIGrid1: TBIGrid;
+    BExport: TButton;
+    Label1: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure BExportClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -40,9 +43,15 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Diagnostics;
+  System.Diagnostics, Vcl.Clipbrd;
 
 // Execute all tests
+procedure TFormSpeed.BExportClick(Sender: TObject);
+begin
+  Clipboard.AsText:=TBIHTMLExport.AsString(Results);
+  Label1.Visible:=True;
+end;
+
 procedure TFormSpeed.Button1Click(Sender: TObject);
 begin
   Screen.Cursor:=crHourGlass;
@@ -53,8 +62,14 @@ begin
     Test;
 
     // Show results at Grid
-    BIGrid1.RefreshData;
-  finally
+    //BIGrid1.RefreshData;
+
+    BIGrid1.BindTo(nil);
+    BIGrid1.BindTo(Results);
+
+    // Enable export button
+    BExport.Enabled:=True;
+ finally
     Screen.Cursor:=crDefault;
   end;
 end;

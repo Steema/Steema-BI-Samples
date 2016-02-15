@@ -24,6 +24,15 @@ object FormSpeed: TFormSpeed
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = -6
+    object Label1: TLabel
+      Left = 424
+      Top = 13
+      Width = 128
+      Height = 13
+      Caption = 'Results copied to clipboard'
+      Visible = False
+    end
     object Button1: TButton
       Left = 24
       Top = 9
@@ -32,6 +41,16 @@ object FormSpeed: TFormSpeed
       Caption = 'Begin Test '
       TabOrder = 0
       OnClick = Button1Click
+    end
+    object BExport: TButton
+      Left = 336
+      Top = 8
+      Width = 75
+      Height = 25
+      Caption = 'Export'
+      Enabled = False
+      TabOrder = 1
+      OnClick = BExportClick
     end
   end
   object BIGrid1: TBIGrid
@@ -43,9 +62,5 @@ object FormSpeed: TFormSpeed
     UseDockManager = False
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 376
-    ExplicitTop = 216
-    ExplicitWidth = 100
-    ExplicitHeight = 40
   end
 end
