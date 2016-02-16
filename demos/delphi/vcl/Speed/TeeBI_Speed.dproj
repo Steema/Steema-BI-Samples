@@ -3,7 +3,7 @@
         <ProjectGuid>{67E9A165-870C-41AA-900D-DA8CA871280D}</ProjectGuid>
         <MainSource>TeeBI_Speed.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
@@ -99,6 +99,9 @@
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
     </PropertyGroup>
@@ -115,6 +118,7 @@
         <BT_BuildType>Debug</BT_BuildType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
@@ -155,9 +159,7 @@
                     <Source Name="MainSource">TeeBI_Speed.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Root\TeeBee\Server\FMX\TrayIcon\nTrayIcon.bpl">File C:\Root\TeeBee\Server\FMX\TrayIcon\nTrayIcon.bpl not found</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k230.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcbofficexp230.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k230.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
