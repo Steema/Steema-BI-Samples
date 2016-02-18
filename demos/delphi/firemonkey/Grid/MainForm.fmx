@@ -1,0 +1,102 @@
+object GridDemoForm: TGridDemoForm
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI Grid Firemonkey Demo'
+  ClientHeight = 480
+  ClientWidth = 873
+  Position = ScreenCenter
+  WindowState = wsMaximized
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object TabControl1: TTabControl
+    Align = Left
+    Size.Width = 369.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = PlatformDefault
+    object TabOptions: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 88.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Grid Options'
+      object CBAlternate: TCheckBox
+        Position.X = 16.000000000000000000
+        Position.Y = 24.000000000000000000
+        Size.Width = 177.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Alternate row background'
+        OnChange = CBAlternateChange
+      end
+      object CBSort: TCheckBox
+        IsChecked = True
+        Position.X = 16.000000000000000000
+        Position.Y = 56.000000000000000000
+        Size.Width = 209.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Column sorting'
+        OnChange = CBSortChange
+      end
+    end
+    object TabData: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 44.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Data'
+    end
+  end
+  object Splitter1: TSplitter
+    Align = Left
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Position.X = 369.000000000000000000
+    Size.Width = 9.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Layout1: TLayout
+    Align = Client
+    Size.Width = 495.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object BIGrid1: TBIGrid
+      Align = Client
+      Size.Width = 495.000000000000000000
+      Size.Height = 455.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    object BindNavigator1: TBindNavigator
+      Align = Bottom
+      Position.Y = 455.000000000000000000
+      Size.Width = 495.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+      xRadius = 4.000000000000000000
+      yRadius = 4.000000000000000000
+    end
+  end
+end

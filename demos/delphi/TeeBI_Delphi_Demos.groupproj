@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{81BAC5DC-59FE-4B82-B5F8-79DDB1638BCB}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="vcl\Grid\TeeBI_Grid_Demo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="vcl\Import\TeeBI_Import_Demo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="vcl\Search\TeeBI_DataSearch_Demo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="vcl\Speed\TeeBI_Speed.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="firemonkey\Grid\TeeBI_Grid_Demo_FMX.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TeeBI_Grid_Demo">
+        <MSBuild Projects="vcl\Grid\TeeBI_Grid_Demo.dproj"/>
+    </Target>
+    <Target Name="TeeBI_Grid_Demo:Clean">
+        <MSBuild Projects="vcl\Grid\TeeBI_Grid_Demo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI_Grid_Demo:Make">
+        <MSBuild Projects="vcl\Grid\TeeBI_Grid_Demo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TeeBI_Import_Demo">
+        <MSBuild Projects="vcl\Import\TeeBI_Import_Demo.dproj"/>
+    </Target>
+    <Target Name="TeeBI_Import_Demo:Clean">
+        <MSBuild Projects="vcl\Import\TeeBI_Import_Demo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI_Import_Demo:Make">
+        <MSBuild Projects="vcl\Import\TeeBI_Import_Demo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TeeBI_DataSearch_Demo">
+        <MSBuild Projects="vcl\Search\TeeBI_DataSearch_Demo.dproj"/>
+    </Target>
+    <Target Name="TeeBI_DataSearch_Demo:Clean">
+        <MSBuild Projects="vcl\Search\TeeBI_DataSearch_Demo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI_DataSearch_Demo:Make">
+        <MSBuild Projects="vcl\Search\TeeBI_DataSearch_Demo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TeeBI_Speed">
+        <MSBuild Projects="vcl\Speed\TeeBI_Speed.dproj"/>
+    </Target>
+    <Target Name="TeeBI_Speed:Clean">
+        <MSBuild Projects="vcl\Speed\TeeBI_Speed.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI_Speed:Make">
+        <MSBuild Projects="vcl\Speed\TeeBI_Speed.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TeeBI_Grid_Demo_FMX">
+        <MSBuild Projects="firemonkey\Grid\TeeBI_Grid_Demo_FMX.dproj"/>
+    </Target>
+    <Target Name="TeeBI_Grid_Demo_FMX:Clean">
+        <MSBuild Projects="firemonkey\Grid\TeeBI_Grid_Demo_FMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI_Grid_Demo_FMX:Make">
+        <MSBuild Projects="firemonkey\Grid\TeeBI_Grid_Demo_FMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TeeBI_Grid_Demo;TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TeeBI_Grid_Demo:Clean;TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TeeBI_Grid_Demo:Make;TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
