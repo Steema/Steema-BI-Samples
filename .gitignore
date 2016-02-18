@@ -13,3 +13,5 @@ demos/delphi/vcl/Import/__recovery/__recovery.ini
 *.~2~
 *.~3~
 __history
+*.local
+*.vlb
