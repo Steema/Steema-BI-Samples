@@ -25,7 +25,7 @@ implementation
 
 procedure TDataItem_Test.Setup;
 begin
-  FData:=TDataItem.Create;
+  FData:=TDataItem.Create(TDataKind.dkInt32);
 end;
 
 procedure TDataItem_Test.TearDown;
@@ -37,8 +37,6 @@ procedure TDataItem_Test.TestAppend(Value1, Value2, _Result: Integer);
 var
   R: Integer;
 begin
-  FData.Kind:=TDataKind.dkInt32;
-
   FData.Int32Data.Append(Value1);
   FData.Int32Data.Append(Value2);
 
