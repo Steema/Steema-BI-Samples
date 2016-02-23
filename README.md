@@ -43,12 +43,17 @@ A simple class to implement in-memory database complex structures to provide:
 
 - [Documentation](https://github.com/Steema/BI/wiki)
 
+- API Reference
+
+  * [Delphi](http://docs.steebi.com/vclfmx/docs/Docs/API_Reference/Doc/Html/)
+
+  * [.NET](http://docs.steebi.com/net/html/d16a15ad-6013-5ff2-4c70-3d6ff966e7b7.htm)
+
 - [Examples and Tutorials](https://github.com/Steema/BI/tree/master/demos)
 
 ### Links
 
 - [TeeBI Google+ Community](https://plus.google.com/u/0/communities/117324086536146457211)
 - Website: <http://www.steebi.com>
-
 
 
