@@ -38,10 +38,6 @@ object GridDemoForm: TGridDemoForm
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 5
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 554
     end
   end
   object Panel1: TPanel

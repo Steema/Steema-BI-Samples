@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  TBIGrid VCL Example                        }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit MainForm;
 
 interface
@@ -42,21 +48,37 @@ procedure TGridDemoForm.FormCreate(Sender: TObject);
 begin
   PageControl1.ActivePage:=TabOptions;
 
+  // Editor dialog to customize Grid options
   GridEditor:=TBIGridEditor.Embedd(Self,TabOptions,BIGrid1);
 
+  // Editor dialog to choose a Data
   TDataManager.EmbedChoose(Self,TabData,'BISamples').OnSelect:=SelectedData;
 
+  // Load "Customers" table into Grid
   BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Customers'];
 
+  // Set Navigator control source
   DBNavigator1.DataSource:=BIGrid1.DataSource;
 
+  // Initialize Grid editor
   GridEditor.FillColumns;
+
+  // Several BIGrid features that can be activated:
+
+  BIGrid1.ShowItems:=True; // <-- Show Sub-Items at a secondary BIGrid
+
+//  BIGrid1.Alternate.Enabled:=True;
+//  BIGrid1.Filters.Enabled:=True;
+//  BIGrid1.ReadOnly:=False;
+//  BIGrid1.RowNumbers.Enabled:=True;
+//  BIGrid1.Search.Enabled:=True;
 end;
 
+// When a new Data is selected, reset Grid:
 procedure TGridDemoForm.SelectedData(Sender: TObject);
 var tmp : TDataItem;
 begin
-  tmp:=TDataManager(Sender).Selected;
+  tmp:=TDataManager(Sender).SelectedDatas;
 
   if tmp<>nil then
   begin
