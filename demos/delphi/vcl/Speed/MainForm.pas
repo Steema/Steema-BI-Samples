@@ -11,7 +11,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.VCL.Grid, BI.Data, BI.DataSource, BI.Summary, BI.Persist, BI.Data.HTML;
+  BI.VCL.Grid, BI.Data, BI.DataSource, BI.Summary, BI.Persist, BI.Data.HTML,
+  BI.DataSet, Data.DB;
 
 type
   TFormSpeed = class(TForm)
@@ -154,18 +155,32 @@ begin
         Persons.Items.Add('Name',TDataKind.dkText);
         Persons.Items.Add('Salary',TDataKind.dkSingle);
 
-  Bench('Add Records',100000, procedure
+  Bench('Add Records',300000, procedure
     var t : Integer;
     begin
       // Prepare space
-      Persons.Resize(100000);
+      Persons.Resize(300000);
 
       // Add all rows
-      for t:=1 to 100000 do
+      for t:=0 to 300000-1 do
       begin
         Persons[0].Int32Data[t]:=t;
         Persons[1].TextData[t]:=SampleNames[t mod High(SampleNames)];
         Persons[2].SingleData[t]:=456.789;
+      end;
+    end);
+
+  Bench('Insert Records',1000, procedure
+    const AtPosition=5;
+    var t : Integer;
+    begin
+      // Insert rows
+      for t:=1 to 1000 do
+      begin
+        Persons.Insert(AtPosition);
+        Persons[0].Int32Data[AtPosition]:=t;
+        Persons[1].TextData[AtPosition]:=SampleNames[t mod High(SampleNames)];
+        Persons[2].SingleData[AtPosition]:=456.789;
       end;
     end);
 
@@ -224,6 +239,46 @@ begin
         SortedSalary.Free;
       finally
         Query.Free;
+      end;
+    end);
+
+  Bench('TDataSet Traverse',1, procedure
+    var Dataset : TBIDataset;
+        Salary : TSingleField;
+        Sum : Double;
+    begin
+      DataSet:=TBIDataset.Create(nil);
+      try
+        DataSet.Data:=Persons;
+        DataSet.Open;
+
+        Salary:=DataSet.FieldByName('Salary') as TSingleField;
+
+        Sum:=0;
+
+        DataSet.First;
+
+        while not DataSet.Eof do
+        begin
+          Sum:=Sum+Salary.Value;
+          DataSet.Next;
+        end;
+
+      finally
+        DataSet.Free;
+      end;
+    end);
+
+  Bench('Sorting',10, procedure
+    var t : Integer;
+    begin
+      for t:=1 to 10 do
+      begin
+        // Sort by text
+        Persons.SortBy(Persons['Name']);
+
+        // Sort again by float
+        Persons.SortBy(Persons['Salary']);
       end;
     end);
 

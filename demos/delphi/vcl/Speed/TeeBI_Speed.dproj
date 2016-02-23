@@ -159,7 +159,9 @@
                     <Source Name="MainSource">TeeBI_Speed.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="C:\Root\TeeBee\Server\FMX\TrayIcon\nTrayIcon.bpl">File C:\Root\TeeBee\Server\FMX\TrayIcon\nTrayIcon.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl not found</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k230.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcbofficexp230.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k230.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>

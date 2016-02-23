@@ -24,7 +24,6 @@ object FormSpeed: TFormSpeed
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = -6
     object Label1: TLabel
       Left = 424
       Top = 13
