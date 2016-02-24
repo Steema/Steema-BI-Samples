@@ -55,8 +55,6 @@ object MasterDetailForm: TMasterDetailForm
       TabOrder = 0
       Alternate.Enabled = True
       DataSource = DataSource2
-      ExplicitLeft = -6
-      ExplicitTop = 3
     end
     object BIChart1: TBIChart
       Left = 456
