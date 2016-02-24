@@ -18,6 +18,12 @@
         <Projects Include="firemonkey\Grid\TeeBI_Grid_Demo_FMX.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="vcl\BIDataSet_Speed\BIDataSet_Speed.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="vcl\Master-Detail\MasterDetail_BIDataSet.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +77,32 @@
     <Target Name="TeeBI_Grid_Demo_FMX:Make">
         <MSBuild Projects="firemonkey\Grid\TeeBI_Grid_Demo_FMX.dproj" Targets="Make"/>
     </Target>
+    <Target Name="BIDataSet_Speed">
+        <MSBuild Projects="vcl\BIDataSet_Speed\BIDataSet_Speed.dproj"/>
+    </Target>
+    <Target Name="BIDataSet_Speed:Clean">
+        <MSBuild Projects="vcl\BIDataSet_Speed\BIDataSet_Speed.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BIDataSet_Speed:Make">
+        <MSBuild Projects="vcl\BIDataSet_Speed\BIDataSet_Speed.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MasterDetail_BIDataSet">
+        <MSBuild Projects="vcl\Master-Detail\MasterDetail_BIDataSet.dproj"/>
+    </Target>
+    <Target Name="MasterDetail_BIDataSet:Clean">
+        <MSBuild Projects="vcl\Master-Detail\MasterDetail_BIDataSet.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MasterDetail_BIDataSet:Make">
+        <MSBuild Projects="vcl\Master-Detail\MasterDetail_BIDataSet.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="TeeBI_Grid_Demo;TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX"/>
+        <CallTarget Targets="TeeBI_Grid_Demo;TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX;BIDataSet_Speed;MasterDetail_BIDataSet"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="TeeBI_Grid_Demo:Clean;TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean"/>
+        <CallTarget Targets="TeeBI_Grid_Demo:Clean;TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean;BIDataSet_Speed:Clean;MasterDetail_BIDataSet:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="TeeBI_Grid_Demo:Make;TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make"/>
+        <CallTarget Targets="TeeBI_Grid_Demo:Make;TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make;BIDataSet_Speed:Make;MasterDetail_BIDataSet:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
