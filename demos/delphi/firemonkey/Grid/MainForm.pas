@@ -59,9 +59,9 @@ begin
 
   //GridEditor:=TBIGridEditor.Embedd(Self,TabOptions,BIGrid1);
 
-  TDataManager.EmbedChoose(Self,TabData,'BISamples').OnSelect:=SelectedData;
-
   BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Customers'];
+
+  TDataManager.EmbedChoose(Self,TabData,'BISamples' {,BIGrid1.Data}).OnSelect:=SelectedData;
 
   //BindNavigator1.DataSource:=BIGrid1.DataSource;
 

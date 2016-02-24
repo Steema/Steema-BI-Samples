@@ -51,11 +51,11 @@ begin
   // Editor dialog to customize Grid options
   GridEditor:=TBIGridEditor.Embedd(Self,TabOptions,BIGrid1);
 
-  // Editor dialog to choose a Data
-  TDataManager.EmbedChoose(Self,TabData,'BISamples').OnSelect:=SelectedData;
-
   // Load "Customers" table into Grid
   BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Customers'];
+
+  // Editor dialog to choose a Data
+  TDataManager.EmbedChoose(Self,TabData,'BISamples',BIGrid1.Data).OnSelect:=SelectedData;
 
   // Set Navigator control source
   DBNavigator1.DataSource:=BIGrid1.DataSource;
