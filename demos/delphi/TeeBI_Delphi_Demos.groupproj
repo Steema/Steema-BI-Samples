@@ -27,6 +27,9 @@
         <Projects Include="vcl\Export\TeeBI_Export.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="firemonkey\Export\PDF\TeeBI_PDF_Export.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -107,14 +110,23 @@
     <Target Name="TeeBI_Export:Make">
         <MSBuild Projects="vcl\Export\TeeBI_Export.dproj" Targets="Make"/>
     </Target>
+    <Target Name="TeeBI_PDF_Export">
+        <MSBuild Projects="firemonkey\Export\PDF\TeeBI_PDF_Export.dproj"/>
+    </Target>
+    <Target Name="TeeBI_PDF_Export:Clean">
+        <MSBuild Projects="firemonkey\Export\PDF\TeeBI_PDF_Export.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI_PDF_Export:Make">
+        <MSBuild Projects="firemonkey\Export\PDF\TeeBI_PDF_Export.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="TeeBI_Grid_Demo;TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX;BIDataSet_Speed;MasterDetail_BIDataSet;TeeBI_Export"/>
+        <CallTarget Targets="TeeBI_Grid_Demo;TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX;BIDataSet_Speed;MasterDetail_BIDataSet;TeeBI_Export;TeeBI_PDF_Export"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="TeeBI_Grid_Demo:Clean;TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean;BIDataSet_Speed:Clean;MasterDetail_BIDataSet:Clean;TeeBI_Export:Clean"/>
+        <CallTarget Targets="TeeBI_Grid_Demo:Clean;TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean;BIDataSet_Speed:Clean;MasterDetail_BIDataSet:Clean;TeeBI_Export:Clean;TeeBI_PDF_Export:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="TeeBI_Grid_Demo:Make;TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make;BIDataSet_Speed:Make;MasterDetail_BIDataSet:Make;TeeBI_Export:Make"/>
+        <CallTarget Targets="TeeBI_Grid_Demo:Make;TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make;BIDataSet_Speed:Make;MasterDetail_BIDataSet:Make;TeeBI_Export:Make;TeeBI_PDF_Export:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
