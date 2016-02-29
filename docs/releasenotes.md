@@ -1,6 +1,136 @@
 # TeeBI Release Notes
 -------------------
 
+## 29-Feb-2016  Beta 9
+
+- **Demos**
+
+  New examples have been added to both GitHub repository and TeeBI installer:
+  
+  * [BIDataSet_Speed](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/BIDataSet_Speed) speed comparison between standard TDataset (TFDMemTable) and TBIDataSet
+  
+  * [Export](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Export) example to show the different formats to output a TeeBI TDataItem (Csv, Html, JSON, Xml, Excel, PDF)
+  
+  * [Grid](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Grid) example to show all possibilities of TBIGrid control (grouping, sorting, filtering and searching)
+  
+  * [Master-Detail](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Master-Detail) demo displays two BIGrid controls with master-detail linked TBIDatasets
+  
+  * [Speed](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Speed) demo is a benchmark of several TeeBI features (adding, deleting records, queries, saving, loading, etc)
+  
+  * [Online BIWeb](https://github.com/Steema/BI/tree/master/demos/online/remote_web) adds a new example to obtain a live HTML5 Javascript chart from BIWeb server
+  
+- **IDE Help**
+
+  * A compiled TeeBI API reference help file in CHM format has been included.
+  This file is a mirror or TeeBI API [online html documentation](http://docs.steebi.com/vclfmx/docs/Docs/API_Reference/Doc/Html/)
+  
+- **BIWeb server**
+
+  * More information (data size and modified time) is returned when requesting a list of all available data sources:
+  
+     http://steema.cat:15015/?data&format=.htm
+     
+  * Logs are now optionally persisted under a customizable ".\Logs" folder.
+  Data in BIWeb logs is saved in standard binary TDataItem format, so they can be loaded, queried and analyzed like as any other TDataItem data.
+  
+  * Public folders can be optionally enabled to use BIWeb server as a file provider (for any kind of file).
+  The "root" public folder is named ".\Public" default.
+  
+  For example, a picture is available under .\public\img folder at Steema's BIWeb server:
+  
+  http://steema.cat:15015/img/summary_links.png
+  
+  * Live HTML5 Javascript charts are now returned by BIWeb server, just specifying ".html5" as the requested format in the URL.
+  For example: [this link](http://steema.cat:15015/?data=SQLite_demo|%22Order%20Details%22&format=.html5&summary=sum(Quantity);Shippers.ShipperID) returns a summary query as a live chart.
+  
+  * Grand Totals is a new experimental feature to return totalizers for numeric columns, by adding the "totals=xxx" parameter in the URL, being "xxx" the requested aggregator (for example "sum" or "count")
+  
+  [Totals Example, last row is the grand total sum](http://steema.cat:15015/?data=SQLite_demo|%22Order%20Details%22&format=.htm&summary=sum(Quantity);Categories.CategoryName&totals=sum)
+  
+- **TBIGrid**
+
+  Several new features in TBIGrid (VCL only for most of them) to improve the display of TDataItem data objects.
+  
+  * New local grid menu, accessible by clicking the top-left most grid cell. This menu is optional and offers menu items to control the following features:
+  
+  * "Alternate" property to paint grid row backgrounds in alternate colors
+  
+  * "Filters" property to display a top row of edit boxes and combo boxes, one for each grid column, to enable filtering grid rows that match the typed characters.
+  
+  * Grouping: A grid column can be used to group data based on distinct values of the selected column.
+  When grouping, a secondary grid appears side to the main grid with the list of values. Selecting a row filters and displays the data rows that belong to the selected group value. For example show Customers group by Country, filters Customers for each Country.
+  
+  * "RowNumbers" property to display the row IDs numbers as an extra grid column
+  
+  * "Search" property to display an edit box to enable highlighting grid cells that match the typed text.
+  
+  * New "OnDataChange" event that is called whenever the grid is refreshed after filtering or grouping.
+  
+- **BI.Arrays**
+
+  * For 32bit applications only, all array index access has been converted to use 32bit Integer instead of 64bit.
+  (Use of 64bit Integer was not necessary and not optimized for 32bit)
+  
+  * Added missing "Insert" method for TBooleanArray and TTextArray types.
+  
+- **HTML Exporting**
+
+  * New FloatFormat property to customize the html output of float values (default is "0.##")
+  
+- **BI.Data.PDF**
+
+  * Several improvements for better text positioning and more accurate calculation of total PDF pages for large documents, when displaying the "page N of M" annotations.
+  
+- **BI.Data**
+
+  * New MissingCount function in TMissingData class returns the number of items that are Missing (null)
+  
+  ```ShowMessage('There are '+IntToStr( MyData.Missing.MissingCount )+' missing items in '+MyData.Name)```
+  
+  * New Insert method at TDataItem adds a new empty "row" at the specified Index position. It also recursively inserts a new row in sub-tables if they exist.
+  
+  ```MyData.Insert( 10 )  // adds a new row at position 10 (count starts at zero)```
+  
+  * Several public fields have been converted to read-only properties to prevent unintented modification.
+  
+- **BI.Data.Search**
+
+  * New Index property in TDataSearch class enables searching or filtering values from a subset of the total data rows.
+  The Index array determines the row IDs to consider when searching or filtering.
+  
+- **TSQLParser**
+
+  * Parsing SQL now returns TDataItem instances that contain the SQL query as a "Provider" object.
+  This means the SQL query is not automatically executed at the time the SQL is parsed, but it will be executed in delay-mode, the first time data is necessary (accessed via LoadData).
+  
+- **TBIDataSet**
+
+  * New RowNumbers boolean property (default is False), when True the dataset adds a new colum with the effective Row numbers.
+  This might be useful to show the row IDs when the dataset is filtered or sorted, where IDs would not be a sequence.
+  
+  * Editing support
+  
+  BIDataSet now supports the standard inserting, deleting and modificating mechanism that can be used by code (BIDataSet.Insert, etc) or by manually editing cells on a DBGrid or BIGrid control.
+  
+- **TDateTimePartExpression**
+
+  * New "DecadeOfYear" enum to return the decade part of a TDateTime (from 1 to 10)
+
+- **Multi-CPU / Multi-Thread support**
+
+  * Initial support for multi-thread (parallel CPU) operations using TDataItem datas.
+  Queries can be executed in parallel, for example using System.Thread TParallel.For loops, Futures or Tasks.
+  
+- **TBIChart**
+
+  * New Fill overload method to pass a TDataCursor object. This enables creating a chart with only the subset of data rows specified in the Cursor Index, and with the optional Cursor sorting.
+  
+- New TDataMapAsData parameters to optionally return the map values sorted.
+
+- Miscellaneous fixes and speed improvements, specially at Logical and Arithmetic BI Expression classes.
+  
+
+  
 ## 12-Feb-2016  Beta 8
 
 - Installation
