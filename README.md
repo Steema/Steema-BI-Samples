@@ -15,7 +15,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
-- Transparent remote web server fast data access (compressed binary streams)
+- Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams)
 
 - Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids and more)
 
@@ -35,9 +35,9 @@ A simple class to implement in-memory database complex structures to provide:
   
 ### Getting started
 
-- [Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 8, Feb-12th 2016)
+- [Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 9, Feb-29th 2016)
 
-- [Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 8)
+- [Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 9)
 
 - [Installing](https://github.com/Steema/BI/wiki/Installing-TeeBI)
 
