@@ -12,7 +12,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, 
 
-  {$IF FireMonkeyVersion<21}
+  {$IF CompilerVersion<=27}
   {$DEFINE HASFMX20}
   {$ENDIF}
 
@@ -20,7 +20,7 @@ uses
   FMX.Graphics, FMX.Controls.Presentation, FMX.EditBox, FMX.NumberBox,
   {$ENDIF}
 
-  {$IF FireMonkeyVersion<22}
+  {$IF CompilerVersion<=28}
   {$DEFINE HASFMX21}
   {$ENDIF}
 
@@ -28,7 +28,7 @@ uses
   FMX.ScrollBox,
   {$ENDIF}
 
-  {$IF FireMonkeyVersion<23}
+  {$IF CompilerVersion<=29}
   {$DEFINE HASFMX23}
   {$ENDIF}
 
@@ -117,7 +117,7 @@ type
   private
     { Private declarations }
 
-    FOnSelected : TNotifyEvent;
+    FOnSelect : TNotifyEvent;
 
     IEditor : TDataEditor;
 
@@ -146,14 +146,14 @@ type
   public
     { Public declarations }
 
-    function CurrentData:TDataItem;
+    function Selected:TDataItem;
 
     class function ChooseName(const AOwner:TComponent; const AStore:String=''):String; static;
     class function ChooseData(const AOwner:TComponent; const AStore:String=''):TDataItem; static;
     class procedure Edit(const AOwner:TComponent; const AStore:String=''); static;
     class function EmbedChoose(const AOwner:TComponent; const AParent:TControl; const AStore:String=''):TDataManager; static;
 
-    property OnSelected:TNotifyEvent read FOnSelected write FOnSelected;
+    property OnSelect:TNotifyEvent read FOnSelect write FOnSelect;
   end;
 
 implementation

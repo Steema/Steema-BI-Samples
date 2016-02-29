@@ -67,7 +67,7 @@ type
     var
       IItems : TStrings;
 
-    procedure EmitDetail(const Data:TDataItem; const AIndex:TInt64Array; const Items:TStrings; const Indent:String);
+    procedure EmitDetail(const Data:TDataItem; const AIndex:TCursorIndex; const Items:TStrings; const Indent:String);
     procedure EmitRow(const AIndex:TInteger; const ADatas:TDataArray; const Items:TStrings; const Indent:String);
     procedure EmitRows(const AIndex:TInteger);
   protected

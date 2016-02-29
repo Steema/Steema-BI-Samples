@@ -96,8 +96,10 @@ type
     function ToString:String; override;
 
     class function Date:TDateTimeExpression; static;
+    class function FromData(const Value:TData):TDateTime; static;
     class function Now:TDateTimeExpression; static;
     class function Time:TDateTimeExpression; static;
+    class function TimeFromData(const Value:TData):TDateTime; static;
   end;
 
   TTextExpression=class(TExpression)
@@ -131,7 +133,7 @@ type
   protected
     function Part(const AExpression:TExpression):String;
   public
-    Left,
+    Left  : TExpression;
     Right : TExpression;
 
     Destructor Destroy; override;
@@ -178,14 +180,21 @@ type
 
   TLogicalExpression=class(TBaseLogicalExpression)
   private
-    function CalcAnd:Boolean;
-    function CalcOr:Boolean;
-    function IsEqual:Boolean;
-    function IsGreater:Boolean;
-    function IsGreaterOrEqual:Boolean;
-    function IsLower:Boolean;
-    function IsLowerOrEqual:Boolean;
+    function CalcAnd:Boolean; inline;
+    function CalcOr:Boolean; inline;
+    function IsEqual:Boolean; inline;
+    function IsGreater:Boolean; inline;
+    function IsGreaterOrEqual:Boolean; inline;
+    function IsLower:Boolean; inline;
+    function IsLowerOrEqual:Boolean; inline;
+    function IsNotEqual:Boolean; inline;
     function LeftInRight:Boolean;
+
+    type
+      TBooleanFunc=function:Boolean of object;
+
+    var
+      Funcs:Array[TLogicalOperand] of TBooleanFunc;
   public
     Operand : TLogicalOperand;
 
@@ -248,6 +257,7 @@ type
                  Quarter,
                  Year,
                  Decade,
+                 DecadeOfYear,
                  Century,
                  Millennium);
 
@@ -268,8 +278,6 @@ type
     Part : TDateTimePart;
 
     class function FromString(const S:String; out APart:TDateTimePart):Boolean; static;
-    class function FromData(const Value:TData):TDateTime; static;
-    class function TimeFromData(const Value:TData):TDateTime; static;
 
     function Value:TData; override;
     function ToString:String; override;

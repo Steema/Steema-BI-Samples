@@ -12,14 +12,14 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms,
 
-  {$IF FireMonkeyVersion<21}
+  {$IF CompilerVersion<=27}
   {$DEFINE HASFMX20}
   {$ENDIF}
 
   {$IFNDEF HASFMX20}
   FMX.Graphics, FMX.Controls.Presentation,
 
-  {$IF FireMonkeyVersion<22}
+  {$IF CompilerVersion<=28}
   {$DEFINE HASFMX21}
   {$ENDIF}
 

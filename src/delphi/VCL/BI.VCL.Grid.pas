@@ -25,12 +25,19 @@ type
   // See BI.VCL.Grid.DBGrid unit for an example, using the VCL TDBGrid.
   TBIGridPlugin=class abstract
   protected
+    IAlternate : TAlternateColor;
+
+    procedure AutoWidth; virtual; abstract;
+    procedure ChangedAlternate(Sender:TObject); virtual; abstract;
     function GetDataSource: TDataSource; virtual; abstract;
     function GetReadOnly:Boolean; virtual; abstract;
     function GetTotals:Boolean; virtual; abstract;
-    procedure SetReadOnly(const Value:Boolean); virtual; abstract;
-    procedure SetTotals(const Value:Boolean); virtual; abstract;
     procedure SetDataSource(const Value: TDataSource); virtual; abstract;
+    procedure SetFilters(const Value:Boolean); virtual; abstract;
+    procedure SetReadOnly(const Value:Boolean); virtual; abstract;
+    procedure SetRowNumber(const Value:Boolean); virtual; abstract;
+    procedure SetSearch(const Value:Boolean); virtual; abstract;
+    procedure SetTotals(const Value:Boolean); virtual; abstract;
   public
     class var
       Engine : TBIGridPluginClass;
@@ -47,6 +54,34 @@ type
     property Totals:Boolean read GetTotals write SetTotals;
   end;
 
+  TBIGrid=class;
+
+  TBaseEnabled=class(TPersistent)
+  private
+    FEnabled : Boolean;
+
+    IGrid : TBIGrid;
+  protected
+    procedure SetEnabled(const Value: Boolean); virtual; abstract;
+  published
+    property Enabled:Boolean read FEnabled write SetEnabled default False;
+  end;
+
+  TRowNumbers=class(TBaseEnabled)
+  protected
+    procedure SetEnabled(const Value: Boolean); override;
+  end;
+
+  TGridFilters=class(TBaseEnabled)
+  protected
+    procedure SetEnabled(const Value: Boolean); override;
+  end;
+
+  TGridSearch=class(TBaseEnabled)
+  protected
+    procedure SetEnabled(const Value: Boolean); override;
+  end;
+
   // Generic Grid control that "links" a TDataItem with a Grid.
   TBIGrid = class(TWinControl)
   private
@@ -56,6 +91,11 @@ type
     IDataSetRight : TBIDataset;
     IPluginRight : TBIGridPlugin;
 
+    FAlternate : TAlternateColor;
+    FGridFilters : TGridFilters;
+    FOnDataChange : TNotifyEvent;
+    FRowNumbers : TRowNumbers;
+    FSearch : TGridSearch;
     FShowItems : Boolean;
 
     {$IFDEF FPC}
@@ -66,17 +106,27 @@ type
 
     function GetData:TDataItem;
     function GetDataSource: TDataSource;
+    function GetReadOnly: Boolean;
     function GetTotals:Boolean;
 
-    procedure ReadOrigin(Reader: TReader);
-    procedure SetData(const Value: TDataItem);
-    procedure SetTotals(const Value: Boolean);
+    procedure HideShowItems;
 
-    procedure WriteOrigin(Writer: TWriter);
+    function PluginControl:TWinControl;
+
+    procedure ReadOrigin(Reader: TReader);
+
+    procedure SetAlternate(const Value: TAlternateColor);
+    procedure SetData(const Value: TDataItem);
     procedure SetDataSource(const Value: TDataSource);
+    procedure SetGridFilters(const Value: TGridFilters);
     procedure SetPlugin(const Value: TBIGridPlugin);
-    function GetReadOnly: Boolean;
     procedure SetReadOnly(const Value: Boolean);
+    procedure SetRowNumbers(const Value: TRowNumbers);
+    procedure SetSearch(const Value: TGridSearch);
+    procedure SetShowItems(const Value: Boolean);
+    procedure SetTotals(const Value: Boolean);
+    procedure TryShowItems;
+    procedure WriteOrigin(Writer: TWriter);
   protected
     procedure DefineProperties(Filer: TFiler); override;
   public
@@ -87,6 +137,8 @@ type
     procedure Colorize(const AItems:TDataColorizers);
     procedure DestroyData;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);
+    procedure Invalidate; override;
+    procedure RefreshData;
 
     property DockManager;
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
@@ -95,21 +147,10 @@ type
     property Align;
     property Anchors;
     property AutoSize;
-    {$IFNDEF FPC}
-    property BevelEdges;
-    property BevelInner;
-    property BevelKind;
-    property BevelOuter;
-    property BevelWidth;
-    {$ENDIF}
     property BiDiMode;
-    property BorderWidth;
     // NO: property Caption;
-    property Color;
+    property Color default clBtnFace;
     property Constraints;
-    {$IFNDEF FPC}
-    property Ctl3D;
-    {$ENDIF}
     property UseDockManager default True;
     property DockSite;
     property DoubleBuffered;
@@ -117,7 +158,6 @@ type
     property DragKind;
     property DragMode;
     property Enabled;
-    property Font;
     {$IFNDEF FPC}
     property Padding;
     {$ENDIF}
@@ -125,10 +165,8 @@ type
     property ParentBackground {$IFDEF FPC}:Boolean read FParentBack write FParentBack{$ENDIF};
     property ParentColor;
     {$IFNDEF FPC}
-    property ParentCtl3D;
     property ParentDoubleBuffered;
     {$ENDIF}
-    property ParentFont;
     property ParentShowHint;
     property PopupMenu;
     property ShowHint;
@@ -175,11 +213,18 @@ type
     property OnStartDrag;
     property OnUnDock;
 
+    // TBIGrid
+    property Alternate:TAlternateColor read FAlternate write SetAlternate;
     property Data:TDataItem read GetData write SetData;
     property DataSource:TDataSource read GetDataSource write SetDataSource;
+    property Filters:TGridFilters read FGridFilters write SetGridFilters;
     property ReadOnly:Boolean read GetReadOnly write SetReadOnly default True;
-    property ShowItems:Boolean read FShowItems write FShowItems default False;
+    property RowNumbers:TRowNumbers read FRowNumbers write SetRowNumbers;
+    property Search:TGridSearch read FSearch write SetSearch;
+    property ShowItems:Boolean read FShowItems write SetShowItems default False;
     property Totals:Boolean read GetTotals write SetTotals default False;
+
+    property OnDataChange:TNotifyEvent read FOnDataChange write FOnDataChange;
   end;
 
   // See global TVCLCommon.Diagram property

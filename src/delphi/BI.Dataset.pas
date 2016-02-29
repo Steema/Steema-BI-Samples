@@ -205,7 +205,14 @@ type
 
     ILink : TMasterDataLink;
 
+    FRowNumbers : Boolean;
+    IRowItem : TDataItem; // internal, used only for row numbers "Tag"
+
     TotalColumns : Integer;
+
+    IAllRows : Boolean;
+
+    OwnsData : Boolean;
 
     function CreateLink(const ADataSet:TBIDataSet):TMasterDataLink;
     procedure DoHideDuplicates(Sender: TField; var Text: string; DisplayText: Boolean);
@@ -222,8 +229,9 @@ type
     procedure SetSummary(const Value: TSummary);
     procedure TryCreateLink;
     procedure WriteOrigin(Writer: TWriter);
+    procedure SetRowNumbers(const Value: Boolean);
   protected
-    Index : TInt64Array;
+    Index : TNativeIntArray;
 
     function BookMarkToIndex(const ABookMark:TInteger):TInteger; override;
     procedure DefineProperties(Filer: TFiler); override;
@@ -232,7 +240,9 @@ type
     function GetIndexPosition:TInteger; override;
     function GetRecordCount: Integer; override;
     function GetRecordSize: Word; override;
+    function GetRowItem: TDataItem;
     procedure InternalAddRecord(Buffer: TTeeAddRecordBuffer; Append: Boolean); override;
+    procedure InternalClose; override;
     procedure InternalDelete; override;
     procedure InternalInitFieldDefs; override;
     procedure InternalOpen; override;
@@ -274,7 +284,7 @@ type
     procedure OpenSelect;
     procedure OpenSummary;
 
-    procedure PrepareIndex(const AIndex:TCursorIndex);
+    procedure PrepareIndex(const AIndex:TCursorIndex; const AllRows:Boolean=True);
 
     procedure SetItems(const ADatas:TDataArray);
     procedure SetFieldOnGetText(const AField:TField; const Hide:Boolean);
@@ -285,6 +295,7 @@ type
   published
     property Data:TDataItem read GetData write SetData;
     property Master:TBIDataSet read FMaster write SetMaster;
+    property RowNumbers:Boolean read FRowNumbers write SetRowNumbers;
 
     property Active;
 

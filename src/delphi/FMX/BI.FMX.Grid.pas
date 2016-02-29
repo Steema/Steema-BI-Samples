@@ -22,6 +22,9 @@ type
   // See BI.FMX.Grid.Grid unit for an example, using the standard FMX TGrid.
   TBIGridPlugin=class abstract
   protected
+    IAlternate : TAlternateColor;
+
+    procedure ChangedAlternate(Sender:TObject); virtual; abstract;
     function GetDataSource: TDataSource; virtual; abstract;
     function GetTotals:Boolean; virtual; abstract;
     procedure SetTotals(const Value:Boolean); virtual; abstract;
@@ -51,12 +54,15 @@ type
   {$ENDIF}
   TBIGrid = class(TLayout)
   private
+    FAlternate : TAlternateColor;
+
     IDataSet : TBIDataSet;
     IPlugin : TBIGridPlugin;
 
     procedure CreateNewDataSet;
     function GetBIData: TDataItem;
     procedure ReadOrigin(Reader: TReader);
+    procedure SetAlternate(const Value: TAlternateColor);
     procedure SetBIData(const Value: TDataItem);
     procedure SetPlugin(const Value: TBIGridPlugin);
     procedure WriteOrigin(Writer: TWriter);
@@ -79,6 +85,7 @@ type
     property DataSet:TBIDataSet read IDataSet write SetDataSet;
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
   published
+    property Alternate:TAlternateColor read FAlternate write SetAlternate;
     property Data:TDataItem read GetBIData write SetBIData;
   end;
 

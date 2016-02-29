@@ -52,7 +52,6 @@ type
     procedure BDiagramClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button2Click(Sender: TObject);
-    procedure DataSource3DataChange(Sender: TObject; Field: TField);
     procedure CBViewChange(Sender: TObject);
   private
     { Private declarations }
@@ -64,6 +63,7 @@ type
 
     procedure CheckPanelDataAlign;
     procedure FillData(const AData:TDataItem);
+    procedure GridDataChange(Sender: TObject);
     procedure NewItems(const AData:TDataItem);
 
     function Selected:TDataItem;
@@ -73,9 +73,9 @@ type
   public
     { Public declarations }
 
-    class function Embedd(const AOwner:TComponent; const AParent:TWinControl; const AData:TDataItem):TDataViewer;
+    class function Embedd(const AOwner:TComponent; const AParent:TWinControl; const AData:TDataItem):TDataViewer; static;
     procedure Select(const AData:TDataItem);
-    class procedure View(const AOwner:TComponent; const AData:TDataItem);
+    class procedure View(const AOwner:TComponent; const AData:TDataItem); static;
   end;
 
 implementation

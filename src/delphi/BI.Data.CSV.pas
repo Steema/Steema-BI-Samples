@@ -63,7 +63,7 @@ type
     AutomaticDelimiter=#0;
 
   var
-    Delimiter,
+    Delimiter : Char;
     Quote : Char;
 
     Header : TCSVHeader;
@@ -93,7 +93,7 @@ type
   protected
     procedure DoEmit(const AItems: TStrings); override;
   public
-    Delimiter,
+    Delimiter : Char;
     Quote : Char;
 
     Constructor Create; override;

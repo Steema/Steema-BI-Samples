@@ -34,10 +34,10 @@ type
     class var
       Output : TStrings;
 
-    procedure AddVariable(const AName:String; const Index:TInt64Array;
+    procedure AddVariable(const AName:String; const Index:TNativeIntArray;
                           const ADatas:TDataArray; const UseMissing:Boolean=True); overload; virtual; abstract;
 
-    procedure AddVariable(const AName:String; const Index:TInt64Array;
+    procedure AddVariable(const AName:String; const Index:TNativeIntArray;
                           const AData:TDataItem; const UseMissing:Boolean=True); overload;
 
     procedure GetVariable(const AName:String; const AData:TDataItem); virtual; abstract;

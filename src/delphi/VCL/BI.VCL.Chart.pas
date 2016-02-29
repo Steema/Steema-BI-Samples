@@ -13,9 +13,9 @@ uses
   System.Classes, System.SysUtils, Data.DB,
 
   {$IFDEF FMX}
-  FMXTee.Constants,
+  FMXTee.Constants, FMXTee.Procs,
   {$ELSE}
-  VCLTee.TeeConst,
+  VCLTee.TeeConst, VCLTee.TeeProcs,
   {$ENDIF}
 
   {$IFDEF FPC}
@@ -30,9 +30,9 @@ uses
   {$IFDEF FMX}
   FMXTee.Chart, FMXTee.Engine, FMXTee.Series,
   {$ELSE}
-  VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series,
+  VCL.Controls, VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series,
   {$ENDIF}
-  BI.Data, BI.Arrays, BI.Summary;
+  BI.Data, BI.Arrays, BI.Summary, BI.DataSource;
 
 type
   {$IFNDEF FPC}
@@ -66,8 +66,8 @@ type
     procedure CreateXYZ(const ADatas:TDataArray);
     {$ENDIF}
 
-    function CreateSeries(const tmpY:TDataItem):TChartSeries;
-    procedure FillSeries(tmpS:TChartSeries; tmpY:TDataItem);
+    function CreateSeries(const Y:TDataItem):TChartSeries;
+    procedure FillSeries(const ASeries:TChartSeries; Y:TDataItem);
     class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
     function InitCountSeries(const ACount:TInteger):TChartSeries;
     function NewSeries(const Count:Integer):TChartSeries;
@@ -77,6 +77,8 @@ type
     procedure ReadOrigin(Reader: TReader);
     procedure WriteOrigin(Writer: TWriter);
   protected
+    Index : TCursorIndex;
+
     procedure DefineProperties(Filer: TFiler); override;
   public
     SeriesClass : TChartSeriesClass;
@@ -98,10 +100,13 @@ type
     procedure Fill(const Data:TDataItem); overload;
     procedure Fill(const Histogram:THistogram; const Source:TDataItem); overload;
     procedure Fill(const Summary:TSummary); overload;
+    procedure Fill(const ACursor:TDataCursor; const AItems:TDataArray=nil;
+                   const ADimensions:Integer=0); overload;
     procedure FillXY(const Data:TDataSet; const X,Y:Integer);
 
     procedure Init;
   published
+    property BevelOuter default bvNone;
     property Data:TDataItem read FData write SetDataItem;
     property View3D default False;
   end;

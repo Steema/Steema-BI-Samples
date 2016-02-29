@@ -29,13 +29,13 @@ uses
 type
   TopaR=class(TBIREngine)
   private
-    function CreateArray<T>(const Index:TInt64Array; const Value:TArray<T>):TArray<T>;
+    function CreateArray<T>(const Index:TNativeIntArray; const Value:TArray<T>):TArray<T>;
   protected
     function Finish:Boolean; override;
   public
     Constructor Create;
 
-    procedure AddVariable(const AName:String; const Index:TInt64Array;
+    procedure AddVariable(const AName:String; const Index:TNativeIntArray;
                           const ADatas:TDataArray; const UseMissing:Boolean=True); override;
 
     procedure GetVariable(const AName:String; const AData:TDataItem); override;

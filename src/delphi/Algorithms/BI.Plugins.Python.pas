@@ -34,10 +34,10 @@ type
     class function Execute(const AScript:TStrings):Boolean; overload; static;
     class function Execute(const AText:String):Boolean; overload; static;
 
-    class function FromData(const AName:String; const ADatas:TDataArray; const Index:TInt64Array=nil;
+    class function FromData(const AName:String; const ADatas:TDataArray; const Index:TNativeIntArray=nil;
                       const UseMissing:Boolean=True):String; overload; static;
 
-    class function FromData(const AName:String; const AData:TDataItem; const Index:TInt64Array=nil;
+    class function FromData(const AName:String; const AData:TDataItem; const Index:TNativeIntArray=nil;
                       const UseMissing:Boolean=True):String; overload; static;
 
     // Pending:

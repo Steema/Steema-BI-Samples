@@ -55,6 +55,7 @@ type
   // (or "Class" or "Label") data
   TModel=class(TBaseAlgorithm)
   private
+    class procedure ChangeAndRecalculate(const AData:TDataItem; const AKind:TDataKind); static;
     class procedure NormalizeInt32(const AData:TDataItem); static;
     class procedure NormalizeInt64(const AData:TDataItem); static;
     class procedure NormalizeSingle(const AData:TDataItem); static;
@@ -75,7 +76,7 @@ type
   // Fills A and B arrays either using random values or sequential
   TDataSplit=record
     A,
-    B : TInt64Array;
+    B : TNativeIntArray;
 
     procedure Random(const CountA, CountB:TInteger);
     procedure Sequence(const CountA, CountB:TInteger);
@@ -94,7 +95,7 @@ type
     function GetConfusion:TDataItem;
     function GetCorrect:TInteger;
   public
-    Constructor Create(const ATarget:TDataItem; const Indices:TInt64Array);
+    Constructor Create(const ATarget:TDataItem; const Indices:TNativeIntArray);
     Destructor Destroy; override;
 
     function IsEqual(const AIndex: TInteger):Boolean;
@@ -143,7 +144,7 @@ type
   public
     class function ConvertToNumeric(const AData:TDataItem; out ANew:TDataItem):Boolean; static;
 
-    class function DataToVector(const Indices:TInt64Array; const AData:TDataItem;
+    class function DataToVector(const Indices:TNativeIntArray; const AData:TDataItem;
                                 const UseMissing:Boolean=True;
                                 const MissingValue:String=''):String; static;
   end;

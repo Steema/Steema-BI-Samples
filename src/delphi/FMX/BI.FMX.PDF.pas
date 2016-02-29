@@ -77,6 +77,8 @@ type
     FHeight : TCoordinate;
     FText   : TStrings;
 
+    ILineHeight : Integer;
+
     procedure CalcHeight;
     procedure SetText(const Value: TStrings);
   public
@@ -208,11 +210,13 @@ type
     procedure EmitRow(const AIndex:TInteger);
     procedure FillBackground(const AFormat:TFormat);
     procedure FinishPage;
+    function HeaderMargin:Integer;
     function LineHeight:TCoordinate;
     procedure NewLine;
     procedure PrepareHeader;
     procedure ReCreateCanvas;
     procedure SetGridLines(const Value: TGridLines);
+    procedure SetRowFont;
     function ShouldDraw(const AItem:THeader):Boolean;
     function XLeft:TCoordinate;
     function XRight:TCoordinate;

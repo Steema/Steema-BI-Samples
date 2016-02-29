@@ -12,7 +12,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs,
 
-  {$IF FireMonkeyVersion<21}
+  {$IF CompilerVersion<=27}
   {$DEFINE HASFMX20}
   {$ENDIF}
 

@@ -53,7 +53,7 @@ type
   TCursorLoop={$IFNDEF FPC}reference to{$ENDIF} procedure(const AIndex:TInteger);
   TCursorLoopObject=procedure(const AIndex:TInteger) of object;
 
-  TCursorIndex=TInt64Array;
+  TCursorIndex=TNativeIntArray;
 
   TDataCursorItem=record
   public
@@ -108,6 +108,9 @@ type
     function DataItems:TDataArray;
 
     procedure Delete(const APosition:TInteger);
+
+    class function DetailIndex(const Cols,AMaster,ADetail:TDataItem; const AIndex:TInteger):TCursorIndex; static;
+
     procedure GuessItems(const S:String);
 
     function IndexOf(const AData:TDataItem):Integer;
@@ -127,7 +130,7 @@ type
     class function PackIndex(const AIndex:TCursorIndex):TCursorIndex; static;
 
     function Position(const APosition:TInteger):TInteger;
-    procedure PrepareIndex(const AIndex:TCursorIndex=nil);
+    procedure PrepareIndex(const AIndex:TCursorIndex=nil; const AllRows:Boolean=True);
     procedure SetItems(const AItems:TDataArray);
     procedure SetMasterExpression(const Master:TDataItem; const MasterCol:TExpression; const AIndex:TInteger);
 
@@ -135,6 +138,8 @@ type
   end;
 
   TBIExport=class;
+
+  TBIExportClass=class of TBIExport;
 
   TExportGetText=procedure(const Sender:TBIExport; const Data:TDataItem; const AIndex:TInteger; var Text:String) of object;
 
@@ -152,6 +157,7 @@ type
     procedure DoEmit(const AItems: TStrings); virtual; abstract;
   public
     Cursor : TDataCursor;
+    Totals : TDataItem;
 
     Constructor Create; virtual;
     Destructor Destroy; override;

@@ -1,19 +1,46 @@
-BI.VCL.DataManager.dfm
-BI.VCL.Datas.dfm
-BI.VCL.DataViewer.dfm
-BI.VCL.Editor.ControlTree.dfm
-BI.VCL.Editor.Data.dfm
-BI.VCL.Editor.DataSelect.dfm
-BI.VCL.Editor.DataSet.dfm
-BI.VCL.Editor.Formats.dfm
-BI.VCL.Editor.Grid.dfm
-BI.VCL.Editor.Stores.dfm
-BI.VCL.Editor.Summary.dfm
-BI.VCL.Editor.Visualizer.Chart.dfm
-BI.VCL.Editor.Visualizer.dfm
-BI.VCL.FilterEditor.dfm
-BI.VCL.GridChart.dfm
-BI.VCL.GridForm.dfm
-BI.VCL.LinkDiagram.dfm
-BI.VCL.NewColumn.dfm
-BI.VCL.R.Console.dfm
+object FormDatas: TFormDatas
+  Left = 0
+  Top = 0
+  Caption = 'FormDatas'
+  ClientHeight = 589
+  ClientWidth = 321
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 0
+    Top = 265
+    Width = 321
+    Height = 3
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitWidth = 324
+  end
+  object ListDatas: TListBox
+    Left = 0
+    Top = 0
+    Width = 321
+    Height = 265
+    Align = alTop
+    ItemHeight = 13
+    TabOrder = 0
+    OnClick = ListDatasClick
+  end
+  object ListItems: TListBox
+    Left = 0
+    Top = 268
+    Width = 321
+    Height = 321
+    Align = alClient
+    ItemHeight = 13
+    MultiSelect = True
+    TabOrder = 1
+    OnClick = ListItemsClick
+  end
+end

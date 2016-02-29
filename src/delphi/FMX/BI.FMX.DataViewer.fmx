@@ -1,10 +1,110 @@
-BI.FMX.DataEditor.fmx
-BI.FMX.DataManager.fmx
-BI.FMX.DataViewer.fmx
-BI.FMX.Editor.Column.fmx
-BI.FMX.Editor.Stores.fmx
-BI.FMX.Editor.Visualizer.Chart.fmx
-BI.FMX.Editor.Visualizer.fmx
-BI.FMX.GridForm.fmx
-BI.FMX.R.Console.fmx
-BI.FMX.Status.fmx
+object DataViewer: TDataViewer
+  Left = 0
+  Top = 0
+  Caption = 'Data Viewer'
+  ClientHeight = 675
+  ClientWidth = 959
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object LayoutTree: TLayout
+    Align = Left
+    PopupMenu = PopupMenu1
+    Position.Y = 43.000000000000000000
+    Size.Width = 281.000000000000000000
+    Size.Height = 632.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Tree: TTreeView
+      Align = Client
+      Size.Width = 281.000000000000000000
+      Size.Height = 632.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnChange = TreeChange
+      Viewport.Width = 277.000000000000000000
+      Viewport.Height = 628.000000000000000000
+    end
+  end
+  object Layout2: TLayout
+    Align = Client
+    Size.Width = 673.000000000000000000
+    Size.Height = 632.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object SplitData: TSplitter
+      Align = Top
+      Cursor = crVSplit
+      MinSize = 20.000000000000000000
+      Size.Width = 673.000000000000000000
+      Size.Height = 8.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object Splitter1: TSplitter
+    Align = Left
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Position.X = 281.000000000000000000
+    Position.Y = 43.000000000000000000
+    Size.Width = 5.000000000000000000
+    Size.Height = 632.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Layout3: TLayout
+    Align = Top
+    Size.Width = 959.000000000000000000
+    Size.Height = 43.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    object LName: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 16.000000000000000000
+      Size.Width = 120.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'LName'
+    end
+    object CBViewData: TCheckBox
+      Position.X = 288.000000000000000000
+      Position.Y = 15.000000000000000000
+      Size.Width = 81.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'View:'
+      OnChange = CBViewDataChange
+    end
+    object CBView: TComboBox
+      Items.Strings = (
+        'Data'
+        'Data Map')
+      ItemIndex = 0
+      Position.X = 376.000000000000000000
+      Position.Y = 13.000000000000000000
+      TabOrder = 1
+      OnChange = CBViewChange
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 136
+    Top = 168
+    object MenuItem1: TMenuItem
+      Text = 'View Data...'
+      OnClick = MenuItem1Click
+    end
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 480
+    Top = 176
+    object MenuItem2: TMenuItem
+      Text = 'Edit...'
+      OnClick = MenuItem2Click
+    end
+  end
+end

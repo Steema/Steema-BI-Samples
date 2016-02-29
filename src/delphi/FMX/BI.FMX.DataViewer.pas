@@ -17,9 +17,11 @@ uses
   {$ENDIF}
 
   FMX.Controls, FMX.Forms,
-  {$IF COMPILERVERSION>25}
+
+  {$IF CompilerVersion>25}
   FMX.Graphics,
   {$ENDIF}
+
   {$IFNDEF FMX2}
   FMX.Controls.Presentation,
   {$ENDIF}

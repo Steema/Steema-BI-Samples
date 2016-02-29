@@ -97,14 +97,14 @@ type
     procedure ImportingData(const Sender:TObject; const Percent:Single; var Cancel:Boolean);
     function ImportingError(const Sender:TObject; const Text:String):Boolean;
     procedure LogException(const Text:String);
-    function NodeWithData(const AData:TObject):TTreeNode;
+    function NodeWithData(const AData:TDataItem):TTreeNode;
     function SelectedText:String;
     procedure SetLastImport;
     procedure SetScheduling;
     procedure ShowDataInfo(SelectAtEditor:Boolean);
     procedure TryAdd(const Kind:TDataDefinitionKind);
 
-    constructor CreateStore(const AOwner: TComponent; const AStore: String);
+    constructor CreateStore(const AOwner: TComponent; const AStore: String='');
   public
     { Public declarations }
 
@@ -118,7 +118,10 @@ type
     function CurrentStore:String;
 
     class procedure Edit(const AOwner:TComponent; const AStore:String=''); static;
-    class function EmbedChoose(const AOwner:TComponent; const AParent:TWinControl; const AStore:String):TDataManager; static;
+    class function EmbedChoose(const AOwner:TComponent;
+                               const AParent:TWinControl;
+                               const AStore:String='';
+                               const ACurrent:TDataItem=nil):TDataManager; static;
 
     function SelectedDatas:TDataItem;
 

@@ -65,7 +65,7 @@ type
     class function DLLPath:String; static;
     function Finish:Boolean; override;
 
-    procedure AddVariable(const AName:String; const Index:TInt64Array;
+    procedure AddVariable(const AName:String; const Index:TNativeIntArray;
                           const ADatas:TDataArray; const UseMissing:Boolean=True); override;
 
     procedure GetVariable(const AName:String; const AData:TDataItem); override;

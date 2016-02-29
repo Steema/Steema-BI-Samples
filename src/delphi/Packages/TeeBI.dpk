@@ -1,12 +1,71 @@
-DclFmxTeeBI.dpk
-DclTeeBI.dpk
-FireDACTeeBI.dpk
-FMXChartProTeeBI.dpk
-FMXChartTeeBI.dpk
-FMXTeeBI.dpk
-SQLExprTeeBI.dpk
-TeeBI.dpk
-TeeBIAlgorithms.dpk
-VCLChartProTeeBI.dpk
-VCLChartTeeBI.dpk
-VCLTeeBI.dpk
+package TeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Tee BI Runtime'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  IndySystem,
+  IndyProtocols,
+  IndyCore,
+  dbrtl,
+  xmlrtl;
+
+contains
+  BI.Arrays in '..\BI.Arrays.pas',
+  BI.Compare in '..\BI.Compare.pas',
+  BI.DataSource in '..\BI.DataSource.pas',
+  BI.Expression in '..\BI.Expression.pas',
+  BI.Tree in '..\BI.Tree.pas',
+  BI.Data in '..\BI.Data.pas',
+  BI.Persist in '..\BI.Persist.pas',
+  BI.Schedule in '..\BI.Schedule.pas',
+  BI.Summary in '..\BI.Summary.pas',
+  BI.Streams in '..\BI.Streams.pas',
+  BI.Web in '..\BI.Web.pas',
+  BI.Dataset in '..\BI.Dataset.pas',
+  BI.Data.Search in '..\BI.Data.Search.pas',
+  BI.UI in '..\BI.UI.pas',
+  BI.UI.Colors in '..\BI.UI.Colors.pas',
+  BI.Data.DB in '..\BI.Data.DB.pas',
+  BI.Data.CSV in '..\BI.Data.CSV.pas',
+  BI.Data.Dataset in '..\BI.Data.Dataset.pas',
+  BI.Data.Html in '..\BI.Data.Html.pas',
+  BI.Data.JSON in '..\BI.Data.JSON.pas',
+  BI.Data.Excel in '..\BI.Data.Excel.pas',
+  BI.Data.SQL in '..\BI.Data.SQL.pas',
+  BI.Data.XML in '..\BI.Data.XML.pas',
+  BI.Data.JSON.Standard in '..\BI.Data.JSON.Standard.pas',
+  BI.Data.XML.MSXML in '..\BI.Data.XML.MSXML.pas',
+  BI.Data.Expressions in '..\BI.Data.Expressions.pas',
+  BI.Web.Indy in '..\BI.Web.Indy.pas',
+  BI.Web.Net in '..\BI.Web.Net.pas',
+  BI.Languages.English in '..\BI.Languages.English.pas';
+
+end.

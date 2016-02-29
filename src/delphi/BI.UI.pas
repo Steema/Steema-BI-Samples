@@ -52,10 +52,17 @@ type
     class function Encrypt(const Stream:TStream):TStream; overload; virtual;
   end;
 
-  // Returns a TDataItem with the Map values of a given AData
+  // Returns the list of distinct items in AData, optionally ordered by their
+  // frequency (count appearance on the AData array)
   TDataMapAsData=class
   public
-    class function FromData(const AData:TDataItem):TDataItem; static;
+  type
+    TDataMapOrder=(None,Item,Count);
+
+    class function FromData(const AData:TDataItem;
+                            const AddCounts:Boolean=True;
+                            const Order:TDataMapOrder=TDataMapOrder.Count;
+                            const Ascending:Boolean=False):TDataItem; static;
   end;
 
   // Colorizer used by TBIGrid (both VCL and FMX)
@@ -82,5 +89,27 @@ type
   end;
 
   TDataColorizers=Array of TDataColorizer;
+
+  TAlternateColor=class(TPersistent)
+  private
+    FColor : TColor;
+    FEnabled : Boolean;
+
+    procedure SetColor(const Value: TColor);
+    procedure SetEnabled(const Value: Boolean);
+  protected
+    FOnChange : TNotifyEvent;
+  public
+  const
+    DefaultColor=$F2F2F2;
+
+    Constructor Create;
+    procedure Assign(Source:TPersistent); override;
+  published
+    property Color:TColor read FColor write SetColor default DefaultColor;
+    property Enabled:Boolean read FEnabled write SetEnabled default False;
+
+    property OnChange:TNotifyEvent read FOnChange write FOnChange;
+  end;
 
 implementation

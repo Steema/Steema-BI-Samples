@@ -88,12 +88,15 @@ type
   private
     FActive : Boolean;
 
+    FDestData  : TDataItem;
+    KeepSource : Boolean;
     Source     : TExpression;
     SourceData : TDataItem;
-    KeepSource : Boolean;
 
     procedure LoadData(const Item:TExpression);
     procedure SetExpression(const Value:TExpression);
+  protected
+    procedure Assign(const ASource:TSummaryItem);
   public
     Destructor Destroy; override;
 
@@ -105,6 +108,7 @@ type
 
     property Active:Boolean read FActive write FActive default True;
     property Data:TDataItem read SourceData;
+    property DestData:TDataItem read FDestData;
     property Expression:TExpression read Source write SetExpression;
   end;
 
@@ -145,8 +149,6 @@ type
   public
     Aggregate : TAggregate;
     Calculation : TMeasureCalculation;
-
-    DestData : TDataItem;
     Missing : TMeasureMissing;
 
     function Clone:TMeasure;
@@ -171,7 +173,7 @@ type
     MinYear : Integer;
 
     function BinCount(const AData:TDataItem): Integer;
-    function BinIndex(const AData:TDataItem; const Index: TInteger; out ABin:TInteger):Boolean;
+    function BinIndex(const AData:TDataItem; const Index: TInteger; out ABin:TNativeInteger):Boolean;
     procedure FillGroupBy(const Source,Dest:TDataItem; const Repeated,MaxSteps:TInteger); overload; // 1D
     procedure FillGroupBy(const Source:TDataItem; const Items:TDataArray); overload; // 2D
   public
@@ -198,7 +200,7 @@ type
     IParent : TGroupBy;
 
     function CalcBinCount: Integer;
-    function BinIndex(Index:TInteger; out ABin:TInteger):Boolean;
+    function BinIndex(Index:TInteger; out ABin:TNativeInteger):Boolean;
     procedure DoFill;
     procedure DoFillParent;
     procedure FillDest(const ADest:TDataItem); // 2D
@@ -207,12 +209,12 @@ type
     function GetHistogram: THistogram;
     procedure Prepare(const AHops:TDataHops; const AData:TDataItem);
     procedure SetHistogram(const Value: THistogram);
+    procedure TryFreeData;
   protected
     RealLayout : TGroupByLayout;
 
     function HasHistogram:Boolean;
   public
-    Dest : TDataItem;
     DateOptions : TGroupByDate;
 
     Destructor Destroy; override;

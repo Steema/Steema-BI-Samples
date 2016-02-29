@@ -108,6 +108,7 @@ type
     procedure WriteFloat(const Value: Extended); inline;
     procedure WriteInteger(const Value: Integer); overload; inline;
     procedure WriteInteger(const Value: Int64); overload; inline;
+    procedure WriteInt64(const Value: Int64); inline;
     procedure WriteSingle(const Value: Single); inline;
     procedure WriteString(const Value: String);
 

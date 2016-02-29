@@ -73,6 +73,9 @@ type
     // Data to search
     Source : TDataItem;
 
+    // Indices to search (default is nil = all Source data)
+    Index : TCursorIndex;
+
     // Do search using a background thread
     procedure BackgroundFind(const AText:String);
 

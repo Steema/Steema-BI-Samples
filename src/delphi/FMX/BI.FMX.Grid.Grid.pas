@@ -19,6 +19,8 @@ type
   TBIFMXGrid=class
   private
     FBindingEditor: TBindListGridEditor;
+    FColumnSort : Boolean;
+
     FLastTitle : Integer;
 
     BindingList : TBindingsList;
@@ -40,6 +42,7 @@ type
 
     procedure CreateBindings;
     procedure DataChange(Sender: TObject; Field: TField);
+    procedure SetColumnSort(const Value: Boolean);
     procedure SetHeaderStyle(const AStyle:TFontStyles);
   protected
     BindSource : TBindSourceDB;
@@ -51,6 +54,8 @@ type
 
     property Grid:TGrid read IFMXGrid;
 
+  //published
+    property ColumnSort:Boolean read FColumnSort write SetColumnSort default True;
     property OnRowChanged:TNotifyEvent read FOnRowChanged write FOnRowChanged;
   end;
 
@@ -58,12 +63,14 @@ type
   private
     IGrid : TBIFMXGrid;
   protected
+    procedure ChangedAlternate(Sender:TObject); override;
     function GetDataSource: TDataSource; override;
     function GetTotals:Boolean; override;
     procedure SetDataSource(const Value: TDataSource); override;
     procedure SetTotals(const Value:Boolean); override;
   public
     Constructor Create(const AOwner:TComponent); override;
+    Destructor Destroy; override;
 
     procedure BindTo(const ADataSet:TDataSet); override;
     procedure Colorize(const AItems:TDataColorizers); override;

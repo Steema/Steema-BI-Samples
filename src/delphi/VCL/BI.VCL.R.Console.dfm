@@ -1,19 +1,83 @@
-BI.VCL.DataManager.dfm
-BI.VCL.Datas.dfm
-BI.VCL.DataViewer.dfm
-BI.VCL.Editor.ControlTree.dfm
-BI.VCL.Editor.Data.dfm
-BI.VCL.Editor.DataSelect.dfm
-BI.VCL.Editor.DataSet.dfm
-BI.VCL.Editor.Formats.dfm
-BI.VCL.Editor.Grid.dfm
-BI.VCL.Editor.Stores.dfm
-BI.VCL.Editor.Summary.dfm
-BI.VCL.Editor.Visualizer.Chart.dfm
-BI.VCL.Editor.Visualizer.dfm
-BI.VCL.FilterEditor.dfm
-BI.VCL.GridChart.dfm
-BI.VCL.GridForm.dfm
-BI.VCL.LinkDiagram.dfm
-BI.VCL.NewColumn.dfm
-BI.VCL.R.Console.dfm
+object BIRConsole: TBIRConsole
+  Left = 0
+  Top = 0
+  Caption = 'R Console'
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Memo: TMemo
+    Left = 0
+    Top = 41
+    Width = 635
+    Height = 223
+    Align = alClient
+    ScrollBars = ssBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 264
+    Width = 635
+    Height = 35
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 1
+    object EStatement: TEdit
+      Left = 0
+      Top = 0
+      Width = 536
+      Height = 35
+      Align = alClient
+      TabOrder = 0
+      OnChange = EStatementChange
+      OnKeyPress = EStatementKeyPress
+      ExplicitHeight = 21
+    end
+    object Panel2: TPanel
+      Left = 536
+      Top = 0
+      Width = 99
+      Height = 35
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 1
+      object BGo: TButton
+        Left = 16
+        Top = 4
+        Width = 75
+        Height = 25
+        Caption = '&Go'
+        Enabled = False
+        TabOrder = 0
+        OnClick = BGoClick
+      end
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 2
+    object Button1: TButton
+      Left = 8
+      Top = 10
+      Width = 75
+      Height = 25
+      Caption = '&Clear'
+      TabOrder = 0
+      OnClick = Button1Click
+    end
+  end
+end

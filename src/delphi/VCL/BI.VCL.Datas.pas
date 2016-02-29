@@ -3,7 +3,7 @@ unit BI.VCL.Datas;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, BI.Data;
 
 type
@@ -22,7 +22,8 @@ type
     FOnValidData : TValidData;
   public
     { Public declarations }
-    class function Insert(const AParent:TWinControl; const Data:TDataItem):TFormDatas;
+
+    class function Embedd(const AParent:TWinControl; const Data:TDataItem):TFormDatas;
 
     function SelectedItem:TDataItem;
     function SelectedData:TDataItem;

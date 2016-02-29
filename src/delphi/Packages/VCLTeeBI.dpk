@@ -1,12 +1,63 @@
-DclFmxTeeBI.dpk
-DclTeeBI.dpk
-FireDACTeeBI.dpk
-FMXChartProTeeBI.dpk
-FMXChartTeeBI.dpk
-FMXTeeBI.dpk
-SQLExprTeeBI.dpk
-TeeBI.dpk
-TeeBIAlgorithms.dpk
-VCLChartProTeeBI.dpk
-VCLChartTeeBI.dpk
-VCLTeeBI.dpk
+package VCLTeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'TeeBI VCL Runtime'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vcldb,
+  TeeBI,
+  FireDACTeeBI,
+  vclx,
+  vclimg;
+
+contains
+  BI.VCL.DataManager in '..\VCL\BI.VCL.DataManager.pas' {DataManager},
+  BI.VCL.FilterEditor in '..\VCL\BI.VCL.FilterEditor.pas' {DataFilterEditor},
+  BI.VCL.Grid in '..\VCL\BI.VCL.Grid.pas',
+  BI.VCL.GridForm in '..\VCL\BI.VCL.GridForm.pas' {BIGridForm},
+  BI.VCL.Datas in '..\VCL\BI.VCL.Datas.pas' {FormDatas},
+  BI.VCL.DataViewer in '..\VCL\BI.VCL.DataViewer.pas' {DataViewer},
+  BI.VCL.DataTree in '..\VCL\BI.VCL.DataTree.pas',
+  BI.VCL.Editor.Grid in '..\VCL\BI.VCL.Editor.Grid.pas' {BIGridEditor},
+  BI.VCL.Editor.Summary in '..\VCL\BI.VCL.Editor.Summary.pas' {SummaryEditor},
+  BI.VCL.Editor.DataSelect in '..\VCL\BI.VCL.Editor.DataSelect.pas' {DataSelectEditor},
+  BI.VCL.NewColumn in '..\VCL\BI.VCL.NewColumn.pas' {AddColumn},
+  BI.VCL.Editor.DataSet in '..\VCL\BI.VCL.Editor.DataSet.pas' {BIDataSetEditor},
+  BI.VCL.Editor.Data in '..\VCL\BI.VCL.Editor.Data.pas' {DataEditor},
+  BI.VCL.Editor.Formats in '..\VCL\BI.VCL.Editor.Formats.pas' {DataFormatEditor},
+  BI.VCL.Editor.Stores in '..\VCL\BI.VCL.Editor.Stores.pas' {StoreEditor},
+  BI.VCL.Grid.DBGrid in '..\VCL\BI.VCL.Grid.DBGrid.pas',
+  BI.VCL.Visualizer in '..\VCL\BI.VCL.Visualizer.pas',
+  BI.VCL.Editor.Visualizer in '..\VCL\BI.VCL.Editor.Visualizer.pas' {VisualizerEditor};
+
+end.
+

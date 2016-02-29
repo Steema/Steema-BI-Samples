@@ -1,12 +1,56 @@
-DclFmxTeeBI.dpk
-DclTeeBI.dpk
-FireDACTeeBI.dpk
-FMXChartProTeeBI.dpk
-FMXChartTeeBI.dpk
-FMXTeeBI.dpk
-SQLExprTeeBI.dpk
-TeeBI.dpk
-TeeBIAlgorithms.dpk
-VCLChartProTeeBI.dpk
-VCLChartTeeBI.dpk
-VCLTeeBI.dpk
+package FMXTeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE FMX}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Tee BI Firemonkey Runtime'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  dbrtl,
+  fmx,
+  bindengine,
+  bindcomp,
+  bindcompfmx,
+  FireDACTeeBI,
+  TeeBI;
+
+contains
+  BI.FMX.Grid in '..\FMX\BI.FMX.Grid.pas',
+  BI.FMX.GridForm in '..\FMX\BI.FMX.GridForm.pas' {BIGridForm},
+  BI.FMX.DataViewer in '..\FMX\BI.FMX.DataViewer.pas' {DataViewer},
+  BI.FMX.DataEditor in '..\FMX\BI.FMX.DataEditor.pas' {DataEditor},
+  BI.FMX.DataManager in '..\FMX\BI.FMX.DataManager.pas' {DataManager},
+  BI.FMX.Editor.Column in '..\FMX\BI.FMX.Editor.Column.pas' {ColumnEditor},
+  BI.FMX.Status in '..\FMX\BI.FMX.Status.pas' {StoreStatus},
+  BI.FMX.Editor.Stores in '..\FMX\BI.FMX.Editor.Stores.pas' {StoreEditor},
+  BI.FMX.Grid.Grid in '..\FMX\BI.FMX.Grid.Grid.pas',
+  BI.FMX.Visualizer in '..\FMX\BI.FMX.Visualizer.pas',
+  BI.FMX.Editor.Visualizer in '..\FMX\BI.FMX.Editor.Visualizer.pas' {VisualizerEditor};
+
+end.

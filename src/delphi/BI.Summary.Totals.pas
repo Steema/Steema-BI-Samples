@@ -23,6 +23,7 @@ type
     FSummary : TSummary;
   public
     Constructor Create(const ASummary:TSummary);
+    procedure Calculate(const AData:TDataItem);
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   end;
 

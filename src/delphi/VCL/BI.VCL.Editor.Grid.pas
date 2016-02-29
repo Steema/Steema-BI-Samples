@@ -38,9 +38,6 @@ type
     UDLineWidth: TUpDown;
     TabSheet3: TTabSheet;
     CBStyle: TComboBox;
-    GroupBox1: TGroupBox;
-    CBAltRows: TCheckBox;
-    BAltColor: TButton;
     CBBorder: TCheckBox;
     BBackColor: TButton;
     BTitleFont: TButton;
@@ -57,6 +54,15 @@ type
     CBColAlign: TComboBox;
     CBColExpanded: TCheckBox;
     Label1: TLabel;
+    TabMenu: TTabSheet;
+    CBMenu: TCheckBox;
+    GroupBox1: TGroupBox;
+    CBAltRows: TCheckBox;
+    BAltColor: TButton;
+    CBRowNumbers: TCheckBox;
+    CBSort: TCheckBox;
+    CBFilter: TCheckBox;
+    CBSearch: TCheckBox;
     procedure CBStyleChange(Sender: TObject);
     procedure CBAltRowsClick(Sender: TObject);
     procedure BAltColorClick(Sender: TObject);
@@ -81,9 +87,16 @@ type
     procedure CBColExpandedClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure CBRowNumbersClick(Sender: TObject);
+    procedure CBSortClick(Sender: TObject);
+    procedure CBMenuClick(Sender: TObject);
+    procedure CBFilterClick(Sender: TObject);
+    procedure CBSearchClick(Sender: TObject);
   private
     { Private declarations }
+
     Grid : TBIDBGrid;
+    BIGrid : TBIGrid;
 
     ISetting : Boolean;
 
@@ -97,9 +110,11 @@ type
   public
     { Public declarations }
 
-    class procedure Edit(const AOwner:TComponent; const AGrid:TBIDBGrid); static;
+    class procedure Edit(const AOwner:TComponent; const ABIGrid:TBIGrid); static;
+    class function Embedd(const AOwner:TComponent; const AParent:TWinControl; const AGrid:TBIGrid):TBIGridEditor; static;
+
     procedure FillColumns;
-    procedure Refresh(const AGrid:TBIDBGrid);
+    procedure Refresh(const AGrid:TBIDBGrid; const ABIGrid:TBIGrid);
   end;
 
 implementation

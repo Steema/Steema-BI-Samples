@@ -1,12 +1,52 @@
-DclFmxTeeBI.dpk
-DclTeeBI.dpk
-FireDACTeeBI.dpk
-FMXChartProTeeBI.dpk
-FMXChartTeeBI.dpk
-FMXTeeBI.dpk
-SQLExprTeeBI.dpk
-TeeBI.dpk
-TeeBIAlgorithms.dpk
-VCLChartProTeeBI.dpk
-VCLChartTeeBI.dpk
-VCLTeeBI.dpk
+package VCLChartProTeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE TEEPRO}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'VCL TeeChart for TeeBI'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  VCLTeeBI,
+  TeePro923,
+  TeeUI923,
+  Tee923,
+  TeeGL923,
+  TeeWorld923,
+  TeeImage923,
+  TeeLanguage923,
+  TeeTree2D23Tee9;
+
+contains
+  BI.VCL.PDF in '..\VCL\BI.VCL.PDF.pas',
+  BI.VCL.LinkDiagram in '..\VCL\BI.VCL.LinkDiagram.pas' {DataDiagram},
+  BI.VCL.Visualizer.Chart in '..\VCL\BI.VCL.Visualizer.Chart.pas',
+  BI.VCL.Editor.Visualizer.Chart in '..\VCL\BI.VCL.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
+  BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas';
+
+end.

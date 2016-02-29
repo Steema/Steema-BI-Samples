@@ -1,10 +1,331 @@
-BI.FMX.DataEditor.fmx
-BI.FMX.DataManager.fmx
-BI.FMX.DataViewer.fmx
-BI.FMX.Editor.Column.fmx
-BI.FMX.Editor.Stores.fmx
-BI.FMX.Editor.Visualizer.Chart.fmx
-BI.FMX.Editor.Visualizer.fmx
-BI.FMX.GridForm.fmx
-BI.FMX.R.Console.fmx
-BI.FMX.Status.fmx
+object VisualizerEditor: TVisualizerEditor
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 535
+  ClientWidth = 315
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object TabControl1: TTabControl
+    Align = Client
+    Size.Width = 315.000000000000000000
+    Size.Height = 535.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = PlatformDefault
+    object TabGroups: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 58.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Groups'
+      ExplicitSize.cx = 58.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object Layout1: TLayout
+        Align = Top
+        Size.Width = 315.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object Button1: TButton
+          Position.X = 16.000000000000000000
+          Position.Y = 16.000000000000000000
+          TabOrder = 0
+          Text = 'Best Order'
+          OnClick = Button1Click
+        end
+        object Layout2: TLayout
+          Align = Right
+          Position.X = 237.000000000000000000
+          Size.Width = 78.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          object SBUpGroup: TSpeedButton
+            Enabled = False
+            Position.X = 8.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'arrowuptoolbutton'
+            OnClick = SBUpGroupClick
+          end
+          object SBDownGroup: TSpeedButton
+            Enabled = False
+            Position.X = 40.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'arrowdowntoolbutton'
+            OnClick = SBDownGroupClick
+          end
+        end
+      end
+      object LBGroups: TListBox
+        Align = Top
+        Position.Y = 50.000000000000000000
+        Size.Width = 315.000000000000000000
+        Size.Height = 135.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        ShowCheckboxes = True
+        OnChange = LBGroupsChange
+        OnChangeCheck = LBGroupsChangeCheck
+        Viewport.Width = 311.000000000000000000
+        Viewport.Height = 131.000000000000000000
+      end
+      object PageSettings: TTabControl
+        Align = Client
+        Size.Width = 315.000000000000000000
+        Size.Height = 229.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 2
+        TabPosition = PlatformDefault
+        object TabCombo: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 59.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Combo'
+          ExplicitSize.cx = 59.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object Label2: TLabel
+            Position.X = 8.000000000000000000
+            Position.Y = 12.000000000000000000
+            Text = 'Align:'
+          end
+          object CBComboAlign: TComboBox
+            Items.Strings = (
+              'Top'
+              'Bottom')
+            ItemIndex = 0
+            Position.X = 8.000000000000000000
+            Position.Y = 32.000000000000000000
+            TabOrder = 1
+            OnChange = CBComboAlignChange
+          end
+        end
+        object TabMulti: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 47.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Multi'
+          ExplicitSize.cx = 47.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object Label3: TLabel
+            Position.X = 8.000000000000000000
+            Position.Y = 11.000000000000000000
+            Text = 'Scroll:'
+          end
+          object CBMultiScroll: TComboBox
+            Items.Strings = (
+              'Automatic'
+              'Yes'
+              'No')
+            ItemIndex = 0
+            Position.X = 8.000000000000000000
+            Position.Y = 32.000000000000000000
+            Size.Width = 129.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            OnChange = CBMultiScrollChange
+          end
+          object Label4: TLabel
+            Position.X = 8.000000000000000000
+            Position.Y = 64.000000000000000000
+            Text = 'Columns:'
+          end
+          object UDColumns: TSpinBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 3
+            Cursor = crIBeam
+            DecimalDigits = 0
+            Min = 1.000000000000000000
+            Max = 12.000000000000000000
+            Value = 1.000000000000000000
+            Position.X = 8.000000000000000000
+            Position.Y = 88.000000000000000000
+            OnChange = UDColumnsChangeTracking
+            OnChangeTracking = UDColumnsChangeTracking
+          end
+        end
+        object TabList: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 38.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'List'
+          ExplicitSize.cx = 38.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object Label5: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 20.000000000000000000
+            Text = 'Align:'
+          end
+          object CBListAlign: TComboBox
+            Items.Strings = (
+              'Left'
+              'Right')
+            ItemIndex = 0
+            Position.X = 16.000000000000000000
+            Position.Y = 40.000000000000000000
+            TabOrder = 1
+            OnChange = CBListAlignChange
+          end
+        end
+      end
+      object Layout5: TLayout
+        Align = Top
+        Position.Y = 185.000000000000000000
+        Size.Width = 315.000000000000000000
+        Size.Height = 95.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        object LClass: TLabel
+          Position.X = 8.000000000000000000
+          Position.Y = 11.000000000000000000
+          Size.Width = 81.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Group Class:'
+        end
+        object CBClass: TComboBox
+          Position.X = 104.000000000000000000
+          Position.Y = 8.000000000000000000
+          Size.Width = 121.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          OnChange = CBClassChange
+        end
+        object LCurrent: TLabel
+          Position.X = 104.000000000000000000
+          Position.Y = 34.000000000000000000
+        end
+        object LCurrentHeader: TLabel
+          Position.X = 8.000000000000000000
+          Position.Y = 34.000000000000000000
+          Size.Width = 57.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Current:'
+        end
+        object Label1: TLabel
+          Position.X = 8.000000000000000000
+          Position.Y = 58.000000000000000000
+          Size.Width = 81.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Group By:'
+        end
+        object CBGroupBy: TComboBox
+          Position.X = 104.000000000000000000
+          Position.Y = 56.000000000000000000
+          Size.Width = 121.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+        end
+      end
+    end
+    object TabValues: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 54.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Values'
+      ExplicitSize.cx = 54.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object Layout3: TLayout
+        Align = Top
+        Size.Width = 50.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object Layout4: TLayout
+          Align = Right
+          Position.X = -28.000000000000000000
+          Size.Width = 78.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          object SBUpValue: TSpeedButton
+            Enabled = False
+            Position.X = 8.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'arrowuptoolbutton'
+            OnClick = SBUpValueClick
+          end
+          object SBDownValue: TSpeedButton
+            Enabled = False
+            Position.X = 40.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 28.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'arrowdowntoolbutton'
+            OnClick = SBDownValueClick
+          end
+        end
+      end
+      object LBValues: TListBox
+        Align = Top
+        Position.Y = 50.000000000000000000
+        Size.Width = 50.000000000000000000
+        Size.Height = 135.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        ShowCheckboxes = True
+        OnChange = LBValuesChange
+        OnChangeCheck = LBValuesChangeCheck
+        Viewport.Width = 46.000000000000000000
+        Viewport.Height = 131.000000000000000000
+      end
+    end
+  end
+end

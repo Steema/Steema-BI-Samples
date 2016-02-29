@@ -28,14 +28,11 @@ uses
 type
   EBIException=class(Exception);
 
-  TInteger=Int64;  // Alternative: Integer (32bit)
-  TFloat=Double;   // Default float type: 8 bytes
+  // 32bit or 64bit
+  TInteger=NativeInt;
+  TLoopInteger=TInteger;
 
-  {$IF Declared(CompilerVersion)}
-  TLoopInteger={$IF COMPILERVERSION>28}TInteger{$ELSE}Integer{$ENDIF};
-  {$ELSE}
-  TLoopInteger=Integer;
-  {$ENDIF}
+  TFloat=Double;  // Default float type: 8 bytes
 
   TBooleanArray=Array of Boolean;
   TTextArray=Array of String;
@@ -43,6 +40,15 @@ type
 
   TInt32Array=Array of Integer;
   TInt64Array=Array of Int64;
+
+  {$IFDEF CPUX64}
+  TNativeIntArray=TInt64Array;
+  TNativeInteger=Int64;
+  {$ELSE}
+  TNativeIntArray=TInt32Array;
+  TNativeInteger=Integer;
+  {$ENDIF}
+
   TSingleArray=Array of Single;
   TDoubleArray=Array of Double;
 
@@ -59,16 +65,20 @@ type
   end;
 
   TDataMap=class
+  protected
+    CachedCount : TInteger; // internal, used only when reading maps from streams
+    FSorted : TDataOrder;
   public
     Map : TInt64Array;
-    Sorted : TDataOrder;
-
-    CachedCount : TInteger;
 
     function AsString(const Index:TInteger):String; virtual; abstract;
     procedure Clear; virtual;
     function Count:TInteger; inline;
+
+    property Sorted:TDataOrder read FSorted;
   end;
+
+  TDataMapClass=class of TDataMap;
 
   TInt32Map=class(TDataMap)
   private
@@ -79,7 +89,7 @@ type
     procedure AddMap(const Value:Integer);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:Integer; out Index: TInteger):Boolean;
+    function Find(const Value:Integer; out Index: TNativeInteger):Boolean;
 
     property Item[const Index:TInteger]:Integer read GetItem; default;
   end;
@@ -93,7 +103,7 @@ type
     procedure AddMap(const Value:Int64);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:Int64; out Index: TInteger):Boolean;
+    function Find(const Value:Int64; out Index: TNativeInteger):Boolean;
 
     property Item[const Index:TInteger]:Int64 read GetItem; default;
   end;
@@ -107,7 +117,7 @@ type
     procedure AddMap(const Value:Single);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:Single; out Index: TInteger):Boolean;
+    function Find(const Value:Single; out Index: TNativeInteger):Boolean;
 
     property Item[const Index:TInteger]:Single read GetItem; default;
   end;
@@ -121,7 +131,7 @@ type
     procedure AddMap(const Value:Double);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:Double; out Index: TInteger):Boolean;
+    function Find(const Value:Double; out Index: TNativeInteger):Boolean;
 
     property Item[const Index:TInteger]:Double read GetItem; default;
   end;
@@ -136,7 +146,7 @@ type
     procedure AddMap(const Value:Extended);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:Extended; out Index: TInteger):Boolean;
+    function Find(const Value:Extended; out Index: TNativeInteger):Boolean;
 
     property Item[const Index:TInteger]:Extended read GetItem; default;
   end;
@@ -153,26 +163,28 @@ type
     procedure AddMap(const Value:TDateTime);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:TDateTime; out Index: TInteger):Boolean;
+    function Find(const Value:TDateTime; out Index: TNativeInteger):Boolean;
 
     property Item[const Index:TInteger]:TDateTime read GetItem; default;
   end;
 
   TTextMap=class(TDataMap)
   private
+    FIgnoreCase : Boolean;
+
     type
       TCompareProc=function(const S1, S2: string): Integer;
 
     function GetItem(const Index:TInteger):String; inline;
   public
     Items : TTextArray;
-    IgnoreCase : Boolean;
 
     procedure AddMap(const Value:String);
     function AsString(const Index:TInteger):String; override;
     procedure Clear; override;
-    function Find(const Value:String; out Index: TInteger):Boolean;
+    function Find(const Value:String; out Index: TNativeInteger):Boolean;
 
+    property IgnoreCase:Boolean read FIgnoreCase;
     property Item[const Index:TInteger]:String read GetItem; default;
   end;
 
@@ -183,53 +195,55 @@ type
 
   TDataStats=class
   public
-    Mean,
-    Peakedness, // Kurtosis, L-Moment
-    Range,
-    Skewness,
-    StdDeviation,
-    Sum,
+    Mean : TFloat;
+    Peakedness : TFloat; // Kurtosis, L-Moment
+    Range : TFloat;
+    Skewness : TFloat;
+    StdDeviation : TFloat;
+    Sum : TFloat;
     Variance : TFloat;
   end;
 
+  TDataStatsClass=class of TDataStats;
+
   TInt32Stats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : Integer;
+    Max : Integer;
+    Median : Integer;
     Mode : Integer;
   end;
 
   TInt64Stats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : Int64;
+    Max : Int64;
+    Median : Int64;
     Mode : Int64;
   end;
 
   TSingleStats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : Single;
+    Max : Single;
+    Median : Single;
     Mode : Single;
   end;
 
   TDoubleStats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : Double;
+    Max : Double;
+    Median : Double;
     Mode : Double;
   end;
 
   {$IFDEF CPUX86}
   TExtendedStats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : Extended;
+    Max : Extended;
+    Median : Extended;
     Mode : Extended;
   end;
   {$ELSE}
@@ -238,25 +252,25 @@ type
 
   TDateTimeStats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : TDateTime;
+    Max : TDateTime;
+    Median : TDateTime;
     Mode : TDateTime;
   end;
 
   TBooleanStats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : Boolean;
+    Max : Boolean;
+    Median : Boolean;
     Mode : Boolean;
   end;
 
   TTextStats=class(TDataStats)
   public
-    Min,
-    Max,
-    Median,
+    Min : String;
+    Max : String;
+    Median : String;
     Mode : String;
   end;
 
@@ -273,6 +287,7 @@ type
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
+    procedure Insert(const Index:TInteger; const Value:Boolean);
     function Map(const Missing:TBooleanArray):TBooleanMap;
     procedure Resize(const Count:TInteger); inline;
     procedure Sort(const Ascending:Boolean=True); overload; inline;
@@ -295,6 +310,7 @@ type
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:String):TInteger;
+    procedure Insert(const Index:TInteger; const Value:String);
     function Map(const Missing:TBooleanArray; const IgnoreCase:Boolean=False):TTextMap;
     function MaxLength:Integer;
     procedure Resize(const Count:TInteger); inline;
