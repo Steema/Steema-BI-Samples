@@ -23,6 +23,10 @@ object DataFormatEditor: TDataFormatEditor
     TabOrder = 0
     object TabCSV: TTabSheet
       Caption = 'CSV'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 16
         Top = 16
@@ -150,6 +154,10 @@ object DataFormatEditor: TDataFormatEditor
     object TabZip: TTabSheet
       Caption = 'Zip'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label6: TLabel
         Left = 16
         Top = 21
@@ -171,6 +179,10 @@ object DataFormatEditor: TDataFormatEditor
     object TabExcel: TTabSheet
       Caption = 'Excel'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label7: TLabel
         Left = 10
         Top = 16

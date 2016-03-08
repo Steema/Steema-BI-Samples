@@ -309,7 +309,8 @@ type
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
-    function IndexOf(const Value:String):TInteger;
+    function IndexOf(const Value:String):TInteger; overload; inline;
+    function IndexOf(const Value:String; const CaseSentitive:Boolean):TInteger; overload;
     procedure Insert(const Index:TInteger; const Value:String);
     function Map(const Missing:TBooleanArray; const IgnoreCase:Boolean=False):TTextMap;
     function MaxLength:Integer;

@@ -186,7 +186,7 @@ type
   // Defines the data (item or expression) used to create groups
   TGroupBy=class(TSummaryItem)
   private
-    Data : TDataItem;
+    FData : TDataItem;
     IsDataItem : Boolean; // optimization
 
     FHistogram : THistogram;

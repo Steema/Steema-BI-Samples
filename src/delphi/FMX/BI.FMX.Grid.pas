@@ -90,8 +90,16 @@ type
   end;
 
   // Helper methods for Firemonkey:
-  TFMXCommon=record
+  TUICommon=record
   public
+    const
+      AlignNone=TAlignLayout.{$IFDEF HASFMX20}alNone{$ELSE}None{$ENDIF};
+      AlignClient=TAlignLayout.{$IFDEF HASFMX20}alClient{$ELSE}Client{$ENDIF};
+      AlignLeft=TAlignLayout.{$IFDEF HASFMX20}alLeft{$ELSE}Left{$ENDIF};
+      AlignTop=TAlignLayout.{$IFDEF HASFMX20}alTop{$ELSE}Top{$ENDIF};
+      AlignRight=TAlignLayout.{$IFDEF HASFMX20}alRight{$ELSE}Right{$ENDIF};
+      AlignBottom=TAlignLayout.{$IFDEF HASFMX20}alBottom{$ELSE}Bottom{$ENDIF};
+
     class procedure AddForm(const AForm: TCommonCustomForm; const AParent: TFmxObject); static;
     class function Ask(const ATitle,ACaption:String; var AValue:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCommonCustomForm; const Key:String); static;

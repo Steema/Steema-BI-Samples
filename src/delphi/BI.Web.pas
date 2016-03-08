@@ -56,7 +56,6 @@ type
   protected
     function GetDataStream(const Data:String; const Children:Boolean; const Compress:TWebCompression): TStream;
 
-    property Http:TBIHttp read GetHttp;
   public
   const
     DefaultPort=15015;
@@ -93,8 +92,10 @@ type
 
     class function Query(const AStore,AData,ASQL:String):TDataItem; static;
 
-    function UnZip(const AStream:TStream):TStream;
+    class function UnZip(const AStream:TStream):TStream; static;
     function URL:String;
+
+    property Http:TBIHttp read GetHttp;
   end;
 
   TBIWebServer=class

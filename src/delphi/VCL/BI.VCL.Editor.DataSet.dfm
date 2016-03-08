@@ -98,6 +98,7 @@ object BIDataSetEditor: TBIDataSetEditor
     TabOrder = 2
   end
   object Backup: TBIDataset
+    RowNumbers = False
     Left = 256
     Top = 152
   end

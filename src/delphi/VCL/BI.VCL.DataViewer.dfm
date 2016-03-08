@@ -116,6 +116,7 @@ object DataViewer: TDataViewer
       Align = alClient
       UseDockManager = False
       ParentBackground = False
+      ParentColor = False
       TabOrder = 0
       DataSource = DataSource2
     end
@@ -143,6 +144,7 @@ object DataViewer: TDataViewer
           Align = alClient
           UseDockManager = False
           ParentBackground = False
+          ParentColor = False
           TabOrder = 0
           ShowItems = True
         end

@@ -109,6 +109,8 @@ type
     function FromExpression(const AName: String; const AExpression: TExpression): TDataItem; overload;
     function FromExpression(const AName:String; const AExpression:String; const Error:TErrorProc=nil):TDataItem; overload;
 
+    function IndexOf(const AName:String):Integer;
+
     function New(const AName:String; const AKind:TDataKind; const Tag:TObject=nil):TDataItem;
     procedure Resize(const Size:TInteger);
     function Select(const Indices:Array of Integer):TDataArray; overload;
@@ -474,13 +476,23 @@ type
   end;
 
   TDataExpression=class
+  public
+    type
+      TResolver=reference to function(const AData:TDataItem;
+                                      const AExpression: String;
+                                      const Error:TErrorProc=nil): TExpression;
+
+  private
+    class var
+      FResolver : TResolver;
   protected
     class function Resolve(const AData:TDataItem; const AText:String;
                            const Error:TErrorProc):TExpression; virtual;
   public
-    //class function FromString(const AData:TDataItem; const AExpression: String): TExpression; overload;
     class function FromString(const AData:TDataItem; const AExpression: String; const Error:TErrorProc=nil): TExpression;
     class function KindOf(const Expression:TExpression):TDataKind; static;
+
+    class property Resolver:TResolver read FResolver write FResolver;
   end;
 
   TDataFilter=record

@@ -227,12 +227,20 @@ type
     property OnDataChange:TNotifyEvent read FOnDataChange write FOnDataChange;
   end;
 
-  // See global TVCLCommon.Diagram property
+  // See global TUICommon.Diagram property
   TDiagramEvent=procedure(const AOwner:TComponent; const AData:TDataItem);
 
   // Helper methods for VCL:
-  TVCLCommon=record
+  TUICommon=record
   public
+    const
+      AlignNone=TAlign.alNone;
+      AlignClient=TAlign.alClient;
+      AlignLeft=TAlign.alLeft;
+      AlignTop=TAlign.alTop;
+      AlignRight=TAlign.alRight;
+      AlignBottom=TAlign.alBottom;
+
     // This event is initialized by BI.VCL.LinkDiagram unit (when used).
     class var Diagram : TDiagramEvent;
 

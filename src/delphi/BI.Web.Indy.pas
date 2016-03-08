@@ -33,6 +33,8 @@ type
     procedure Get(const AURL:String; const AStream:TStream); overload; override;
     function Get(const AURL:String):String; overload; override;
     procedure SetProxy(const AProxy:TWebProxy); override;
+
+    property Http:TIdHTTP read FHttp;
   end;
 
 implementation

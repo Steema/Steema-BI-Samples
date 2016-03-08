@@ -15,6 +15,8 @@ uses
 type
   ESQLParser=class(EBIException);
 
+  // Converts an SQL string to its equivalent query (TDataSelect) or
+  // summary (TSummary) object instance
   TSQLParser=class
   private
     FData : TDataItem;
@@ -47,6 +49,8 @@ type
     class function StringToData(const AData:TDataItem; const S:String; const ErrorProc:TBIErrorProc=nil):TDataItem; static;
   end;
 
+  // Converts a query (TDataSelect) or summary (TSummary) object instance into
+  // its equivalent SQL string
   TBISQL=record
   private
     class function FilterOf(const AFilter:TExpression; const AWhereCount:Integer):String; static;

@@ -26,6 +26,10 @@ object BIGridEditor: TBIGridEditor
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Columns'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Tree: TTreeView
         Left = 16
         Top = 16
@@ -108,6 +112,10 @@ object BIGridEditor: TBIGridEditor
     object TabSheet2: TTabSheet
       Caption = 'Options'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object CBOptions: TCheckListBox
         Left = 6
         Top = 7
@@ -230,6 +238,10 @@ object BIGridEditor: TBIGridEditor
     object TabSheet3: TTabSheet
       Caption = 'Style'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object CBStyle: TComboBox
         Left = 8
         Top = 11
@@ -285,6 +297,10 @@ object BIGridEditor: TBIGridEditor
     object TabMenu: TTabSheet
       Caption = 'Menu'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object CBMenu: TCheckBox
         Left = 16
         Top = 16

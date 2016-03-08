@@ -56,6 +56,7 @@ object BIGridForm: TBIGridForm
     Align = alClient
     UseDockManager = False
     ParentBackground = False
+    ParentColor = False
     TabOrder = 1
     DataSource = DataSource1
   end
@@ -66,6 +67,7 @@ object BIGridForm: TBIGridForm
     Top = 264
   end
   object BIDataset1: TBIDataset
+    RowNumbers = False
     Left = 304
     Top = 264
   end

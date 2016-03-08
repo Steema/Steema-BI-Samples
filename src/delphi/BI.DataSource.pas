@@ -262,6 +262,7 @@ type
     // Windows = 1,  Mobile = 0
     class var FirstStringChar : Integer;
 
+    class procedure ChangeToText(const Col:TDataItem; const Index,Total:TInteger); static;
     function DoImportFile(const FileName:String):TDataArray; override;
     function GuessKind(const Value:String):TDataKind;
     function InternalImportFile(const FileName:String):TDataArray; virtual;

@@ -111,6 +111,7 @@ object DataDiagram: TDataDiagram
       Align = alClient
       UseDockManager = False
       ParentBackground = False
+      ParentColor = False
       TabOrder = 0
       DataSource = DataSource1
     end
@@ -121,6 +122,7 @@ object DataDiagram: TDataDiagram
     Top = 176
   end
   object BIDataset1: TBIDataset
+    RowNumbers = False
     Left = 592
     Top = 240
   end
