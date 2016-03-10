@@ -3,6 +3,8 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
+[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 9, Feb-29th 2016)
+ 
 ### What is TeeBI ?
 
 A simple class to implement in-memory database complex structures to provide:
@@ -34,8 +36,6 @@ A simple class to implement in-memory database complex structures to provide:
   *  Lazarus / FreePascal
   
 ### Getting started
-
-- [Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 9, Feb-29th 2016)
 
 - [Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 9)
 
