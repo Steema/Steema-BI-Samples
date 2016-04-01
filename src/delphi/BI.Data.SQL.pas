@@ -15,7 +15,8 @@ uses
 type
   ESQLParser=class(EBIException);
 
-  TGetDataProc=reference to procedure(const AName:String; out AData:TDataItem);
+  TGetDataProc={$IFNDEF FPC}reference to{$ENDIF}
+               procedure(const AName:String; out AData:TDataItem);
 
   // Converts an SQL string to its equivalent query (TDataSelect) or
   // summary (TSummary) object instance

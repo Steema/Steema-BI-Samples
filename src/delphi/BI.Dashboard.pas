@@ -9,14 +9,18 @@ unit BI.Dashboard;
 interface
 
 uses
-  System.UITypes, System.Classes, System.Generics.Collections,
+  System.Classes,
+
+  {$IFDEF FPC}
+  BI.FPC, FGL,
+  {$ELSE}
+  System.UITypes,
+  System.Generics.Collections,
+  {$ENDIF}
+
   BI.Data, BI.Arrays, BI.UI, BI.Expression, BI.DataSource;
 
 type
-  TBITemplate=class;
-
-  TRenderClass=class of TRender;
-
   TChangeListener=class;
 
   TChangeEvent=procedure(const Sender:TChangeListener; const AValue:String) of object;
@@ -33,7 +37,7 @@ type
     property Name:String read FName;
   end;
 
-  TListeners=class(TList<TChangeListener>)
+  TListeners={$IFDEF FPC}class(TFPGList<TChangeListener>){$ELSE}class(TList<TChangeListener>){$ENDIF}
   private
     procedure Add(const AName:String; const AIndex:Integer; const AOnChange:TChangeEvent);
   public
@@ -53,11 +57,13 @@ type
 
   TVariableArray=Array of TVariable;
 
-  TVariables=class(TList<TVariable>)
+  TVariables={$IFDEF FPC}class(TFPGList<TVariable>){$ELSE}class(TList<TVariable>){$ENDIF}
   protected
     IMain : TDataItem;
 
+    {$IFNDEF FPC}
     procedure Notify(const Item: TVariable; Action: TCollectionNotification); override;
+    {$ENDIF}
   public
     procedure Add(const AName:String; const AValue:TExpression);
     procedure AddListener(const AName:String; const AIndex:Integer; const AOnChange:TChangeEvent);
@@ -66,6 +72,8 @@ type
     function IndexOf(const AName:String):Integer;
     procedure TryAdd(const AName:String);
   end;
+
+  TBITemplate=class;
 
   TBaseItem=class(TComponent)
   private
@@ -177,7 +185,7 @@ type
     property Width : String read FWidth write FWidth;
   end;
 
-  TDashboardItems=class(TList<TDashboardItem>)
+  TDashboardItems={$IFDEF FPC}class(TFPGList<TDashboardItem>){$ELSE}class(TList<TDashboardItem>){$ENDIF}
   public
     procedure Add(const APanel:TBIPanel); overload;
   end;
@@ -201,7 +209,7 @@ type
     function IsHorizontal:Boolean;
   end;
 
-  TLayouts=class(TList<TLayoutItem>)
+  TLayouts={$IFDEF FPC}class(TFPGList<TLayoutItem>){$ELSE}class(TList<TLayoutItem>){$ENDIF}
   private
     procedure ImportFrom(const AVisual:TBITemplate; const AData:TDataItem);
   public
@@ -266,12 +274,14 @@ type
     procedure Finish; virtual;
   end;
 
-  TPanels=class(TList<TBIPanel>)
+  TRenderClass=class of TRender;
+
+  TPanels={$IFDEF FPC}class(TFPGList<TBIPanel>){$ELSE}class(TList<TBIPanel>){$ENDIF}
   public
     function IndexOf(const AName:String):Integer;
   end;
 
-  TDashboards=class(TList<TDashboard>)
+  TDashboards={$IFDEF FPC}class(TFPGList<TDashboard>){$ELSE}class(TList<TDashboard>){$ENDIF}
   public
     function IndexOf(const AName:String):Integer;
   end;
@@ -326,7 +336,6 @@ type
 
     function CreateDashboard(const AList:TDataItem;
                              const AIndex:Integer):TDashboard;
-
     function CreatePanel(const AList:TDataItem;
                          const AIndex:Integer):TBIPanel;
 

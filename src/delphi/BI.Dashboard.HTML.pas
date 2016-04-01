@@ -8,13 +8,25 @@ unit BI.Dashboard.HTML;
 
 interface
 
+{$IFNDEF FPC}
+{$DEFINE HASTEECHART}
+{$ENDIF}
+
 uses
-  System.Classes, System.Generics.Collections,
+  System.Classes,
+
+  {$IFNDEF FPC}
+  System.Generics.Collections,
+  {$ENDIF}
+
+  {$IFDEF HASTEECHART}
   {$IFDEF FMX}
   FMXTee.Constants, FMXTee.Engine,
   {$ELSE}
   VCLTee.TeeConst, VCLTee.TeEngine,
   {$ENDIF}
+  {$ENDIF}
+
   BI.Dashboard;
 
 {$IF (TeeVCLBuildVersionInteger >= 160309)}

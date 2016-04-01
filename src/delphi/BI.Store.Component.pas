@@ -20,7 +20,7 @@ type
     class function IsRemote:Boolean; override;
     function Load(const AName:String):TDataItem; override;
 
-    class function Supports(const Kind:TDataDefinitionKind):Boolean; override;
+    class function Supports(const Kind:TDataDefinitionKind; const ADefinition:TDataDefinition=nil):Boolean; override;
   end;
 
 implementation

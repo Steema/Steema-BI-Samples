@@ -89,6 +89,10 @@ type
     property Data:TDataItem read GetBIData write SetBIData;
   end;
 
+  {$IF CompilerVersion<26} // Cannot use FireMonkeyVersion<21 (or 21_0)
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
   // Helper methods for Firemonkey:
   TUICommon=record
   public

@@ -426,6 +426,7 @@ type
     property Visualizer:TBIComposer read FVisualizer;
   end;
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64
               {$IFDEF FMX}
@@ -435,6 +436,7 @@ type
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               {$ENDIF}
               )]
+  {$ENDIF}
   {$ENDIF}
   TBIComposer=class(TWinControl)
   private

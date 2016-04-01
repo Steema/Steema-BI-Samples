@@ -479,7 +479,7 @@ type
   TDataExpression=class
   public
     type
-      TResolver=reference to function(const AData:TDataItem;
+      TResolver={$IFNDEF FPC}reference to{$ENDIF} function(const AData:TDataItem;
                                       const AExpression: String;
                                       const Error:TErrorProc=nil): TExpression;
 

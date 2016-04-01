@@ -9,8 +9,13 @@ unit BI.Data.Html;
 interface
 
 uses
-  System.Classes, System.Types, System.UITypes, Data.DB,
-  BI.Data, BI.DataSource, BI.Arrays, BI.UI;
+  System.Classes, System.Types,
+  {$IFDEF FPC}
+  Graphics,
+  {$ELSE}
+  System.UITypes,
+  {$ENDIF}
+  Data.DB, BI.Data, BI.DataSource, BI.Arrays, BI.UI;
 
 type
   TBIHTML=class(TBITextSource)

@@ -12,7 +12,16 @@ interface
 uses
   System.Classes, System.UITypes,
   {$IFDEF FMX}
-  FMX.Controls, FMX.Layouts, FMX.ExtCtrls, FMX.TabControl, FMX.Graphics,
+  FMX.Controls, FMX.Layouts, FMX.ExtCtrls, FMX.TabControl,
+
+  {$IF CompilerVersion<26} // Cannot use FireMonkeyVersion<21 (or 21_0)
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics,
+  {$ENDIF}
+
   FMX.StdCtrls, FMX.Types, FMX.Objects,
   {$ELSE}
   VCL.Controls, VCL.StdCtrls, VCL.ExtCtrls, VCL.Graphics, VCL.ComCtrls,
@@ -28,6 +37,7 @@ type
   TAlign=TAlignLayout;
   TTabSheet=TTabItem;
   TGraphic=TBitmap;
+  TControlClass=class of TWinControl;
   {$ENDIF}
 
   TBIVisual=class;
