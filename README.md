@@ -24,7 +24,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids and more)
 
-- Interactive Dashboards rendered to screen (desktop and mobile) and HTML Web pages
+- Interactive [Dashboards](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Dashboard_VCL.png) rendered to screen (desktop and mobile) and HTML Web pages
 
 - Data [export](https://github.com/Steema/BI/wiki/exporting) (csv,pdf,html,xml,excel,json), comparisons and manipulations
 
