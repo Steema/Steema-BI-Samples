@@ -2,4 +2,4 @@
 
 This example project (made with Firemonkey), shows several test cases of TExpression capabilities.
 
-![TExpression Test Demo](https://github.com/Steema/BI/docs/img/TeeBI_TExpression_Tests.png)
+![TExpression Test Demo](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_TExpression_Tests.png)
