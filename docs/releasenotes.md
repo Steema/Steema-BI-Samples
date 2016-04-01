@@ -15,7 +15,7 @@
   
   Templates contain named definitions of data (queries, summaries, custom data, external files, etc) and then panels can optionally use these data and specify the render style (grid, chart, listbox, text, etc) for each panel independently.
   
-  Templates can also contain "layout" definitions. Layouts can be organized nesting predefined layouts to create complex visualizations.
+  Templates can also contain "layout" definitions. Layouts can be organized [nesting predefined layouts](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Nested_Dashboard_Layouts.png) to create complex visualizations.
   
   Finally, templates define "dashboards" that consist of a group of "panels" with an optionally specified layout.
   
@@ -53,7 +53,7 @@
 
   * TBIHtmlExport class can now generate "colorized" HTML tables from TDataItem data, using the new Colorizers property.
   
-  In addition, TDataColorizers has a new method "TryColorize" that is used also by TBIGrid VCL control to colorize cells.
+  In addition, TDataColorizers has a new method "TryColorize" that is used also by TBIGrid VCL control to [colorize cells](https://raw.github.com/Steema/BI/master/docs/img/bigrid_colorizer.png).
 
   
 - **JSON Import**
@@ -101,13 +101,13 @@
 
 - **FTP Support**
 
-  Importing data from FTP server is now possible, setting the FTP server and username properties in the Data Manager dialog.
+  Importing data from FTP server is now possible, setting the FTP [server and username properties](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_FTP_import.png) in the Data Manager dialog.
   Files are transferred from the specified server folder and imported into a TDataItem structure.
   Each file is tested to determine its content (CSV, JSON etc) and imported using the appropiate import class.
   
 - **TBIChart**
 
-  New support for Financial Charts (Candle Series) for VCL, FMX and also HTML dashboards (using TeeChart.js HTML5).
+  New support for [Financial Charts](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Quandl_multistock.png) (Candle Series) for VCL, FMX and also HTML dashboards (using TeeChart.js HTML5).
   
 - **TBIComposer**
 
