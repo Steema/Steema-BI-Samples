@@ -104,6 +104,7 @@ type
     procedure Clear;
     function Count:Integer; inline;
     procedure Delete(const AData:TDataItem);
+    function Exists(const AName:String):Boolean; inline;
 
     function Find(const AName: String): TDataItem;
     function FromExpression(const AName: String; const AExpression: TExpression): TDataItem; overload;
@@ -243,7 +244,7 @@ type
 
     FUnique : Boolean;
 
-    procedure CalcHasDate;
+    procedure SetInternalDate(const ADate:TDateTimePart);
     procedure CheckEmptyName;
     procedure ClearData;
     procedure ClearDelay;
@@ -326,7 +327,7 @@ type
     function TotalRows: TInteger; // Int64 as it might overflow in 32bit cpu
     procedure UnLoadData; virtual;
 
-    property Count:TInteger read FCount write FCount;
+    property Count:TInteger read FCount;
     property DataMap:TDataMap read FDataMap;
     property History:TImportHistory read GetHistory;
 

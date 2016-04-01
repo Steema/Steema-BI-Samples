@@ -40,6 +40,7 @@ requires
 contains
   BI.Arrays in '..\BI.Arrays.pas',
   BI.Compare in '..\BI.Compare.pas',
+  BI.Dashboard in '..\BI.Dashboard.pas',
   BI.DataSource in '..\BI.DataSource.pas',
   BI.Expression in '..\BI.Expression.pas',
   BI.Tree in '..\BI.Tree.pas',

@@ -100,7 +100,7 @@ type
     procedure CBDuplicatesClick(Sender: TObject);
   private
     { Private declarations }
-    Viz : TBIVisualizer;
+    Viz : TBIComposer;
 
     VizUI : TBIVisualizerUI;
 
@@ -119,10 +119,10 @@ type
 
     procedure CheckDuplicates(const ASummary:TSummary);
 
-    class procedure Edit(const AOwner:TComponent; const AVisualizer:TBIVisualizer); static;
+    class procedure Edit(const AOwner:TComponent; const AVisualizer:TBIComposer); static;
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl):TVisualizerEditor; static;
 
-    procedure Refresh(const AVisualizer:TBIVisualizer);
+    procedure Refresh(const AVisualizer:TBIComposer);
   end;
 
 implementation

@@ -29,7 +29,7 @@ uses
   System.Threading,
   {$ENDIF}
 
-  System.Net.HttpClient, System.Net.HttpClientComponent;
+  System.Net.HttpClient, System.Net.HttpClientComponent, BI.Persist;
 
 type
   TBIHttpClient=class(TBIHttp)
@@ -46,6 +46,7 @@ type
     Constructor Create(const AOwner:TComponent); override;
     Destructor Destroy; override;
 
+    class function FTP(const ADef:TDataDefinition):TBIFtp; override;
     procedure Get(const AURL:String; const AStream:TStream); overload; override;
     function Get(const AURL:String):String; overload; override;
     procedure SetProxy(const AProxy:TWebProxy); override;

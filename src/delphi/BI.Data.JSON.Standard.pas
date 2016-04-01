@@ -56,6 +56,8 @@ type
     JSON : TJSONValue;
     Parents : Array of TJSONValue;
 
+    IRoot : TJSONValue;
+
     procedure Push;
   protected
     procedure ArrayChild(const Index:Integer); override;

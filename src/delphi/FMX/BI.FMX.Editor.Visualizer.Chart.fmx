@@ -28,6 +28,8 @@ object ChartVisualizerEditor: TChartVisualizerEditor
       StyleLookup = ''
       TabOrder = 0
       Text = 'Chart'
+      ExplicitSize.cx = 49.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object Button2: TButton
         Position.X = 16.000000000000000000
         Position.Y = 16.000000000000000000
@@ -47,6 +49,8 @@ object ChartVisualizerEditor: TChartVisualizerEditor
       StyleLookup = ''
       TabOrder = 0
       Text = 'Series'
+      ExplicitSize.cx = 51.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object CBAddNulls: TCheckBox
         Position.X = 16.000000000000000000
         Position.Y = 8.000000000000000000

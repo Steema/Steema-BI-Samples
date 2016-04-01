@@ -51,6 +51,7 @@ contains
   BI.FMX.Editor.Stores in '..\FMX\BI.FMX.Editor.Stores.pas' {StoreEditor},
   BI.FMX.Grid.Grid in '..\FMX\BI.FMX.Grid.Grid.pas',
   BI.FMX.Visualizer in '..\FMX\BI.FMX.Visualizer.pas',
-  BI.FMX.Editor.Visualizer in '..\FMX\BI.FMX.Editor.Visualizer.pas' {VisualizerEditor};
+  BI.FMX.Editor.Visualizer in '..\FMX\BI.FMX.Editor.Visualizer.pas' {VisualizerEditor},
+  BI.FMX.Dashboard in '..\FMX\BI.FMX.Dashboard.pas';
 
 end.

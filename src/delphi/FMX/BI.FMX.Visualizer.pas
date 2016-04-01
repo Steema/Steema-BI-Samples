@@ -60,11 +60,11 @@ type
     property Enabled:Boolean read FEnabled write SetEnabled default True;
   end;
 
-  TBIVisualizer=class;
+  TBIComposer=class;
 
   TVisualizerItems=class(TOwnedCollection)
   private
-    IParent : TBIVisualizer;
+    IParent : TBIComposer;
 
     function GetItem(const Index: Integer): TVisualizerItem;
     procedure SetItem(const Index: Integer; const Value: TVisualizerItem);
@@ -126,7 +126,7 @@ type
     CanAddValues : Boolean;
 
     FItems : Array of TPendingItem;
-    FVisualizer : TBIVisualizer;
+    FVisualizer : TBIComposer;
 
     FixedWidth : Boolean;
     Position : TInteger;
@@ -413,29 +413,30 @@ type
     property TreeView:TTreeView read FTree;
   end;
 
-  // Nested TBIVisualizer
+  // Nested TBIComposer
   TGroupVisualizer=class(TGroup)
   private
-    FVisualizer : TBIVisualizer;
+    FVisualizer : TBIComposer;
   protected
     procedure Init; override;
   public
     Constructor CreateData(const AItem:TVisualizerItem; const AParent:TGroup); override;
     Destructor Destroy; override;
 
-    property Visualizer:TBIVisualizer read FVisualizer;
+    property Visualizer:TBIComposer read FVisualizer;
   end;
 
-  {$IFDEF FMX}
   {$IF CompilerVersion>=23}
-  [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
+  [ComponentPlatformsAttribute(pidWin32 or pidWin64
+              {$IFDEF FMX}
+              or pidOSX32
               {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
               {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
+              {$ENDIF}
               )]
   {$ENDIF}
-  {$ENDIF}
-  TBIVisualizer=class(TWinControl)
+  TBIComposer=class(TWinControl)
   private
     FData : TDataItem;
 
@@ -584,10 +585,10 @@ type
     property Values:TVisualizerItems read FValues write SetValues;
   end;
 
-  // Helper class for both VCL and FMX TBIVisualizer editor dialogs:
+  // Helper class for both VCL and FMX TBIComposer editor dialogs:
   TBIVisualizerUI=record
   public
-    Viz : TBIVisualizer;
+    Viz : TBIComposer;
 
     class procedure AddClasses(const AItems:TStrings); static;
     class procedure AddGroupByItems(const AItems:TStrings; const AData:TDataItem;

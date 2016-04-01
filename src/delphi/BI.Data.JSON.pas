@@ -39,12 +39,13 @@ type
   private
     JSON : TJSONEngine;
 
-    procedure AppendArray(const AData:TDataItem);
+    procedure AppendArray(const AIndex:TInteger; const AData:TDataItem);
     procedure AppendTo(const AData:TDataItem);
     procedure CheckEngine;
     procedure DoAppend(const Index:TInteger; const Data:TDataItem);
   public
     Format : TBIJSONFormat;
+    Hierarchical : Boolean; // <-- Default is False (try to return a flat table)
 
     Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;
 

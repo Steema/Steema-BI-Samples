@@ -42,10 +42,10 @@ type
     PopupMenu2: TPopupMenu;
     MenuItem2: TMenuItem;
     Tree: TTreeView;
-    ItemsGrid: TBIGrid;
     SplitData: TSplitter;
-    DataGrid: TBIGrid;
     CBView: TComboBox;
+    ItemsGrid: TBIGrid;
+    DataGrid: TBIGrid;
     procedure FormShow(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -54,9 +54,10 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure CBViewDataChange(Sender: TObject);
     procedure CBViewChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-    FDatas,
+    FData,
     DataMap,
     Items : TDataItem;
 
@@ -65,8 +66,10 @@ type
   public
     { Public declarations }
 
+    class function Embedd(const AOwner: TComponent; const AParent: TControl; const AData: TDataItem): TDataViewer; static;
+
     procedure Select(const AData:TDataItem);
-    class function View(const AOwner:TComponent; const AData:TDataItem):TModalResult; overload;
+    class function View(const AOwner:TComponent; const AData:TDataItem):TModalResult; static;
   end;
 
   TDataTree=class

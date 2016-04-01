@@ -90,6 +90,12 @@ type
 
   TDataColorizers=Array of TDataColorizer;
 
+  TDataColorizersHelper=record helper for TDataColorizers
+  public
+    function TryColorize(const AItem:TDataItem; const AIndex:Integer;
+                         out APercent:Double; out AColorIndex:Integer):Boolean;
+  end;
+
   TAlternateColor=class(TPersistent)
   private
     FColor : TColor;

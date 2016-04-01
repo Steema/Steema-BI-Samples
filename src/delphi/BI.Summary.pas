@@ -239,6 +239,8 @@ type
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
     procedure Exchange(const A,B:Integer);
+    function IndexOf(const AGroupBy:TGroupBy):Integer;
+    procedure Remove(const AGroupBy:TGroupBy);
   end;
 
   TSummaryExpression=class(TExpression)
@@ -306,15 +308,15 @@ type
     function GetHaving:TSummaryFilter;
     procedure SetFilter(const Value: TExpression);
   protected
+    ByRows,
+    ByCols : TGroupBys;
+
     Hops : TDataHops;
 
     procedure FillGroupByRows;
   public
-    Measures : TMeasures;
     By : TGroupBys;
-
-    ByRows,
-    ByCols : TGroupBys;
+    Measures : TMeasures;
 
     RemoveMissing,
     RemoveMissingCols : Boolean;
@@ -339,6 +341,7 @@ type
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
 
     procedure Prepare;
+    function ToString:String; override;
     function Valid:Boolean;
 
     property Data:TDataItem read GetData;

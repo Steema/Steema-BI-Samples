@@ -253,9 +253,9 @@ type
   end;
   }
 
-  TBIChartVisualizerUI=record
+  TBIChartComposerUI=record
   public
-    Viz : TBIVisualizer;
+    Viz : TBIComposer;
 
     class function CurrentSeriesClass(const AItems:TComboBox):TChartSeriesClass; static;
     class procedure Fill2DSeries(const AItems:TStrings); static;

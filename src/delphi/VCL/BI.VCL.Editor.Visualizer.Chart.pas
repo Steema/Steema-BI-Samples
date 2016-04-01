@@ -69,7 +69,7 @@ type
     IChanging : Boolean;
 
     GroupIndex : Integer;
-    VizUI : TBIChartVisualizerUI;
+    VizUI : TBIChartComposerUI;
 
     VizEditor : TVisualizerEditor;
 

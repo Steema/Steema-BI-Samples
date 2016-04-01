@@ -35,14 +35,14 @@ type
     function CallOnError(const Text:String):Boolean;
     procedure DoProgress(const Percent:Single; var Cancel:Boolean);
 
-    class function FromDatas(const ADatas:TDataArray):TDataItem; static;
-
     function NameOfFile(const FileName:String):String;
   public
     Parallel : Boolean;
 
     Constructor Create(const Definition:TDataDefinition=nil;
                        const MultiThread:Boolean=False); virtual;
+
+    class function FromDatas(const ADatas:TDataArray):TDataItem; static;
 
     property IgnoreMissing:Boolean read FIgnoreMissing write FIgnoreMissing default False;
 
@@ -216,22 +216,28 @@ type
     IResult : Array of TDataArray;
 
     class procedure AppendDatas(var AResult:TDataArray; const AItems:TDataArray); static;
+    class function DataArrayFrom(const AData:TDataItem):TDataArray; static;
     function DoImportFile(const FileName:String):TDataArray; virtual;
+    function DoImportStream(const AExtension:String; const AStream:TStream):TDataArray; virtual;
+    function FindImporterClass(const AFileName:String):TBIFileSourceClass;
     function GuessFromContent(const S:TStrings):TBIFileSourceClass;
     function ImportOneFile(const AFile:String):TDataArray;
     function ImportURLFile(const FileName:String):TDataArray;
     function ImportZip(const FileName:String):TDataArray;
     procedure TaskImport(Sender:TObject);
   public
+    class function DataFromFiles(const AFiles:TStringDynArray; const Local:Boolean): TDataItem; static;
+
     class function ExportFormat:TBIExport; virtual;
 
     class function FromFile(const AFileName:String):TDataItem; overload;
     class function FromStrings(const AStrings:TStrings):TDataItem;
     class function FromText(const AText:String):TDataItem;
+    class function FromURL(const AURL:String):TDataItem;
 
     class function GetFileSize(const FileName:String):Int64; static;
 
-    class function IncludedFiles(const AStore:String; const ADef:TDataDefinition):TDataItem; static;
+    class function IncludedFiles(const AStore:String; const ADef:TDataDefinition):TStringDynArray; static;
 
     class function IsURL(const FileName:String):Boolean; static;
 
@@ -239,6 +245,7 @@ type
     function Import(const Strings:TStrings):TDataArray; overload; virtual; abstract;
 
     function ImportFile(const FileName:String):TDataArray; overload; virtual;
+    function ImportStream(const AFileName: String; const AStream:TStream): TDataArray;
     function ImportURL(const URL:String):TDataArray;
 
     class function Supports(const Extension:String):Boolean; virtual;
@@ -323,6 +330,7 @@ type
 
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     function MainData:TDataItem;
+    function ToString:String; override;
 
     property Distinct:Boolean read FDistinct write FDistinct default False;
   end;

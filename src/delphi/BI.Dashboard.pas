@@ -10,100 +10,14 @@ interface
 
 uses
   System.UITypes, System.Classes, System.Generics.Collections,
-  BI.Data, BI.Arrays;
+  BI.Data, BI.Arrays, BI.UI, BI.Expression, BI.DataSource;
 
 type
-  TBase=class
-  end;
-
-  TBase<T>=class(TBase)
-  private
-    class var Registered:TDictionary<String,T>;
-  public
-    class Constructor Create;
-    class Destructor Destroy;
-
-    class function Find(const AName:String):T; static;
-    class procedure Register(const AName:String; const AClass:T); static;
-  end;
-
   TBITemplate=class;
 
   TRenderClass=class of TRender;
 
   TChangeListener=class;
-
-  TBaseItem=class
-  private
-    IList : TDataItem;
-    Index : Integer;
-
-    IUsedVariables : TTextArray;
-    IVisual : TBITemplate;
-
-    procedure AddUsedVariable(const AName:String);
-    function GetItem(const AName: String): String; inline;
-  protected
-    function GetBoolean(const AName:String; const ADefault:Boolean):Boolean; overload; inline;
-    function GetBoolean(const AList:TDataItem; const AName:String; const ADefault:Boolean):Boolean; overload;
-    function GetColor(const AName:String):TAlphaColor; overload; inline;
-    function GetColor(const AList:TDataItem; const AName:String):TAlphaColor; overload;
-    function GetString(const AList:TDataItem; const AName:String; const AIndex:Integer=0):String;
-
-    function TryReplaceVariable(const S:String):String;
-  public
-    Constructor Create(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); virtual;
-
-    function UsesVariable(const Sender:TChangeListener):Boolean; virtual;
-
-    property Item[const AName:String]:String read GetItem; default;
-  end;
-
-  TBIFont=class(TBaseItem)
-  public
-    Color : TAlphaColor;
-
-    Constructor Create(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
-  end;
-
-  TBIPanel=class(TBaseItem)
-  protected
-    IData : Integer;
-  public
-    Back : TAlphaColor;
-    Name : String;
-    Kind : String;
-    Source : String;
-    Target : String;
-    Font : TBIFont;
-    Format : String;
-
-    Constructor Create(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
-    Destructor Destroy; override;
-
-    function TitleOrName:String;
-    function UsesVariable(const Sender:TChangeListener):Boolean; override;
-  end;
-
-  TDashboardItem=class(TBaseItem)
-  private
-    IPosition : Integer;
-  public
-    Panel : TBIPanel;
-    Position : Integer;
-    Selected : String;
-
-    function CalcKind:String;
-    function UsesVariable(const Sender:TChangeListener):Boolean; override;
-  end;
-
-  TDashboardItems=Array of TDashboardItem;
-
-  TDashboardItemsHelper=record helper for TDashboardItems
-  public
-    procedure Add(const AItem:TDashboardItem);
-    function Count:Integer; inline;
-  end;
 
   TChangeEvent=procedure(const Sender:TChangeListener; const AValue:String) of object;
 
@@ -129,17 +43,23 @@ type
   end;
 
   TVariable=record
+  private
+    procedure Change(const AValue:String);
   public
     Name : String;
-    Value : String;
+    Value : TExpression;
     Listeners : TListeners;
   end;
 
-  TVariables=class(TList<TVariable>)
-  public
-    Destructor Destroy; override;
+  TVariableArray=Array of TVariable;
 
-    procedure Add(const AName,AValue:String);
+  TVariables=class(TList<TVariable>)
+  protected
+    IMain : TDataItem;
+
+    procedure Notify(const Item: TVariable; Action: TCollectionNotification); override;
+  public
+    procedure Add(const AName:String; const AValue:TExpression);
     procedure AddListener(const AName:String; const AIndex:Integer; const AOnChange:TChangeEvent);
     procedure Change(const AName:String; const AValue:Boolean); overload;
     procedure Change(const AName,AValue:String); overload;
@@ -147,89 +67,249 @@ type
     procedure TryAdd(const AName:String);
   end;
 
-  TDashboard=class(TBIPanel)
+  TBaseItem=class(TComponent)
+  private
+    Index : Integer;
+
+    IUsedVariables : TTextArray;
+    IVisual : TBITemplate;
+
+    IOwnsList : Boolean;
+
+    procedure AddUsedVariable(const AName:String);
+    function GetItem(const AName: String): String; inline;
+    procedure SetItem(const AName,AValue: String);
+    function Variables:TVariables;
+  protected
+    IList : TDataItem;
+
+    function GetBoolean(const AName:String; const ADefault:Boolean):Boolean; overload; inline;
+    function GetBoolean(const AList:TDataItem; const AName:String; const ADefault:Boolean):Boolean; overload;
+    function GetColor(const AName:String):TAlphaColor; overload; inline;
+    function GetColor(const AList:TDataItem; const AName:String):TAlphaColor; overload;
+    function GetString(const AList:TDataItem; const AName:String; const AIndex:Integer):String; overload;
+    function GetString(const AList:TDataItem; const AName:String):String; overload; inline;
+
+    function ReplaceString(const S:String):String;
+
+//    function TryReplaceVariable(const S:String):String;
   public
-    Layout : String;
-    Items : TDashboardItems;
+    Name : String;
+
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); virtual;
+    Destructor Destroy; override;
+
+    function FindItem(const AName:String):TDataItem;
+    function FindSubItem(const AName,ASub:String; out AValue:String):Boolean;
+
+    function UsesVariable(const Sender:TChangeListener):Boolean; virtual;
+
+    property Item[const AName:String]:String read GetItem write SetItem; default;
+  end;
+
+  TBIFont=class(TBaseItem)
+  public
+    Color : TAlphaColor;
+
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
+  end;
+
+  TBIPanel=class(TBaseItem)
+  private
+    FData : TDataItem;
+    FHeight,
+    FWidth : String;
+
+    ISelect : TDataItem;
+
+    function GetData: TDataItem;
+    procedure SetData(const Value: TDataItem);
+    function TrySelect(const AData:TDataItem):TDataItem;
+  protected
+    IData : Integer;
+  public
+    Back : TAlphaColor;
+    Kind : String;
+    Target : String;
+    Font : TBIFont;
+
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); override;
+    Destructor Destroy; override;
+
+    function UsesVariable(const Sender:TChangeListener):Boolean; override;
+  published
+    property Data:TDataItem read GetData write SetData;
+    property Height : String read FHeight write FHeight;
+    property Width : String read FWidth write FWidth;
+  end;
+
+  TDashboardItem=class(TBaseItem)
+  private
+    FHeight,
+    FPosition,
+    FWidth : String;
+
+    FPanel : TBIPanel;
+
+    IPosition : String;
+
+    function DoGetSelected(const AData:TDataItem; const AIndex:Integer): String;
+    function GetDisplayData(const AData:TDataItem):TDataItem;
+    function GetKeyData(const AData:TDataItem):TDataItem;
+    procedure SetPanel(const APanel:TBIPanel);
+  protected
+    Dashboard : TBIPanel;
+  public
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); override;
+
+    function CalcKind:String;
+    function CountOfData:TInteger;
+    function GetData(const AName:String):String;
+    function GetSelected(const AIndex:Integer):String;
+    function GetSelectedDisplay(const AIndex:Integer): String;
+    function SelectedIndex:Integer;
+    function Text:String;
+    function UsesVariable(const Sender:TChangeListener):Boolean; override;
+  published
+    property Height : String read FHeight write FHeight;
+    property Panel : TBIPanel read FPanel write SetPanel;
+    property Position:String read FPosition write FPosition;
+    property Width : String read FWidth write FWidth;
+  end;
+
+  TDashboardItems=class(TList<TDashboardItem>)
+  public
+    procedure Add(const APanel:TBIPanel); overload;
+  end;
+
+  TLayouts=class;
+
+  TLayoutItem=class(TBaseItem)
+  private
+  public
+    Align : String;
+    Height : String;
+    Items : TLayouts;
+    Nested : String;
+    Style : String;
+    Width : String;
+
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); override;
+    Destructor Destroy; override;
+
+    function Find(const AName:String):TLayoutItem; // Recursive
+    function IsHorizontal:Boolean;
+  end;
+
+  TLayouts=class(TList<TLayoutItem>)
+  private
+    procedure ImportFrom(const AVisual:TBITemplate; const AData:TDataItem);
+  public
+    class var
+       Predefined : TLayouts;
 
     Destructor Destroy; override;
 
-    function IndexOfPanel(const AName:String):Integer;
+    procedure AddTo(const AItems: TStrings);
+    function Find(const AName:String):TLayoutItem;
   end;
 
-  TRender=class(TBase<TRenderClass>)
+  TDashboard=class(TBIPanel)
   private
-    class function GetFirstData(const AData:TDataItem):TDataItem; static;
+    FItems : TDashboardItems;
+    FLayout : String;
+    FSplitters : Boolean;
+    FTitles : Boolean;
+
+    function GetItems:TDashboardItems;
+  public
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); override;
+    Destructor Destroy; override;
+
+    function IndexOfPanel(const AName:String):Integer;
+
+    property Items:TDashboardItems read GetItems;
+  published
+    property Layout : String read FLayout write FLayout;
+    property Splitters : Boolean read FSplitters write FSplitters default True;
+    property Titles : Boolean read FTitles write FTitles default False;
+  end;
+
+  TRender=class
+  private
     procedure PrepareVariables(const ADashboard:TDashboard);
   protected
     FVisual : TBITemplate;
+    FVariables : TVariables;
 
-    ILayout : String;
+    ILayout : TLayoutItem;
+    ILayoutName : String;
+
     IParent : TRender;
 
-    class procedure AddItems(const AItems: TStrings; const AData:TDataItem); static;
-    procedure AddItemSeparator(const AIndex:Integer=-1); virtual;
+    class procedure AddItems(const AItems: TStrings; const AData:TDataItem;
+                const ADisplay:String=''); static;
+    procedure AddItemSeparator(const AIndex:Integer=-1; const AKind:String=''); virtual;
     procedure AddListener(const AName:String; const ADataIndex:Integer); virtual; abstract;
     function BestLayout(const ADashboard:TDashboard):String;
-    procedure CountAndSelected(const AItem:TDashboardItem; out AMax,ASelected:Integer);
-    function CreateVariables:TVariables;
+    procedure ChangeSelected(const AItem:TDashboardItem; const AIndex:Integer);
     class function DataAsString(const AData:TDataItem):String; static;
-    function NumLayout:Integer;
-    function PanelData(const APanel:TBIPanel):TDataItem;
+    function FindRootLayout(const AName:String):TLayoutItem;
+    function GetColorizers(const AItem:TDashboardItem):TDataColorizers;
     function TopRender:TRender;
-    function Variables:TVariables; virtual; abstract;
   public
-    Constructor Create; virtual; abstract;
+    procedure Emit(const ADashboard:TDashboard; const AItem:Integer; const APosition:String); overload; virtual;
 
-    procedure Emit(const AItem:TDashboardItem; const AKind:String; const APosition:Integer); virtual;
+    class function GetDisplayData(const AData:TDataItem; const AName:String=''):TDataItem; static;
     procedure Init(const ADashboard:TDashboard; const ALayout:String='';
                    const AParams:TStrings=nil); virtual;
     procedure Finish; virtual;
-
-    class procedure UnRegister(const AClass:TRenderClass); static;
   end;
 
-  TPanels=Array of TBIPanel;
-
-  TPanelsHelper=record helper for TPanels
+  TPanels=class(TList<TBIPanel>)
   public
-    procedure Add(const APanel:TBIPanel);
-    function Count:Integer;
     function IndexOf(const AName:String):Integer;
   end;
 
-  TDashboards=Array of TDashboard;
-
-  TDashboardHelper=record helper for TDashboards
+  TDashboards=class(TList<TDashboard>)
   public
-    procedure Add(const ADashboard:TDashboard);
-    function Count:Integer;
     function IndexOf(const AName:String):Integer;
   end;
+
+  TVisualDataKind=(Data,Query,SingleRecord,Variable,FileURL,Custom);
 
   TVisualData=class(TBaseItem)
   private
+    FKind : TVisualDataKind;
+    FStore : String;
+
     IDataOrigin: String;
     IData : TDataItem;
+    IExpression : TExpression;
+    IMain : TDataItem;
+    IValue : String;
 
     DataIndex : Integer;
 
-    FTemplate : TBITemplate;
+    procedure Change(const AValue:String);
+    function ExpressionValue:String;
+    function SingleRecordFrom(const AData: TDataItem):TDataItem;
   public
-    Kind,
-    Name,
-    Store : String;
-
-    Constructor Create(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
+    Destructor Destroy; override;
 
     procedure Clear;
     function Data:TDataItem;
     procedure Reset;
+    function Value:String;
+  published
+    property Kind : TVisualDataKind read FKind write FKind;
+    property Store : String read FStore write FStore;
   end;
 
-  TVisualDatas=Array of TVisualData;
+  TVisualDataArray=Array of TVisualData;
 
-  TVisualDatasHelper=record helper for TVisualDatas
+  TVisualDataArrayHelper=record helper for TVisualDataArray
   private
     procedure AddVariables(const ARender:TRender);
   public
@@ -237,40 +317,50 @@ type
     procedure Clear;
     function Count:Integer; inline;
     function IndexOf(const AName:String):Integer;
+    function ValueOf(const AName:String):String;
   end;
 
   TBITemplate=class(TBaseItem)
   private
-    IDataOrigin : String;
-    IData : TDataItem;
-
     IRender : TRender;
 
     function CreateDashboard(const AList:TDataItem;
                              const AIndex:Integer):TDashboard;
+
     function CreatePanel(const AList:TDataItem;
                          const AIndex:Integer):TBIPanel;
 
-    function GetData: TDataItem;
-    function ParseSQL(const SQL:String; const AIndex:Integer):TDataItem;
+    function ParseSQL(const AMain:TDataItem; const SQL:String; const AIndex:Integer):TDataItem;
   protected
     Owner : TObject;
 
     function GetItem(const AName:String):TDataItem;
-    function GetPanelData(const APanel:TBIPanel):TDataItem;
+    function PanelData(const APanel:TBIPanel):TDataItem;
   public
-    Datas : TVisualDatas;
-    Panels : TPanels;
     Dashboards : TDashboards;
+    Datas : TVisualDataArray;
+    Layouts : TLayouts;
+    Panels : TPanels;
 
+    class
+      var Root : String;
+
+    Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
     Destructor Destroy; override;
+
+    function FindLayout(const ALayout:String):TLayoutItem;
 
     class function FromData(const AData:TDataItem):TBITemplate; static;
     class function FromJSON(const AJSON:String):TBITemplate; static;
+    class function FromJSONFile(const AJSONFile:String):TBITemplate; static;
 
     procedure Generate(const ARender:TRender; const ADashboard:TDashboard;
                        const ALayout:String='';
                        const AParams:String='');
+
+    class function GetMasterDetail(const AData:TDataItem; const AIndex:TInteger):TCursorIndex;
+
+    property Data:TDataItem read IList;
   end;
 
 implementation

@@ -15,12 +15,15 @@ uses
 type
   ESQLParser=class(EBIException);
 
+  TGetDataProc=reference to procedure(const AName:String; out AData:TDataItem);
+
   // Converts an SQL string to its equivalent query (TDataSelect) or
   // summary (TSummary) object instance
   TSQLParser=class
   private
     FData : TDataItem;
     FError : TBIErrorProc;
+    FOnGetData : TGetDataProc;
     FText : String;
 
     ILength,
@@ -32,10 +35,12 @@ type
     function GetExpressions:TTextArray;
     function NextIdent:String;
     function Optional(const AText:String):Boolean;
+  protected
+    class function DataFromString(const AData:TDataItem; const S:String):TDataItem; static;
   public
     Constructor Create(const AData:TDataItem; const AText:String);
 
-    function Calculate:TDataItem;
+    function Calculate(const ErrorProc:TBIErrorProc=nil):TDataItem;
 
     class function FindAggregate(var S:String; out Agg:TAggregate):Boolean; static;
     class function FindGroupByPart(var S:String; out APart:TDateTimePart):Boolean; static;
@@ -46,7 +51,10 @@ type
     class procedure ParseSort(const AData:TDataItem; var ASort:TSortItems; const AOrder:TTextArray;
                               const SQL:Boolean=False;
                               const Error:TBIErrorProc=nil); static;
+
     class function StringToData(const AData:TDataItem; const S:String; const ErrorProc:TBIErrorProc=nil):TDataItem; static;
+
+    property OnGetData:TGetDataProc read FOnGetData write FOnGetData;
   end;
 
   // Converts a query (TDataSelect) or summary (TSummary) object instance into
@@ -70,7 +78,9 @@ type
     class function From(const AProvider:TDataProvider):String; overload; static;
 
     // Parse SQL syntax, execute and return result
-    class function From(const AData:TDataItem; const SQL:String):TDataItem; overload; static;
+    class function From(const AData:TDataItem; const SQL:String;
+                        const GetData:TGetDataProc=nil;
+                        const ErrorProc:TBIErrorProc=nil):TDataItem; overload; static;
   end;
 
 implementation

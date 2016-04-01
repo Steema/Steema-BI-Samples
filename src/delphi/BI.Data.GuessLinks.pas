@@ -11,6 +11,9 @@ interface
 uses
   BI.Data;
 
+// Returns a TDataItem table with all items that are "linked" to Data parameter.
+// "Linked" means master-detail relationships between items.
+
 type
   TGuessLinks=class
   public

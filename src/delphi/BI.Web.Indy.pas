@@ -11,7 +11,7 @@ interface
 uses
   System.Classes, System.SysUtils,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
-  BI.Web;
+  BI.Web, BI.Persist;
 
 type
   EHttpAbort=class(Exception);
@@ -29,6 +29,8 @@ type
   public
     Constructor Create(const AOwner:TComponent); override;
     Destructor Destroy; override;
+
+    class function FTP(const ADef:TDataDefinition):TBIFtp; override;
 
     procedure Get(const AURL:String; const AStream:TStream); overload; override;
     function Get(const AURL:String):String; overload; override;
