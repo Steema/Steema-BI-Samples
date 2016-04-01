@@ -5,6 +5,8 @@
 
 - **Dashboards**
 
+  ![](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Dashboard_VCL_Small.png)
+
   New units and a new [TBIVisual](https://github.com/Steema/BI/blob/master/src/delphi/BI.Dashboard.pas) component to create visual dashboards.  *Note: Preview Alpha Release*
   
   Dashboards provide a way to create complex multi-panel layouts of grids, charts and other controls using a "template".
