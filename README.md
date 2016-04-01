@@ -3,7 +3,10 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 9, Feb-29th 2016)
+[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 10, April-1st 2016)
+
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 10)
+
  
 ### What is TeeBI ?
 
@@ -21,6 +24,8 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids and more)
 
+- Interactive Dashboards rendered to screen (desktop and mobile) and HTML Web pages
+
 - Data [export](https://github.com/Steema/BI/wiki/exporting) (csv,pdf,html,xml,excel,json), comparisons and manipulations
 
 - [Machine-learning](https://github.com/Steema/BI/wiki/machine-learning) and [statistics](https://github.com/Steema/BI/wiki/statistics) (native data pass to R Language and Python Scikit)
@@ -36,8 +41,6 @@ A simple class to implement in-memory database complex structures to provide:
   *  Lazarus / FreePascal
   
 ### Getting started
-
-- [Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 9)
 
 - [Installing](https://github.com/Steema/BI/wiki/Installing-TeeBI)
 
