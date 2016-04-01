@@ -5,17 +5,25 @@
 
 - **Dashboards**
 
-  New units and a TBIVisual component to create visual dashboards.  *Note: Preview*
+  New units and a new [TBIVisual](https://github.com/Steema/BI/blob/master/src/delphi/BI.Dashboard.pas) component to create visual dashboards.  *Note: Preview Alpha Release*
   
   Dashboards provide a way to create complex multi-panel layouts of grids, charts and other controls using a "template".
   
   The template is just a TDataItem which can be imported for example from a JSON string.
   
-  Templates can be rendered to VCL, Firemonkey and HTML Web pages.
+  Templates can be rendered in VCL, Firemonkey and also as [HTML Web pages](https://github.com/Steema/BI/blob/master/src/delphi/BI.Dashboard.HTML.pas).
   
-  Interactivity between panels is controlled by using "variables" defined in the template. 
+  Templates contain named definitions of data (queries, summaries, custom data, external files, etc) and then panels can optionally use these data and specify the render style (grid, chart, listbox, text, etc) for each panel independently.
   
-  For example clicking a listbox panel can refresh other panels that depend on the listbox, for examples grids and charts that are displaying data using SQL queries using the variables as parameters in the query.
+  Templates can also contain "layout" definitions. Layouts can be organized nesting predefined layouts to create complex visualizations.
+  
+  Finally, templates define "dashboards" that consist of a group of "panels" with an optionally specified layout.
+  
+  TBIVisual can then generate a template using its Render property, which can be a VCL / Firemonkey render, or an HTML Web render component to output web pages.
+  
+  Interactivity between panels is controlled by using "variables" defined in the template. Variables can be used as parameters everywhere in the template, for example to filter sql "where" clauses or any other purpose.
+  
+  For example, clicking a listbox panel can refresh other panels that depend on the current listbox selected item, for example grids and charts that are displaying data using SQL queries using the variables as parameters in the query.
   
   *Note: No demo for dashboards is provided yet. It'll be uploaded soon*
   
@@ -41,20 +49,94 @@
 
   BIWeb can now be used to provide static files under a "public" subfolder structure (folder location is customizable)
   
-- HTML Export
+- **HTML Export**
 
   * TBIHtmlExport class can now generate "colorized" HTML tables from TDataItem data, using the new Colorizers property.
   
-- JSON Import
+  In addition, TDataColorizers has a new method "TryColorize" that is used also by TBIGrid VCL control to colorize cells.
 
-  * New 
+  
+- **JSON Import**
 
-- Minor changes
+  * Improved conversion of JSON types. 
+    When JSON content includes sub-objects of different types (for example, strings and floats), TBIJSON component now detects this situation and "upgrades" types to their best common type.
+
+  * New Hierarchical mode
+  
+    The default mode of importing JSON content is to try to "flatten" all objects and sub-objects into a single "table" containing all columns that appear in the JSON source, filling Missing (null) cells when no values exist.
+
+    The new Hierarchical property can be set to True to change this import behaviour, where the JSON structure is returned as a "tree" TDataItem structure that reflects the original JSON content, instead of a "flat" table.  
+    Each JSON value is returned as a TDataItem following the parent-child of the source. 
+    This means JSON arrays are returned also as a TDataItem with all Items being TDataItem objects too.
+    
+    *Example:*
+    
+    `var JSON : TBIJSON;
+    JSON := TBIJSON.Create;
+    JSON.Hierarchical := True;
+    Data := JSON.ImportText( AString );`
+
+- **TDataMerge**
+
+  New TDataMerge class (at BI.Data.Merge unit) creates and returns a TDataItem from a list of data items that have the same structure.
+  Structure compatibility (data items Kind) is recursively checked before doing the merge.
+  
+  `Data := TDataMerge.FromDatas( [ One, Two, Three ] );`
+  
+  TDataMerge SameStructure function is also useful in itself, as it returns if two or more data items are compatible or not.
+  
+  
+- **TBISQL**
+
+  Improvements in both SQL parsing and SQL ToString generation from queries and summaries.
+  "select .. from select" and other nested combinations ("select" in expressions) are now better handled.
+  
+  TDataSelect and TSummary classes ToString method now returns its equivalent SQL representation.
+
+- **Expressions**
+
+  New TDateExpression and TTimeExpression classes, to return just the date or the time of the source expression respectively.
+  
+  `ShowMessage( TExpression.Evaluate( 'Date("5/6/2016")' ).ToString )`
+
+- **FTP Support**
+
+  Importing data from FTP server is now possible, setting the FTP server and username properties in the Data Manager dialog.
+  Files are transferred from the specified server folder and imported into a TDataItem structure.
+  Each file is tested to determine its content (CSV, JSON etc) and imported using the appropiate import class.
+  
+- **TBIChart**
+
+  New support for Financial Charts (Candle Series) for VCL, FMX and also HTML dashboards (using TeeChart.js HTML5).
+  
+- **TBIComposer**
+
+  Existing TBIVisualizer control in beta 9 has been renamed to TBIComposer.
+  The plan is to convert this control to a dashboard template, thus allowing nesting multiple "composers" inside any dashboard panel, and also reducing the quantity of code.  
+  Dashboards are much more powerful than TBIVisualizer and functionality is somewhat overlapped.
+  
+- **TBIControlTree**
+
+  Mostly for debugging purposes, VCL TBIControlTree editor has been improved and also ported to Firemonkey.
+  
+  `uses BI.VCL.Editor.ControlTree;
+  TBIControlTree.Edit( Self, MyControl );`
+  
+  This dialog is useful to display the inner internals of TBIVisual dashboard controls.
+  
+- **Other changes**
 
   * Types TFMXCommon and TVCLCommon have been renamed to TUICommon (same name for both)
   * New TTextArray IndexOf method overload with a new CaseSensitive boolean parameter
   * TDataItem Count property is now read-only. Use Data.Resize (or protected cast) to change Count.
   * New TBIHTMLHelper Color method, returns a TColor in HTML format (#bbggrr)
+  * New TDataItems Exists function, equivalent shortcut to `Find( 'foo' ) <> nil`
+  * New TDataItems IndexOf function, returns the data item that has AName string parameter
+  * New TBISource FromDatas function, returns a single TDataItem from an array of TDataItems
+  * New FromURL function in several file import formats (CSV, JSON, XML etc)
+  * Fixed TDataSelect queries returning rows from sub-sub-tables (more than one depth level)
+  * New TGroupBy IndexOf and Remove methods (for TSummary.By property)
+  * New TDataViewer Embedd method for Firemonkey (to insert a data viewer form inside another form)
 
 ## 29-Feb-2016  Beta 9
 
