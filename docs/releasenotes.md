@@ -1,6 +1,61 @@
 # TeeBI Release Notes
 -------------------
 
+## 1st-April-2016  Beta 10
+
+- **Dashboards**
+
+  New units and a TBIVisual component to create visual dashboards.  *Note: Preview*
+  
+  Dashboards provide a way to create complex multi-panel layouts of grids, charts and other controls using a "template".
+  
+  The template is just a TDataItem which can be imported for example from a JSON string.
+  
+  Templates can be rendered to VCL, Firemonkey and HTML Web pages.
+  
+  Interactivity between panels is controlled by using "variables" defined in the template. 
+  
+  For example clicking a listbox panel can refresh other panels that depend on the listbox, for examples grids and charts that are displaying data using SQL queries using the variables as parameters in the query.
+  
+  *Note: No demo for dashboards is provided yet. It'll be uploaded soon*
+  
+  New Dashboard Units:
+  
+    * BI.Dashboard
+    * BI.Dashboard.HTML
+    * BI.VCL.Dashboard
+    * BI.FMX.Dashboard
+    * BI.VCL.Dashboard.Chart
+    * BI.FMX.Dashboard.Chart
+    
+    
+- **Demos**
+
+  A new example has been added to both GitHub repository and TeeBI installer:
+  
+  * [Expressions](https://github.com/Steema/BI/tree/master/demos/delphi/firemonkey/Expressions) Tests and benchmarks to TExpression class (base class to parse and evaluate expressions).
+  
+- **BIWeb Server**
+ 
+  Several improvements and fixes in BIWeb server, including the capability of returning HTML dashboards from templates as URL parameter.
+
+  BIWeb can now be used to provide static files under a "public" subfolder structure (folder location is customizable)
+  
+- HTML Export
+
+  * TBIHtmlExport class can now generate "colorized" HTML tables from TDataItem data, using the new Colorizers property.
+  
+- JSON Import
+
+  * New 
+
+- Minor changes
+
+  * Types TFMXCommon and TVCLCommon have been renamed to TUICommon (same name for both)
+  * New TTextArray IndexOf method overload with a new CaseSensitive boolean parameter
+  * TDataItem Count property is now read-only. Use Data.Resize (or protected cast) to change Count.
+  * New TBIHTMLHelper Color method, returns a TColor in HTML format (#bbggrr)
+
 ## 29-Feb-2016  Beta 9
 
 - **Demos**
