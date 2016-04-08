@@ -86,7 +86,7 @@ type
   private
     { Private declarations }
 
-    Viz : TBIVisualizer;
+    Viz : TBIComposer;
     VizUI : TBIVisualizerUI;
 
     IChanging : Boolean;
@@ -97,7 +97,7 @@ type
     { Public declarations }
 
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl):TVisualizerEditor;
-    procedure Refresh(const AVisualizer:TBIVisualizer);
+    procedure Refresh(const AVisualizer:TBIComposer);
     procedure ShowSettings(const ATab:TTabItem);
   end;
 

@@ -19,6 +19,9 @@ uses
   {$ENDIF}
   Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls;
 
+// Displays a "tree" with all children controls of AControl.
+// Useful for debugging purposes.
+
 type
   TBIControlTree = class(TForm)
     TreeView1: TTreeView;
@@ -34,6 +37,17 @@ type
     ColorListBox1: TColorListBox;
     BEditChart: TButton;
     Splitter1: TSplitter;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit1: TEdit;
+    UDLeft: TUpDown;
+    Edit2: TEdit;
+    UDTop: TUpDown;
+    CBParentColor: TCheckBox;
+    CBParentBack: TCheckBox;
+    Button1: TButton;
+    CBParentFont: TCheckBox;
+    FontDialog1: TFontDialog;
     procedure TreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure RGAlignClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -42,8 +56,14 @@ type
     procedure EHeightChange(Sender: TObject);
     procedure ColorListBox1Click(Sender: TObject);
     procedure BEditChartClick(Sender: TObject);
+    procedure CBParentColorClick(Sender: TObject);
+    procedure CBParentBackClick(Sender: TObject);
+    procedure CBParentFontClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
+
+    procedure RefreshBounds(const AControl:TControl);
   public
     { Public declarations }
     procedure Refresh(const AControl:TWinControl);

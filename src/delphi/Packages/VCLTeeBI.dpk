@@ -57,7 +57,8 @@ contains
   BI.VCL.Editor.Stores in '..\VCL\BI.VCL.Editor.Stores.pas' {StoreEditor},
   BI.VCL.Grid.DBGrid in '..\VCL\BI.VCL.Grid.DBGrid.pas',
   BI.VCL.Visualizer in '..\VCL\BI.VCL.Visualizer.pas',
-  BI.VCL.Editor.Visualizer in '..\VCL\BI.VCL.Editor.Visualizer.pas' {VisualizerEditor};
+  BI.VCL.Editor.Visualizer in '..\VCL\BI.VCL.Editor.Visualizer.pas' {VisualizerEditor},
+  BI.VCL.Dashboard in '..\VCL\BI.VCL.Dashboard.pas';
 
 end.
 

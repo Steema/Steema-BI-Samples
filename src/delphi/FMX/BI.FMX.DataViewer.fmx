@@ -8,6 +8,7 @@ object DataViewer: TDataViewer
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   OnClose = FormClose
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -41,9 +42,24 @@ object DataViewer: TDataViewer
       Align = Top
       Cursor = crVSplit
       MinSize = 20.000000000000000000
+      Position.Y = 193.000000000000000000
       Size.Width = 673.000000000000000000
       Size.Height = 8.000000000000000000
       Size.PlatformDefault = False
+    end
+    object ItemsGrid: TBIGrid
+      Align = Top
+      Size.Width = 673.000000000000000000
+      Size.Height = 193.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    object DataGrid: TBIGrid
+      Align = Client
+      Size.Width = 673.000000000000000000
+      Size.Height = 431.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
     end
   end
   object Splitter1: TSplitter

@@ -117,7 +117,7 @@ type
     function Load(const AName:String):TDataItem; virtual; abstract;
 
     class procedure RegisterClass(const AClass:TDataImporterClass);
-    class function Supports(const Kind:TDataDefinitionKind):Boolean; virtual; abstract;
+    class function Supports(const Kind:TDataDefinitionKind; const ADefinition:TDataDefinition=nil):Boolean; virtual; abstract;
     class procedure UnRegisterClass(const AClass:TDataImporterClass);
   end;
 

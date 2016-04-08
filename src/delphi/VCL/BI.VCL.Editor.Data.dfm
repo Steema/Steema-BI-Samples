@@ -26,24 +26,16 @@ object DataEditor: TDataEditor
     TabOrder = 0
     object TabFiles: TTabSheet
       Caption = 'Files'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControlFile: TPageControl
         Left = 0
         Top = 0
         Width = 510
         Height = 367
-        ActivePage = TabFile
+        ActivePage = TabFolder
         Align = alClient
         TabOrder = 0
         object TabFile: TTabSheet
           Caption = 'Single File'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label2: TLabel
             Left = 16
             Top = 16
@@ -87,10 +79,6 @@ object DataEditor: TDataEditor
         object TabFolder: TTabSheet
           Caption = 'Folder'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label3: TLabel
             Left = 16
             Top = 16
@@ -201,15 +189,116 @@ object DataEditor: TDataEditor
             OnChange = EExcludedChange
           end
         end
+        object TabFTP: TTabSheet
+          Caption = 'FTP'
+          ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 26
+          object Label18: TLabel
+            Left = 20
+            Top = 16
+            Width = 36
+            Height = 13
+            Caption = '&Server:'
+            FocusControl = EFTPServer
+          end
+          object Label19: TLabel
+            Left = 22
+            Top = 64
+            Width = 24
+            Height = 13
+            Caption = '&Port:'
+            FocusControl = EFTPPort
+          end
+          object Label20: TLabel
+            Left = 20
+            Top = 120
+            Width = 26
+            Height = 13
+            Caption = '&User:'
+            FocusControl = EFTPUser
+          end
+          object Label21: TLabel
+            Left = 20
+            Top = 168
+            Width = 50
+            Height = 13
+            Caption = 'P&assword:'
+            FocusControl = EFTPPassword
+          end
+          object LFTPStatus: TLabel
+            Left = 22
+            Top = 271
+            Width = 3
+            Height = 13
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object BFTPTest: TButton
+            Left = 20
+            Top = 240
+            Width = 141
+            Height = 25
+            Caption = '&Test Connection...'
+            Enabled = False
+            TabOrder = 0
+            OnClick = BFTPTestClick
+          end
+          object EFTPServer: TEdit
+            Left = 20
+            Top = 35
+            Width = 241
+            Height = 21
+            TabOrder = 1
+            OnChange = EFTPServerChange
+          end
+          object EFTPPort: TEdit
+            Left = 20
+            Top = 83
+            Width = 65
+            Height = 21
+            TabOrder = 2
+            Text = '21'
+            OnChange = EFTPPortChange
+          end
+          object UDFTPPort: TUpDown
+            Left = 85
+            Top = 83
+            Width = 16
+            Height = 21
+            Associate = EFTPPort
+            Max = 65535
+            Position = 21
+            TabOrder = 3
+            Thousands = False
+          end
+          object EFTPUser: TEdit
+            Left = 20
+            Top = 139
+            Width = 141
+            Height = 21
+            TabOrder = 4
+            OnChange = EFTPUserChange
+          end
+          object EFTPPassword: TEdit
+            Left = 20
+            Top = 187
+            Width = 141
+            Height = 21
+            PasswordChar = '*'
+            TabOrder = 5
+            OnChange = EFTPPasswordChange
+          end
+        end
       end
     end
     object TabDatabase: TTabSheet
       Caption = 'Database'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControlDBItems: TPageControl
         Left = 0
         Top = 0
@@ -220,10 +309,6 @@ object DataEditor: TDataEditor
         TabOrder = 0
         object TabConnection: TTabSheet
           Caption = 'Connection'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label7: TLabel
             Left = 16
             Top = 8
@@ -355,10 +440,6 @@ object DataEditor: TDataEditor
         object SQL: TTabSheet
           Caption = 'Items'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object PageControl3: TPageControl
             Left = 0
             Top = 0
@@ -369,10 +450,6 @@ object DataEditor: TDataEditor
             TabOrder = 0
             object TabItemAllDB: TTabSheet
               Caption = 'All'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object LDBExclude: TLabel
                 Left = 16
                 Top = 96
@@ -442,10 +519,6 @@ object DataEditor: TDataEditor
             object TabSQL: TTabSheet
               Caption = 'Custom SQL'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object MemoSQL: TMemo
                 Left = 0
                 Top = 0
@@ -466,10 +539,6 @@ object DataEditor: TDataEditor
     object TabWeb: TTabSheet
       Caption = 'BI Web'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LayoutWebData: TPanel
         Left = 0
         Top = 257
@@ -506,10 +575,6 @@ object DataEditor: TDataEditor
         TabOrder = 1
         object TabHttpServer: TTabSheet
           Caption = 'Server'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label4: TLabel
             Left = 12
             Top = 8
@@ -585,10 +650,6 @@ object DataEditor: TDataEditor
         object TabHttpProxy: TTabSheet
           Caption = 'Proxy'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label13: TLabel
             Left = 12
             Top = 16
@@ -671,10 +732,6 @@ object DataEditor: TDataEditor
     object TabUnknown: TTabSheet
       Caption = 'Unknown'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 24
         Top = 24

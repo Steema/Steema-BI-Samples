@@ -96,10 +96,10 @@ type
     function ToString:String; override;
 
     class function Date:TDateTimeExpression; static;
-    class function FromData(const Value:TData):TDateTime; static;
     class function Now:TDateTimeExpression; static;
     class function Time:TDateTimeExpression; static;
-    class function TimeFromData(const Value:TData):TDateTime; static;
+
+    class function FromData(const Value:TData):TDateTime; static;
   end;
 
   TTextExpression=class(TExpression)
@@ -217,6 +217,22 @@ type
   public
     function Value:TData; override;
     function ToString:String; override;
+  end;
+
+  TUnaryDateTimeExpression=class(TUnaryExpression);
+
+  TDateExpression=class(TUnaryDateTimeExpression)
+  public
+    function ToString:String; override;
+    class function FromData(const Value:TData):TDateTime; static;
+    function Value:TData; override;
+  end;
+
+  TTimeExpression=class(TUnaryDateTimeExpression)
+  public
+    function ToString:String; override;
+    class function FromData(const Value:TData):TDateTime; static;
+    function Value:TData; override;
   end;
 
   TMathOperand=(Sin,Cos,Tan,Sqr,Sqrt,Log,Ln,Exp,Round,Trunc);

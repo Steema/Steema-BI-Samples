@@ -9,6 +9,8 @@ uses
   {$ENDIF}
   BI.Data;
 
+// Fills a TreeView control with all Data items, recursively
+
 type
   TDataTree=class
   {$IFNDEF FPC}

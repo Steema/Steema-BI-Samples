@@ -9,7 +9,7 @@ unit BI.Web;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Persist;
+  System.Classes, System.Types, BI.Arrays, BI.Data, BI.Persist;
 
 type
   TBIHttpProgress=procedure(Sender:TObject; const ACurrent,ATotal:Int64; var Abort:Boolean) of object;
@@ -24,6 +24,20 @@ type
     Password : String;
   end;
 
+  TBIFtp=class
+  public
+    const
+      DefaultPort=21;
+
+    Constructor Create(const ADef:TDataDefinition); virtual; abstract;
+
+    procedure Connect; virtual; abstract;
+    procedure DisConnect; virtual; abstract;
+    function Get(const AFileName:String):TStream; virtual; abstract;
+    function IncludedFiles(const AFolder,AIncludeMask:String):TStringDynArray; virtual; abstract;
+    function ListFiles(const AFolder,AIncludeMask:String): TStrings; virtual; abstract;
+  end;
+
   TBIHttp=class abstract
   private
     class var
@@ -33,6 +47,8 @@ type
       Engine : TBIHttpClass;
 
     Constructor Create(const AOwner:TComponent); virtual; abstract;
+
+    class function FTP(const ADef:TDataDefinition):TBIFtp; virtual; abstract;
 
     procedure Get(const AURL:String; const AStream:TStream); overload; virtual; abstract;
     function Get(const AURL:String):String; overload; virtual; abstract;
@@ -78,6 +94,8 @@ type
 
     class function FromPath(const APath:String):TBIWebClient; static;
 
+    class function FTP(const ADef:TDataDefinition):TBIFtp; static;
+
     procedure GetData(const Data:String; var Items:TDataArray; const Compress:TWebCompression); overload;
     procedure GetData(const AData:TDataItem; const Children:Boolean; const Compress:TWebCompression); overload;
     procedure GetData(const AOrigin:String; const AData:TDataItem; const Children:Boolean; const Compress:TWebCompression); overload;
@@ -118,8 +136,8 @@ type
   public
     Constructor Create;
 
-    procedure Add(const Time:TDateTime; const RemoteIP,Command,Tag:String;
-                  const Success:Boolean; const Millisec:Integer; const Size:Int64);
+    function Add(const Time:TDateTime; const RemoteIP,Command,Tag:String;
+                  const Success:Boolean; const Millisec:Integer; const Size:Int64):TInteger;
   end;
 
   TSteema=class(TBIWebClient)

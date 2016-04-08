@@ -9,7 +9,7 @@ unit BI.FPC;
 interface
 
 uses
-  SysUtils, Classes, StreamEx;
+  SysUtils, Classes, Graphics, StreamEx;
 
 type
   TStopWatch=record
@@ -82,6 +82,8 @@ type
     function EndOfStream:Boolean;
   end;
 
+  TAlphaColor=TColor;
+  
 function IsQuoted(const S:String):Boolean;
 function SplitString(const S,Delimiter:String):TStringArray;
 

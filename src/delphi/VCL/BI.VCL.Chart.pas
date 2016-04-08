@@ -32,6 +32,15 @@ uses
   {$ELSE}
   VCL.Controls, VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series,
   {$ENDIF}
+
+  {$IFDEF TEEPRO}
+  {$IFDEF FMX}
+  FMXTee.Series.OHLC, FMXTee.Series.Candle,
+  {$ELSE}
+  VCLTee.OHLChart, VCLTee.CandleCh,
+  {$ENDIF}
+  {$ENDIF}
+
   BI.Data, BI.Arrays, BI.Summary, BI.DataSource;
 
 type
@@ -62,14 +71,19 @@ type
     procedure ClearTitles;
 
     {$IFDEF TEEPRO}
+    function CreateFinancial(const ADatas:TDataArray; const Dimensions:Integer):TOHLCSeries;
     procedure CreateGrid3D(const ADatas:TDataArray);
     procedure CreateXYZ(const ADatas:TDataArray);
     {$ENDIF}
 
     function CreateSeries(const Y:TDataItem):TChartSeries;
+    class function ExistsAnyDateTime(const ADatas:TDataArray; const Dimensions:Integer; out IsReversed:Boolean):TDataItem; static;
+    class function ExistsData(const AName:String; const ADatas:TDataArray; const Dimensions:Integer):TDataItem; static;
     procedure FillSeries(const ASeries:TChartSeries; Y:TDataItem);
     class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
+    class function GetDateTime(const AData:TDataItem; const Index:TInteger; const Reverse:Boolean):TDateTime; static;
     function InitCountSeries(const ACount:TInteger):TChartSeries;
+    class function IsFinancial(const ADatas:TDataArray; const Dimensions:Integer):Boolean; static;
     function NewSeries(const Count:Integer):TChartSeries;
     function NewSeriesXY(const X,Y:String):TPointSeries;
     procedure SetDataItem(const Value: TDataItem); // <-- do not rename to SetData (FMX conflict)

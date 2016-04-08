@@ -79,11 +79,11 @@ type
     Constructor Create; overload;
     Constructor Create(const AData:Array of T); overload;
 
-    procedure Add(const AData:T); overload;
+    procedure Add(const AData:T); overload; inline;
     procedure Add(const AData:Array of T); overload;
     procedure Add(const AData:TList<T>); overload;
     procedure Add(const AData:TCollection); overload;
-    procedure Add(const AData:TValue); overload;
+    function Add(const AData:TValue):TInteger; overload;
 
     function Find(const AData:T):TInteger;
     function Get(const AIndex: TInteger):T;

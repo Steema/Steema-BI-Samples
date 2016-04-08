@@ -24,6 +24,10 @@ object ChartVisualizerEditor: TChartVisualizerEditor
     TabOrder = 0
     object TabChart: TTabSheet
       Caption = 'Chart'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label7: TLabel
         Left = 9
         Top = 48

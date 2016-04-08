@@ -9,8 +9,13 @@ unit BI.Data.Html;
 interface
 
 uses
-  System.Classes, System.Types, Data.DB,
-  BI.Data, BI.DataSource, BI.Arrays;
+  System.Classes, System.Types,
+  {$IFDEF FPC}
+  Graphics,
+  {$ELSE}
+  System.UITypes,
+  {$ENDIF}
+  Data.DB, BI.Data, BI.DataSource, BI.Arrays, BI.UI;
 
 type
   TBIHTML=class(TBITextSource)
@@ -40,6 +45,7 @@ type
 
     var
       Borders : Boolean;
+      Colorizers : TDataColorizers;
       FloatFormat : String;
       SortIcons : Boolean;
 
@@ -53,6 +59,7 @@ type
   class var
     TableClass:String;
 
+    class function Color(const AColor:TColor):String; static;
     class function Combo(const AName:String; const Texts,Values:TStringDynArray): String; static;
     class function Escape(const S:String):String; static;
     class function FinishForm(const AName:String):String; static;

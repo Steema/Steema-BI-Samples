@@ -49,7 +49,7 @@ type
     { Private declarations }
 
     VizEditor : TVisualizerEditor;
-    VizUI : TBIChartVisualizerUI;
+    VizUI : TBIChartComposerUI;
 
     GroupIndex : Integer;
 

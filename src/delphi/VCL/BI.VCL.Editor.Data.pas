@@ -99,6 +99,18 @@ type
     Label17: TLabel;
     EDBPort: TEdit;
     CBDBSystem: TCheckBox;
+    TabFTP: TTabSheet;
+    BFTPTest: TButton;
+    Label18: TLabel;
+    EFTPServer: TEdit;
+    Label19: TLabel;
+    EFTPPort: TEdit;
+    UDFTPPort: TUpDown;
+    Label20: TLabel;
+    EFTPUser: TEdit;
+    Label21: TLabel;
+    EFTPPassword: TEdit;
+    LFTPStatus: TLabel;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -135,6 +147,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure EDBPortChange(Sender: TObject);
     procedure CBDBSystemClick(Sender: TObject);
+    procedure EFTPServerChange(Sender: TObject);
+    procedure EFTPPortChange(Sender: TObject);
+    procedure BFTPTestClick(Sender: TObject);
+    procedure EFTPUserChange(Sender: TObject);
+    procedure EFTPPasswordChange(Sender: TObject);
   private
     { Private declarations }
     FOnChangeWeb : TNotifyEvent;

@@ -278,7 +278,7 @@ type
 
   TBooleanArrayHelper=record helper for TBooleanArray
   public
-    procedure Append(const Value:Boolean); overload;
+    function Append(const Value:Boolean):TInteger; overload; inline;
     procedure Append(const Value:TBooleanArray); overload;
     function Compare(const A,B:TInteger):SmallInt; inline;
     function Copy:TBooleanArray; overload; inline;
@@ -301,7 +301,7 @@ type
   private
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:String); overload;
+    function Append(const Value:String):TInteger; overload; inline;
     procedure Append(const Value:TTextArray); overload;
     function Copy:TTextArray; overload;
     function Copy(const AIndex,ACount:TInteger):TTextArray; overload;
@@ -327,7 +327,7 @@ type
     function Distribution(const Mean:TDateTime; const StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:TDateTime); overload; inline;
+    function Append(const Value:TDateTime):TInteger; overload; inline;
     procedure Append(const Value:TDateTimeArray); overload;
     function Copy:TDateTimeArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TDateTimeArray; overload; inline;
@@ -355,7 +355,7 @@ type
     function Distribution(const Mean,StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:Integer); overload;
+    function Append(const Value:Integer):TInteger; overload; inline;
     procedure Append(const Value:TInt32Array); overload;
     function Copy:TInt32Array; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TInt32Array; overload; inline;
@@ -390,7 +390,7 @@ type
     function Distribution(const Mean,StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:Int64); overload;
+    function Append(const Value:Int64):TInteger; overload; inline;
     procedure Append(const Value:TInt64Array); overload;
     function Copy:TInt64Array; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TInt64Array; overload; inline;
@@ -425,7 +425,7 @@ type
     function Distribution(const Mean,StdDeviation:Single; const Exponent:Integer):Single;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:Single); overload;
+    function Append(const Value:Single):TInteger; overload; inline;
     procedure Append(const Value:TSingleArray); overload;
     function Copy:TSingleArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TSingleArray; overload; inline;
@@ -458,7 +458,7 @@ type
     function Distribution(const Mean,StdDeviation:Double; const Exponent:Integer):Double;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:Double); overload;
+    function Append(const Value:Double):TInteger; overload; inline;
     procedure Append(const Value:TDoubleArray); overload;
     function Copy:TDoubleArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TDoubleArray; overload; inline;
@@ -492,7 +492,7 @@ type
     function Distribution(const Mean,StdDeviation:Extended; const Exponent:Integer):Extended;
     function GuessOrder:TDataOrder;
   public
-    procedure Append(const Value:Extended); overload;
+    function Append(const Value:Extended):TInteger; overload; inline;
     procedure Append(const Value:TExtendedArray); overload;
     function Copy:TExtendedArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TExtendedArray; overload; inline;
