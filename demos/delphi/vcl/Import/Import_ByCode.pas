@@ -32,7 +32,6 @@ type
     DBGrid1: TDBGrid;
     ClientDataSet1: TClientDataSet;
     DataSource1: TDataSource;
-    procedure PageControl1Change(Sender: TObject);
     procedure LBFormatClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -61,6 +60,7 @@ implementation
 
 uses
   BI.Data.CSV, BI.Data.JSON, BI.Data.XML, BI.Data.Excel, BI.Data.DB,
+  BI.DataSource,
   FindSampleData;
 
 { TByCode }
@@ -68,17 +68,10 @@ uses
 // Helper method to create a TDataItem from an array of TDataItem
 function TByCode.CreateData(const AName:String; const AData:TDataArray):TDataItem;
 begin
-  if AData=nil then
-     result:=nil
-  else
-  begin
-    if Length(AData)=1 then
-       result:=AData[0]
-    else
-       result:=TDataItem.Create(AData);
+  result:=TBISource.FromData(AData);
 
-    result.Name:=AName;
-  end;
+  if result<>nil then
+     result.Name:=AName;
 end;
 
 procedure TByCode.FormCreate(Sender: TObject);
@@ -95,7 +88,7 @@ end;
 
 procedure TByCode.FormDestroy(Sender: TObject);
 begin
-  // Destroy data (to avoid memory leak)
+  // Destroy data (to avoid memory leaks)
   BIGrid1.DestroyData;
 end;
 
@@ -247,10 +240,6 @@ begin
     if DataViewer<>nil then
        DataViewer.Select(BIGrid1.Data);
   end;
-end;
-
-procedure TByCode.PageControl1Change(Sender: TObject);
-begin
 end;
 
 // Show this form modal

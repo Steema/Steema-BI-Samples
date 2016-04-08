@@ -32,8 +32,6 @@ object ByCode: TByCode
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = -40
-    ExplicitWidth = 775
     object Panel2: TPanel
       Left = 632
       Top = 0
@@ -42,7 +40,6 @@ object ByCode: TByCode
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 672
       object Button4: TButton
         Left = 12
         Top = 8
@@ -79,9 +76,6 @@ object ByCode: TByCode
         'Excel')
       TabOrder = 0
       OnClick = LBFormatClick
-      ExplicitLeft = 10
-      ExplicitTop = 18
-      ExplicitWidth = 289
     end
   end
   object PageControl1: TPageControl
@@ -92,11 +86,8 @@ object ByCode: TByCode
     ActivePage = TabSource
     Align = alClient
     TabOrder = 2
-    OnChange = PageControl1Change
     object TabBIGrid: TTabSheet
       Caption = 'Data'
-      ExplicitWidth = 837
-      ExplicitHeight = 487
       object BIGrid1: TBIGrid
         Left = 0
         Top = 0
@@ -105,27 +96,23 @@ object ByCode: TByCode
         Align = alClient
         UseDockManager = False
         ParentBackground = False
+        ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 837
-        ExplicitHeight = 487
       end
     end
     object TabStructure: TTabSheet
       Caption = 'Structure'
       ImageIndex = 1
-      ExplicitWidth = 422
     end
     object TabSource: TTabSheet
       Caption = 'Source Samples'
       ImageIndex = 2
-      ExplicitLeft = 3
-      ExplicitTop = 22
       object PageExamples: TPageControl
         Left = 0
         Top = 0
         Width = 604
         Height = 496
-        ActivePage = TabXML
+        ActivePage = TabCSV
         Align = alClient
         TabOrder = 0
         object TabCSV: TTabSheet
@@ -214,8 +201,6 @@ object ByCode: TByCode
         object TabDatabase: TTabSheet
           Caption = 'Database'
           ImageIndex = 3
-          ExplicitLeft = 2
-          ExplicitTop = 26
           object DBGrid1: TDBGrid
             Left = 0
             Top = 0
