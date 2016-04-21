@@ -24,8 +24,6 @@ object FromBIStore: TFromBIStore
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = -154
-    ExplicitWidth = 775
     object Panel2: TPanel
       Left = 518
       Top = 0
@@ -34,7 +32,6 @@ object FromBIStore: TFromBIStore
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 672
       object Button4: TButton
         Left = 12
         Top = 8
@@ -56,8 +53,6 @@ object FromBIStore: TFromBIStore
     TabOrder = 1
     object TabStores: TTabSheet
       Caption = 'Stores'
-      ExplicitLeft = 8
-      ExplicitTop = 22
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -66,9 +61,6 @@ object FromBIStore: TFromBIStore
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 216
-        ExplicitTop = 184
-        ExplicitHeight = 41
         object LBStores: TListBox
           Left = 0
           Top = 0
@@ -78,11 +70,8 @@ object FromBIStore: TFromBIStore
           ItemHeight = 13
           TabOrder = 0
           OnClick = LBStoresClick
-          ExplicitLeft = 32
-          ExplicitTop = 160
-          ExplicitWidth = 121
         end
-        object LBDatas: TListBox
+        object LBData: TListBox
           Left = 0
           Top = 97
           Width = 185
@@ -90,9 +79,7 @@ object FromBIStore: TFromBIStore
           Align = alClient
           ItemHeight = 13
           TabOrder = 1
-          OnClick = LBDatasClick
-          ExplicitLeft = -6
-          ExplicitTop = 95
+          OnClick = LBDataClick
         end
       end
       object BIGrid1: TBIGrid
@@ -103,18 +90,14 @@ object FromBIStore: TFromBIStore
         Align = alClient
         UseDockManager = False
         ParentBackground = False
+        ParentColor = False
         TabOrder = 1
         ShowItems = True
-        ExplicitTop = -2
       end
     end
     object TabRemote: TTabSheet
       Caption = 'Remote Steema Web'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 16
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -122,9 +105,6 @@ object FromBIStore: TFromBIStore
         Height = 41
         Align = alTop
         TabOrder = 0
-        ExplicitLeft = 216
-        ExplicitTop = 184
-        ExplicitWidth = 185
         object Button1: TButton
           Left = 16
           Top = 5
@@ -144,9 +124,6 @@ object FromBIStore: TFromBIStore
         ItemHeight = 13
         TabOrder = 1
         OnClick = LBRemoteDatasClick
-        ExplicitLeft = 248
-        ExplicitTop = 160
-        ExplicitHeight = 97
       end
       object BIGrid2: TBIGrid
         Left = 121
@@ -156,9 +133,8 @@ object FromBIStore: TFromBIStore
         Align = alClient
         UseDockManager = False
         ParentBackground = False
+        ParentColor = False
         TabOrder = 2
-        ExplicitLeft = 127
-        ExplicitTop = 39
       end
     end
   end

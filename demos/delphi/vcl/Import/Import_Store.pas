@@ -17,7 +17,7 @@ type
     TabRemote: TTabSheet;
     Panel3: TPanel;
     LBStores: TListBox;
-    LBDatas: TListBox;
+    LBData: TListBox;
     BIGrid1: TBIGrid;
     Panel4: TPanel;
     Button1: TButton;
@@ -29,7 +29,7 @@ type
     procedure LBRemoteDatasClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LBStoresClick(Sender: TObject);
-    procedure LBDatasClick(Sender: TObject);
+    procedure LBDataClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -80,7 +80,7 @@ begin
   BIGrid2.DestroyData;
 end;
 
-procedure TFromBIStore.LBDatasClick(Sender: TObject);
+procedure TFromBIStore.LBDataClick(Sender: TObject);
 var Store,
     Data : String;
 begin
@@ -129,16 +129,16 @@ begin
   begin
     Store:=LBStores.Items[LBStores.ItemIndex];
 
-    // Obtain all datas from a Store, add them to LBDatas listbox
+    // Obtain all data from a Store, add them to LBData listbox
 
-    LBDatas.Items.BeginUpdate;
+    LBData.Items.BeginUpdate;
     try
-      LBDatas.Items.Clear;
+      LBData.Items.Clear;
 
       for S in TStore.AllData(Store) do
-          LBDatas.Items.Add(S);
+          LBData.Items.Add(S);
     finally
-      LBDatas.Items.EndUpdate;
+      LBData.Items.EndUpdate;
     end;
   end;
 end;
