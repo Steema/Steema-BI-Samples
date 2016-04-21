@@ -4,7 +4,7 @@ object ImportDataMain: TImportDataMain
   ActiveControl = Button2
   BorderStyle = bsDialog
   Caption = 'TeeBI Importing Data Example'
-  ClientHeight = 467
+  ClientHeight = 493
   ClientWidth = 620
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -42,7 +42,7 @@ object ImportDataMain: TImportDataMain
   end
   object Label3: TLabel
     Left = 136
-    Top = 207
+    Top = 195
     Width = 358
     Height = 13
     Caption = 
@@ -51,7 +51,7 @@ object ImportDataMain: TImportDataMain
   end
   object Label4: TLabel
     Left = 192
-    Top = 287
+    Top = 263
     Width = 228
     Height = 13
     Caption = 'From Memos, Database Connections, Datasets '
@@ -67,14 +67,21 @@ object ImportDataMain: TImportDataMain
   end
   object Label6: TLabel
     Left = 168
-    Top = 367
+    Top = 335
     Width = 269
     Height = 13
     Caption = 'Get TDataItem objects from a local or remote web Store'
   end
+  object Label7: TLabel
+    Left = 168
+    Top = 407
+    Width = 263
+    Height = 13
+    Caption = 'Convert instance fields and properties into TDataItems'
+  end
   object Button1: TButton
     Left = 144
-    Top = 176
+    Top = 164
     Width = 337
     Height = 25
     Caption = 'Import data files automatically based on file extension'
@@ -92,7 +99,7 @@ object ImportDataMain: TImportDataMain
   end
   object Button3: TButton
     Left = 144
-    Top = 256
+    Top = 232
     Width = 337
     Height = 25
     Caption = 'Import data from Components'
@@ -101,15 +108,13 @@ object ImportDataMain: TImportDataMain
   end
   object Panel1: TPanel
     Left = 0
-    Top = 426
+    Top = 452
     Width = 620
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitLeft = 224
-    ExplicitTop = 208
-    ExplicitWidth = 185
+    ExplicitTop = 426
     object Button4: TButton
       Left = 272
       Top = 8
@@ -122,11 +127,20 @@ object ImportDataMain: TImportDataMain
   end
   object Button5: TButton
     Left = 144
-    Top = 336
+    Top = 304
     Width = 337
     Height = 25
     Caption = 'Load data from a TeeBI Store'
     TabOrder = 4
     OnClick = Button5Click
+  end
+  object Button6: TButton
+    Left = 144
+    Top = 376
+    Width = 337
+    Height = 25
+    Caption = 'Load data from Objects and Records using RTTI'
+    TabOrder = 5
+    OnClick = Button6Click
   end
 end

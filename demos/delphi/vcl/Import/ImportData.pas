@@ -20,11 +20,14 @@ type
     Label5: TLabel;
     Button5: TButton;
     Label6: TLabel;
+    Button6: TButton;
+    Label7: TLabel;
     procedure Button4Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -63,6 +66,11 @@ end;
 procedure TImportDataMain.Button5Click(Sender: TObject);
 begin
   TFromBIStore.Show(Self);
+end;
+
+procedure TImportDataMain.Button6Click(Sender: TObject);
+begin
+  TFromRTTI.Show(Self);
 end;
 
 end.

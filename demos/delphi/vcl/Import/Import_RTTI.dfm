@@ -25,13 +25,23 @@ object FromRTTI: TFromRTTI
     ExplicitLeft = 200
     ExplicitTop = 200
     ExplicitWidth = 185
+    object Label1: TLabel
+      Left = 176
+      Top = 14
+      Width = 348
+      Height = 13
+      Caption = 
+        'Please see the ORM_RTTI.dpr demo for a more advanced usage of RT' +
+        'TI'
+    end
     object Button1: TButton
       Left = 16
       Top = 10
-      Width = 161
+      Width = 145
       Height = 25
       Caption = 'Import TPerson objects '
       TabOrder = 0
+      OnClick = Button1Click
     end
   end
   object BIGrid1: TBIGrid
