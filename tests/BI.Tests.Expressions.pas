@@ -250,6 +250,8 @@ procedure TExpressions_Test.Setup;
 begin
   List:=TStringList.Create;
   List.Text:=Expressions;
+
+  FormatSettings:=TFormatSettings.Invariant;
 end;
 
 procedure TExpressions_Test.TearDown;

@@ -46,6 +46,9 @@ begin
   Data:=TBISQL.From(Demo,'select * from Customers');
   try
     Assert.IsNotNull(Data);
+
+    Data.Load(Data.AsTable);
+
     Assert.IsTrue(Data.Count=91);
   finally
     Data.Free;
@@ -61,6 +64,9 @@ begin
   Data:=TBISQL.From(Demo,'select count(*) from Customers');
   try
     Assert.IsNotNull(Data);
+
+    Data.Load(Data.AsTable);
+
     Assert.AreEqual<Int64>(Data.Count,1);
     Assert.AreEqual(Data[0].Name,'Count of Customers');
     Assert.AreEqual<TDataKind>(Data[0].Kind,TDataKind.dkInt64);
@@ -76,6 +82,9 @@ begin
   Data:=TBISQL.From(Demo,'select ProductName from Products where UnitPrice>100');
   try
     Assert.IsNotNull(Data);
+
+    Data.Load(Data.AsTable);
+
     Assert.AreEqual<Int64>(Data.Count,2);
     Assert.AreEqual(Data[0].Name,'ProductName');
     Assert.AreEqual<TDataKind>(Data[0].Kind,TDataKind.dkText);

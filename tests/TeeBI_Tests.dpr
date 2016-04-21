@@ -1,15 +1,28 @@
 program TeeBI_Tests;
 
+{$DEFINE USECONSOLE}
+
 {$IFNDEF TESTINSIGHT}
+{$DEFINE USECONSOLE}
+{$ENDIF}
+
+{$IFDEF USECONSOLE}
 {$APPTYPE CONSOLE}
-{$ENDIF}{$STRONGLINKTYPES ON}
+{$ENDIF}
+
+{$STRONGLINKTYPES ON}
 uses
   SysUtils,
   {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
   {$ENDIF }
+
+  {$IFDEF USECONSOLE}
   DUnitX.Loggers.Console,
-  //DUnitX.Loggers.GUIX, // <-- pending missing Firemonkey fmx file
+  {$ELSE}
+  DUnitX.Loggers.
+  {$ENDIF}
+
   DUnitX.TestRunner,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
@@ -37,14 +50,25 @@ begin
   try
     //Check command line options, will exit if invalid
     TDUnitX.CheckCommandLine;
+
     //Create the test runner
     runner := TDUnitX.CreateRunner;
+
     //Tell the runner to use RTTI to find Fixtures
     runner.UseRTTI := True;
+
     //tell the runner how we will log things
+
     //Log to the console window
-    logger := TDUnitXConsoleLogger.Create(true); // TDUnitXGuiTestRunner
+
+    {$IFDEF USECONSOLE}
+    logger := TDUnitXConsoleLogger.Create(true);
+    {$ELSE}
+    logger := TDUnitXGuiTestRunner.Create(nil);
+    {$ENDIF}
+
     runner.AddLogger(logger);
+
     //Generate an NUnit compatible XML File
     nunitLogger := TDUnitXXMLNUnitFileLogger.Create(TDUnitX.Options.XMLOutputFile);
     runner.AddLogger(nunitLogger);

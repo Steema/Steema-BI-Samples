@@ -27,9 +27,17 @@ type
     procedure CountAll;
     [Test]
     procedure SumAll;
+
+    [Test]
+    procedure SelectSamples;
+    [Test]
+    procedure SummarySamples;
   end;
 
 implementation
+
+uses
+  BI.Tests.SummarySamples, BI.Tests.SelectSamples;
 
 { TQuery_Test }
 
@@ -37,7 +45,7 @@ procedure TQuery_Test.CountAll;
 var S : TSummary;
     tmp : TDataItem;
 begin
-  S:=TSummary.Create;
+  S:=TSummary.Create(nil);
   try
     S.AddMeasure(Data['Quantity'],TAggregate.Count);
 
@@ -58,6 +66,21 @@ begin
   end;
 end;
 
+procedure TQuery_Test.SelectSamples;
+var tmp : TDataItem;
+    t : Integer;
+begin
+  for t:=0 to TSelectSamples.Count-1 do
+  begin
+    tmp:=TDataItem.Create(TSelectSamples.Select(t));
+    try
+      tmp.Load(tmp.AsTable);
+    finally
+      tmp.Free;
+    end;
+  end;
+end;
+
 procedure TQuery_Test.Setup;
 begin
   Data:=TStore.Load('BISamples','SQLite_Demo')['"Order Details"'];
@@ -67,7 +90,7 @@ procedure TQuery_Test.SumAll;
 var S : TSummary;
     tmp : TDataItem;
 begin
-  S:=TSummary.Create;
+  S:=TSummary.Create(nil);
   try
     S.AddMeasure(Data['Quantity'],TAggregate.Sum);
 
@@ -85,6 +108,21 @@ begin
     end;
   finally
     S.Free;
+  end;
+end;
+
+procedure TQuery_Test.SummarySamples;
+var tmp : TDataItem;
+    t : Integer;
+begin
+  for t:=0 to Samples.Count-1 do
+  begin
+    tmp:=TDataItem.Create(Samples.CreateSummary(t));
+    try
+      tmp.Load(tmp.AsTable);
+    finally
+      tmp.Free;
+    end;
   end;
 end;
 

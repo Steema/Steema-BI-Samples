@@ -35,6 +35,9 @@ type
 
 implementation
 
+uses
+  System.SysUtils;
+
 { TExporting_Test }
 
 const
@@ -62,7 +65,7 @@ CRLF+
 CRLF+
 '<tbody>'+CRLF+
 CRLF+
-'<tr><td>Tomato</td><td align="right">1000</td><td align="right">123.456</td><td>Kg</td><td align="center"><input type="checkbox" checked="checked" disabled/></td></tr>'+CRLF+
+'<tr><td>Tomato</td><td align="right">1000</td><td align="right">123.46</td><td>Kg</td><td align="center"><input type="checkbox" checked="checked" disabled/></td></tr>'+CRLF+
 '<tr><td>Apples</td><td align="right">768</td><td align="right">0.78</td><td>Tn</td><td align="center"><input type="checkbox" disabled/></td></tr>'+CRLF+
 '<tr><td>Bananas</td><td align="right">42</td><td align="right">-454.1</td><td>Pounds</td><td align="center"><input type="checkbox" checked="checked" disabled/></td></tr>'+CRLF+
 '</tbody>'+CRLF+
@@ -124,6 +127,8 @@ begin
   Data[4].BooleanData[0]:=True;
   Data[4].BooleanData[1]:=False;
   Data[4].BooleanData[2]:=True;
+
+  FormatSettings := TFormatSettings.Invariant;
 end;
 
 procedure TExporting_Test.TearDown;
