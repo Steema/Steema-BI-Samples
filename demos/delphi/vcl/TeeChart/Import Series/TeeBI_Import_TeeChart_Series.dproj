@@ -77,8 +77,10 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -97,6 +99,10 @@
         </DelphiCompile>
         <DCCReference Include="Unit_Main.pas">
             <Form>SeriesImport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Unit_XYTest.pas">
+            <Form>FormXYTest</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
@@ -119,6 +125,15 @@
                 <Source>
                     <Source Name="MainSource">TeeBI_Import_TeeChart_Series.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k230.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp230.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k230.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp230.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="2">
                 <DeployFile LocalName="Win32\Debug\TeeBI_Import_TeeChart_Series.exe" Configuration="Debug" Class="ProjectOutput">

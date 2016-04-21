@@ -18,9 +18,9 @@ object SeriesImport: TSeriesImport
   TextHeight = 13
   object BIChart1: TBIChart
     Left = 0
-    Top = 0
+    Top = 41
     Width = 400
-    Height = 304
+    Height = 263
     BackWall.Brush.Gradient.Direction = gdBottomTop
     BackWall.Brush.Gradient.EndColor = clWhite
     BackWall.Brush.Gradient.StartColor = 15395562
@@ -118,14 +118,15 @@ object SeriesImport: TSeriesImport
   end
   object BIGrid1: TBIGrid
     Left = 400
-    Top = 0
+    Top = 41
     Width = 326
-    Height = 304
+    Height = 263
     Align = alClient
     UseDockManager = False
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
+    Alternate.Enabled = True
     ExplicitLeft = 480
     ExplicitTop = 96
     ExplicitWidth = 417
@@ -192,5 +193,35 @@ object SeriesImport: TSeriesImport
     ExplicitWidth = 400
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 726
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 3
+    ExplicitLeft = 280
+    ExplicitTop = 280
+    ExplicitWidth = 185
+    object Button1: TButton
+      Left = 16
+      Top = 10
+      Width = 105
+      Height = 25
+      Caption = 'Test Fill Data'
+      TabOrder = 0
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 208
+      Top = 10
+      Width = 75
+      Height = 25
+      Caption = 'XY Test'
+      TabOrder = 1
+      OnClick = Button2Click
+    end
   end
 end

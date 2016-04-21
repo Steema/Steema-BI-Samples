@@ -3,10 +3,10 @@ unit Unit_Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
   VCLTee.Series, BI.VCL.Grid, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart,
-  BI.VCL.Chart;
+  BI.VCL.Chart, Vcl.StdCtrls;
 
 type
   TSeriesImport = class(TForm)
@@ -14,8 +14,13 @@ type
     BIGrid1: TBIGrid;
     Series1: TPieSeries;
     Chart1: TChart;
+    Panel1: TPanel;
+    Button1: TButton;
+    Button2: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -28,6 +33,24 @@ var
 implementation
 
 {$R *.dfm}
+
+uses Unit_XYTest;
+
+procedure TSeriesImport.Button1Click(Sender: TObject);
+begin
+  BIChart1.ClearChart;
+  BIChart1.Fill(BIGrid1.Data);
+end;
+
+procedure TSeriesImport.Button2Click(Sender: TObject);
+begin
+  with TFormXYTest.Create(Self) do
+  try
+    ShowModal;
+  finally
+    Free;
+  end;
+end;
 
 procedure TSeriesImport.FormCreate(Sender: TObject);
 begin
