@@ -9,15 +9,62 @@ unit BI.FMX.Grid.Grid;
 interface
 
 uses
-  System.Classes, FMX.Grid, FMX.Bind.Editors, Data.Bind.Components,
+  System.Classes, System.SysUtils, System.Types,
+  {$IF CompilerVersion>25}
+  System.Math.Vectors,
+  {$ENDIF}
+  FMX.Types, FMX.Grid,
+  FMX.Bind.Editors, Data.Bind.Components,
   Data.Bind.DBScope, Data.Bind.Grid, FMX.Bind.Grid, BI.FMX.Grid, BI.DataSet,
-  BI.Data, FMX.Controls, Data.DB, System.UITypes, BI.UI;
+  BI.Data, FMX.Controls, Data.DB, System.UITypes, BI.UI, FMX.Header,
+
+  {$IF CompilerVersion<27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics,
+  {$ENDIF}
+
+  System.Rtti;
+
+{$IF CompilerVersion>27}
+{$DEFINE NODEFAULTDRAWING}
+{$ENDIF}
 
 type
   // Unfortunately, it is not possible to derive this class from FMX TGrid.
   // Bindings work partially, columns are created but the grid shows empty.
   TBIFMXGrid=class
   private
+    type
+      TPrivateGrid=class(TGrid)
+      private
+        IGrid : TObject;
+
+        {$IFDEF NODEFAULTDRAWING}
+        function GetAlignOf(const AColumn:TColumn):TTextAlign;
+
+        procedure InternalDrawCell(Sender: TObject; const Canvas: TCanvas;
+            const Column: TColumn; const Bounds: TRectF;
+            const Row: Integer; const Value: TValue; const State: TGridDrawStates);
+        {$ENDIF}
+
+        function FMXGrid:TBIFMXGrid;
+      protected
+        procedure DoAddObject(const AObject: TFmxObject); override;
+
+        {$IF CompilerVersion<31}
+        {$IF CompilerVersion>25}
+        procedure DoDrawColumnHeader(const Canvas: TCanvas; const Item: THeaderItem;
+                         const Bounds: TRectF); override;
+        {$ENDIF}
+        {$ENDIF}
+      public
+        Constructor Create(AOwner:TComponent); override;
+      end;
+
+    var
     FBindingEditor: TBindListGridEditor;
     FColumnSort : Boolean;
 
@@ -36,21 +83,40 @@ type
 
     FColorizers : TDataColorizers;
 
+    function CalcSortWidth:Single;
+
+    function FieldOf(const AColumn:TColumn):TField;
+    
     {$IF CompilerVersion>25}
     procedure ClickedHeader(Column:TColumn);
+
+    {$IF CompilerVersion>=31}
+    procedure DrawColumnHeader(Sender: TObject; const Canvas: TCanvas;
+                               const Column: TColumn;
+                               const Bounds: TRectF);
+    {$ENDIF}
+
     {$ENDIF}
 
     procedure CreateBindings;
     procedure DataChange(Sender: TObject; Field: TField);
+
+    procedure DrawSortIndicator(const ACanvas:TCanvas; const ARect:TRectF; const Desc:Boolean);
+
+    procedure RecalcColumnWidth(const AColumn:TColumn);
     procedure SetColumnSort(const Value: Boolean);
     procedure SetHeaderStyle(const AStyle:TFontStyles);
+    function Sorted(const AName:String; out ADescending:Boolean):Boolean;
+    function TryColorize(const ARow:Integer; const AColumn:TColumn; out AIndex:Integer; out APercent:Double):Boolean;
+    function TryFontColor(const AIndex:Integer; const ANewColor,ADefault:TAlphaColor):TAlphaColor;
   protected
     BindSource : TBindSourceDB;
+
+    function DataOf(const AColumn:TColumn; out ADataSet:TBIDataSet):TDataItem;
+    function TotalWidth:Single;
   public
     Constructor Create(AOwner:TComponent);
     Destructor Destroy; override;
-
-    procedure AutoSizeColumns;
 
     property Grid:TGrid read IFMXGrid;
 
@@ -63,6 +129,7 @@ type
   private
     IGrid : TBIFMXGrid;
   protected
+    procedure AutoWidth; override;
     procedure ChangedAlternate(Sender:TObject); override;
     function GetDataSource: TDataSource; override;
     function GetTotals:Boolean; override;

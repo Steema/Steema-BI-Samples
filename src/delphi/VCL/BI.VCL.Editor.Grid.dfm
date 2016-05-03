@@ -21,15 +21,11 @@ object BIGridEditor: TBIGridEditor
     Top = 0
     Width = 283
     Height = 394
-    ActivePage = TabMenu
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Columns'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Tree: TTreeView
         Left = 16
         Top = 16
@@ -297,10 +293,6 @@ object BIGridEditor: TBIGridEditor
     object TabMenu: TTabSheet
       Caption = 'Menu'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CBMenu: TCheckBox
         Left = 16
         Top = 16

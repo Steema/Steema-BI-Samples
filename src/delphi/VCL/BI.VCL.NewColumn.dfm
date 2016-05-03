@@ -87,7 +87,7 @@ object AddColumn: TAddColumn
   object RGStyle: TRadioGroup
     Left = 24
     Top = 86
-    Width = 241
+    Width = 377
     Height = 163
     Caption = '&Style:'
     ItemIndex = 0
@@ -102,7 +102,7 @@ object AddColumn: TAddColumn
   object EExpression: TEdit
     Left = 24
     Top = 289
-    Width = 241
+    Width = 377
     Height = 21
     Enabled = False
     TabOrder = 3
@@ -111,7 +111,7 @@ object AddColumn: TAddColumn
   object CBKind: TComboBox
     Left = 112
     Top = 107
-    Width = 145
+    Width = 267
     Height = 21
     Style = csDropDownList
     TabOrder = 4
@@ -120,7 +120,7 @@ object AddColumn: TAddColumn
   object CBLookup: TComboBox
     Left = 112
     Top = 143
-    Width = 145
+    Width = 267
     Height = 21
     Style = csDropDownList
     Enabled = False
@@ -130,7 +130,7 @@ object AddColumn: TAddColumn
   object CBDetail: TComboBox
     Left = 112
     Top = 180
-    Width = 145
+    Width = 267
     Height = 21
     Style = csDropDownList
     Enabled = False

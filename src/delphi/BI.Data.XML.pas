@@ -68,7 +68,7 @@ type
       IItems : TStrings;
 
     procedure EmitDetail(const Data:TDataItem; const AIndex:TCursorIndex; const Items:TStrings; const Indent:String);
-    procedure EmitRow(const AIndex:TInteger; const ADatas:TDataArray; const Items:TStrings; const Indent:String);
+    procedure EmitRow(const AIndex:TInteger; const AData:TDataArray; const Items:TStrings; const Indent:String);
     procedure EmitRows(const AIndex:TInteger);
   protected
     procedure DoEmit(const AItems: TStrings); override;

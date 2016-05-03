@@ -30,6 +30,8 @@ type
     ILength,
     IPos : Integer;
 
+    class function DataOf(const AParent:TDataItem; const AData:String;
+                          out AExp:TExpression):TDataItem; static;
     procedure DoError(const AError:String);
     function EndOfText:Boolean;
     function GetExpression: String;
@@ -47,7 +49,7 @@ type
     class function FindGroupByPart(var S:String; out APart:TDateTimePart):Boolean; static;
     class function GetFunction(var S:String; out AFunc:String):Boolean; static;
 
-    function Parse(const ErrorProc:TBIErrorProc=nil):TObject;
+    function Parse(const ErrorProc:TBIErrorProc=nil):TDataProvider;
 
     class procedure ParseSort(const AData:TDataItem; var ASort:TSortItems; const AOrder:TTextArray;
                               const SQL:Boolean=False;
@@ -73,7 +75,7 @@ type
     // Return SQL from AData Provider:
     class function From(const AData:TDataItem):String; overload; static;
 
-    class function FromAndWhere(const AMain:TDataItem; const ADatas:TDataArray):String; static;
+    class function FromAndWhere(const AMain:TDataItem; const AData:TDataArray):String; static;
   public
     // Return the "equivalent" SQL script:
     class function From(const AProvider:TDataProvider):String; overload; static;

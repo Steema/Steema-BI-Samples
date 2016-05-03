@@ -35,6 +35,7 @@ type
 
     class procedure AddItems(const AData:TDataItem; const AItems:TStrings); static;
     class procedure AddInfo(const AData:TDataItem; const AItems:TStrings); static;
+    class procedure AddKinds(const AItems:TStrings); static;
     class function BytesToString(const Bytes: Int64): String; static;
     class function ToBooleanString(const Bool:Boolean):String; static;
   end;
@@ -83,6 +84,7 @@ type
     Mode : TColorizeMode;
     TextColor : TColorizeTextColor;
 
+    function AlphaColorOf(const Value: Double): TAlphaColor;
     function ColorOf(const Value:Double):TColor;
     function Normalized(const Value:Double):Double;
     function ValidRange:Boolean;
@@ -116,6 +118,11 @@ type
     property Enabled:Boolean read FEnabled write SetEnabled default False;
 
     property OnChange:TNotifyEvent read FOnChange write FOnChange;
+  end;
+
+  TDataKindConvert=record
+  public
+    class function Convert(const AData:TDataItem; const AKind:TDataKind):Boolean; static;
   end;
 
 implementation

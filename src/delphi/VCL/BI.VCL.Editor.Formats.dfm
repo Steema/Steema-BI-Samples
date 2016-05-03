@@ -18,15 +18,11 @@ object DataFormatEditor: TDataFormatEditor
     Top = 0
     Width = 398
     Height = 325
-    ActivePage = TabCSV
+    ActivePage = TabJSON
     Align = alClient
     TabOrder = 0
     object TabCSV: TTabSheet
       Caption = 'CSV'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 16
         Top = 16
@@ -154,10 +150,6 @@ object DataFormatEditor: TDataFormatEditor
     object TabZip: TTabSheet
       Caption = 'Zip'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label6: TLabel
         Left = 16
         Top = 21
@@ -179,10 +171,6 @@ object DataFormatEditor: TDataFormatEditor
     object TabExcel: TTabSheet
       Caption = 'Excel'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label7: TLabel
         Left = 10
         Top = 16
@@ -209,6 +197,23 @@ object DataFormatEditor: TDataFormatEditor
         Position = 1
         TabOrder = 1
         Thousands = False
+      end
+    end
+    object TabJSON: TTabSheet
+      Caption = 'JSON'
+      ImageIndex = 3
+      object RGJSONStyle: TRadioGroup
+        Left = 16
+        Top = 16
+        Width = 185
+        Height = 105
+        Caption = '&Import Style:'
+        ItemIndex = 0
+        Items.Strings = (
+          'Flat Table'
+          'Hierarchical')
+        TabOrder = 0
+        OnClick = RGJSONStyleClick
       end
     end
   end

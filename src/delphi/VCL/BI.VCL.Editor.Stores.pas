@@ -27,7 +27,7 @@ type
     LBStores: TListBox;
     PanelButtons: TPanel;
     Panel4: TPanel;
-    Button3: TButton;
+    BClose: TButton;
     PageControl1: TPageControl;
     TabFolder: TTabSheet;
     TabWeb: TTabSheet;
@@ -42,7 +42,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure LBStoresClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
+    procedure BCloseClick(Sender: TObject);
     procedure Folder1Click(Sender: TObject);
     procedure EFolderChange(Sender: TObject);
     procedure WebServer1Click(Sender: TObject);

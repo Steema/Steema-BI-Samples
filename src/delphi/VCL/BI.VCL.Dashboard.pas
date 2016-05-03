@@ -27,7 +27,8 @@ uses
   VCL.Controls, VCL.StdCtrls, VCL.ExtCtrls, VCL.Graphics, VCL.ComCtrls,
   VCL.Forms,
   {$ENDIF}
-  BI.Data, BI.Dashboard;
+
+  BI.Data, BI.Expression, BI.Dashboard;
 
 type
   {$IFDEF FMX}
@@ -39,6 +40,18 @@ type
   TGraphic=TBitmap;
   TControlClass=class of TWinControl;
   {$ENDIF}
+
+  TLayoutPanel=class(TPanel)
+  private
+    FBackColor: TAlphaColor;
+    procedure SetBackColor(const Value: TAlphaColor);
+  public
+    DefaultColor : TAlphaColor;
+
+    Constructor Create(AOwner:TComponent); override;
+
+    property BackColor:TAlphaColor read FBackColor write SetBackColor default TAlphaColors.Null;
+  end;
 
   TBIVisual=class;
 
@@ -58,28 +71,39 @@ type
 
     type
       TTargetControl=record
+      private
+        {$IFDEF FMX}
+        FFrame : TRectangle;
+        FText : TText;
+        {$ELSE}
+        FFrame : TShape;
+        {$ENDIF}
       public
         Name : String;
         Control : TControl;
+        Layout : TLayoutItem;
+
+        procedure ShowFrame(const AShow:Boolean);
+        procedure ShowText(const AShow:Boolean);
       end;
 
       TTargetControls=Array of TTargetControl;
 
       TTargetControlsHelper=record helper for TTargetControls
       public
-        procedure Add(const AName:String; const AControl:TControl);
-        function FindControl(const AName:String):TControl;
+        function Add(const AName:String; const AControl:TControl; const ALayout:TLayoutItem):Integer;
+        function Count:Integer; inline;
+        function FindControl(const AName:String):TControl; overload;
+        function FindControl(const AItem:TLayoutItem):TControl; overload;
+        function FindLayout(const AControl:TControl):TLayoutItem;
       end;
-
-    var
-      Targets : TTargetControls;
 
     //procedure AddControl(const AControl:TControl; const APosition:String; const AItem:TDashboardItem);
     procedure AddToParent(const AControl:TControl; const AParent:TWinControl; const AItem:TDashboardItem);
 
     procedure ButtonsChange(Sender:TObject);
 
-    procedure ChangedVariable(const Sender:TChangeListener; const AValue:String);
+    procedure ChangedVariable(const Sender:TChangeListener; const AValue:TExpression);
     procedure Clear;
 
     procedure ComboChange(Sender:TObject);
@@ -90,16 +114,17 @@ type
 
     procedure EmitDashboard(const AItem:TDashboardItem; const APosition:String);
     procedure EmitLayout(const ALayout:TLayoutItem; const ShowNames:Boolean=False);
-    function EmitPanel(const AItem:TDashboardItem; const AKind:String; const APosition:String=''):TControl;
 
     function GetTarget(const AName:String; const AItem:TDashboardItem): TObject;
 
     procedure CheckBoxChange(Sender:TObject);
     procedure ListChange(Sender: TObject);
+    procedure TreeChange(Sender:TObject);
 
     function NewGroupItem(const AText:String):TControl;
 
     procedure RefreshLabel(const ALabel:TLabel; const AItem:TDashboardItem);
+    procedure RemoveNested(AControl: TControl);
 
     class procedure SetFont(const AVCLFont:TFont; const AFont:TBIFont); static;
 
@@ -111,9 +136,14 @@ type
     procedure AddListener(const AName:String; const ADataIndex:Integer); override;
     function CanRefreshData(const AControl:TControl):Boolean; virtual;
 
-    function CreatePanel(const ABack:TAlphaColor):TPanel; overload;
-    function CreatePanel:TPanel; overload; inline;
+    function CreateControl(const ALayout:TLayoutItem; const AParent:TWinControl;
+                           const APrefix:String;
+                           const ShowNames:Boolean):TWinControl;
 
+    function CreatePanel(const ABack:TAlphaColor):TLayoutPanel; overload;
+    function CreatePanel:TLayoutPanel; overload; inline;
+
+    function EmitPanel(const AItem:TDashboardItem; const AKind:String; const APosition:String=''):TControl;
     function EnsurePanelData(const APanel:TBIPanel):TDataItem;
     class function GetItemOf(const Sender:TControl):TDashboardItem; static;
     function NewControl(const AKind:String; const AItem:TDashboardItem):TControl; virtual;
@@ -121,10 +151,13 @@ type
     procedure PostAddControl(const AControl:TControl; const AItem:TDashboardItem); virtual;
     procedure RadioChange(Sender: TObject); virtual;
   public
+    Targets : TTargetControls;
+
     procedure Init(const ADashboard:TDashboard; const ALayout:String=''; const AParams:TStrings=nil); override;
     procedure Finish; override;
 
     procedure Emit(const ADashboard:TDashboard; const AItem:Integer; const APosition:String); override;
+    procedure SetNested(const AItem:TLayoutItem; const AName:String; const ShowNames:Boolean);
 
     property Control:TBIVisual read FControl write FControl;
   end;
@@ -215,6 +248,8 @@ type
 
     // Use first Dashboard, if it exists
     procedure Generate; overload;
+
+    procedure ResizeLayout;
 
     property Render:TRender read FRender write SetRender;
     property Template:TBITemplate read FTemplate write SetTemplate;

@@ -41,6 +41,12 @@ type
     class var
       Null:TData;
 
+    Constructor Create; overload; virtual;
+
+    procedure Assign(const Source:TExpression); virtual; abstract;
+
+    class function Clone(const AExpression:TExpression):TExpression; static;
+
     class function Evaluate(const S:String):TData; static;
     class function FromString(const S:String):TExpression; overload; static;
     class function FromString(const S:String;
@@ -59,6 +65,7 @@ type
 
     Constructor Create(const AValue:Int64);
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -69,6 +76,7 @@ type
 
     Constructor Create(const AValue:Extended);
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
 
@@ -82,6 +90,7 @@ type
 
     Constructor Create(const AValue:Boolean);
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -92,6 +101,7 @@ type
 
     Constructor Create(const AValue:TDateTime);
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
 
@@ -108,6 +118,7 @@ type
 
     Constructor Create(const AValue:String);
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -123,6 +134,8 @@ type
     Destructor Destroy; override;
 
     procedure Add(const AValue:TExpression);
+    procedure Assign(const Source:TExpression); override;
+    procedure Clear;
 
     function Value:TData; override;
     function ToString:String; override;
@@ -138,6 +151,7 @@ type
 
     Destructor Destroy; override;
 
+    procedure Assign(const Source:TExpression); override;
     procedure Traverse(const AProc:TExpressionProc); override;
   end;
 
@@ -163,6 +177,7 @@ type
 
     Constructor Create(const ALeft:TExpression; const AOperand:TArithmeticOperand; const ARight:TExpression);
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -198,7 +213,11 @@ type
   public
     Operand : TLogicalOperand;
 
-    Constructor Create(const ALeft:TExpression; const AOperand:TLogicalOperand; const ARight:TExpression);
+    Constructor Create; override;
+    Constructor Create(const ALeft:TExpression; const AOperand:TLogicalOperand;
+                       const ARight:TExpression); overload;
+
+    procedure Assign(const Source: TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -210,6 +229,7 @@ type
     Constructor Create(const AExpression:TExpression);
     Destructor Destroy; override;
 
+    procedure Assign(const Source:TExpression); override;
     procedure Traverse(const AProc:TExpressionProc); override;
   end;
 
@@ -247,6 +267,7 @@ type
   public
     Operand : TMathOperand;
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -293,6 +314,7 @@ type
   public
     Part : TDateTimePart;
 
+    procedure Assign(const Source:TExpression); override;
     class function FromString(const S:String; out APart:TDateTimePart):Boolean; static;
 
     function Value:TData; override;
@@ -311,6 +333,7 @@ type
   public
     Operand : TTextUnaryOperand;
 
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -328,6 +351,8 @@ type
     Operand : TTextLogicalOperand;
 
     Constructor Create(const ALeft:TExpression; const AOperand:TTextLogicalOperand; const ARight:TExpression);
+
+    procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
   end;

@@ -19,15 +19,11 @@ object SummaryEditor: TSummaryEditor
     Top = 0
     Width = 309
     Height = 366
-    ActivePage = TabMeasures
+    ActivePage = TabDimensions
     Align = alClient
     TabOrder = 0
     object TabMeasures: TTabSheet
       Caption = 'Measures'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PanelGroups: TPanel
         Left = 0
         Top = 0
@@ -100,16 +96,12 @@ object SummaryEditor: TSummaryEditor
           Top = 161
           Width = 299
           Height = 176
-          ActivePage = TabMeasure
+          ActivePage = TabMeasureInfo
           Align = alBottom
           TabOrder = 0
           OnResize = PageMeasuresResize
           object TabMeasure: TTabSheet
             Caption = 'Aggregate'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object CBAggregate: TComboBox
               Left = 8
               Top = 9
@@ -140,10 +132,6 @@ object SummaryEditor: TSummaryEditor
           object TabCalc: TTabSheet
             Caption = 'Calculation'
             ImageIndex = 3
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object RGRunning: TRadioGroup
               Left = 135
               Top = 3
@@ -186,10 +174,6 @@ object SummaryEditor: TSummaryEditor
           object TabMeasureInfo: TTabSheet
             Caption = 'Data'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label4: TLabel
               Left = 9
               Top = 82
@@ -237,10 +221,6 @@ object SummaryEditor: TSummaryEditor
     object TabDimensions: TTabSheet
       Caption = 'Groups'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -306,16 +286,12 @@ object SummaryEditor: TSummaryEditor
         Top = 145
         Width = 301
         Height = 193
-        ActivePage = TabGroup
+        ActivePage = TabGroupData
         Align = alBottom
         TabOrder = 2
         OnResize = PageGroupsResize
         object TabGroup: TTabSheet
           Caption = 'Layout'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object RGLayout: TRadioGroup
             Left = 8
             Top = 11
@@ -333,10 +309,6 @@ object SummaryEditor: TSummaryEditor
         object TabHistogram: TTabSheet
           Caption = 'Histogram'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label1: TLabel
             Left = 8
             Top = 76
@@ -452,10 +424,6 @@ object SummaryEditor: TSummaryEditor
         object TabGroupData: TTabSheet
           Caption = 'Data'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label3: TLabel
             Left = 8
             Top = 12
@@ -506,10 +474,6 @@ object SummaryEditor: TSummaryEditor
     object TabSheet2: TTabSheet
       Caption = 'Options'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 19
         Top = 17
@@ -540,10 +504,6 @@ object SummaryEditor: TSummaryEditor
     object TabFilter: TTabSheet
       Caption = 'Filter'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LFilter: TLabel
         Left = 12
         Top = 64

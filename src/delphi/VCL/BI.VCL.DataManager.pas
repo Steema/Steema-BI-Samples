@@ -27,7 +27,6 @@ type
     PanelStores: TPanel;
     Label1: TLabel;
     CBStores: TComboBox;
-    Button1: TButton;
     Panel1: TPanel;
     LSearch: TLabel;
     ESearch: TEdit;
@@ -54,6 +53,8 @@ type
     DataMenu: TPopupMenu;
     ViewData1: TMenuItem;
     BRename: TButton;
+    PanelManage: TPanel;
+    BManageStores: TButton;
     procedure TreeChange(Sender: TObject; Node: TTreeNode);
     procedure TreeExpanding(Sender: TObject; Node: TTreeNode;
       var AllowExpansion: Boolean);
@@ -65,7 +66,7 @@ type
     procedure BViewDataClick(Sender: TObject);
     procedure CBStoresChange(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BManageStoresClick(Sender: TObject);
     procedure BAddClick(Sender: TObject);
     procedure BDeleteClick(Sender: TObject);
     procedure Files1Click(Sender: TObject);
@@ -77,6 +78,7 @@ type
     procedure PanelSearchResize(Sender: TObject);
     procedure ViewData1Click(Sender: TObject);
     procedure BRenameClick(Sender: TObject);
+    procedure PanelStoresResize(Sender: TObject);
   private
     { Private declarations }
 
@@ -89,7 +91,7 @@ type
     IUpdatingTree : Boolean;
 
     procedure AddNodeChildren(const ANode:TTreeNode);
-    procedure AddNodeDatas(const AStore:String; const Children:Boolean; const Filter:String='');
+    procedure AddNodeData(const AStore:String; const Children:Boolean; const Filter:String='');
     procedure AddStores;
     function AskName:String;
     procedure CheckEditor;
@@ -123,7 +125,8 @@ type
                                const AStore:String='';
                                const ACurrent:TDataItem=nil):TDataManager; static;
 
-    function SelectedDatas:TDataItem;
+    function SelectedData:TDataItem;
+    function SelectedDefinition:TDataDefinition;
 
     function Selected: TDataItem;
     procedure SelectData(const AData:TDataItem);

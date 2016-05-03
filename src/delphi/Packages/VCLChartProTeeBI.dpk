@@ -32,6 +32,7 @@ package VCLChartProTeeBI;
 
 requires
   rtl,
+  teebi,
   VCLTeeBI,
   TeePro923,
   TeeUI923,
@@ -45,6 +46,7 @@ requires
 contains
   BI.VCL.PDF in '..\VCL\BI.VCL.PDF.pas',
   BI.VCL.LinkDiagram in '..\VCL\BI.VCL.LinkDiagram.pas' {DataDiagram},
+  BI.VCL.Dashboard.Chart in '..\VCL\BI.VCL.Dashboard.Chart.pas',
   BI.VCL.Visualizer.Chart in '..\VCL\BI.VCL.Visualizer.Chart.pas',
   BI.VCL.Editor.Visualizer.Chart in '..\VCL\BI.VCL.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
   BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas';

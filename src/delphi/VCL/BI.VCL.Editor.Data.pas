@@ -172,7 +172,7 @@ type
     procedure TryChange(const ATag,AText:String);
     procedure TryChangeMultiLine(const ATag,AText:String);
     procedure TryWebChange(const ATag, AText: String);
-    procedure TryFillWebDatas;
+    procedure TryFillWebData;
     procedure WebSettings;
   protected
     ITabFormats : TTabSheet;
@@ -184,7 +184,11 @@ type
     { Public declarations }
     Data : TDataDefinition;
 
-    class function NewWeb(const AOwner:TComponent; out AWeb:String):Boolean; static;
+    function Description:String;
+
+    class function NewDefinition(const AOwner:TComponent;
+                       const AKind:TDataDefinitionKind;
+                       out AName:String):TDataDefinition; static;
     procedure Select(const AStore,AName:String); overload;
     procedure Select(const AData:TDataDefinition); overload;
 

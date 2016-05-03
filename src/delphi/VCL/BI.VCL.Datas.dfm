@@ -1,7 +1,7 @@
-object FormDatas: TFormDatas
+object FormData: TFormData
   Left = 0
   Top = 0
-  Caption = 'FormDatas'
+  Caption = 'Form Data'
   ClientHeight = 589
   ClientWidth = 321
   Color = clBtnFace
@@ -22,7 +22,7 @@ object FormDatas: TFormDatas
     Align = alTop
     ExplicitWidth = 324
   end
-  object ListDatas: TListBox
+  object ListData: TListBox
     Left = 0
     Top = 0
     Width = 321
@@ -30,7 +30,7 @@ object FormDatas: TFormDatas
     Align = alTop
     ItemHeight = 13
     TabOrder = 0
-    OnClick = ListDatasClick
+    OnClick = ListDataClick
   end
   object ListItems: TListBox
     Left = 0

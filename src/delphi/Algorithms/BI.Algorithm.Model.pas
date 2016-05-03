@@ -9,48 +9,9 @@ unit BI.Algorithm.Model;
 interface
 
 uses
-  BI.Arrays, BI.Data;
+  System.Classes, BI.Arrays, BI.Data, BI.Algorithm;
 
 type
-  TQuantityStyle=(Exact, Minimum, Maximum);
-
-  TDataKinds=set of TDataKind;
-
-  TDataKindsHelper=record helper for TDataKinds
-  public
-    const Numeric:TDataKinds=[dkInt32,dkInt64,dkSingle,dkDouble,dkExtended];
-  end;
-
-  TAlgorithmNeed=record
-  public
-    Data : TDataArray;
-    Kinds : TDataKinds;
-    Quantity : Integer;
-    Style : TQuantityStyle;
-
-    procedure CheckData;
-    procedure Verify;
-  end;
-
-  // Describes the input parameter an algorithm requires
-  TAlgorithmNeeds=Array of TAlgorithmNeed;
-
-  TAlgorithmNeedsHelper=record helper for TAlgorithmNeeds
-  public
-    procedure Add(const ANeed:TAlgorithmNeed);
-    function Count:Integer; inline;
-    procedure Verify;
-  end;
-
-  // Base class for all algorithms
-  TBaseAlgorithm=class
-  public
-    Needs : TAlgorithmNeeds;
-
-    Constructor Create; virtual;
-    procedure Calculate; virtual; abstract;
-  end;
-
   // Base class for machine-learning algorithms that require a "Target"
   // (or "Class" or "Label") data
   TModel=class(TBaseAlgorithm)
@@ -65,10 +26,10 @@ type
     class procedure NormalizeBoolean(const AData:TDataItem); static;
     class procedure NormalizeText(const AData:TDataItem); static;
   public
-    Constructor Create; override;
+    Constructor Create(AOwner:TComponent); override;
 
     class procedure Normalize(const AData:TDataItem); overload; static;
-    class procedure Normalize(const ADatas:TDataArray); overload; static;
+    class procedure Normalize(const AData:TDataArray); overload; static;
   end;
 
   TSplitMode=(Random,Start);

@@ -71,7 +71,7 @@ type
     MenuItem3: TMenuItem;
     TabData: TTabItem;
     MemoImportLog: TMemo;
-    ListDatas: TListView;
+    ListData: TListBox;
     Label7: TLabel;
     LNextRefresh: TLabel;
     MenuItem1: TMenuItem;
@@ -103,7 +103,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
-    procedure ListDatasChange(Sender: TObject);
+    procedure ListDataChange(Sender: TObject);
     procedure CBRefreshChange(Sender: TObject);
     procedure PeriodChange(Sender: TObject);
     procedure RefreshUnitChange(Sender: TObject);
@@ -119,6 +119,7 @@ type
 
     FOnSelect : TNotifyEvent;
 
+    ICurrent : TDataItem;
     IEditor : TDataEditor;
 
     IStore : String;
@@ -129,9 +130,10 @@ type
     procedure AddStores;
     function AskName:String;
     function Current:String;
-    function CurrentDatas:TDataItem; // ???
+    function CurrentData:TDataItem; // ???
+    function CurrentSource:Integer;
     function CurrentStore:String;
-    procedure FillDatas;
+    procedure FillData;
     procedure ImportingData(const Sender:TObject; const Percent:Single; var Cancel:Boolean);
     function ImportingError(const Sender:TObject; const Text:String):Boolean;
     procedure LogException(const Text:String);
@@ -149,7 +151,8 @@ type
     function Selected:TDataItem;
 
     class function ChooseName(const AOwner:TComponent; const AStore:String=''):String; static;
-    class function ChooseData(const AOwner:TComponent; const AStore:String=''):TDataItem; static;
+    class function ChooseData(const AOwner:TComponent; const AStore:String='';
+                              const ACurrent:TDataItem=nil):TDataItem; static;
     class procedure Edit(const AOwner:TComponent; const AStore:String=''); static;
     class function EmbedChoose(const AOwner:TComponent; const AParent:TControl; const AStore:String=''):TDataManager; static;
 

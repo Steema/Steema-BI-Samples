@@ -333,8 +333,8 @@ object DataManager: TDataManager
         Size.PlatformDefault = False
         TabOrder = 0
         Visible = False
-        Viewport.Width = 398.000000000000000000
-        Viewport.Height = 104.000000000000000000
+        Viewport.Width = 394.000000000000000000
+        Viewport.Height = 100.000000000000000000
       end
       object Layout1: TLayout
         Align = Top
@@ -368,8 +368,8 @@ object DataManager: TDataManager
           Size.Height = 73.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
-          Viewport.Width = 257.000000000000000000
-          Viewport.Height = 73.000000000000000000
+          Viewport.Width = 253.000000000000000000
+          Viewport.Height = 69.000000000000000000
         end
         object BImportNow: TButton
           Position.X = 16.000000000000000000
@@ -449,11 +449,7 @@ object DataManager: TDataManager
       OnClick = MenuItem1Click
     end
   end
-  object ListDatas: TListView
-    ItemAppearanceClassName = 'TListItemAppearance'
-    ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
-    HeaderAppearanceClassName = 'TListHeaderObjects'
-    FooterAppearanceClassName = 'TListHeaderObjects'
+  object ListData: TListBox
     Align = Right
     Position.X = 368.000000000000000000
     Position.Y = 40.000000000000000000
@@ -462,7 +458,12 @@ object DataManager: TDataManager
     Size.PlatformDefault = False
     TabOrder = 6
     Visible = False
-    OnChange = ListDatasChange
-    SearchVisible = True
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = ListDataChange
+    Viewport.Width = 312.000000000000000000
+    Viewport.Height = 430.000000000000000000
   end
 end

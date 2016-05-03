@@ -40,25 +40,32 @@ requires
   vclimg;
 
 contains
+  BI.VCL.Component in '..\VCL\BI.VCL.Component.pas',
   BI.VCL.DataManager in '..\VCL\BI.VCL.DataManager.pas' {DataManager},
   BI.VCL.FilterEditor in '..\VCL\BI.VCL.FilterEditor.pas' {DataFilterEditor},
   BI.VCL.Grid in '..\VCL\BI.VCL.Grid.pas',
   BI.VCL.GridForm in '..\VCL\BI.VCL.GridForm.pas' {BIGridForm},
-  BI.VCL.Datas in '..\VCL\BI.VCL.Datas.pas' {FormDatas},
+  BI.VCL.DataSelect in '..\VCL\BI.VCL.DataSelect.pas' {DataSelector},
   BI.VCL.DataViewer in '..\VCL\BI.VCL.DataViewer.pas' {DataViewer},
   BI.VCL.DataTree in '..\VCL\BI.VCL.DataTree.pas',
+  BI.VCL.DataWorkflow in '..\VCL\BI.VCL.DataWorkflow.pas' {BIWorkflowEditor},
   BI.VCL.Editor.Grid in '..\VCL\BI.VCL.Editor.Grid.pas' {BIGridEditor},
   BI.VCL.Editor.Summary in '..\VCL\BI.VCL.Editor.Summary.pas' {SummaryEditor},
   BI.VCL.Editor.DataSelect in '..\VCL\BI.VCL.Editor.DataSelect.pas' {DataSelectEditor},
   BI.VCL.NewColumn in '..\VCL\BI.VCL.NewColumn.pas' {AddColumn},
   BI.VCL.Editor.DataSet in '..\VCL\BI.VCL.Editor.DataSet.pas' {BIDataSetEditor},
   BI.VCL.Editor.Data in '..\VCL\BI.VCL.Editor.Data.pas' {DataEditor},
+  BI.VCL.Editor.DataComponent in '..\VCL\BI.VCL.Editor.DataComponent.pas' {DataComponent},
   BI.VCL.Editor.Formats in '..\VCL\BI.VCL.Editor.Formats.pas' {DataFormatEditor},
+  BI.VCL.Editor.Query in '..\VCL\BI.VCL.Editor.Query.pas' {BIQueryEditor},
   BI.VCL.Editor.Stores in '..\VCL\BI.VCL.Editor.Stores.pas' {StoreEditor},
+  BI.VCL.Editor.WorkflowItem in '..\VCL\BI.VCL.Editor.WorkflowItem.pas' {WorkflowItemEditor},
   BI.VCL.Grid.DBGrid in '..\VCL\BI.VCL.Grid.DBGrid.pas',
   BI.VCL.Visualizer in '..\VCL\BI.VCL.Visualizer.pas',
   BI.VCL.Editor.Visualizer in '..\VCL\BI.VCL.Editor.Visualizer.pas' {VisualizerEditor},
-  BI.VCL.Dashboard in '..\VCL\BI.VCL.Dashboard.pas';
+  BI.VCL.Dashboard in '..\VCL\BI.VCL.Dashboard.pas',
+  BI.VCL.Tree in '..\VCL\BI.VCL.Tree.pas',
+  BI.VCL.Tree.TreeView in '..\VCL\BI.VCL.Tree.TreeView.pas';
 
 end.
 

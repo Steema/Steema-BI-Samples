@@ -33,9 +33,9 @@ type
   end;
 
 const
-  TeeBI_Version=20160304;
-  TeeBI_VersionString='v1 20160304';
-  TeeBI_VersionMode='(BETA 10)';
+  TeeBI_Version=20160402;
+  TeeBI_VersionString='v1 20160402';
+  TeeBI_VersionMode='(BETA 11)';
   TeeBI_Description='TeeBI';
   TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2016 by Steema Software';
 

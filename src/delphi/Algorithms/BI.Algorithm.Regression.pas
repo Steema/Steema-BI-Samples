@@ -9,7 +9,8 @@ unit BI.Algorithm.Regression;
 interface
 
 uses
-  BI.Data, BI.Arrays, BI.Plugins.R, BI.Algorithm.Model, System.Classes;
+  System.Classes,
+  BI.Data, BI.Arrays, BI.Plugins.R, BI.Algorithm;
 
 type
   TRegression=class(TBaseAlgorithm)
@@ -36,7 +37,7 @@ type
 
     Count : TInteger;
 
-    Constructor Create; override;
+    Constructor Create(AOwner:TComponent); override;
 
     procedure Calculate; override;
     function MeanSquaredError(const X,Y:TDataItem):TFloat;

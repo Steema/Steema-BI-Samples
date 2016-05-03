@@ -42,7 +42,7 @@ type
     Constructor Create(const Definition:TDataDefinition=nil;
                        const MultiThread:Boolean=False); virtual;
 
-    class function FromDatas(const ADatas:TDataArray):TDataItem; static;
+    class function FromData(const AData:TDataArray):TDataItem; static;
 
     property IgnoreMissing:Boolean read FIgnoreMissing write FIgnoreMissing default False;
 
@@ -59,21 +59,27 @@ type
   public
     Active : Boolean;
     Data : TDataItem;
+    OwnsData : Boolean;
   end;
 
   TDataCursorItems=Array of TDataCursorItem;
 
   TDataCursorItemsHelper=record helper for TDataCursorItems
   public
+    procedure Clear;
     function Count:Integer;
     procedure Delete(const AIndex:Integer);
     procedure Exchange(const A,B:Integer);
+    function Find(const AData:TDataItem):Integer;
   end;
 
   TDataCursor=class(TDataProvider)
   private
     FCurrent : TInteger;
     FFilter : TExpression;
+    FMax : TInteger;
+    FStart : TInteger;
+    FUseFilter : Boolean;
 
     function ApplyFilterTo(const AIndex:TCursorIndex):TCursorIndex;
     procedure CalcStartFinish(out AStart,AFinish:TInteger);
@@ -86,6 +92,9 @@ type
     ValidIndex : Boolean;
 
     procedure ApplyFilter;
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+    procedure SetDirectFilter(const Value: TExpression);
+
     property Current:TInteger read FCurrent;
   public
     Data : TDataItem;
@@ -93,14 +102,15 @@ type
     Index : TCursorIndex;
     SortBy : TSortItems;
 
-    Start,
-    Max : TInteger;
-
-    Constructor Create;
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     procedure Add(const AData:TDataItem); overload;
-    procedure Assign(const Value:TDataCursor);
+    procedure Add(const AData:TDataItem; const AExpression:String); overload;
+    procedure Add(const AData:TDataArray); overload;
+    procedure Add(const AExpression:TExpression); overload;
+
+    procedure Assign(Source:TPersistent); override;
     procedure Clear;
     function Count:TInteger;
     function CreateFilter(const AMaster,ADetail:TDataItem; out MasterCol:TExpression):TLogicalExpression;
@@ -114,8 +124,6 @@ type
     procedure GuessItems(const S:String);
 
     function IndexOf(const AData:TDataItem):Integer;
-
-    procedure Load(const AData:TDataItem; const Children:Boolean); override;
 
     procedure LoadData;
 
@@ -134,7 +142,11 @@ type
     procedure SetItems(const AItems:TDataArray);
     procedure SetMasterExpression(const Master:TDataItem; const MasterCol:TExpression; const AIndex:TInteger);
 
+  published
     property Filter:TExpression read FFilter write SetFilter;
+    property Start:TInteger read FStart write FStart;
+    property Max:TInteger read FMax write FMax;
+    property UseFilter:Boolean read FUseFilter write FUseFilter;
   end;
 
   TBIExport=class;
@@ -215,12 +227,11 @@ type
     IFiles : TStringDynArray;
     IResult : Array of TDataArray;
 
-    class procedure AppendDatas(var AResult:TDataArray; const AItems:TDataArray); static;
+    class procedure AppendData(var AResult:TDataArray; const AItems:TDataArray); static;
     class function DataArrayFrom(const AData:TDataItem):TDataArray; static;
     function DoImportFile(const FileName:String):TDataArray; virtual;
     function DoImportStream(const AExtension:String; const AStream:TStream):TDataArray; virtual;
     function FindImporterClass(const AFileName:String):TBIFileSourceClass;
-    function GuessFromContent(const S:TStrings):TBIFileSourceClass;
     function ImportOneFile(const AFile:String):TDataArray;
     function ImportURLFile(const FileName:String):TDataArray;
     function ImportZip(const FileName:String):TDataArray;
@@ -236,6 +247,7 @@ type
     class function FromURL(const AURL:String):TDataItem;
 
     class function GetFileSize(const FileName:String):Int64; static;
+    class function GuessFromContent(const S:TStrings):TBIFileSourceClass; static;
 
     class function IncludedFiles(const AStore:String; const ADef:TDataDefinition):TStringDynArray; static;
 
@@ -309,36 +321,36 @@ type
   private
     FDistinct : Boolean;
 
-    IMain : TDataItem;
-
     procedure AddItem(const AResult,AItem:TDataItem);
     function FoundLast(const AResult:TDataItem; const ACount:TInteger):Boolean;
-    procedure ReplaceSortDatas(const AData:TDataItem);
-    function SetupHops(const Hops:TDataHops):TInt32Array;
+    procedure ReplaceSortData(const AData:TDataItem);
   protected
+    IMain : TDataItem;
+
     procedure GetItems(const AData:TDataItem); override;
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
   public
     Destructor Destroy; override;
 
-    procedure Add(const AData:TDataItem; const AExpression:String); overload;
-    procedure Add(const ADatas:TDataArray); overload;
-    procedure Add(const AExpression:TExpression); overload;
-    procedure Assign(const Value:TDataSelect);
+    procedure Assign(Source:TPersistent); override;
 
     function Calculate:TDataItem; overload;
     procedure Calculate(const AData:TDataItem); overload;
 
-    procedure Load(const AData:TDataItem; const Children:Boolean); override;
     function MainData:TDataItem;
+
+    class function SetupHops(const Hops:TDataHops; const AItems:TDataArray):TInt32Array;
+
     function ToString:String; override;
 
     property Distinct:Boolean read FDistinct write FDistinct default False;
   end;
 
   // Simple method to Clone a TDataItem using a temporary memory stream
-  TDataClone=record
+  TDataClone=record // class(TDataProvider) ?
   public
-    class function Clone(const AData:TDataItem):TDataItem; static;
+    class function Clone(const AData:TDataItem):TDataItem; overload; static;
+    class procedure Clone(const ASource,ADest:TDataItem); overload; static;
   end;
 
 implementation

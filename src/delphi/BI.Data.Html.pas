@@ -35,8 +35,8 @@ type
     function AddRows(const AItems: TStrings):TInteger;
     function CellAlign(const AData:TDataItem; const AddLeft:Boolean):String;
     function Headers(const AddSortIcons:Boolean):String;
-    function MaxDepth(const ADatas:TDataArray):Integer;
-    function Row(const AIndex:TInteger; const ADatas:TDataArray):String;
+    function MaxDepth(const AData:TDataArray):Integer;
+    function Row(const AIndex:TInteger; const AData:TDataArray):String;
   protected
     procedure DoEmit(const AItems: TStrings); override;
   public

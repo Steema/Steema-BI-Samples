@@ -25,7 +25,7 @@ type
     class property Engine:TPythonEngine read GetEngine;
     class property Output:TStrings read FOutput write FOutput;
 
-    class function DatasRowToVector(const AIndex:TInteger; const ADatas:TDataArray;
+    class function DataRowToVector(const AIndex:TInteger; const AData:TDataArray;
                       const UseMissing:Boolean=True):String; static;
 
     class function Evaluate(const AText:String):PPyObject; static;
@@ -34,7 +34,7 @@ type
     class function Execute(const AScript:TStrings):Boolean; overload; static;
     class function Execute(const AText:String):Boolean; overload; static;
 
-    class function FromData(const AName:String; const ADatas:TDataArray; const Index:TNativeIntArray=nil;
+    class function FromData(const AName:String; const AData:TDataArray; const Index:TNativeIntArray=nil;
                       const UseMissing:Boolean=True):String; overload; static;
 
     class function FromData(const AName:String; const AData:TDataItem; const Index:TNativeIntArray=nil;

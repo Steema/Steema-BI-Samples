@@ -30,7 +30,7 @@ uses
   {$IFDEF FMX}
   FMXTee.Chart, FMXTee.Engine, FMXTee.Series,
   {$ELSE}
-  VCL.Controls, VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series,
+  VCL.Controls, VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series, VCLTee.BubbleCh,
   {$ENDIF}
 
   {$IFDEF TEEPRO}
@@ -71,24 +71,31 @@ type
     procedure ClearTitles;
 
     {$IFDEF TEEPRO}
-    function CreateFinancial(const ADatas:TDataArray; const Dimensions:Integer):TOHLCSeries;
-    procedure CreateGrid3D(const ADatas:TDataArray);
-    procedure CreateXYZ(const ADatas:TDataArray);
+    function CreateFinancial(const AData:TDataArray; const Dimensions:Integer):TOHLCSeries;
+    procedure CreateGrid3D(const AData:TDataArray);
+    procedure CreateXYZ(const AData:TDataArray);
     {$ENDIF}
 
     function CreateSeries(const Y:TDataItem):TChartSeries;
-    class function ExistsAnyDateTime(const ADatas:TDataArray; const Dimensions:Integer; out IsReversed:Boolean):TDataItem; static;
-    class function ExistsData(const AName:String; const ADatas:TDataArray; const Dimensions:Integer):TDataItem; static;
+    function DataOrigin:String;
     procedure FillSeries(const ASeries:TChartSeries; Y:TDataItem);
+    procedure FixDesignTime(const ASeries:TChartSeries);
     class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
-    class function GetDateTime(const AData:TDataItem; const Index:TInteger; const Reverse:Boolean):TDateTime; static;
     function InitCountSeries(const ACount:TInteger):TChartSeries;
-    class function IsFinancial(const ADatas:TDataArray; const Dimensions:Integer):Boolean; static;
-    function NewSeries(const Count:Integer):TChartSeries;
-    function NewSeriesXY(const X,Y:String):TPointSeries;
-    procedure SetDataItem(const Value: TDataItem); // <-- do not rename to SetData (FMX conflict)
+
+    {$IFDEF TEEPRO}
+    class function ExistsAnyDateTime(const AData:TDataArray; const Dimensions:Integer; out IsReversed:Boolean):TDataItem; static;
+    class function ExistsData(const AName:String; const AData:TDataArray; const Dimensions:Integer):TDataItem; static;
+    class function GetDateTime(const AData:TDataItem; const Index:TInteger; const Reverse:Boolean):TDateTime; static;
+    class function IsFinancial(const AData:TDataArray; const Dimensions:Integer):Boolean; static;
+    {$ENDIF}
+
+    function NewSeries(const AClass:TChartSeriesClass):TChartSeries; overload;
+    function NewSeries(const Count:Integer):TChartSeries; overload;
+    function NewSeriesXY(const X,Y:String):TCustomSeries;
 
     procedure ReadOrigin(Reader: TReader);
+    procedure SetDataItem(const Value: TDataItem); // <-- do not rename to SetData (FMX conflict)
     procedure WriteOrigin(Writer: TWriter);
   protected
     Index : TCursorIndex;
@@ -100,29 +107,45 @@ type
 
     Constructor Create(AOwner:TComponent); override;
 
-    procedure Fill(const Data:TInt32Array); overload;
-    procedure Fill(const Data:TInt64Array); overload;
+    function Fill(const AData:TInt32Array):TChartSeries; overload;
+    function Fill(const AData:TInt64Array):TChartSeries; overload;
+    function Fill(const AData:TDoubleArray):TChartSeries; overload;
 
     {$IFNDEF FPC}
     procedure Fill(const Map:TDataMap; const Text:TGetText=nil); overload;
     {$ENDIF}
 
-    procedure Fill(const ADatas:TDataArray; const Dimensions:Integer=0); overload;
-    procedure Fill(const ADatas:TDataArray; const ASeries:TDataItem); overload;
+    procedure Fill(const AData:TDataArray; const Dimensions:Integer=0); overload;
+    procedure Fill(const AData:TDataArray; const ASeries:TDataItem); overload;
     procedure Fill(const AItems:TDataItems; const Dimensions:Integer=0); overload;
-    procedure Fill(const Data:TDataSet; const ValueField:Integer; const TextField:Integer=-1); overload;
-    procedure Fill(const Data:TDataItem); overload;
-    procedure Fill(const Histogram:THistogram; const Source:TDataItem); overload;
-    procedure Fill(const Summary:TSummary); overload;
+    procedure Fill(const AData:TDataSet; const ValueField:Integer; const TextField:Integer=-1); overload;
+    function Fill(const AData:TDataItem):TChartSeries; overload;
+    procedure Fill(const AHistogram:THistogram; const ASource:TDataItem); overload;
+    procedure Fill(const ASummary:TSummary); overload;
     procedure Fill(const ACursor:TDataCursor; const AItems:TDataArray=nil;
                    const ADimensions:Integer=0); overload;
-    procedure FillXY(const Data:TDataSet; const X,Y:Integer);
+    function FillXY(const AData:TDataSet; const X,Y:Integer):TChartSeries; overload;
+    function FillXY(const X,Y:TField):TChartSeries; overload;
 
     procedure Init;
   published
     property BevelOuter default bvNone;
     property Data:TDataItem read FData write SetDataItem;
     property View3D default False;
+  end;
+
+  TChartData=record
+  private
+    class procedure InitNotMandatory(const ASeries:TChartSeries;
+                                     const ACount:Integer); static;
+  public
+    class procedure AddSeries(const ASeries: TChartSeries; const ADest: TDataItem); static;
+    class function From(const AData:TDataItem;
+                        const AOwner:TComponent;
+                        const AClass:TChartSeriesClass=nil):TChartSeries; overload; static;
+    class function From(const ASeries:TChartSeries):TDataItem; overload; static;
+    class function From(const AChart:TCustomChart):TDataItem; overload; static;
+    class function From(const ASeries:array of TChartSeries):TDataItem; overload; static;
   end;
 
 implementation

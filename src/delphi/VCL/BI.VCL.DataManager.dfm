@@ -40,9 +40,6 @@ object DataManager: TDataManager
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 357
-      ExplicitTop = 1
-      ExplicitHeight = 39
       object BOk: TButton
         Left = 14
         Top = 8
@@ -113,6 +110,9 @@ object DataManager: TDataManager
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
+      OnResize = PanelStoresResize
+      ExplicitLeft = 279
+      ExplicitTop = -6
       object Label1: TLabel
         Left = 11
         Top = 14
@@ -131,14 +131,24 @@ object DataManager: TDataManager
         TabOrder = 0
         OnChange = CBStoresChange
       end
-      object Button1: TButton
-        Left = 199
-        Top = 8
-        Width = 69
-        Height = 25
-        Caption = '&Manage...'
+      object PanelManage: TPanel
+        Left = 196
+        Top = 0
+        Width = 78
+        Height = 41
+        Align = alRight
+        BevelOuter = bvNone
         TabOrder = 1
-        OnClick = Button1Click
+        ExplicitLeft = 195
+        object BManageStores: TButton
+          Left = 5
+          Top = 9
+          Width = 69
+          Height = 25
+          Caption = '&Manage...'
+          TabOrder = 0
+          OnClick = BManageStoresClick
+        end
       end
     end
     object Panel1: TPanel
@@ -182,7 +192,6 @@ object DataManager: TDataManager
     OnChange = TreeChange
     OnDblClick = TreeDblClick
     OnExpanding = TreeExpanding
-    ExplicitLeft = 1
   end
   object PageControl1: TPageControl
     Left = 227
@@ -195,18 +204,10 @@ object DataManager: TDataManager
     OnChange = PageControl1Change
     object TabSettings: TTabSheet
       Caption = 'Settings'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 16
@@ -287,10 +288,6 @@ object DataManager: TDataManager
     object TabSheet3: TTabSheet
       Caption = 'Schedule'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object PopupMenu1: TPopupMenu

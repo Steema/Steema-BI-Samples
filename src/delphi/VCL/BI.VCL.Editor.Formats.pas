@@ -14,7 +14,7 @@ uses
   {$ENDIF}
   System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
-  BI.DataSource, BI.Persist;
+  BI.DataSource, BI.Persist, Vcl.ExtCtrls;
 
 type
   TDataFormatEditor = class(TForm)
@@ -39,6 +39,8 @@ type
     Label7: TLabel;
     EExcelHeader: TEdit;
     UDExcelHeader: TUpDown;
+    TabJSON: TTabSheet;
+    RGJSONStyle: TRadioGroup;
     procedure CBDelimiterChange(Sender: TObject);
     procedure ECustomDelimiterChange(Sender: TObject);
     procedure CBQuoteChange(Sender: TObject);
@@ -47,12 +49,14 @@ type
     procedure EMissingChange(Sender: TObject);
     procedure EZipPasswordChange(Sender: TObject);
     procedure EExcelHeaderChange(Sender: TObject);
+    procedure RGJSONStyleClick(Sender: TObject);
   private
     { Private declarations }
     IData : TDataDefinition;
 
     procedure RefreshCSV;
     procedure RefreshExcel;
+    procedure RefreshJSON;
     procedure RefreshZip;
   public
     { Public declarations }

@@ -23,7 +23,7 @@ uses
 type
   TChangeListener=class;
 
-  TChangeEvent=procedure(const Sender:TChangeListener; const AValue:String) of object;
+  TChangeEvent=procedure(const Sender:TChangeListener; const AValue:TExpression) of object;
 
   TChangeListener=class
   private
@@ -31,7 +31,7 @@ type
     FName : String;
     FOnChange : TChangeEvent;
   public
-    procedure Changed(const AValue:String);
+    procedure Changed(const AValue:TExpression);
 
     property Index:Integer read FIndex;
     property Name:String read FName;
@@ -43,16 +43,20 @@ type
   public
     Destructor Destroy; override;
 
-    procedure Changed(const AName,AValue:String);
+    procedure Changed(const AName:String; const AValue:TExpression);
   end;
 
   TVariable=record
   private
-    procedure Change(const AValue:String);
+    FValue : TExpression;
+
+    procedure Clear;
+    procedure SetValue(const AValue: TExpression);
   public
     Name : String;
-    Value : TExpression;
     Listeners : TListeners;
+
+    property Value:TExpression read FValue write SetValue;
   end;
 
   TVariableArray=Array of TVariable;
@@ -68,7 +72,7 @@ type
     procedure Add(const AName:String; const AValue:TExpression);
     procedure AddListener(const AName:String; const AIndex:Integer; const AOnChange:TChangeEvent);
     procedure Change(const AName:String; const AValue:Boolean); overload;
-    procedure Change(const AName,AValue:String); overload;
+    procedure Change(const AName:String; const AValue:TExpression); overload;
     function IndexOf(const AName:String):Integer;
     procedure TryAdd(const AName:String);
   end;
@@ -167,6 +171,8 @@ type
     procedure SetPanel(const APanel:TBIPanel);
   protected
     Dashboard : TBIPanel;
+
+    function TryGetSub(const AName,ASubName:String; out AValue:String):Boolean;
   public
     Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); override;
 
@@ -187,7 +193,7 @@ type
 
   TDashboardItems={$IFDEF FPC}class(TFPGList<TDashboardItem>){$ELSE}class(TList<TDashboardItem>){$ENDIF}
   public
-    procedure Add(const APanel:TBIPanel); overload;
+    function Add(const APanel:TBIPanel):TDashboardItem; overload;
   end;
 
   TLayouts=class;
@@ -211,15 +217,17 @@ type
 
   TLayouts={$IFDEF FPC}class(TFPGList<TLayoutItem>){$ELSE}class(TList<TLayoutItem>){$ENDIF}
   private
+    class var
+       FPredefined : TLayouts;
+
     procedure ImportFrom(const AVisual:TBITemplate; const AData:TDataItem);
   public
-    class var
-       Predefined : TLayouts;
-
     Destructor Destroy; override;
 
     procedure AddTo(const AItems: TStrings);
     function Find(const AName:String):TLayoutItem;
+
+    class function Predefined:TLayouts; static;
   end;
 
   TDashboard=class(TBIPanel)
@@ -230,10 +238,12 @@ type
     FTitles : Boolean;
 
     function GetItems:TDashboardItems;
+    function IsFreePosition(const AName:String):Boolean;
   public
     Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem=nil; const AIndex:Integer=0); override;
     Destructor Destroy; override;
 
+    function Find(const APanel:TBIPanel):TDashboardItem;
     function IndexOfPanel(const AName:String):Integer;
 
     property Items:TDashboardItems read GetItems;
@@ -297,12 +307,12 @@ type
     IData : TDataItem;
     IExpression : TExpression;
     IMain : TDataItem;
-    IValue : String;
+    IValue : TExpression;
 
     DataIndex : Integer;
 
-    procedure Change(const AValue:String);
-    function ExpressionValue:String;
+    procedure Change(const AValue:TExpression);
+    function ExpressionValue:TExpression;
     function SingleRecordFrom(const AData: TDataItem):TDataItem;
   public
     Constructor CreateData(const AVisual:TBITemplate; const AList:TDataItem; const AIndex:Integer=0); override;
@@ -311,7 +321,7 @@ type
     procedure Clear;
     function Data:TDataItem;
     procedure Reset;
-    function Value:String;
+    function Value:TExpression;
   published
     property Kind : TVisualDataKind read FKind write FKind;
     property Store : String read FStore write FStore;
@@ -323,16 +333,18 @@ type
   private
     procedure AddVariables(const ARender:TRender);
   public
-    procedure Change(const AName,AValue:String);
+    procedure Change(const AName:String; const AValue:TExpression);
     procedure Clear;
     function Count:Integer; inline;
     function IndexOf(const AName:String):Integer;
-    function ValueOf(const AName:String):String;
+    function ValueOf(const AName:String):TExpression;
   end;
 
   TBITemplate=class(TBaseItem)
   private
     IRender : TRender;
+
+    IMainData : TDataItem;
 
     function CreateDashboard(const AList:TDataItem;
                              const AIndex:Integer):TDashboard;
@@ -343,11 +355,12 @@ type
   protected
     Owner : TObject;
 
+    function FindData(const AStore,AName:String):TDataItem;
     function GetItem(const AName:String):TDataItem;
     function PanelData(const APanel:TBIPanel):TDataItem;
   public
     Dashboards : TDashboards;
-    Datas : TVisualDataArray;
+    Data : TVisualDataArray;
     Layouts : TLayouts;
     Panels : TPanels;
 
@@ -369,7 +382,9 @@ type
 
     class function GetMasterDetail(const AData:TDataItem; const AIndex:TInteger):TCursorIndex;
 
-    property Data:TDataItem read IList;
+    class function ImportJSON(const AText:String):TDataItem;
+
+    property List:TDataItem read IList; // deprecated ?
   end;
 
 implementation

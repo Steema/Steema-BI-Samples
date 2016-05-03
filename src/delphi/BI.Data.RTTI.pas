@@ -51,19 +51,19 @@ type
     function KindOf(const AType:TRttiType):TDataKind;
   protected
     procedure DoAdd(const APos:TInteger; const AData:TValue);
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
     function Same(const APos:TInteger; const AData:TValue):Boolean;
   public
-    Constructor Create(const AType:PTypeInfo;
+    Constructor CreateType(const AType:PTypeInfo;
                        const AVisibility:TVisibility=[mvPublic,mvPublished];
                        const AMembers:TRttiMembers=TRttiMembers.Both); overload;
 
     procedure GetItems(const AData:TDataItem); override;
-    procedure Load(const AData:TDataItem; const Children:Boolean); override;
 
     procedure Clear;
     function Count:TInteger; inline;
     procedure Delete(const AIndex:TInteger); inline;
-
+  published
     property Members:TRttiMembers read FMembers write FMembers;
     property Visibility:TVisibility read FVisibility write FVisibility;
   end;
@@ -76,8 +76,8 @@ type
   public
     Primary : TDataItem;
 
-    Constructor Create; overload;
-    Constructor Create(const AData:Array of T); overload;
+    Constructor CreateType; overload;
+    Constructor CreateArray(const AData:Array of T); overload;
 
     procedure Add(const AData:T); overload; inline;
     procedure Add(const AData:Array of T); overload;

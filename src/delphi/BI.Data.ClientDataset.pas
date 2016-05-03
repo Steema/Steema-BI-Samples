@@ -17,13 +17,13 @@ type
   private
     class procedure DoFillData(const DataSet: TClientDataSet;
                                const AData: TDataItem;
-                               const ADatas: TDataArray;
+                               const ADataArray: TDataArray;
                                const Filter:TExpression=nil); static;
   protected
     function DoImportFile(const FileName:String):TDataArray; override;
   public
     class procedure FillData(const DataSet:TClientDataSet; const AData:TDataItem); overload; static;
-    class procedure FillData(const DataSet: TClientDataSet; const ADatas: TDataArray); overload; static;
+    class procedure FillData(const DataSet: TClientDataSet; const AData: TDataArray); overload; static;
     class procedure FillData(const DataSet:TClientDataSet; const AData:TDataItem; const Filter:TExpression=nil); overload; static;
 
     function Import(const Folder:String; Recursive:Boolean):TDataArray; overload;

@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  New Data Column editor dialog              }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.NewColumn;
 
 interface
@@ -42,6 +48,7 @@ type
     procedure AddDetails;
     function CurrentDetail:TDataItem;
     function CurrentLookup:TDataItem;
+    function FullName(const AData:TDataItem):String;
     procedure InitMissing(const ACol:TDataItem);
     function TryExpression(const Fill:Boolean):TDataItem;
   public

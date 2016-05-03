@@ -13,7 +13,8 @@ unit BI.Data.JSON.SuperObject;
 uses
   BI.Data, BI.Data.JSON, BI.Data.JSON.SuperObject;
 
-var J : TBIJSON; Data : TDataArray;
+var J : TBIJSON;
+    Data : TDataArray;
 
   J:=TBIJSON.CreateEngine(TSuperObject.Create);
   try

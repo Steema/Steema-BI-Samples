@@ -113,13 +113,13 @@ type
     procedure SetColumnSort(const Value:Boolean);
     function TitleWidth(const AColumn:TColumn):Integer;
     function TryColorize(const ARow,ACol:Integer; const AColumn:TColumn; out AIndex:Integer; out APercent:Double):Boolean;
+    function TryFontColor(const AIndex:Integer; const ANewColor,ADefault:TColor):TColor;
 
     {$IFNDEF FPC}
     procedure WMVScroll(var Message: TWMVScroll); message WM_VSCROLL;
     procedure WMNCPaint(var Message: TMessage); message WM_NCPaint;
     {$ENDIF}
   protected
-    function AutoWidth:Integer;
     function ColumnOf(const X:Integer):TColumn; overload;
 
     {$IFDEF FPC}
@@ -153,6 +153,7 @@ type
     procedure Resize; override;
     procedure SetParent(AParent: TWinControl); override;
     procedure TopLeftChanged; override;
+    function TotalWidth:Integer;
     procedure TryCloseGroup;
   public
     ScrollTrack : Boolean;

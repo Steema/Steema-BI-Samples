@@ -21,7 +21,7 @@ object DataEditor: TDataEditor
     Top = 0
     Width = 518
     Height = 395
-    ActivePage = TabFiles
+    ActivePage = TabWeb
     Align = alClient
     TabOrder = 0
     object TabFiles: TTabSheet
@@ -31,7 +31,7 @@ object DataEditor: TDataEditor
         Top = 0
         Width = 510
         Height = 367
-        ActivePage = TabFolder
+        ActivePage = TabFile
         Align = alClient
         TabOrder = 0
         object TabFile: TTabSheet
@@ -192,8 +192,6 @@ object DataEditor: TDataEditor
         object TabFTP: TTabSheet
           Caption = 'FTP'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 26
           object Label18: TLabel
             Left = 20
             Top = 16
@@ -262,7 +260,7 @@ object DataEditor: TDataEditor
             Width = 65
             Height = 21
             TabOrder = 2
-            Text = '21'
+            Text = '0'
             OnChange = EFTPPortChange
           end
           object UDFTPPort: TUpDown
@@ -271,8 +269,7 @@ object DataEditor: TDataEditor
             Width = 16
             Height = 21
             Associate = EFTPPort
-            Max = 65535
-            Position = 21
+            Max = -1
             TabOrder = 3
             Thousands = False
           end
@@ -764,6 +761,7 @@ object DataEditor: TDataEditor
         Height = 25
         Caption = 'OK'
         Default = True
+        ModalResult = 1
         TabOrder = 0
       end
       object Button2: TButton
@@ -773,6 +771,7 @@ object DataEditor: TDataEditor
         Height = 25
         Cancel = True
         Caption = 'Cancel'
+        ModalResult = 2
         TabOrder = 1
       end
     end

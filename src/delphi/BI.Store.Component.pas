@@ -3,24 +3,41 @@ unit BI.Store.Component;
 interface
 
 uses
-  System.Types, BI.Data, BI.Persist;
+  System.Classes, System.Types, System.Generics.Collections,
+  BI.Data, BI.Persist;
 
 type
-  TBIDesignImporter=class(TDataImporter)
+  TComponentImporterClass=class of TComponentImporter;
+
+  TComponentImporter=class(TDataProvider)
   private
+    FData : TDataItem;
+
+    {$IFDEF AUTOREFCOUNT}[weak]{$ENDIF}
+    FSource : TComponent;
+
+    function GetData: TDataItem;
+    procedure Notify(const AEvent:TBIEvent);
+    procedure SetSource(const Value: TComponent);
+    function TryFromStrings(const ASource:TComponent):TDataItem;
+  protected
+    function DoImport(const AComponent: TComponent):TDataItem; virtual;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+    function Origin:String; override;
+    function StringsOf(const ASource:TComponent):TStrings; virtual;
+    class function Supports(const AComponent:TComponent):Boolean; virtual;
   public
-    Constructor Create(const AStore:String; const ADefinition:TDataDefinition); override;
-    Constructor CreatePath(const AStore:String; const ADefinition:TDataDefinition);
+    class var
+      Plugins : TList<TComponentImporterClass>;
 
     Destructor Destroy; override;
 
-    function AllData:TStringDynArray; override;
-    function GetDefinition(const AName:String):TDataDefinition; override;
-    function Import:TDataArray; override;
-    class function IsRemote:Boolean; override;
-    function Load(const AName:String):TDataItem; override;
+    class function FromOrigin(const AOwner:TComponent; const AOrigin:String):TDataItem; static;
 
-    class function Supports(const Kind:TDataDefinitionKind; const ADefinition:TDataDefinition=nil):Boolean; override;
+    property Data:TDataItem read GetData;
+  published
+    property Source:TComponent read FSource write SetSource;
   end;
 
 implementation

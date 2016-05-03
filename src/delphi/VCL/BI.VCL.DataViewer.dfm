@@ -108,18 +108,6 @@ object DataViewer: TDataViewer
       ExplicitTop = 0
       ExplicitWidth = 400
     end
-    object ItemsGrid: TBIGrid
-      Left = 0
-      Top = 0
-      Width = 875
-      Height = 261
-      Align = alClient
-      UseDockManager = False
-      ParentBackground = False
-      ParentColor = False
-      TabOrder = 0
-      DataSource = DataSource2
-    end
     object PanelData: TPanel
       Left = 0
       Top = 264
@@ -127,7 +115,7 @@ object DataViewer: TDataViewer
       Height = 386
       Align = alBottom
       BevelOuter = bvNone
-      TabOrder = 1
+      TabOrder = 0
       object PanelDataGrid: TPanel
         Left = 0
         Top = 0
@@ -140,40 +128,34 @@ object DataViewer: TDataViewer
           Left = 0
           Top = 0
           Width = 875
-          Height = 352
+          Height = 356
           Align = alClient
           UseDockManager = False
           ParentBackground = False
           ParentColor = False
           TabOrder = 0
           ShowItems = True
+          OnDataChange = DataGridDataChange
+          ExplicitLeft = 3
+          ExplicitTop = -6
         end
         object PanelNav: TPanel
           Left = 0
-          Top = 352
+          Top = 356
           Width = 875
-          Height = 34
+          Height = 30
           Align = alBottom
           BevelOuter = bvNone
-          Caption = 'PanelNav'
           TabOrder = 1
-          object DBNavigator1: TDBNavigator
-            Left = 113
-            Top = 0
-            Width = 762
-            Height = 34
-            VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
-            Align = alClient
-            TabOrder = 0
-          end
           object Panel2: TPanel
             Left = 0
             Top = 0
             Width = 113
-            Height = 34
+            Height = 30
             Align = alLeft
             BevelOuter = bvNone
-            TabOrder = 1
+            TabOrder = 0
+            ExplicitHeight = 34
             object LRow: TLabel
               Left = 8
               Top = 11
@@ -182,6 +164,75 @@ object DataViewer: TDataViewer
               Caption = '0/0'
             end
           end
+          object Panel4: TPanel
+            Left = 113
+            Top = 0
+            Width = 240
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 1
+            ExplicitHeight = 34
+            object DBNavigator1: TDBNavigator
+              Left = 0
+              Top = 0
+              Width = 240
+              Height = 30
+              VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+              Align = alClient
+              TabOrder = 0
+              ExplicitLeft = 113
+              ExplicitWidth = 762
+              ExplicitHeight = 34
+            end
+          end
+        end
+      end
+    end
+    object PanelItemsGrid: TPanel
+      Left = 0
+      Top = 0
+      Width = 875
+      Height = 261
+      Align = alClient
+      BevelOuter = bvNone
+      TabOrder = 1
+      ExplicitLeft = 344
+      ExplicitTop = 304
+      ExplicitWidth = 185
+      ExplicitHeight = 41
+      object ItemsGrid: TBIGrid
+        Left = 0
+        Top = 30
+        Width = 875
+        Height = 231
+        Align = alClient
+        UseDockManager = False
+        ParentBackground = False
+        ParentColor = False
+        TabOrder = 0
+        DataSource = DataSource2
+        ExplicitTop = 0
+        ExplicitHeight = 261
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 875
+        Height = 30
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        object DBNavigator2: TDBNavigator
+          Left = 0
+          Top = 0
+          Width = 249
+          Height = 30
+          DataSource = DataSource2
+          VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+          Align = alLeft
+          TabOrder = 0
+          ExplicitHeight = 41
         end
       end
     end
@@ -194,8 +245,6 @@ object DataViewer: TDataViewer
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 5
-    ExplicitTop = 47
     object DataTotals: TStringGrid
       Left = 0
       Top = 600
@@ -221,6 +270,7 @@ object DataViewer: TDataViewer
   end
   object DataSource2: TDataSource
     DataSet = Items
+    OnUpdateData = DataSource2UpdateData
     Left = 440
     Top = 96
   end
@@ -236,6 +286,8 @@ object DataViewer: TDataViewer
     end
   end
   object Items: TBIDataset
+    AfterInsert = ItemsAfterInsert
+    BeforeDelete = ItemsBeforeDelete
     RowNumbers = False
     Left = 360
     Top = 96

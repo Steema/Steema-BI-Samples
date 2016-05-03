@@ -11,6 +11,7 @@ unit BI.Algorithm.DecisionTree;
 interface
 
 uses
+  System.Classes,
   BI.Data, BI.Arrays, BI.Tree, BI.Algorithm.Model;
 
 type
@@ -60,7 +61,7 @@ type
     ColumnData : Array of TColumnData;
     MaxData : TInteger; // 0=all data
 
-    Constructor Create; override;
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     procedure Calculate; override;

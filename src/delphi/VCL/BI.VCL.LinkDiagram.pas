@@ -41,7 +41,7 @@ type
     Data : TDataItem;
 
     procedure AddConnections;
-    procedure AddDatas;
+    procedure AddData;
     function DiagramFile:String;
 
     function ShapeOf(const AObject:TObject):TTreeNodeShape;

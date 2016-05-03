@@ -70,16 +70,17 @@ object StoreEditor: TStoreEditor
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      object Button3: TButton
+      object BClose: TButton
         Left = 13
         Top = 8
         Width = 75
         Height = 25
+        Cancel = True
         Caption = 'Close'
         Default = True
         ModalResult = 1
         TabOrder = 0
-        OnClick = Button3Click
+        OnClick = BCloseClick
       end
     end
     object BRename: TButton
@@ -113,10 +114,6 @@ object StoreEditor: TStoreEditor
     TabOrder = 3
     object TabFolder: TTabSheet
       Caption = 'Folder'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 16
         Top = 16
@@ -159,10 +156,6 @@ object StoreEditor: TStoreEditor
     object TabWeb: TTabSheet
       Caption = 'Web'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object PopupMenu1: TPopupMenu

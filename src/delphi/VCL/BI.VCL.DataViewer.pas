@@ -44,6 +44,10 @@ type
     Items: TBIDataset;
     CBView: TComboBox;
     N1: TMenuItem;
+    PanelItemsGrid: TPanel;
+    DBNavigator2: TDBNavigator;
+    Panel3: TPanel;
+    Panel4: TPanel;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure CBViewDataClick(Sender: TObject);
@@ -53,28 +57,45 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button2Click(Sender: TObject);
     procedure CBViewChange(Sender: TObject);
+    procedure DataSource2UpdateData(Sender: TObject);
+    procedure ItemsBeforeDelete(DataSet: TDataSet);
+    procedure ItemsAfterInsert(DataSet: TDataSet);
+    procedure DataGridDataChange(Sender: TObject);
   private
     { Private declarations }
     FData : TDataItem;
 
-    DataMap : TDataItem;
+    IEditing : Boolean;
 
+    DataMap : TDataItem;
     Tree : TTreeView;
 
     procedure CheckPanelDataAlign;
+    procedure EditButtonClick(Sender: TObject);
     procedure FillData(const AData:TDataItem);
-    procedure GridDataChange(Sender: TObject);
+
+    procedure GetKind(Sender: TField; var Text: string; DisplayText: Boolean);
+    procedure SetKind(Sender: TField; const Text: string);
+
     procedure NewItems(const AData:TDataItem);
 
+    procedure RefreshLabelName;
     function Selected:TDataItem;
     procedure SelectedChange(Sender: TObject);
+    procedure SelectedEdited(Sender: TObject; Node: TTreeNode; var S: string);
+    function SelectedItem:TDataItem;
+
+    procedure TryAddInfoEditors(const AGrid:TObject);
   protected
     ICustomPosition : Boolean;
   public
     { Public declarations }
 
+    class procedure Edit(const AOwner:TComponent; const AData:TDataItem); static;
+
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl; const AData:TDataItem):TDataViewer; static;
     procedure Select(const AData:TDataItem);
+
     class procedure View(const AOwner:TComponent; const AData:TDataItem); static;
   end;
 

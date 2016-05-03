@@ -52,6 +52,8 @@ contains
   BI.FMX.Grid.Grid in '..\FMX\BI.FMX.Grid.Grid.pas',
   BI.FMX.Visualizer in '..\FMX\BI.FMX.Visualizer.pas',
   BI.FMX.Editor.Visualizer in '..\FMX\BI.FMX.Editor.Visualizer.pas' {VisualizerEditor},
-  BI.FMX.Dashboard in '..\FMX\BI.FMX.Dashboard.pas';
+  BI.FMX.Dashboard in '..\FMX\BI.FMX.Dashboard.pas',
+  BI.FMX.Tree in '..\FMX\BI.FMX.Tree.pas',
+  BI.FMX.Tree.TreeView in '..\FMX\BI.FMX.Tree.TreeView.pas';
 
 end.

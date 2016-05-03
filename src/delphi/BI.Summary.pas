@@ -37,9 +37,7 @@ type
     Bins : TBinArray;
     HighBins : Integer;
 
-    function BinOf(const Value:TInteger):Integer; overload;
-    function BinOf(const Value:TFloat):Integer; overload;
-
+    function BinOf(const AData:TDataItem; const AIndex:TInteger):Integer;
     function BinToString(const Index:Integer):String;
 
     procedure Fill(var Bins:TBinArray);
@@ -84,7 +82,7 @@ type
   TSummaryItemType=(GroupBy, Measure, GroupOrMeasure);
 
   // Base class for summary Measures and GroupBy dimensions
-  TSummaryItem=class
+  TSummaryItem=class(TPersistent)
   private
     FActive : Boolean;
 
@@ -95,10 +93,11 @@ type
 
     procedure LoadData(const Item:TExpression);
     procedure SetExpression(const Value:TExpression);
-  protected
-    procedure Assign(const ASource:TSummaryItem);
+    procedure SetData(const Value: TDataItem);
   public
     Destructor Destroy; override;
+
+    procedure Assign(Source:TPersistent); override;
 
     procedure Clear;
 
@@ -107,7 +106,7 @@ type
     function RealData:TDataItem;
 
     property Active:Boolean read FActive write FActive default True;
-    property Data:TDataItem read SourceData;
+    property Data:TDataItem read SourceData write SetData;
     property DestData:TDataItem read FDestData;
     property Expression:TExpression read Source write SetExpression;
   end;
@@ -151,6 +150,8 @@ type
     Calculation : TMeasureCalculation;
     Missing : TMeasureMissing;
 
+    procedure Assign(Source:TPersistent); override;
+
     function Clone:TMeasure;
     function Kind:TDataKind;
     function ToString:String; override;
@@ -161,10 +162,14 @@ type
   // Pending: Remove this helper, use a TList
   TMeasuresHelper=record helper for TMeasures
   public
+    function Add(const AData: TDataItem; const Aggregate: TAggregate):TMeasure; overload;
+    function Add(const AExpression: TExpression; const Aggregate: TAggregate):TMeasure; overload;
     procedure Append(const AMeasure:TMeasure);
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
     procedure Exchange(const A,B:Integer);
+    function IndexOf(const AMeasure:TMeasure):Integer;
+    procedure Remove(const AMeasure:TMeasure);
   end;
 
   // For date-time groups, specify which part of the datetime (by Year, by Month, etc)
@@ -213,11 +218,13 @@ type
   protected
     RealLayout : TGroupByLayout;
 
-    function HasHistogram:Boolean;
+    function HasHistogram:Boolean; inline;
   public
     DateOptions : TGroupByDate;
 
     Destructor Destroy; override;
+
+    procedure Assign(Source:TPersistent); override;
 
     function Clone:TGroupBy;
     function IsHistogram:Boolean; inline;
@@ -235,6 +242,8 @@ type
     procedure GuessSteps;
     function Total:TInteger;
   public
+    function Add(const AData:TDataItem):TGroupBy; overload;
+    function Add(const AExpression: TExpression):TGroupBy; overload;
     procedure Append(const AGroupBy:TGroupBy);
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
@@ -252,6 +261,7 @@ type
   public
     Destructor Destroy; override;
 
+    procedure Assign(const Source:TExpression); override;
     class function FromString(const AItem:TSummaryItem; const AExpression:String):TSummaryExpression; static;
 
     function GetExpression(const AData:TDataItem):TExpression;
@@ -275,6 +285,9 @@ type
 
     procedure Add(const AItem:TSummaryItem; const AExpression:String); overload;
     procedure Add(const AExpression:String); overload;
+
+    procedure Assign(const AFilter:TSummaryFilter);
+
     procedure Clear;
 
     function GetExpression(const AData:TDataItem):TExpression;
@@ -294,11 +307,11 @@ type
     ActiveByCount : Integer;
 
     FFilter : TExpression;
+    FUseFilter : Boolean;
+
     FHaving : TSummaryFilter;
 
-    // Temporary, used when assigning another summary to self
-    IUsedFilter,
-    IUsedHaving : Boolean;
+    FDescription : String;
 
     procedure ApplyHaving(const AData:TDataItem);
     procedure DoRemoveMissing(const Data:TDataItem);
@@ -307,6 +320,7 @@ type
     function GetData: TDataItem;
     function GetHaving:TSummaryFilter;
     procedure SetFilter(const Value: TExpression);
+    procedure SetHaving(const Value: TSummaryFilter);
   protected
     ByRows,
     ByCols : TGroupBys;
@@ -314,6 +328,8 @@ type
     Hops : TDataHops;
 
     procedure FillGroupByRows;
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+    procedure SetDirectFilter(const Value: TExpression);
   public
     By : TGroupBys;
     Measures : TMeasures;
@@ -321,32 +337,32 @@ type
     RemoveMissing,
     RemoveMissingCols : Boolean;
 
-    Description : String;
-
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    function AddGroupBy(const AData: TDataItem):TGroupBy; overload;
-    function AddGroupBy(const AExpression: TExpression):TGroupBy; overload;
+    function AddGroupBy(const AData: TDataItem):TGroupBy; overload; inline;
+    function AddGroupBy(const AExpression: TExpression):TGroupBy; overload; inline;
 
-    function AddMeasure(const AExpression:TExpression; const Aggregate:TAggregate):TMeasure; overload;
-    function AddMeasure(const AData:TDataItem; const Aggregate:TAggregate):TMeasure; overload;
+    function AddMeasure(const AExpression:TExpression; const Aggregate:TAggregate):TMeasure; overload; inline;
+    function AddMeasure(const AData:TDataItem; const Aggregate:TAggregate):TMeasure; overload; inline;
 
-    procedure Assign(const ASummary:TSummary);
+    procedure Assign(Source:TPersistent); override;
 
     function Calculate:TDataItem; overload;
     procedure Calculate(const AData:TDataItem); overload;
 
     procedure Clear;
 
-    procedure Load(const AData:TDataItem; const Children:Boolean); override;
-
     procedure Prepare;
     function ToString:String; override;
     function Valid:Boolean;
 
+  published
     property Data:TDataItem read GetData;
+    property Description:String read FDescription write FDescription;
     property Filter:TExpression read FFilter write SetFilter;
-    property Having:TSummaryFilter read GetHaving;
+    property Having:TSummaryFilter read GetHaving write SetHaving;
+    property UseFilter:Boolean read FUseFilter write FUseFilter default True;
   end;
 
 implementation

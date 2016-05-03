@@ -48,6 +48,7 @@ contains
   BI.Persist in '..\BI.Persist.pas',
   BI.Schedule in '..\BI.Schedule.pas',
   BI.Summary in '..\BI.Summary.pas',
+  BI.Summary.Totals in '..\BI.Summary.Totals.pas',
   BI.Streams in '..\BI.Streams.pas',
   BI.Web in '..\BI.Web.pas',
   BI.Dataset in '..\BI.Dataset.pas',
@@ -60,13 +61,18 @@ contains
   BI.Data.Html in '..\BI.Data.Html.pas',
   BI.Data.JSON in '..\BI.Data.JSON.pas',
   BI.Data.Excel in '..\BI.Data.Excel.pas',
+  BI.Data.Rtti in '..\BI.Data.Rtti.pas',
   BI.Data.SQL in '..\BI.Data.SQL.pas',
   BI.Data.XML in '..\BI.Data.XML.pas',
   BI.Data.JSON.Standard in '..\BI.Data.JSON.Standard.pas',
   BI.Data.XML.MSXML in '..\BI.Data.XML.MSXML.pas',
   BI.Data.Expressions in '..\BI.Data.Expressions.pas',
+  BI.Query in '..\BI.Query.pas',
   BI.Web.Indy in '..\BI.Web.Indy.pas',
   BI.Web.Net in '..\BI.Web.Net.pas',
-  BI.Languages.English in '..\BI.Languages.English.pas';
+  BI.Languages.English in '..\BI.Languages.English.pas',
+  BI.Store.Component in '..\BI.Store.Component.pas',
+  BI.Data.Workflow in '..\BI.Data.Workflow.pas',
+  BI.Algorithm in '..\Algorithms\BI.Algorithm.pas';
 
 end.

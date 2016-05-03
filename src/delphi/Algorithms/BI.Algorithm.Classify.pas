@@ -9,7 +9,8 @@ unit BI.Algorithm.Classify;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Arrays, BI.Algorithm.Model, BI.Plugins.R;
+  System.Classes, BI.Data, BI.Arrays, BI.Algorithm, BI.Algorithm.Model,
+  BI.Plugins.R;
 
 type
   TBINearestNeighbour=class(TRSupervisedModel)
@@ -18,7 +19,7 @@ type
   protected
     procedure BuildScript; override;
   public
-    Constructor Create; override;
+    Constructor Create(AOwner:TComponent); override;
     procedure Calculate; override;
 
     property K:Integer read FK write FK default 1;
@@ -36,7 +37,7 @@ type
   public
     Output : TDataItem;
 
-    Constructor Create; override;
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     property ChiSquare:Boolean read FChiSquare write FChiSquare;

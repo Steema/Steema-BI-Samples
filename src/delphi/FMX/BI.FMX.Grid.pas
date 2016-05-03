@@ -24,6 +24,7 @@ type
   protected
     IAlternate : TAlternateColor;
 
+    procedure AutoWidth; virtual; abstract;
     procedure ChangedAlternate(Sender:TObject); virtual; abstract;
     function GetDataSource: TDataSource; virtual; abstract;
     function GetTotals:Boolean; virtual; abstract;
@@ -74,7 +75,7 @@ type
     Destructor Destroy; override;
 
     procedure BindTo(const AData: TDataItem); overload;
-    procedure BindTo(const ADatas: TDataArray); overload;
+    procedure BindTo(const AData: TDataArray); overload;
 
     procedure Colorize(const AItems:TDataColorizers);
 

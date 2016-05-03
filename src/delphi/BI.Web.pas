@@ -101,7 +101,7 @@ type
     procedure GetData(const AOrigin:String; const AData:TDataItem; const Children:Boolean; const Compress:TWebCompression); overload;
     function GetData(const AData:String; const Children:Boolean; const Compress:TWebCompression):TDataItem; overload;
 
-    function GetDatas:String;
+    function GetData:String; overload;
     function GetMetaData(const S:String; const Compress:TWebCompression): TDataItem;
     function GetStream(const S:String):TStream;
     function GetString(const S:String):String;
@@ -146,7 +146,7 @@ type
     class function GetLatestVersion(out V: TBIWebServer.TVersion; out Error:String):Boolean;
   end;
 
-  TDelayHandlerWeb=class(TDataProvider)
+  TDelayHandlerWeb=class(TDataDelayProvider)
   protected
     function GetStream(const AData,ANext:TDataItem):TStream; override;
     function GetStream(const AItems:TDataArray):TStream; override;
@@ -154,7 +154,7 @@ type
   public
     BIWeb : TBIWebClient;
 
-    Constructor Create(const ABIWeb:TBIWebClient);
+    Constructor CreateWeb(const ABIWeb:TBIWebClient);
     Destructor Destroy; override;
   end;
 

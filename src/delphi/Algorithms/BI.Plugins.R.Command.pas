@@ -66,7 +66,7 @@ type
     function Finish:Boolean; override;
 
     procedure AddVariable(const AName:String; const Index:TNativeIntArray;
-                          const ADatas:TDataArray; const UseMissing:Boolean=True); override;
+                          const AData:TDataArray; const UseMissing:Boolean=True); override;
 
     procedure GetVariable(const AName:String; const AData:TDataItem); override;
     procedure LoadPackage(const APackage:String); override;

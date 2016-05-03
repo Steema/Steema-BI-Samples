@@ -30,11 +30,11 @@ type
     // Merges all data files of a TStore (with same structure) into a single one
     class function FromStore(const AStore,AName:String):TDataItem; static;
 
-    // Merges all ADatas into a single one.
-    // When FreeDatas is True, all ADatas are destroyed
+    // Merges all AData items into a single one.
+    // When FreeData is True, all AData items are destroyed
     // (except the first one, that is the returned result)
 
-    class function FromDatas(const ADatas:TDataArray; const FreeDatas:Boolean=True):TDataItem; static;
+    class function FromData(const AData:TDataArray; const FreeData:Boolean=True):TDataItem; static;
 
     // Returns True when A and B have the same structure
     class function SameStructure(const A,B:TDataItem):Boolean; overload; static;

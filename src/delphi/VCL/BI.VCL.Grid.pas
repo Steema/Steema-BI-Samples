@@ -111,6 +111,8 @@ type
 
     procedure HideShowItems;
 
+    procedure Notify(const AEvent:TBIEvent);
+
     function PluginControl:TWinControl;
 
     procedure ReadOrigin(Reader: TReader);
@@ -125,6 +127,7 @@ type
     procedure SetSearch(const Value: TGridSearch);
     procedure SetShowItems(const Value: Boolean);
     procedure SetTotals(const Value: Boolean);
+    procedure TryRemoveConsumer;
     procedure TryShowItems;
     procedure WriteOrigin(Writer: TWriter);
   protected
@@ -133,7 +136,7 @@ type
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    procedure BindTo(const Data:TDataItem);
+    procedure BindTo(const AData:TDataItem);
     procedure Colorize(const AItems:TDataColorizers);
     procedure DestroyData;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);

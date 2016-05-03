@@ -37,7 +37,7 @@ type
   TDiv=record
   public
     Item : TDashboardItem;
-    ID : String;
+    ID : Integer;
     Style : String;
     HTML : String;
     Position : String;

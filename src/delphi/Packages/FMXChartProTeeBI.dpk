@@ -38,6 +38,7 @@ requires
 
 contains
   BI.FMX.PDF in '..\FMX\BI.FMX.PDF.pas',
+  BI.FMX.Dashboard.Chart in '..\FMX\BI.FMX.Dashboard.Chart.pas',
   BI.FMX.Visualizer.Chart in '..\FMX\BI.FMX.Visualizer.Chart.pas',
   BI.FMX.Editor.Visualizer.Chart in '..\FMX\BI.FMX.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
   BI.FMX.Chart in '..\FMX\BI.FMX.Chart.pas';

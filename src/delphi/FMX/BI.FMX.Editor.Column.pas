@@ -37,10 +37,11 @@ type
     procedure CBMasterChange(Sender: TObject);
   private
     { Private declarations }
-    Col : TDataItem;
+    Data : TDataItem;
   public
     { Public declarations }
-    class procedure Edit(const AOwner:TComponent; const ACol:TDataItem); static;
+
+    class procedure Edit(const AOwner:TComponent; const AData:TDataItem); static;
   end;
 
 implementation

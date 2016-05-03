@@ -32,7 +32,7 @@ type
   // Abstract class with all settings necessary to import a given data
   TDataDefinitionKind=(Files,Database,Web,Unknown);
 
-  TDataDefinition=class
+  TDataDefinition=class(TDataProvider)
   private
     FFileName : String;
 
@@ -52,7 +52,8 @@ type
 
     Volatile : Boolean; // When True, changes to Strings aren't saved
 
-    procedure Load;
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+    procedure Load; overload;
     procedure LoadFromString(const AText:String);
     procedure Save;
   public
@@ -69,6 +70,7 @@ type
     function AsBoolean(const Key:String):Boolean;
 
     class procedure CreateFile(const FileName:String; const Kind:TDataDefinitionKind);
+
     class function KindToString(const AKind:TDataDefinitionKind):String;
     function Import(const AStore:String):TDataArray;
 
@@ -95,7 +97,7 @@ type
   TDataImporterClass=class of TDataImporter;
 
   // Abstract class to handle loading data from a TStore repository
-  TDataImporter=class abstract
+  TDataImporter=class(TDataProvider)
   protected
     Definition : TDataDefinition;
 
@@ -105,7 +107,7 @@ type
     procedure DoProgress(const Percent:Single; var Cancel:Boolean);
     class function Find(const AClass:TDataImporterClass):Integer;
   public
-    Constructor Create(const AStore:String; const ADefinition:TDataDefinition); virtual;
+    Constructor CreateDefinition(const AStore:String; const ADefinition:TDataDefinition); virtual;
 
     function AllData:TStringDynArray; virtual; abstract;
     function GetDefinition(const AName:String):TDataDefinition; virtual; abstract;
@@ -127,7 +129,6 @@ type
     class var
       IDefault : String;
 
-    class function GetGlobalCache:TDataItem; static;
     class function GetDefaultName: String; static;
     class function GuessImporter(const AStore:String=''):TDataImporter; static;
     class function NameOrDefault(const AName: String): String;
@@ -149,13 +150,13 @@ type
     class function Load(const AName:String):TDataItem; overload; static;
     class function Load(const AStore,AName:String; const OnError:TBIErrorProc=nil):TDataItem; overload; static;
 
-    class function DatasToStream(const APath,AName:String; const Zip:Boolean=False):TStream; overload; static;
-    class function DatasToStream(const AName:String):TStream; overload; static;
+    class function DataToStream(const APath,AName:String; const Zip:Boolean=False):TStream; overload; static;
+    class function DataToStream(const AName:String):TStream; overload; static;
 
     class function NotRegistered(const AName: String):EBIException;
 
     class function OriginOf(const AData:TDataItem; const DefaultStore:String; const RelativeTo:TDataItem=nil):String; static;
-    class function OriginToData(const ADatas:TDataItem; const AStore,AOrigin:String;
+    class function OriginToData(const AData:TDataItem; const AStore,AOrigin:String;
           const Error:TBIErrorProc=nil):TDataItem; static;
 
     class function PathOf(const AName:String):String; static;
@@ -167,13 +168,14 @@ type
                          const AsFolder:Boolean=False;
                          const Progress:TBIProgress=nil); overload; static;
 
+    class function StoreOf(const AData:TDataItem):TDataItem; static;
+
     class procedure UnLoad(const AStore,AName:String); static;
     class procedure UnLoadAll; static;
 
     class function ZipStream(const AStream: TStream): TMemoryStream; static;
 
     class property DefaultName:String read GetDefaultName write SetDefaultName;
-    class property GlobalCache:TDataItem read GetGlobalCache;
   end;
 
   // Global list of registered Stores in this machine / device
@@ -291,6 +293,10 @@ type
     WrongVersion : Integer;
 
     Constructor CreateVersion(const AVersion:Integer);
+  end;
+
+  // Shared by all "DelayHandler" providers (Stream, Folder, Web)
+  TDataDelayProvider=class(TDataProvider)
   end;
 
 implementation

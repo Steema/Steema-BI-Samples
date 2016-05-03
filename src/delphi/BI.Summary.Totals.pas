@@ -21,10 +21,16 @@ type
   TSummaryTotals=class(TDataProvider)
   private
     FSummary : TSummary;
-  public
-    Constructor Create(const ASummary:TSummary);
-    procedure Calculate(const AData:TDataItem);
+
+    procedure CheckSummary;
+    procedure SetSummary(const Value: TSummary);
+  protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor CreateSummary(const ASummary:TSummary);
+    procedure Calculate(const AData:TDataItem);
+  published
+    property Summary:TSummary read FSummary write SetSummary;
   end;
 
 implementation

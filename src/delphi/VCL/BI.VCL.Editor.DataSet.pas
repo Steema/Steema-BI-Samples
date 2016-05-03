@@ -16,7 +16,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataSet, Vcl.StdCtrls, Vcl.ComCtrls,
   BI.VCL.Editor.Summary, Data.DB, Vcl.Grids, Vcl.DBGrids, BI.VCL.Grid,
   Vcl.ExtCtrls, BI.VCL.DataManager, BI.VCL.GridForm,
-  BI.VCL.Editor.DataSelect, BI.Data;
+  BI.VCL.Editor.DataSelect, BI.Data, BI.Query;
 
 type
   TBIDataSetEditor = class(TForm)

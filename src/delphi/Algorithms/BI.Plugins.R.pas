@@ -16,7 +16,7 @@ interface
 // When compiling this unit in x64 bits, the R x64 bits version is used.
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Algorithm.Model,
+  System.Classes, BI.Arrays, BI.Data, BI.Algorithm, BI.Algorithm.Model,
   System.SysUtils;
 
 type
@@ -35,7 +35,7 @@ type
       Output : TStrings;
 
     procedure AddVariable(const AName:String; const Index:TNativeIntArray;
-                          const ADatas:TDataArray; const UseMissing:Boolean=True); overload; virtual; abstract;
+                          const AData:TDataArray; const UseMissing:Boolean=True); overload; virtual; abstract;
 
     procedure AddVariable(const AName:String; const Index:TNativeIntArray;
                           const AData:TDataItem; const UseMissing:Boolean=True); overload;

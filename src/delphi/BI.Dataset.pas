@@ -57,7 +57,7 @@ uses System.Classes, System.Types,
      {$ENDIF}
      {$ENDIF}
      {$ENDIF}
-     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary;
+     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Query;
 
 const
   MaxDataSize=512;
@@ -197,8 +197,7 @@ type
     //[Weak}
     ICursor : TDataCursor;
 
-    FSelect : TDataSelect;
-    FSummary : TSummary;
+    FQuery : TBIQuery;
 
     Items : TDataArray;
     FMaster: TBIDataSet;
@@ -225,8 +224,7 @@ type
     procedure SetData(const Value: TDataItem);
     procedure SetFieldProperties(const AField:TField; const AData:TDataItem);
     procedure SetMaster(const Value: TBIDataSet);
-    procedure SetSelect(const Value: TDataSelect);
-    procedure SetSummary(const Value: TSummary);
+    procedure SetQuery(const Value: TBIQuery);
     procedure TryCreateLink;
     procedure WriteOrigin(Writer: TWriter);
     procedure SetRowNumbers(const Value: Boolean);
@@ -281,17 +279,15 @@ type
 
     function DataOf(const AField:TField):TDataItem;
 
-    procedure OpenSelect;
-    procedure OpenSummary;
+    procedure OpenQuery;
 
     procedure PrepareIndex(const AIndex:TCursorIndex; const AllRows:Boolean=True);
 
-    procedure SetItems(const ADatas:TDataArray);
+    procedure SetItems(const AData:TDataArray);
     procedure SetFieldOnGetText(const AField:TField; const Hide:Boolean);
 
     property Cursor:TDataCursor read ICursor;
-    property Select:TDataSelect read FSelect write SetSelect;
-    property Summary:TSummary read FSummary write SetSummary;
+    property Query:TBIQuery read FQuery write SetQuery;
   published
     property Data:TDataItem read GetData write SetData;
     property Master:TBIDataSet read FMaster write SetMaster;

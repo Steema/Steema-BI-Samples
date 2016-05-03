@@ -39,14 +39,14 @@ type
 
   TDataKindHelper=record helper for TDataKind
   public
+    class function FromString(const AText:String; out AKind:TDataKind):Boolean; static;
+
     // True when Kind is of types int32, int64, single, double or extended
     function IsNumeric:Boolean;
 
     // Returns TDataKind as a human readable string
     function ToString:String;
   end;
-
-  TDataItem=class;
 
   TMissingData=record
   private
@@ -66,6 +66,8 @@ type
     property Item[const Index:TInteger]:Boolean read GetItem write SetItem; default;
   end;
 
+  TDataItem=class;
+
   TDataArray=Array of TDataItem;
 
   TDataArrayHelper=record helper for TDataArray
@@ -74,8 +76,10 @@ type
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
     procedure Exchange(const A,B:Integer);
+    function Find(const AName:String):TDataItem;
     function IndexOf(const AData:TDataItem):Integer; overload;
     function IndexOf(const AName:String):Integer; overload;
+    procedure Insert(const AData:TDataItem; const AIndex:Integer);
   end;
 
   TDataItems=class
@@ -89,9 +93,11 @@ type
     function GetItem(const Index: Integer): TDataItem; inline;
     function GetNames(const AName:String):TDataItem;
     function GetLast: TDataItem;
-    procedure Insert(const AtIndex:TInteger);
+    procedure InsertData(const AtIndex:TInteger);
   protected
     procedure AddDirect(const AData:TDataItem);
+    procedure DestroyAll;
+    function GetEmptyName:String;
   public
     Constructor Create(const AParent:TDataItem);
     Destructor Destroy; override;
@@ -106,11 +112,12 @@ type
     procedure Delete(const AData:TDataItem);
     function Exists(const AName:String):Boolean; inline;
 
-    function Find(const AName: String): TDataItem;
+    function Find(const AName: String): TDataItem; inline;
     function FromExpression(const AName: String; const AExpression: TExpression): TDataItem; overload;
     function FromExpression(const AName:String; const AExpression:String; const Error:TErrorProc=nil):TDataItem; overload;
 
     function IndexOf(const AName:String):Integer;
+    procedure Insert(const AData:TDataItem; const AIndex:Integer);
 
     function New(const AName:String; const AKind:TDataKind; const Tag:TObject=nil):TDataItem;
     procedure Resize(const Size:TInteger);
@@ -153,13 +160,39 @@ type
     IgnoreTextCase: Boolean; // Default is False (ie: case-sensitive text order)
   end;
 
-  TDataProvider=class abstract
+  // Event Observers (Consumers)
+
+  TBIEvent=(Changed,Destroyed);
+  TBIConsumer=procedure(const AEvent:TBIEvent) of object;
+
+  TBIConsumers=record
+  private
+    Items : TArray<TBIConsumer>;
+  public
+    procedure Add(const AConsumer:TBIConsumer);
+    procedure Broadcast(const AEvent:TBIEvent);
+    function IndexOf(const AConsumer:TBIConsumer):Integer;
+    procedure Remove(const AConsumer:TBIConsumer);
+  end;
+
+  // Base class for TDataItem "Providers"
+  TDataProvider=class(TComponent)
   protected
-    {$IFDEF NEXTGEN}[Weak]{$ENDIF}FData : TDataItem;
+    {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
+    FData : TDataItem;
+
+    var
+      FConsumers : TBIConsumers;
+
     function GetStream(const AData,ANext:TDataItem):TStream; overload; virtual;
     function GetStream(const AItems:TDataArray):TStream; overload; virtual;
     procedure GetItems(const AData:TDataItem); virtual;
-    procedure Load(const AData:TDataItem; const Children:Boolean); virtual; abstract;
+    procedure Load(const AData:TDataItem; const Children:Boolean); overload; virtual; abstract;
+    function Origin:String; virtual;
+  public
+    Destructor Destroy; override;
+
+    function NewData:TDataItem;
   end;
 
   TNumericData=(Normal, Percentages);
@@ -202,7 +235,7 @@ type
 
     FStartTime: TStopwatch;
 
-    IKeepParent : Boolean;
+    //IKeepParent : Boolean;
 
     function GetItem(const AName:String):TDataItem; inline;
 
@@ -215,6 +248,7 @@ type
     function GetHistory:TImportHistory;
     function GetStats:TDataStats;
     function GetMaster: TDataItem;
+    procedure Notify(const AEvent:TBIEvent);
     procedure SetMaster(const Value: TDataItem);
     procedure SetProvider(const Value: TDataProvider);
   protected
@@ -244,6 +278,15 @@ type
 
     FUnique : Boolean;
 
+    // MaxTextLength overrides automatic calculation at TBIDBEngine.AddFields and
+    // at TBIDataSetSource.AddItemField
+
+    IMaxTextLength : Integer;
+
+    FConsumers : TBIConsumers;
+
+    function MaxTextLength:Integer;
+
     procedure SetInternalDate(const ADate:TDateTimePart);
     procedure CheckEmptyName;
     procedure ClearData;
@@ -253,6 +296,8 @@ type
     function CreateStats:TDataStats;
 
     function ExistsBefore(const AIndex:TInteger):Boolean;
+
+    function GetProvider:TDataProvider;
 
     function HasItems:Boolean; inline;
     function HasMaster:Boolean;
@@ -292,11 +337,15 @@ type
     NumericValues : TNumericData;
 
     Constructor Create(const Table:Boolean=False); overload; virtual;
-    Constructor Create(const Datas:TDataArray); overload;
+    Constructor Create(const AData:TDataArray); overload;
     Constructor Create(const AProvider:TDataProvider); overload;
     Constructor Create(const AKind: TDataKind); overload;
 
+    class function LoadFromFile(const AFileName:String):TDataItem; inline;
+
     Destructor Destroy; override;
+
+    procedure Clear;
 
     function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):SmallInt;
     procedure CopyFrom(const DestIndex:TInteger; const Source:TDataItem; const SourceIndex:TInteger);
@@ -309,14 +358,15 @@ type
     function FindInMap(const Index:TInteger; out ABin:TNativeInteger):Boolean;
     procedure Finish;
     function FullName:String;
-    procedure Insert(const AtIndex:TInteger);
+    procedure Insert(const AtIndex:TInteger; const AMissing:Boolean=True);
     function IsChildOf(const AParent:TDataItem):Boolean;
-    procedure Load(const Children:Boolean=False); virtual;
+    procedure Load(const Children:Boolean); overload; virtual;
+    procedure Load; overload; inline;
     procedure ReCalculate(const Parallel:Boolean=False); virtual;
     procedure Resize(const Size:TInteger);
     function SameData(const A,B:TInteger):Boolean;
 
-    procedure SaveToFile(const AFileName:String);
+    procedure SaveToFile(const AFileName:String); inline;
 
     procedure SortBy(const AData: TDataItem; const Ascending: Boolean=True; const IgnoreTextCase:Boolean=False); overload;
     procedure SortBy(const AExpression:String; const Ascending: Boolean=True; const IgnoreTextCase:Boolean=False); overload;
@@ -454,7 +504,52 @@ type
     // Colors ('Black'-> TAlphaColor.Black...)
   end;
 
-  THops=class;
+  THops=class
+  private
+  type
+    THop=class
+    private
+      IData : TDataItem; // Cached
+      IsBool : Boolean;
+      Inverted : Boolean;
+      Index : TNativeIntArray;
+
+      Data : TDataItem;
+      Items : TDataArray; // Multiple
+
+      function CreateInvertedIndex(const AIndex:TNativeIntArray):TNativeIntArray;
+      function Find(const AIndex:TInteger):TInteger;
+      procedure Prepare;
+    public
+      Constructor Create(const AData:TDataItem); overload;
+      Constructor Create(const AData:TDataArray); overload;
+
+      function ToString:String; override;
+    end;
+
+    THopArray=Array of THop;
+
+    THopArrayHelper=record helper for THopArray
+    public
+      procedure Add(const Hop:THop);
+      procedure AddTop(const Hop:THop);
+      function Find(const Index:TInteger):TInteger;
+    end;
+
+    function InternalFind(const Start,Dest:TDataItem; var Visited:TDataArray):THops.THopArray;
+
+  public
+  var
+    Items : THopArray;
+    RealSource : TDataItem;
+    Valid : Boolean;
+    SourceIndex : TInteger;
+
+    Destructor Destroy; override;
+
+    function Index:TInteger;
+    procedure Init(const ADetail,AMaster:TDataItem);
+  end;
 
   TDataHops=class
   private
@@ -463,7 +558,7 @@ type
     function IsDetail(const ADetail,AMaster:TDataItem):Boolean;
     procedure TraverseExpression(const Item:TExpression);
   public
-    Datas : TDataArray;
+    Data : TDataArray;
     Main : TDataItem;
     Hops : Array of THops;
 
@@ -508,13 +603,22 @@ type
 
   TDataItemExpression=class(TExpression)
   private
+    {$IFDEF AUTOREFCOUNT}[weak]{$ENDIF}
     FData : TDataItem;
+
     FHops : THops;
+
+    {$IFDEF AUTOREFCOUNT}[weak]{$ENDIF}
+    FMain : TDataItem;
+
     KeepData : Boolean;
+  protected
+    procedure Notify(const AEvent:TBIEvent);
   public
-    Constructor Create(const AData:TDataItem; const FreeData:Boolean=False);
+    Constructor Create(const AData:TDataItem; const FreeData:Boolean=False; const AMain:TDataItem=nil);
     Destructor Destroy; override;
 
+    procedure Assign(const Source:TExpression); override;
     function IsLogical:Boolean;
     class procedure LookupFill(const ASource,ADest:TDataItem); static;
     class function NewLookup(const AName:String; const ADetail:TDataItem; const AMaster:TDataItem):TDataItem;
@@ -525,71 +629,24 @@ type
     property Hops:THops read FHops;
   end;
 
-  THops=class
-  private
-  type
-    THop=class
-    private
-      IData : TDataItem; // Cached
-      IsBool : Boolean;
-      Inverted : Boolean;
-      Index : TNativeIntArray;
-
-      Data : TDataItem;
-      Items : TDataArray; // Multiple
-
-      function CreateInvertedIndex(const AIndex:TNativeIntArray):TNativeIntArray;
-      function Find(const AIndex:TInteger):TInteger;
-      procedure Prepare;
-    public
-      Constructor Create(const AData:TDataItem); overload;
-      Constructor Create(const ADatas:TDataArray); overload;
-
-      function ToString:String; override;
-    end;
-
-    THopArray=Array of THop;
-
-    THopArrayHelper=record helper for THopArray
-    public
-      procedure Add(const Hop:THop);
-      procedure AddTop(const Hop:THop);
-      function Find(const Index:TInteger):TInteger;
-    end;
-
-    function InternalFind(const Start,Dest:TDataItem; var Visited:TDataArray):THops.THopArray;
-
-  public
-  var
-    Items : THopArray;
-    RealSource : TDataItem;
-    Valid : Boolean;
-    SourceIndex : TInteger;
-
-    Destructor Destroy; override;
-
-    function Index:TInteger;
-    procedure Init(const ADetail,AMaster:TDataItem);
-  end;
-
   TDetailData=class(TDataItem)
   public
     Detail : TDataItem;
   end;
 
-  TExpressionClass=class of TColumnExpression;
+  TColumnExpressionClass=class of TColumnExpression;
 
   TDataFunctions=record
   private
-    class function IndexOf(const AClass:TExpressionClass):Integer; static;
+    class function IndexOf(const AClass:TColumnExpressionClass):Integer; static;
   public
     class var
       Count : Integer;
-      Items : Array of TExpressionClass;
+      Items : Array of TColumnExpressionClass;
 
-    class procedure Register(const AClass:TExpressionClass); static;
+    class procedure Register(const AClass:TColumnExpressionClass); static;
     class function TryParse(const S:String):TExpression; static;
-    class procedure UnRegister(const AClass:TExpressionClass); static;
+    class procedure UnRegister(const AClass:TColumnExpressionClass); static;
   end;
 
   TIsNullData=class(TColumnExpression)

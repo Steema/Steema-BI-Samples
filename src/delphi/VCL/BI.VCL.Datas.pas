@@ -10,11 +10,11 @@ type
   TSelect=procedure(Sender:TObject; const Items:TDataArray) of object;
   TValidData=procedure(Sender:TObject; const AData:TDataItem; var Valid:Boolean) of object;
 
-  TFormDatas = class(TForm)
-    ListDatas: TListBox;
+  TFormData = class(TForm)
+    ListData: TListBox;
     Splitter1: TSplitter;
     ListItems: TListBox;
-    procedure ListDatasClick(Sender: TObject);
+    procedure ListDataClick(Sender: TObject);
     procedure ListItemsClick(Sender: TObject);
   private
     { Private declarations }
@@ -23,7 +23,7 @@ type
   public
     { Public declarations }
 
-    class function Embedd(const AParent:TWinControl; const Data:TDataItem):TFormDatas;
+    class function Embedd(const AParent:TWinControl; const Data:TDataItem):TFormData;
 
     function SelectedItem:TDataItem;
     function SelectedData:TDataItem;

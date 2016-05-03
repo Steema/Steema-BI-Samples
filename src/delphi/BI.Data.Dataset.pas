@@ -14,19 +14,24 @@ uses
 type
   TBIDataSetSource=class(TBIFileSource)
   private
-    procedure GuessFields(const DataSet:TDataSet; const Data:TDataItem);
-    procedure LoadData(const DataSet:TDataSet; const Data:TDataItem);
+    procedure AddField(const AData:TDataItem; const AField:TField);
+    procedure AddFields(const AData:TDataItem; const AFields:TFields);
+    function DataFromADT(const AField:TField):TDataItem;
+    procedure GuessFields(const ADataSet:TDataSet; const AData:TDataItem);
+    procedure LoadData(const ADataSet:TDataSet; const AData:TDataItem);
   public
-    class procedure AddItemFields(const Fields:TFieldDefs; const AItems:TDataArray); static;
-    class procedure AddItemField(const Fields:TFieldDefs; const AData:TDataItem); static;
+    class procedure AddItemFields(const AFields:TFieldDefs; const AItems:TDataArray); static;
+    class procedure AddItemField(const AFields:TFieldDefs; const AData:TDataItem); static;
 
-    class function FieldKind(const FieldType:TFieldType):TDataKind; static;
+    class function FieldKind(const AFieldType:TFieldType):TDataKind; static;
     class function FieldOfData(const AData:TDataItem; const ADataSet:TDataSet):TField; static;
 
     class function FromDataSet(const ADataSet:TDataSet; const AName:String=''):TDataItem;
+    class function FromField(const AField:TField; const AName:String=''):TDataItem;
 
-    function Import(const DataSet:TDataSet; const Name:String=''):TDataItem; overload;
-    function Import(const Connection:TCustomConnection):TDataArray; overload;
+    function Import(const AField:TField; const AName:String=''):TDataItem; overload;
+    function Import(const ADataSet:TDataSet; const AName:String=''):TDataItem; overload;
+    function Import(const AConnection:TCustomConnection):TDataArray; overload;
   end;
 
 implementation

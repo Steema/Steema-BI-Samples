@@ -44,7 +44,7 @@ contains
   BI.Algorithm.DimReduction in '..\Algorithms\BI.Algorithm.DimReduction.pas',
   BI.Algorithm.Ensemble in '..\Algorithms\BI.Algorithm.Ensemble.pas',
   BI.Algorithm.Model in '..\Algorithms\BI.Algorithm.Model.pas',
-  BI.Algorithm in '..\Algorithms\BI.Algorithm.pas',
+  BI.Algorithm.Register in '..\Algorithms\BI.Algorithm.Register.pas',
   BI.Algorithm.Regression in '..\Algorithms\BI.Algorithm.Regression.pas',
   BI.Plugins.Python in '..\Algorithms\BI.Plugins.Python.pas',
   BI.Plugins.Python.Engine in '..\Algorithms\BI.Plugins.Python.Engine.pas',

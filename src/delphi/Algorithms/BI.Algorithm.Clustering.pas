@@ -9,6 +9,7 @@ unit BI.Algorithm.Clustering;
 interface
 
 uses
+  System.Classes,
   BI.Data, BI.Arrays, BI.Algorithm.Model, BI.Algorithm.Clustering.Engine;
 
 type
@@ -68,7 +69,7 @@ type
     Options : TBIProvider;
     Output : TCluster;
 
-    Constructor Create; override;
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     procedure Calculate; override;
