@@ -13,8 +13,6 @@ uses
 
 type
   TSampleSummaries=class
-  private
-    procedure LoadData(const AStore:String='');
   public
     Demo,
 
@@ -29,10 +27,15 @@ type
     Movies : TDataItem;
 
     // Temporary
-    SumData : TDataItem;
+    SumData1,
+    SumData2,
+    SumData3 : TDataItem;
+
+    Destructor Destroy; override;
 
     function Count:Integer;
     function CreateSummary(const AIndex:Integer):TSummary;
+    procedure LoadData(const AStore:String='');
   end;
 
 var
@@ -272,6 +275,15 @@ begin
   end;
 end;
 
+destructor TSampleSummaries.Destroy;
+begin
+  SumData3.Free;
+  SumData2.Free;
+  SumData1.Free;
+
+  inherited;
+end;
+
 procedure TSampleSummaries.LoadData(const AStore:String);
 begin
   Demo.Free;
@@ -299,6 +311,6 @@ initialization
   Samples:=TSampleSummaries.Create;
   Samples.LoadData;
 finalization
-  Samples.SumData.Free;
   Samples.Free;
+  Samples:=nil;
 end.
