@@ -15,8 +15,6 @@ uses
 type
   [TestFixture]
   TSQLParser_Test=class(TObject)
-  strict private
-    Demo : TDataItem;
   public
     [Setup]
     procedure Setup;
@@ -33,17 +31,19 @@ type
 
 implementation
 
+uses
+  BI.Tests.SummarySamples;
+
 { TSQLParser_Test }
 
 procedure TSQLParser_Test.Setup;
 begin
-  Demo:=TStore.Load('BISamples','SQLite_Demo');
 end;
 
 procedure TSQLParser_Test.SimpleSelect;
 var Data : TDataItem;
 begin
-  Data:=TBISQL.From(Demo,'select * from Customers');
+  Data:=TBISQL.From(Samples.Demo,'select * from Customers');
   try
     Assert.IsNotNull(Data);
 
@@ -61,7 +61,7 @@ const
 
 var Data : TDataItem;
 begin
-  Data:=TBISQL.From(Demo,'select count(*) from Customers');
+  Data:=TBISQL.From(Samples.Demo,'select count(*) from Customers');
   try
     Assert.IsNotNull(Data);
 
@@ -79,7 +79,7 @@ end;
 procedure TSQLParser_Test.SimpleWhere;
 var Data : TDataItem;
 begin
-  Data:=TBISQL.From(Demo,'select ProductName from Products where UnitPrice>100');
+  Data:=TBISQL.From(Samples.Demo,'select ProductName from Products where UnitPrice>100');
   try
     Assert.IsNotNull(Data);
 
@@ -98,7 +98,6 @@ end;
 
 procedure TSQLParser_Test.TearDown;
 begin
-  Demo.Free;
 end;
 
 initialization
