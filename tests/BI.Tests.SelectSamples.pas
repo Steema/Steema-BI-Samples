@@ -58,23 +58,21 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
     TStores.GlobalCache.Items.Add(result);
   end;
 
+  // Average(UnitPrice)
+  function CalculateAverage:TSummary;
+  begin
+    result:=TSummary.Create(nil);
+    result.Measures.Add(Samples.Products['UnitPrice'],TAggregate.Average);
+  end;
+
   // UnitPrice > Avg(UnitPrice)
   function BiggerThanAverage:TLogicalExpression;
-  var Average : TSummary;
-      AverageValue : TDataItem;
   begin
-    // Average(UnitPrice)
-    Average:=TSummary.Create(nil);
-    Average.AddMeasure(Samples.Products['UnitPrice'],TAggregate.Average);
-
-    // Data from provider Average:
-    AverageValue:=TDataItem.Create(Average);
-
     // UnitPrice > Average
     result:=TLogicalExpression.Create(
-                  TDataItemExpression.Create(Samples.Products['UnitPrice']),
-                  TLogicalOperand.Greater,
-                  TDataItemExpression.Create(AverageValue,True));
+                TDataItemExpression.Create(Samples.Products['UnitPrice']),
+                TLogicalOperand.Greater,
+                TDataItemExpression.Create(TDataItem.Create(CalculateAverage),True));
   end;
 
   procedure DistinctOrderDetails(const AQuery:TDataSelect);
@@ -258,10 +256,10 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
 
            tmpSum:=Samples.CreateSummary(13);
            try
-             Samples.SumData.Free;
-             Samples.SumData:=tmpSum.Calculate;
+             Samples.SumData1.Free;
+             Samples.SumData1:=tmpSum.Calculate;
 
-             result.Add(Samples.SumData['Sum of Quantity']['Quarter of OrderDate']);
+             result.Add(Samples.SumData1['Sum of Quantity']['Quarter of OrderDate']);
            finally
              tmpSum.Free;
            end;
@@ -277,14 +275,14 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
            try
              tmpSum.Measures[0].Aggregate:=TAggregate.Count;
 
-             Samples.SumData.Free;
-             Samples.SumData:=tmpSum.Calculate;
+             Samples.SumData2.Free;
+             Samples.SumData2:=tmpSum.Calculate;
 
              // Summary Layout is: Items (columns)
 
-             result.Add(Samples.SumData['Count of Quantity']);
+             result.Add(Samples.SumData2['Count of Quantity']);
 
-             result.Data:=Samples.SumData;
+             result.Data:=Samples.SumData2;
            finally
              tmpSum.Free;
            end;
@@ -302,13 +300,13 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
 
              tmpSum.By[0].DateOptions.Part:=TDateTimePart.WeekOfYear;
 
-             Samples.SumData.Free;
-             Samples.SumData:=tmpSum.Calculate;
+             Samples.SumData3.Free;
+             Samples.SumData3:=tmpSum.Calculate;
 
-             result.Add(Samples.SumData['Count of Quantity']);
-             result.SortBy.Add(Samples.SumData['Count of Quantity'],False);
+             result.Add(Samples.SumData3['Count of Quantity']);
+             result.SortBy.Add(Samples.SumData3['Count of Quantity'],False);
 
-             result.Data:=Samples.SumData;
+             result.Data:=Samples.SumData3;
            finally
              tmpSum.Free;
            end;
