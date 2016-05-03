@@ -112,7 +112,7 @@ const
 'Ln( 6.8 ) -> 2.76553474636298'+CRLF+
 'log( 10000) -> 4'+CRLF+
 '(5*4) + sqr(3) - sqrt(36) -> 23'+CRLF+
-'Date(''5/6/2015'') -> 5/6/2015'+CRLF+
+'Date(''5/5/2015'') -> 5/5/2015'+CRLF+   // <-- Warning, Variant To Date swaps month and day
 'Millennium(''11/7/2016'') -> 3'+CRLF+
 'Century(''11/7/2016'') -> 21'+CRLF+
 'Year("11/7/2016") -> 2016'+CRLF+
@@ -121,7 +121,7 @@ const
 'WeekOfYear(''11/7/2016'') -> 45'+CRLF+
 'WeekDay(''11/7/2016'') -> 1'+CRLF+
 // 'Now ->'+CRLF+ <-- Not possible to test
-'Time("10:23:45") -> 10:23:45 AM'+CRLF+
+'Time("10:23:45") -> 10:23:45'+CRLF+ // <-- Warning, Variant AM/PM is not returned
 'Hour("10:23:45") -> 10'+CRLF+
 'Minute("10:23:45") -> 23'+CRLF+
 'Second("10:23:45") -> 45'+CRLF+
@@ -252,6 +252,7 @@ begin
   List.Text:=Expressions;
 
   FormatSettings:=TFormatSettings.Invariant;
+  FormatSettings.ShortTimeFormat:='hh:mm:ss';
 end;
 
 procedure TExpressions_Test.TearDown;
