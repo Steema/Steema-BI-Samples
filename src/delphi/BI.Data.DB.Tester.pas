@@ -33,7 +33,7 @@ interface
 
     {$IF CompilerVersion>=30}
       {$IFNDEF ANDROID}
-      {$DEFINE HASFIREDAC_MONGODB}
+      {.$DEFINE HASFIREDAC_MONGODB}
       {$ENDIF}
     {$ENDIF}
 

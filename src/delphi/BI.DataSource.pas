@@ -88,7 +88,6 @@ type
   protected
     Parent : TObject; // see TBIExport.Destroy
 
-    OwnsFilter,
     ValidIndex : Boolean;
 
     procedure ApplyFilter;

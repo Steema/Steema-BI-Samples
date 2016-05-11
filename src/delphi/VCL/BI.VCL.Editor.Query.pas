@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BI.VCL.Grid, Vcl.ComCtrls,
   BI.Data, BI.Summary, BI.DataSource, BI.VCL.DataSelect, Vcl.StdCtrls, BI.Query,
-  VCL.CheckLst;
+  VCL.CheckLst, Vcl.Buttons;
 
 type
   TBIQueryEditor = class(TForm)
@@ -65,6 +65,16 @@ type
     CBDatePart: TComboBox;
     GBHistogram: TGroupBox;
     CBHistoActive: TCheckBox;
+    SBRowUp: TSpeedButton;
+    SBRowDown: TSpeedButton;
+    SBMeasureUp: TSpeedButton;
+    SBMeasureDown: TSpeedButton;
+    SBColUp: TSpeedButton;
+    SBColDown: TSpeedButton;
+    LFilterError: TLabel;
+    Label6: TLabel;
+    EBins: TEdit;
+    UDBins: TUpDown;
     procedure FormCreate(Sender: TObject);
     procedure ListRowsDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -87,7 +97,6 @@ type
     procedure CBDatePartChange(Sender: TObject);
     procedure ListMeasuresDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
-    procedure FormShow(Sender: TObject);
     procedure ListRowsClickCheck(Sender: TObject);
     procedure EMaxChange(Sender: TObject);
     procedure EFilterChange(Sender: TObject);
@@ -97,6 +106,13 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure CBFilterClick(Sender: TObject);
     procedure CBHistoActiveClick(Sender: TObject);
+    procedure SBRowUpClick(Sender: TObject);
+    procedure SBRowDownClick(Sender: TObject);
+    procedure SBMeasureDownClick(Sender: TObject);
+    procedure SBMeasureUpClick(Sender: TObject);
+    procedure SBColUpClick(Sender: TObject);
+    procedure SBColDownClick(Sender: TObject);
+    procedure EBinsChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -106,7 +122,6 @@ type
     CompTree,
     DataTree : TTreeView;
 
-    IChanging,
     IModified : Boolean;
 
     ICurrentBy : TGroupBy;
@@ -114,9 +129,16 @@ type
     function AddData(const AList:TCheckListBox; const AData:TDataItem; const IsActive:Boolean=True):TQueryItem;
     procedure AddItem(const AList:TCheckListBox; const AItem:TQueryItem);
     function By(const AList:TCheckListBox):TGroupBy;
+    procedure ChangeItem(const AList:TCheckListBox);
+    function ChangingQuery:Boolean;
     procedure DeleteItem(const AList:TCheckListBox);
+    procedure DoExchangeItem(const AList:TCheckListBox; const A,B:Integer); overload;
+    procedure DoExchangeItem(const AList:TCheckListBox; const Delta:Integer); overload;
+
+    procedure EnableHistogramControls;
     procedure EnableRowSettings;
     procedure FilterComponent(Sender: TComponent; var Valid:Boolean);
+    function ListOf(const ABy:TGroupBy):TCheckListBox;
     function Measure:TMeasure;
     procedure Modified;
     procedure Rebuild;
@@ -130,7 +152,9 @@ type
     Selector : TDataSelector;
 
     class function Edit(const AOwner:TComponent; const AQuery:TBIQuery):Boolean; static;
-  end;
+    class function Embedd(const AOwner: TComponent; const AParent: TWinControl): TBIQueryEditor; static;
 
+    procedure Refresh(const AQuery:TBIQuery);
+  end;
 
 implementation

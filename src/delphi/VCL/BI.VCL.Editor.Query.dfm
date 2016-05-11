@@ -14,7 +14,6 @@ object BIQueryEditor: TBIQueryEditor
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter2: TSplitter
@@ -87,10 +86,28 @@ object BIQueryEditor: TBIQueryEditor
           Height = 13
           Caption = 'Rows'
         end
+        object SBRowUp: TSpeedButton
+          Left = 119
+          Top = 9
+          Width = 23
+          Height = 22
+          Caption = '^'
+          Enabled = False
+          OnClick = SBRowUpClick
+        end
+        object SBRowDown: TSpeedButton
+          Left = 147
+          Top = 9
+          Width = 23
+          Height = 22
+          Caption = 'v'
+          Enabled = False
+          OnClick = SBRowDownClick
+        end
         object BDeleteRow: TButton
           Left = 51
           Top = 7
-          Width = 75
+          Width = 59
           Height = 25
           Caption = 'Delete'
           Enabled = False
@@ -194,10 +211,28 @@ object BIQueryEditor: TBIQueryEditor
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 2
+        object SBColUp: TSpeedButton
+          Left = 78
+          Top = 10
+          Width = 23
+          Height = 22
+          Caption = '^'
+          Enabled = False
+          OnClick = SBColUpClick
+        end
+        object SBColDown: TSpeedButton
+          Left = 106
+          Top = 10
+          Width = 23
+          Height = 22
+          Caption = 'v'
+          Enabled = False
+          OnClick = SBColDownClick
+        end
         object BDeleteColumn: TButton
-          Left = 13
+          Left = 7
           Top = 9
-          Width = 75
+          Width = 63
           Height = 25
           Caption = 'Delete'
           Enabled = False
@@ -205,9 +240,9 @@ object BIQueryEditor: TBIQueryEditor
           OnClick = BDeleteColumnClick
         end
         object CBRemoveCols: TCheckBox
-          Left = 15
+          Left = 9
           Top = 43
-          Width = 137
+          Width = 119
           Height = 17
           Caption = 'Remove Missing'
           Enabled = False
@@ -240,9 +275,27 @@ object BIQueryEditor: TBIQueryEditor
           Height = 13
           Caption = 'Measures'
         end
+        object SBMeasureUp: TSpeedButton
+          Left = 163
+          Top = 9
+          Width = 23
+          Height = 22
+          Caption = '^'
+          Enabled = False
+          OnClick = SBMeasureUpClick
+        end
+        object SBMeasureDown: TSpeedButton
+          Left = 191
+          Top = 9
+          Width = 23
+          Height = 22
+          Caption = 'v'
+          Enabled = False
+          OnClick = SBMeasureDownClick
+        end
         object BDeleteMeasure: TButton
           Left = 75
-          Top = 9
+          Top = 7
           Width = 75
           Height = 25
           Caption = 'Delete'
@@ -276,7 +329,7 @@ object BIQueryEditor: TBIQueryEditor
           Top = 0
           Width = 274
           Height = 175
-          ActivePage = TabItem
+          ActivePage = TabMeasureOptions
           Align = alClient
           TabOrder = 0
           Visible = False
@@ -306,6 +359,13 @@ object BIQueryEditor: TBIQueryEditor
               Height = 81
               Caption = 'Histogram:'
               TabOrder = 1
+              object Label6: TLabel
+                Left = 11
+                Top = 46
+                Width = 23
+                Height = 13
+                Caption = 'Bins:'
+              end
               object CBHistoActive: TCheckBox
                 Left = 9
                 Top = 20
@@ -314,6 +374,24 @@ object BIQueryEditor: TBIQueryEditor
                 Caption = 'Active'
                 TabOrder = 0
                 OnClick = CBHistoActiveClick
+              end
+              object EBins: TEdit
+                Left = 44
+                Top = 43
+                Width = 49
+                Height = 21
+                TabOrder = 1
+                Text = '0'
+                OnChange = EBinsChange
+              end
+              object UDBins: TUpDown
+                Left = 93
+                Top = 43
+                Width = 16
+                Height = 21
+                Associate = EBins
+                Max = 32767
+                TabOrder = 2
               end
             end
           end
@@ -325,11 +403,15 @@ object BIQueryEditor: TBIQueryEditor
               Top = 0
               Width = 266
               Height = 147
-              ActivePage = TabMeasure
+              ActivePage = TabMeasureInfo
               Align = alClient
               TabOrder = 0
               object TabMeasure: TTabSheet
                 Caption = 'Aggregate'
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object CBAggregate: TComboBox
                   Left = 8
                   Top = 14
@@ -360,6 +442,10 @@ object BIQueryEditor: TBIQueryEditor
               object TabCalc: TTabSheet
                 Caption = 'Calculation'
                 ImageIndex = 3
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object RGRunning: TRadioGroup
                   Left = 135
                   Top = 3
@@ -456,6 +542,18 @@ object BIQueryEditor: TBIQueryEditor
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 4
+      object LFilterError: TLabel
+        Left = 354
+        Top = 16
+        Width = 3
+        Height = 13
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
       object EFilter: TEdit
         Left = 71
         Top = 9

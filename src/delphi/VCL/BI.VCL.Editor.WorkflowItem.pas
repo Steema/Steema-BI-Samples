@@ -34,18 +34,18 @@ type
   private
     { Private declarations }
 
-    FItem : TWorkflowActionItem;
+    FItem : TWorkflowItem;
 
     procedure SetAddProperties(const AData:TDataItem);
     procedure SetDataProperties(const AData:TDataItem);
     procedure SetDeleteProperties(const AData:TDataItem);
     procedure SetQueryProperties(const AData:TDataItem);
     procedure SetRenameProperties(const AData:TDataItem);
-    procedure ShowHideTabs(const AItem:TWorkflowActionItem);
+    procedure ShowHideTabs(const AItem:TWorkflowItem);
   public
     { Public declarations }
 
-    procedure Refresh(const AItem:TWorkflowActionItem);
+    procedure Refresh(const AItem:TWorkflowItem);
 
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl):TWorkflowItemEditor; static;
   end;

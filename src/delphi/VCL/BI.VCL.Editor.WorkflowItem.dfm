@@ -24,6 +24,10 @@ object WorkflowItemEditor: TWorkflowItemEditor
     Visible = False
     object TabRename: TTabSheet
       Caption = 'Rename'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ItemNames: TComboBox
         Left = 88
         Top = 16
@@ -45,6 +49,10 @@ object WorkflowItemEditor: TWorkflowItemEditor
     object TabDelete: TTabSheet
       Caption = 'Delete'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DeleteItemNames: TComboBox
         Left = 96
         Top = 24
@@ -57,6 +65,10 @@ object WorkflowItemEditor: TWorkflowItemEditor
     object TabAdd: TTabSheet
       Caption = 'Add'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object EAdd: TEdit
         Left = 80
         Top = 16
@@ -78,6 +90,10 @@ object WorkflowItemEditor: TWorkflowItemEditor
     object TabQuery: TTabSheet
       Caption = 'Query'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object MemoSQL: TMemo
         Left = 0
         Top = 0
@@ -102,6 +118,10 @@ object WorkflowItemEditor: TWorkflowItemEditor
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BClear: TButton
         Left = 16
         Top = 16

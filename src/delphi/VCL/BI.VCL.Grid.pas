@@ -14,7 +14,8 @@ uses
   System.UITypes,
   {$ENDIF}
   VCL.Controls, VCL.Forms, VCL.Grids, Data.DB, BI.Data,
-  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus, BI.UI.Colors, BI.UI;
+  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus, BI.UI.Colors, BI.UI,
+  BI.VCL.DataControl;
 
 type
   TBIGridPluginClass=class of TBIGridPlugin;
@@ -83,7 +84,7 @@ type
   end;
 
   // Generic Grid control that "links" a TDataItem with a Grid.
-  TBIGrid = class(TWinControl)
+  TBIGrid = class(TBIDataControl)
   private
     IDataSet : TBIDataset;
     IPlugin : TBIGridPlugin;
@@ -98,27 +99,13 @@ type
     FSearch : TGridSearch;
     FShowItems : Boolean;
 
-    {$IFDEF FPC}
-    FParentBack : Boolean;
-    {$ENDIF}
-
     procedure ChangedRow(Sender: TObject; Field: TField);
-
-    function GetData:TDataItem;
     function GetDataSource: TDataSource;
     function GetReadOnly: Boolean;
     function GetTotals:Boolean;
-
     procedure HideShowItems;
-
-    procedure Notify(const AEvent:TBIEvent);
-
     function PluginControl:TWinControl;
-
-    procedure ReadOrigin(Reader: TReader);
-
     procedure SetAlternate(const Value: TAlternateColor);
-    procedure SetData(const Value: TDataItem);
     procedure SetDataSource(const Value: TDataSource);
     procedure SetGridFilters(const Value: TGridFilters);
     procedure SetPlugin(const Value: TBIGridPlugin);
@@ -127,98 +114,22 @@ type
     procedure SetSearch(const Value: TGridSearch);
     procedure SetShowItems(const Value: Boolean);
     procedure SetTotals(const Value: Boolean);
-    procedure TryRemoveConsumer;
     procedure TryShowItems;
-    procedure WriteOrigin(Writer: TWriter);
   protected
-    procedure DefineProperties(Filer: TFiler); override;
+    function GetDataItem:TDataItem; override;
+    procedure SetDataItem(const Value: TDataItem); override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     procedure BindTo(const AData:TDataItem);
     procedure Colorize(const AItems:TDataColorizers);
-    procedure DestroyData;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);
     procedure Invalidate; override;
-    procedure RefreshData;
 
-    property DockManager;
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
-
   published
-    property Align;
-    property Anchors;
-    property AutoSize;
-    property BiDiMode;
-    // NO: property Caption;
-    property Color default clBtnFace;
-    property Constraints;
-    property UseDockManager default True;
-    property DockSite;
-    property DoubleBuffered;
-    property DragCursor;
-    property DragKind;
-    property DragMode;
-    property Enabled;
-    {$IFNDEF FPC}
-    property Padding;
-    {$ENDIF}
-    property ParentBiDiMode;
-    property ParentBackground {$IFDEF FPC}:Boolean read FParentBack write FParentBack{$ENDIF};
-    property ParentColor;
-    {$IFNDEF FPC}
-    property ParentDoubleBuffered;
-    {$ENDIF}
-    property ParentShowHint;
-    property PopupMenu;
-    property ShowHint;
-    property TabOrder;
-    property TabStop;
-    {$IFNDEF FPC}
-    property Touch;
-    {$ENDIF}
-    property Visible;
-    {$IFNDEF FPC}
-    property StyleElements;
-    {$ENDIF}
-    property OnAlignInsertBefore;
-    property OnAlignPosition;
-    {$IFNDEF FPC}
-    property OnCanResize;
-    {$ENDIF}
-    property OnClick;
-    property OnConstrainedResize;
-    property OnContextPopup;
-    property OnDockDrop;
-    property OnDockOver;
-    property OnDblClick;
-    property OnDragDrop;
-    property OnDragOver;
-    property OnEndDock;
-    property OnEndDrag;
-    property OnEnter;
-    property OnExit;
-    {$IFNDEF FPC}
-    property OnGesture;
-    {$ENDIF}
-    property OnGetSiteInfo;
-    {$IFNDEF FPC}
-    property OnMouseActivate;
-    {$ENDIF}
-    property OnMouseDown;
-    property OnMouseEnter;
-    property OnMouseLeave;
-    property OnMouseMove;
-    property OnMouseUp;
-    property OnResize;
-    property OnStartDock;
-    property OnStartDrag;
-    property OnUnDock;
-
-    // TBIGrid
     property Alternate:TAlternateColor read FAlternate write SetAlternate;
-    property Data:TDataItem read GetData write SetData;
     property DataSource:TDataSource read GetDataSource write SetDataSource;
     property Filters:TGridFilters read FGridFilters write SetGridFilters;
     property ReadOnly:Boolean read GetReadOnly write SetReadOnly default True;

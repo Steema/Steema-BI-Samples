@@ -21,6 +21,7 @@ type
     procedure ViewData1Click(Sender: TObject);
     procedure TreeExpanding(Sender: TObject; Node: TTreeNode;
       var AllowExpansion: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
 
@@ -38,6 +39,8 @@ type
 
     procedure Add(const AParent:TTreeNode; const AComponent:TComponent; const AName:String);
     procedure FillTree;
+  protected
+    procedure TryFreeData;
   public
     { Public declarations }
 
@@ -50,9 +53,9 @@ type
     var
       Edited : TComponent;
 
-    function Data:TDataItem;
+    function Data(const AOwner:TComponent):TDataItem;
 
-    class function Import(const AObject:TObject):TDataItem; static;
+    class function Import(const AOwner:TComponent;const AObject:TObject):TDataItem; static;
 
     class function Select(const AOwner:TComponent;
                     const ACurrent:TComponent=nil):TComponent; static;

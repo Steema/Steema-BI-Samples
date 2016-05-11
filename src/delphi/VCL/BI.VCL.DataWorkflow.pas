@@ -30,7 +30,7 @@ type
     Button1: TButton;
     ranspose1: TMenuItem;
     Change1: TMenuItem;
-    Panel3: TPanel;
+    PanelEditor: TPanel;
     LError: TLabel;
     PopupMenu2: TPopupMenu;
     Files1: TMenuItem;
@@ -61,6 +61,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure BITree1Change(Sender: TObject);
     procedure BDeleteClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
 
@@ -69,16 +70,15 @@ type
 
     ItemEditor:TWorkflowItemEditor;
 
-    procedure ActionChanged(Sender: TObject);
     procedure AddNewRoot(const AData:TDataItem; const X,Y:Integer);
     function DataOf(const ANode:TBITreeNode):TDataItem;
-    function DoAddNode(const AParent:TBITreeNode; const AItem:TWorkflowActionItem):TBITreeNode;
+    function DoAddNode(const AParent:TBITreeNode; const AItem:TWorkflowItem):TBITreeNode;
 
     procedure FillTree;
     procedure FilterSelf(Sender: TComponent; var Valid:Boolean);
 
     procedure ItemChanged(Sender: TObject);
-    function ItemOf(const ANode:TBITreeNode):TWorkflowActionItem;
+    function ItemOf(const ANode:TBITreeNode):TWorkflowItem;
 
     function NewShape(const AParent:TBITreeNode;
                       const AData:TDataItem):TBITreeNode; overload;

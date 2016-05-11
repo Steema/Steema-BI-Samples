@@ -43,6 +43,7 @@ contains
   BI.VCL.Component in '..\VCL\BI.VCL.Component.pas',
   BI.VCL.DataManager in '..\VCL\BI.VCL.DataManager.pas' {DataManager},
   BI.VCL.FilterEditor in '..\VCL\BI.VCL.FilterEditor.pas' {DataFilterEditor},
+  BI.VCL.DataControl in '..\VCL\BI.VCL.DataControl.pas',
   BI.VCL.Grid in '..\VCL\BI.VCL.Grid.pas',
   BI.VCL.GridForm in '..\VCL\BI.VCL.GridForm.pas' {BIGridForm},
   BI.VCL.DataSelect in '..\VCL\BI.VCL.DataSelect.pas' {DataSelector},

@@ -32,6 +32,8 @@ type
     // Pending:
     // Derive THistogram from TSummaryItem, to allow expressions instead of just data Items.
 
+    FActive : Boolean;
+
     FSource : TDataItem;
 
     Bins : TBinArray;
@@ -43,8 +45,6 @@ type
     procedure Fill(var Bins:TBinArray);
     function Prepare(const Source:TDataItem):Integer;
   public
-    Active : Boolean;
-
     NumBins : Integer;
     BinSize : TFloat;
 
@@ -59,8 +59,11 @@ type
     Constructor Create;
 
     procedure Assign(const Value:THistogram);
+
     function Calculate(const Source:TDataItem):TDataItem;
     function BinCount:Integer; inline;
+
+    property Active:Boolean read FActive write FActive default False;
   end;
 
   // Basic summary operations
@@ -328,6 +331,7 @@ type
     Hops : TDataHops;
 
     procedure FillGroupByRows;
+    procedure GuessByLayout;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure SetDirectFilter(const Value: TExpression);
   public

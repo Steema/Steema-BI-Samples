@@ -169,6 +169,8 @@ type
   private
     Items : TArray<TBIConsumer>;
   public
+    Changing : Boolean;
+
     procedure Add(const AConsumer:TBIConsumer);
     procedure Broadcast(const AEvent:TBIEvent);
     function IndexOf(const AConsumer:TBIConsumer):Integer;
@@ -178,17 +180,15 @@ type
   // Base class for TDataItem "Providers"
   TDataProvider=class(TComponent)
   protected
-    {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
-    FData : TDataItem;
-
     var
       FConsumers : TBIConsumers;
 
+    procedure Changed;
+    function Changing:Boolean;
     function GetStream(const AData,ANext:TDataItem):TStream; overload; virtual;
     function GetStream(const AItems:TDataArray):TStream; overload; virtual;
     procedure GetItems(const AData:TDataItem); virtual;
     procedure Load(const AData:TDataItem; const Children:Boolean); overload; virtual; abstract;
-    function Origin:String; virtual;
   public
     Destructor Destroy; override;
 
@@ -289,7 +289,6 @@ type
 
     procedure SetInternalDate(const ADate:TDateTimePart);
     procedure CheckEmptyName;
-    procedure ClearData;
     procedure ClearDelay;
     procedure CloneData(const ASource:TDataItem; const AStart,ACount:TInteger);
     function CreateMap:TDataMap;
@@ -346,6 +345,7 @@ type
     Destructor Destroy; override;
 
     procedure Clear;
+    procedure ClearData(const Recursive:Boolean=False);
 
     function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):SmallInt;
     procedure CopyFrom(const DestIndex:TInteger; const Source:TDataItem; const SourceIndex:TInteger);

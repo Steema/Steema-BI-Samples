@@ -155,7 +155,10 @@ type
 
     class function NotRegistered(const AName: String):EBIException;
 
-    class function OriginOf(const AData:TDataItem; const DefaultStore:String; const RelativeTo:TDataItem=nil):String; static;
+    class function OriginOf(const AData:TDataItem;
+                            const DefaultStore:String;
+                            const RelativeTo:TDataItem=nil):String; static;
+
     class function OriginToData(const AData:TDataItem; const AStore,AOrigin:String;
           const Error:TBIErrorProc=nil):TDataItem; static;
 

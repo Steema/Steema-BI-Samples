@@ -13,6 +13,7 @@ object BIWorkflowEditor: TBIWorkflowEditor
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
@@ -51,7 +52,7 @@ object BIWorkflowEditor: TBIWorkflowEditor
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 1
-    object Panel3: TPanel
+    object PanelEditor: TPanel
       Left = 0
       Top = 392
       Width = 289

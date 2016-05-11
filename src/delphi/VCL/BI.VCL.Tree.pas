@@ -18,9 +18,9 @@ interface
 uses
   System.Classes,
   {$IFDEF FMX}
-  FMX.Controls, FMX.TreeView, BI.FMX.Grid, FMX.Layouts,
+  FMX.Controls, FMX.TreeView, BI.FMX.DataControl,
   {$ELSE}
-  VCL.Controls, VCL.Graphics, BI.VCL.Grid,
+  VCL.Controls, VCL.Graphics, BI.VCL.DataControl,
   {$ENDIF}
   BI.Arrays, BI.Data;
 
@@ -90,7 +90,7 @@ type
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
-  TBITree=class({$IFDEF FMX}TLayout{$ELSE}TWinControl{$ENDIF})
+  TBITree=class(TBIDataControl)
   public
     type
       TBITreeNodes=class
@@ -112,15 +112,12 @@ type
 
     function GetOnChange: TNotifyEvent;
     function GetSelected: TBITreeNode;
-    procedure Notify(const AEvent:TBIEvent);
-    procedure ReadOrigin(Reader: TReader);
-    procedure SetDataItem(const Value: TDataItem);
     procedure SetOnChange(const Value: TNotifyEvent);
     procedure SetSelected(const Value: TBITreeNode);
-    procedure WriteOrigin(Writer: TWriter);
   protected
-    procedure DefineProperties(Filer: TFiler); override;
+    function GetDataItem:TDataItem; override;
     procedure Loaded; override;
+    procedure SetDataItem(const Value: TDataItem); override;
   public
     class var
       Engine : TBITreePluginClass;
@@ -152,103 +149,10 @@ type
     property Nodes:TBITreeNodes read FNodes;
     property Selected:TBITreeNode read GetSelected write SetSelected;
   published
-    property Align;
-    property Anchors;
-
     {$IFNDEF FMX}
-    property AutoSize;
-    property BiDiMode;
-    // NO: property Caption;
     property Color default clWhite;
-    property Constraints;
-    property UseDockManager default True;
-    property DockSite;
-    property DoubleBuffered;
-    property DragCursor;
-    property DragKind;
     {$ENDIF}
 
-    property DragMode;
-    property Enabled;
-    {$IFNDEF FPC}
-    property Padding;
-    {$ENDIF}
-
-    {$IFNDEF FMX}
-    property ParentBiDiMode;
-    property ParentBackground {$IFDEF FPC}:Boolean read FParentBack write FParentBack{$ENDIF};
-    property ParentColor;
-    {$IFNDEF FPC}
-    property ParentDoubleBuffered;
-    {$ENDIF}
-    {$ENDIF}
-
-    property ParentShowHint;
-    property PopupMenu;
-    property ShowHint;
-    property TabOrder;
-    property TabStop;
-    {$IFNDEF FPC}
-    property Touch;
-    {$ENDIF}
-    property Visible;
-
-    {$IFNDEF FMX}
-    {$IFNDEF FPC}
-    property StyleElements;
-    {$ENDIF}
-    property OnAlignInsertBefore;
-    property OnAlignPosition;
-    {$IFNDEF FPC}
-    property OnCanResize;
-    {$ENDIF}
-    {$ENDIF}
-
-    property OnClick;
-
-    {$IFNDEF FMX}
-    property OnConstrainedResize;
-    property OnContextPopup;
-    property OnDockDrop;
-    property OnDockOver;
-    {$ENDIF}
-
-    property OnDblClick;
-    property OnDragDrop;
-    property OnDragOver;
-
-    {$IFNDEF FMX}
-    property OnEndDock;
-    property OnEndDrag;
-    {$ENDIF}
-
-    property OnEnter;
-    property OnExit;
-    {$IFNDEF FPC}
-    property OnGesture;
-    {$ENDIF}
-
-    {$IFNDEF FMX}
-    property OnGetSiteInfo;
-    {$IFNDEF FPC}
-    property OnMouseActivate;
-    {$ENDIF}
-    {$ENDIF}
-
-    property OnMouseDown;
-    property OnMouseEnter;
-    property OnMouseLeave;
-    property OnMouseMove;
-    property OnMouseUp;
-    property OnResize;
-
-    {$IFNDEF FMX}
-    property OnStartDock;
-    property OnStartDrag;
-    property OnUnDock;
-    {$ENDIF}
-
-    property Data:TDataItem read FData write SetDataItem;
     property OnChange:TNotifyEvent read GetOnChange write SetOnChange;
   end;
 

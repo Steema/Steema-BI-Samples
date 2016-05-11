@@ -20,7 +20,7 @@ uses
 type
   TScreenChartRender=class(TScreenRender)
   private
-    class procedure FinishChart(const AChart:TBIChart; const AItem:TDashboardItem); static;
+    class procedure FinishChart(const AChart:TBITChart; const AItem:TDashboardItem); static;
   protected
     function CanRefreshData(const AControl:TControl):Boolean; override;
     function NewControl(const AKind:String; const AItem:TDashboardItem):TControl; override;

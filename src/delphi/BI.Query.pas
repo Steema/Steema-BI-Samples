@@ -3,7 +3,7 @@ unit BI.Query;
 interface
 
 uses
-  System.Classes, BI.Data, BI.DataSource, BI.Summary;
+  System.Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression;
 
 type
   TBIQuery=class;
@@ -14,6 +14,7 @@ type
   private
     FData : TDataItem;
     FOnChange: TNotifyEvent;
+    FProvider : TComponent;
     FStyle: TQueryItemStyle;
 
     FSelectIndex : Integer;
@@ -36,7 +37,9 @@ type
     procedure SetStyle(const Value: TQueryItemStyle);
     procedure SetActive(const Value: Boolean);
     procedure SetAggregate(const Value: TAggregate);
+    procedure ValidateNew(const AData:TDataItem);
     procedure WriteOrigin(Writer: TWriter);
+    procedure SetProvider(const Value: TComponent);
  protected
     procedure DefineProperties(Filer: TFiler); override;
  public
@@ -47,10 +50,13 @@ type
     function GroupBy:TGroupBy;
     function Measure:TMeasure;
     function RealStyle:TQueryItemStyle;
+
+    function ToString:String; override;
   published
     property Active:Boolean read GetActive write SetActive default True;
     property Aggregate:TAggregate read GetAggregate write SetAggregate default TAggregate.Count;
     property Data:TDataItem read FData write SetData;
+    property Provider:TComponent read FProvider write SetProvider;
     property Style:TQueryItemStyle read FStyle write SetStyle default TQueryItemStyle.Automatic;
 
     property OnChange:TNotifyEvent read FOnChange write FOnChange;
@@ -108,6 +114,7 @@ type
   private
     FItems: TQueryItems;
 
+    FOnError : TErrorProc;
     FSelect : TDataSelect;
     FSummary : TSummary;
     FRemove: TQueryRemove;
@@ -128,9 +135,9 @@ type
     procedure SetRemove(const Value: TQueryRemove);
     procedure SetUseFilter(const Value: Boolean);
   protected
-    procedure Changed;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure Loaded; override;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
     property Select:TDataSelect read FSelect write SetSelect;
     property Summary:TSummary read FSummary write SetSummary;
@@ -153,6 +160,8 @@ type
 
     procedure Parse(const AData:TDataItem; const SQL:String);
     function ToString:String; override;
+
+    property OnError:TErrorProc read FOnError write FOnError;
   published
     property Distinct:Boolean read GetDistinct write SetDistinct default False;
     property Filter:String read GetFilter write SetFilter;

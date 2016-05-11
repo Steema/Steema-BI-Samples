@@ -17,20 +17,23 @@ type
     Button1: TButton;
     Button2: TButton;
     procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
 
     IManager : TDataManager;
     IComp : TDataComponent;
+
+    procedure FilterSelf(Sender: TComponent; var Valid:Boolean);
   public
     { Public declarations }
 
     class function Choose(const AOwner:TComponent;
                           const AEdited:TComponent):TDataItem; static;
 
-    class function Embed(const AOwner:TComponent;
-                         const AParent:TWinControl;
-                         const AEdited: TComponent):TDataSelector; static;
+    class function Embedd(const AOwner:TComponent;
+                          const AParent:TWinControl;
+                          const AEdited: TComponent):TDataSelector; static;
 
     property ComponentSelector:TDataComponent read IComp;
     property Manager:TDataManager read IManager;

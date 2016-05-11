@@ -16,10 +16,9 @@ interface
 
 // Pending list of features:
 {
-  - Support for TCollection (use TCollectionItem members)
   - Test with recursive classes (classes inside classes)
   - Support for Array or TList properties to implement master-detail TDataItem
-  - Investigate adding "Primary Key" support for fast Find and non-duplicates.
+  - Investigate adding "Primary Key" support for fast Find and non-duplicate checks.
 }
 
 uses
@@ -31,6 +30,7 @@ type
 
   TRttiMembers=(Both, Fields, Properties);
 
+  // Base RTTI Provider
   TRTTIProvider=class(TDataProvider)
   private
   class var
@@ -45,52 +45,56 @@ type
 
     procedure GetItem(const AField:TRttiField; const AData:Pointer; const AItem:TDataItem; const APos:TInteger); overload;
     procedure GetItem(const AProp:TRttiProperty; const AData:Pointer; const AItem:TDataItem; const APos:TInteger); overload;
-    procedure GetAll(const AData:TValue; const APos:TInteger);
+    procedure GetAll(const AData:TDataItem; const APos:TInteger; const AValue:TValue);
 
     function IsVisible(const AMember:TRttiMember):Boolean; inline;
-    function KindOf(const AType:TRttiType):TDataKind;
+    class function KindOf(const AType:TRttiType):TDataKind; static;
   protected
-    procedure DoAdd(const APos:TInteger; const AData:TValue);
+    procedure DoAdd(const AData:TDataItem; const APos:TInteger; const AValue:TValue);
+    procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
-    function Same(const APos:TInteger; const AData:TValue):Boolean;
+    function Same(const AData:TDataItem; const APos:TInteger; const AValue:TValue):Boolean;
   public
-    Constructor CreateType(const AType:PTypeInfo;
+    Constructor CreateType(const AOwner:TComponent;
+                       const AType:PTypeInfo;
                        const AVisibility:TVisibility=[mvPublic,mvPublished];
                        const AMembers:TRttiMembers=TRttiMembers.Both); overload;
 
-    procedure GetItems(const AData:TDataItem); override;
-
-    procedure Clear;
-    function Count:TInteger; inline;
-    procedure Delete(const AIndex:TInteger); inline;
   published
     property Members:TRttiMembers read FMembers write FMembers;
     property Visibility:TVisibility read FVisibility write FVisibility;
   end;
 
+  // Generic Provider
   TTypeProvider<T>=class(TRTTIProvider)
   private
+    FData : TDataItem;
+
+    function Get(const AIndex: TInteger):T;
     procedure GetError(const AIndex:TInteger);
-    procedure Put(const AIndex:TInteger; const AData:T); inline;
-    procedure TryResize(const ACount:TInteger);
+    procedure Put(const AIndex:TInteger; const AValue:T); inline;
+    procedure TryResize(const AData:TDataItem; const ACount:TInteger);
   public
     Primary : TDataItem;
 
-    Constructor CreateType; overload;
-    Constructor CreateArray(const AData:Array of T); overload;
+    Constructor Create(AOwner:TComponent); override;
+    Constructor CreateArray(const AOwner:TComponent; const AValue:Array of T); overload;
 
-    procedure Add(const AData:T); overload; inline;
-    procedure Add(const AData:Array of T); overload;
-    procedure Add(const AData:TList<T>); overload;
-    procedure Add(const AData:TCollection); overload;
-    function Add(const AData:TValue):TInteger; overload;
+    procedure Add(const AValue:T); overload; inline;
+    procedure Add(const AValue:Array of T); overload;
+    procedure Add(const AValue:TList<T>); overload;
+    procedure Add(const AValue:TCollection; const AMember:String); overload;
+    function Add(const AValue:TValue):TInteger; overload;
 
-    function Find(const AData:T):TInteger;
-    function Get(const AIndex: TInteger):T;
+    procedure Clear; inline;
+    function Count:TInteger; inline;
+    procedure Delete(const AIndex:TInteger); inline;
+    function Find(const AValue:T):TInteger;
 
-    procedure Remove(const AData:T);
-    procedure Update(const AIndex:TInteger; const AData:T);
+    procedure Remove(const AValue:T);
+    procedure Update(const AIndex:TInteger; const AValue:T);
 
+    property Data:TDataItem read FData;
     property Items[const Index:TInteger]:T read Get write Put; default;
   end;
 

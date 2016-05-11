@@ -17,11 +17,11 @@ uses
   {$IFDEF FMX}
   System.Types,
   Fmx.Types, Fmx.Controls, Fmx.StdCtrls, Fmx.ListBox, Fmx.TabControl,
-  Fmx.Layouts, Fmx.Objects, Fmx.TreeView, BI.FMX.Grid
+  Fmx.Layouts, Fmx.Objects, Fmx.TreeView, BI.FMX.DataControl, BI.FMX.Grid
   {$ELSE}
 
   Vcl.Controls, VCL.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.Forms,
-  BI.VCL.Grid
+  BI.VCL.DataControl, BI.VCL.Grid
   {$ENDIF}
   ;
 
@@ -438,7 +438,7 @@ type
               )]
   {$ENDIF}
   {$ENDIF}
-  TBIComposer=class(TWinControl)
+  TBIComposer=class(TBIDataControl)
   private
     FData : TDataItem;
 
@@ -454,10 +454,7 @@ type
     procedure Guess;
     function IndexOfEnabled(const AIndex:Integer):Integer;
     procedure ResetGroups;
-    procedure SetDataItem(const Value: TDataItem);
 
-    procedure ReadOrigin(Reader: TReader);
-    procedure WriteOrigin(Writer: TWriter);
     procedure SetGroups(const Value: TVisualizerItems);
     procedure SetValues(const Value: TVisualizerItems);
     procedure SortGroups;
@@ -467,8 +464,9 @@ type
              const ARows:TCursorIndex):TGroup;
 
     procedure AddItems;
-    procedure DefineProperties(Filer: TFiler); override;
+    function GetDataItem:TDataItem; override;
     procedure Loaded; override;
+    procedure SetDataItem(const Value:TDataItem); override;
   public
     class var
       ValuesGroupClass : TGroupClass;
@@ -476,7 +474,7 @@ type
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    // Automatic Guess:
+    // Pending: Automatic Guess:
     // procedure BindTo(const ASummary:TSummary);
 
     procedure BestOrder;
@@ -484,105 +482,6 @@ type
 
     property Main:TGroup read FMain;
   published
-    property Align;
-    property Anchors;
-
-    {$IFDEF FMX}
-    property ClipChildren;
-    property ClipParent;
-    {$ENDIF}
-
-    property Cursor;
-    property DragMode;
-
-    {$IFDEF FMX}
-    property EnableDragHighlight;
-    {$ENDIF}
-
-    property Enabled;
-
-    {$IFDEF FMX}
-    property Locked;
-    {$ENDIF}
-
-    property Height;
-
-    {$IFDEF FMX}
-    property HitTest;
-    {$ENDIF}
-
-    {$IFNDEF FPC}
-    property Padding;
-    {$ENDIF}
-
-    {$IFDEF FMX}
-    property Opacity;
-    {$ENDIF}
-
-    {$IFNDEF FPC}
-    property Margins;
-    {$ENDIF}
-
-    property PopupMenu;
-
-    {$IFDEF FMX}
-    property Position;
-    property RotationAngle;
-    property RotationCenter;
-    property Scale;
-
-    {$IF CompilerVersion>27}
-    property Size;
-    {$ENDIF}
-
-    property TouchTargetExpansion;
-    {$ENDIF}
-
-    property Visible;
-    property Width;
-    property TabOrder;
-
-    {$IFDEF FPC}
-    property TabStop;
-    {$ELSE}
-    {$IF CompilerVersion>27}
-    property TabStop;
-    {$ENDIF}
-    {$ENDIF}
-
-    { Events }
-
-    {$IFDEF FMX}
-    property OnPainting;
-    property OnPaint;
-    {$ENDIF}
-
-    property OnResize;
-    { Drag and Drop events }
-
-    {$IFDEF FMX}
-    property OnDragEnter;
-    property OnDragLeave;
-    {$ENDIF}
-
-    property OnDragOver;
-    property OnDragDrop;
-
-    {$IFDEF FMX}
-    property OnDragEnd;
-    {$ENDIF}
-
-    { Mouse events }
-    property OnClick;
-    property OnDblClick;
-    property OnMouseDown;
-    property OnMouseMove;
-    property OnMouseUp;
-    property OnMouseWheel;
-    property OnMouseEnter;
-    property OnMouseLeave;
-
-    property Data:TDataItem read FData write SetDataItem;
     property Groups:TVisualizerItems read FGroups write SetGroups;
     property Values:TVisualizerItems read FValues write SetValues;
   end;

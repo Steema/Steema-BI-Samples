@@ -41,6 +41,7 @@ requires
   TeeBI;
 
 contains
+  BI.FMX.DataControl in '..\VCL\BI.FMX.DataControl.pas',
   BI.FMX.Grid in '..\FMX\BI.FMX.Grid.pas',
   BI.FMX.GridForm in '..\FMX\BI.FMX.GridForm.pas' {BIGridForm},
   BI.FMX.DataViewer in '..\FMX\BI.FMX.DataViewer.pas' {DataViewer},

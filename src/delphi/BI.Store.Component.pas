@@ -9,6 +9,13 @@ uses
 type
   TComponentImporterClass=class of TComponentImporter;
 
+  {$IF CompilerVersion>=23}
+  [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
+              {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
+              {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
+              {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
+              )]
+  {$ENDIF}
   TComponentImporter=class(TDataProvider)
   private
     FData : TDataItem;
@@ -24,7 +31,6 @@ type
     function DoImport(const AComponent: TComponent):TDataItem; virtual;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
-    function Origin:String; override;
     function StringsOf(const ASource:TComponent):TStrings; virtual;
     class function Supports(const AComponent:TComponent):Boolean; virtual;
   public
@@ -33,7 +39,7 @@ type
 
     Destructor Destroy; override;
 
-    class function FromOrigin(const AOwner:TComponent; const AOrigin:String):TDataItem; static;
+    class function From(const AOwner,AComponent:TComponent): TDataItem; static;
 
     property Data:TDataItem read GetData;
   published

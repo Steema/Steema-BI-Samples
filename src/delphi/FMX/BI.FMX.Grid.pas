@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.UITypes,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Layouts,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Layouts, BI.FMX.DataControl,
   Data.DB, BI.DataSet, BI.Data, BI.DataSource, FMX.Menus, BI.UI;
 
 type
@@ -53,7 +53,7 @@ type
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
-  TBIGrid = class(TLayout)
+  TBIGrid = class(TBIDataControl)
   private
     FAlternate : TAlternateColor;
 
@@ -61,15 +61,12 @@ type
     IPlugin : TBIGridPlugin;
 
     procedure CreateNewDataSet;
-    function GetBIData: TDataItem;
-    procedure ReadOrigin(Reader: TReader);
     procedure SetAlternate(const Value: TAlternateColor);
-    procedure SetBIData(const Value: TDataItem);
     procedure SetPlugin(const Value: TBIGridPlugin);
-    procedure WriteOrigin(Writer: TWriter);
     procedure SetDataSet(const Value: TBIDataSet);
   protected
-    procedure DefineProperties(Filer: TFiler); override;
+    function GetDataItem: TDataItem; override;
+    procedure SetDataItem(const Value: TDataItem); override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
@@ -87,7 +84,6 @@ type
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
   published
     property Alternate:TAlternateColor read FAlternate write SetAlternate;
-    property Data:TDataItem read GetBIData write SetBIData;
   end;
 
   {$IF CompilerVersion<26} // Cannot use FireMonkeyVersion<21 (or 21_0)

@@ -9,7 +9,7 @@ unit BI.Summary.Totals;
 interface
 
 uses
-  BI.Data, BI.Summary;
+  System.Classes, BI.Data, BI.Summary;
 
 type
   // Creates one TDataItem for each active Group in ASummary with the subtotals
@@ -26,6 +26,7 @@ type
     procedure SetSummary(const Value: TSummary);
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     Constructor CreateSummary(const ASummary:TSummary);
     procedure Calculate(const AData:TDataItem);

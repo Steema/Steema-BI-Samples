@@ -10,9 +10,7 @@ type
   TWorkflowAction=class(TDataProvider)
   private
     FData : TDataItem;
-    FOnChange: TNotifyEvent;
 
-    procedure Changed;
     procedure Notify(const AEvent:TBIEvent);
     procedure SetData(const Value: TDataItem);
     procedure TryRemoveNotify;
@@ -22,47 +20,56 @@ type
     Destructor Destroy; override;
   published
     property Data:TDataItem read FData write SetData;
-    property OnChange:TNotifyEvent read FOnChange write FOnChange;
   end;
 
   TWorkflowActions=class;
 
-  TWorkflowActionItem=class(TCollectionItem)
+  TWorkflowItem=class(TCollectionItem)
   private
-    FItems: TWorkflowActions;
     FData: TDataItem;
+    FItems: TWorkflowActions;
     FOnChange: TNotifyEvent;
 
     OwnsData : Boolean;
 
     procedure Changed;
-    procedure SetItems(const Value: TWorkflowActions);
+//    procedure ReadWorkAction(Reader: TReader);
     procedure SetData(const Value: TDataItem);
+    procedure SetItems(const Value: TWorkflowActions);
+    procedure SetProvider(const AProvider:TDataProvider; const AName:String);
     procedure TryRemoveNotify;
+ //   procedure WriteWorkAction(Writer: TWriter);
+    function IsItemsStored: Boolean;
+    function GetWorkAction: TDataProvider;
+    function IsWorkActionStored: Boolean;
   protected
+    //procedure DefineProperties(Filer: TFiler); override;
     procedure Notify(const AEvent:TBIEvent);
+    function Owner:TComponent;
   public
     Constructor Create(Collection: TCollection); override;
     Destructor Destroy; override;
 
     property Data:TDataItem read FData write SetData;
   published
-    property Items:TWorkflowActions read FItems write SetItems;
+    property Items:TWorkflowActions read FItems write SetItems stored IsItemsStored;
+
+    property WorkAction:TDataProvider read GetWorkAction stored IsWorkActionStored;
 
     property OnChange:TNotifyEvent read FOnChange write FOnChange;
   end;
 
   TWorkflowActions=class(TOwnedCollection)
   private
-    function Get(const Index: Integer): TWorkflowActionItem;
-    procedure Put(const Index: Integer; const Value: TWorkflowActionItem);
+    function Get(const Index: Integer): TWorkflowItem;
+    procedure Put(const Index: Integer; const Value: TWorkflowItem);
   public
     Constructor Create(AOwner: TPersistent);
 
-    function Add: TWorkflowActionItem; overload;
-    function Add(const AProvider:TDataProvider; const AName:String):TWorkflowActionItem; overload;
+    function Add: TWorkflowItem; overload;
+    function Add(const AProvider:TDataProvider; const AName:String):TWorkflowItem; overload;
 
-    property Items[const Index:Integer]:TWorkflowActionItem read Get write Put; default;
+    property Items[const Index:Integer]:TWorkflowItem read Get write Put; default;
   end;
 
   {$IF CompilerVersion>=23}
@@ -75,14 +82,14 @@ type
   TBIWorkflow=class(TComponent)
   private
     FItems: TWorkflowActions;
-    FSelected: TWorkflowActionItem;
+    FSelected: TWorkflowItem;
 
     procedure SetItems(const Value: TWorkflowActions);
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    property Selected:TWorkflowActionItem read FSelected write FSelected;
+    property Selected:TWorkflowItem read FSelected write FSelected;
   published
     property Items:TWorkflowActions read FItems write SetItems;
   end;
