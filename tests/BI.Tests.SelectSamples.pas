@@ -9,13 +9,13 @@ unit BI.Tests.SelectSamples;
 interface
 
 uses
-  BI.DataSource;
+  System.Classes, BI.DataSource;
 
 type
   TSelectSamples=record
   public
     class function Count:Integer; static;
-    class function Select(const AIndex:Integer):TDataSelect; static;
+    class function CreateSelect(const AOwner:TComponent; const AIndex:Integer):TDataSelect; static;
   end;
 
 implementation
@@ -36,13 +36,13 @@ type
   TDataItemAccess=class(TDataItem);
 
 // Return an example Query
-class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
+class function TSelectSamples.CreateSelect(const AOwner:TComponent; const AIndex: Integer): TDataSelect;
 
   function CitiesOf(const ACountry:String):TDataItem;
   var tmp : TDataSelect;
   begin
     // select distinct City, Country from Customers where Country=ACountry
-    tmp:=TDataSelect.Create(nil);
+    tmp:=TDataSelect.Create(AOwner);
 
     tmp.Data:=Samples.Demo;
 
@@ -52,16 +52,16 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
     tmp.Distinct:=True;
     tmp.Filter:=TDataFilter.FromString(Samples.Customers,'Country="'+ACountry+'"');
 
-    result:=TDataItem.Create(tmp);
+    result:=tmp.NewData;
 
     // Ensure proper destroy to avoid memory leak
-    TStores.GlobalCache.Items.Add(result);
+    //TStores.GlobalCache.Items.Add(result);
   end;
 
   // Average(UnitPrice)
   function CalculateAverage:TSummary;
   begin
-    result:=TSummary.Create(nil);
+    result:=TSummary.Create(AOwner);
     result.Measures.Add(Samples.Products['UnitPrice'],TAggregate.Average);
   end;
 
@@ -72,7 +72,7 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
     result:=TLogicalExpression.Create(
                 TDataItemExpression.Create(Samples.Products['UnitPrice']),
                 TLogicalOperand.Greater,
-                TDataItemExpression.Create(TDataItem.Create(CalculateAverage),True));
+                TDataItemExpression.Create(CalculateAverage.NewData));
   end;
 
   procedure DistinctOrderDetails(const AQuery:TDataSelect);
@@ -254,7 +254,7 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
      24: begin
            // Test selecting a sub-sub-table using a summary as data sample
 
-           tmpSum:=Samples.CreateSummary(13);
+           tmpSum:=Samples.CreateSummary(nil,13);
            try
              Samples.SumData1.Free;
              Samples.SumData1:=tmpSum.Calculate;
@@ -271,7 +271,7 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
      26: begin
            // Test selecting a sub-table (that has another sub-table) using a summary as data sample
 
-           tmpSum:=Samples.CreateSummary(13);
+           tmpSum:=Samples.CreateSummary(nil,13);
            try
              tmpSum.Measures[0].Aggregate:=TAggregate.Count;
 
@@ -291,7 +291,7 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
 
      27: begin
 
-           tmpSum:=Samples.CreateSummary(13);
+           tmpSum:=Samples.CreateSummary(nil,13);
            try
              tmpSum.Measures[0].Aggregate:=TAggregate.Count;
 
@@ -348,7 +348,7 @@ class function TSelectSamples.Select(const AIndex: Integer): TDataSelect;
   end;
 
 begin
-  result:=TDataSelect.Create(nil);
+  result:=TDataSelect.Create(AOwner);
 
   try
     CreateExample(AIndex);

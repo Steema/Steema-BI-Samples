@@ -9,7 +9,7 @@ unit BI.Tests.SummarySamples;
 interface
 
 uses
-  BI.Data, BI.Summary;
+  System.Classes, BI.Data, BI.Summary;
 
 type
   TSampleSummaries=class
@@ -34,7 +34,7 @@ type
     Destructor Destroy; override;
 
     function Count:Integer;
-    function CreateSummary(const AIndex:Integer):TSummary;
+    function CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;
     procedure LoadData(const AStore:String='');
   end;
 
@@ -51,9 +51,9 @@ begin
   result:=26;
 end;
 
-function TSampleSummaries.CreateSummary(const AIndex:Integer):TSummary;
+function TSampleSummaries.CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;
 begin
-  result:=TSummary.Create(nil);
+  result:=TSummary.Create(AOwner);
 
   case AIndex of
     0: result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
