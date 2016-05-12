@@ -120,7 +120,9 @@ object ImportDemoForm: TImportDemoForm
           Align = alClient
           UseDockManager = False
           ParentBackground = False
+          ParentColor = False
           TabOrder = 0
+          ExplicitTop = -3
         end
       end
       object TabStructure: TTabSheet

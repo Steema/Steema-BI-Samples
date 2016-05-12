@@ -7,14 +7,17 @@ unit Automatic_File_Import;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
 
   {$IFDEF HASFIREDAC}
   FireDAC.Comp.UI, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Stan.Intf,
+
+  // All FireDAC phys links
+  BI.Data.DB.FireDAC.AllDrivers,
   {$ENDIF}
 
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, BI.VCL.DataControl;
 
 type
   TImportDemoForm = class(TForm)
@@ -65,11 +68,16 @@ begin
   begin
     FileName:=PathOf(Samples.Selected);
 
-    // Special case for "mongo_restaurants.json" file
-    if SameText(TPath.GetFileName(FileName),'mongo_restaurants.json') then
-       BIGrid1.Data:=ImportMongoDB(FileName)
-    else
-       BIGrid1.Data:=ImportFile(FileName);
+    Screen.Cursor:=crHourGlass;
+    try
+      // Special case for "mongo_restaurants.json" file
+      if SameText(TPath.GetFileName(FileName),'mongo_restaurants.json') then
+         BIGrid1.Data:=ImportMongoDB(FileName)
+      else
+         BIGrid1.Data:=ImportFile(FileName);
+    finally
+      Screen.Cursor:=crDefault;
+    end;
 
     Samples.Visible:=False;
     PageControl1.Visible:=True;

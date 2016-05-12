@@ -8,7 +8,7 @@ uses
   Data.Bind.Controls, Fmx.Bind.Navigator, BI.FMX.Grid, FMX.Layouts,
   FMX.StdCtrls, FMX.TabControl,
   //BI.FMX.Editor.Grid,
-  BI.FMX.DataManager, FMX.Controls.Presentation;
+  BI.FMX.DataManager, FMX.Controls.Presentation, BI.FMX.DataControl;
 
 type
   TGridDemoForm = class(TForm)
@@ -24,8 +24,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure CBAlternateChange(Sender: TObject);
     procedure CBSortChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure TabControl1Resize(Sender: TObject);
   private
     { Private declarations }
+
+    IManager : TDataManager;
 
     procedure SelectedData(Sender: TObject);
   public
@@ -58,14 +62,19 @@ begin
   TabControl1.ActiveTab:=TabOptions;
 
   //GridEditor:=TBIGridEditor.Embedd(Self,TabOptions,BIGrid1);
+  //GridEditor.FillColumns;
 
   BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Customers'];
 
-  TDataManager.EmbedChoose(Self,TabData,'BISamples' {,BIGrid1.Data}).OnSelect:=SelectedData;
-
   //BindNavigator1.DataSource:=BIGrid1.DataSource;
+end;
 
-  //GridEditor.FillColumns;
+procedure TGridDemoForm.FormShow(Sender: TObject);
+begin
+  IManager:=TDataManager.EmbedChoose(Self,TabData,'BISamples');
+  IManager.OnSelect:=SelectedData;
+
+  TabControl1Resize(Self);
 end;
 
 procedure TGridDemoForm.SelectedData(Sender: TObject);
@@ -78,6 +87,13 @@ begin
     BIGrid1.Data:=tmp;
     //GridEditor.FillColumns;
   end;
+end;
+
+procedure TGridDemoForm.TabControl1Resize(Sender: TObject);
+begin
+  // Cosmetic, set sources listview width
+  if IManager<>nil then
+     IManager.LayoutSources.Width:=TabControl1.Width*0.5;
 end;
 
 end.

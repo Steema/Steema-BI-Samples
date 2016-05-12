@@ -16,20 +16,22 @@ object FormMain: TFormMain
     Size.Width = 393.000000000000000000
     Size.Height = 600.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 11
     TabPosition = PlatformDefault
     object TabTest: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 41.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
       Text = 'Test'
+      ExplicitSize.cx = 41.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object ListBox1: TListBox
         Align = Client
         Size.Width = 393.000000000000000000
@@ -194,13 +196,15 @@ object FormMain: TFormMain
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 69.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
       Text = 'Examples'
+      ExplicitSize.cx = 69.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object BExampleFormula: TButton
         Position.X = 24.000000000000000000
         Position.Y = 39.000000000000000000

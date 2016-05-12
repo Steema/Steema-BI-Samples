@@ -19,101 +19,107 @@ object SeriesImport: TSeriesImport
   object BIChart1: TBIChart
     Left = 0
     Top = 41
-    Width = 400
     Height = 263
-    BackWall.Brush.Gradient.Direction = gdBottomTop
-    BackWall.Brush.Gradient.EndColor = clWhite
-    BackWall.Brush.Gradient.StartColor = 15395562
-    BackWall.Brush.Gradient.Visible = True
-    BackWall.Transparent = False
-    Foot.Font.Color = clBlue
-    Foot.Font.Name = 'Verdana'
-    Gradient.Direction = gdBottomTop
-    Gradient.EndColor = clWhite
-    Gradient.MidColor = 15395562
-    Gradient.StartColor = 15395562
-    Gradient.Visible = True
-    LeftWall.Color = 14745599
-    Legend.Font.Name = 'Verdana'
-    Legend.Shadow.Transparency = 0
-    RightWall.Color = 14745599
-    Title.Font.Name = 'Verdana'
-    BottomAxis.Axis.Color = 4210752
-    BottomAxis.Grid.Color = 11119017
-    BottomAxis.LabelsFormat.Font.Name = 'Verdana'
-    BottomAxis.TicksInner.Color = 11119017
-    BottomAxis.Title.Font.Name = 'Verdana'
-    DepthAxis.Axis.Color = 4210752
-    DepthAxis.Grid.Color = 11119017
-    DepthAxis.LabelsFormat.Font.Name = 'Verdana'
-    DepthAxis.TicksInner.Color = 11119017
-    DepthAxis.Title.Font.Name = 'Verdana'
-    DepthTopAxis.Axis.Color = 4210752
-    DepthTopAxis.Grid.Color = 11119017
-    DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
-    DepthTopAxis.TicksInner.Color = 11119017
-    DepthTopAxis.Title.Font.Name = 'Verdana'
-    LeftAxis.Axis.Color = 4210752
-    LeftAxis.Grid.Color = 11119017
-    LeftAxis.LabelsFormat.Font.Name = 'Verdana'
-    LeftAxis.TicksInner.Color = 11119017
-    LeftAxis.Title.Font.Name = 'Verdana'
-    RightAxis.Axis.Color = 4210752
-    RightAxis.Grid.Color = 11119017
-    RightAxis.LabelsFormat.Font.Name = 'Verdana'
-    RightAxis.TicksInner.Color = 11119017
-    RightAxis.Title.Font.Name = 'Verdana'
-    TopAxis.Axis.Color = 4210752
-    TopAxis.Grid.Color = 11119017
-    TopAxis.LabelsFormat.Font.Name = 'Verdana'
-    TopAxis.TicksInner.Color = 11119017
-    TopAxis.Title.Font.Name = 'Verdana'
-    View3DOptions.Elevation = 315
-    View3DOptions.Orthogonal = False
-    View3DOptions.Perspective = 0
-    View3DOptions.Rotation = 360
     Align = alLeft
+    UseDockManager = False
+    ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 56
-    ExplicitTop = 104
-    ExplicitHeight = 250
-    DefaultCanvas = 'TGDIPlusCanvas'
-    ColorPaletteIndex = 9
-    object Series1: TPieSeries
-      XValues.Order = loAscending
-      YValues.Name = 'Pie'
-      YValues.Order = loNone
-      Frame.InnerBrush.BackColor = clRed
-      Frame.InnerBrush.Gradient.EndColor = clGray
-      Frame.InnerBrush.Gradient.MidColor = clWhite
-      Frame.InnerBrush.Gradient.StartColor = 4210752
-      Frame.InnerBrush.Gradient.Visible = True
-      Frame.MiddleBrush.BackColor = clYellow
-      Frame.MiddleBrush.Gradient.EndColor = 8553090
-      Frame.MiddleBrush.Gradient.MidColor = clWhite
-      Frame.MiddleBrush.Gradient.StartColor = clGray
-      Frame.MiddleBrush.Gradient.Visible = True
-      Frame.OuterBrush.BackColor = clGreen
-      Frame.OuterBrush.Gradient.EndColor = 4210752
-      Frame.OuterBrush.Gradient.MidColor = clWhite
-      Frame.OuterBrush.Gradient.StartColor = clSilver
-      Frame.OuterBrush.Gradient.Visible = True
-      Frame.Width = 4
-      OtherSlice.Legend.Visible = False
-      Data = {
-        04080000000000000000307940FF04000000436172730000000000D88A40FF06
-        00000050686F6E65730000000000D88C40FF060000005461626C657300000000
-        00C05D40FF080000004D6F6E69746F72730000000000588040FF050000004C61
-        6D70730000000000C06840FF090000004B6579626F617264730000000000A087
-        40FF0500000042696B65730000000000406940FF06000000436861697273}
-      Detail = {0000000000}
-    end
-    object TMarksTipTool
-      Format.CustomPosition = True
-      Format.Left = 0
-      Format.TextAlignment = taCenter
-      Format.Top = 0
-      Format.Visible = False
+    object BITChart1: TBITChart
+      Left = 0
+      Top = 0
+      Width = 400
+      Height = 263
+      BackWall.Brush.Gradient.Direction = gdBottomTop
+      BackWall.Brush.Gradient.EndColor = clWhite
+      BackWall.Brush.Gradient.StartColor = 15395562
+      BackWall.Brush.Gradient.Visible = True
+      BackWall.Transparent = False
+      Foot.Font.Color = clBlue
+      Foot.Font.Name = 'Verdana'
+      Gradient.Direction = gdBottomTop
+      Gradient.EndColor = clWhite
+      Gradient.MidColor = 15395562
+      Gradient.StartColor = 15395562
+      Gradient.Visible = True
+      LeftWall.Color = 14745599
+      Legend.Font.Name = 'Verdana'
+      Legend.Shadow.Transparency = 0
+      RightWall.Color = 14745599
+      Title.Font.Name = 'Verdana'
+      BottomAxis.Axis.Color = 4210752
+      BottomAxis.Grid.Color = 11119017
+      BottomAxis.LabelsFormat.Font.Name = 'Verdana'
+      BottomAxis.TicksInner.Color = 11119017
+      BottomAxis.Title.Font.Name = 'Verdana'
+      DepthAxis.Axis.Color = 4210752
+      DepthAxis.Grid.Color = 11119017
+      DepthAxis.LabelsFormat.Font.Name = 'Verdana'
+      DepthAxis.TicksInner.Color = 11119017
+      DepthAxis.Title.Font.Name = 'Verdana'
+      DepthTopAxis.Axis.Color = 4210752
+      DepthTopAxis.Grid.Color = 11119017
+      DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
+      DepthTopAxis.TicksInner.Color = 11119017
+      DepthTopAxis.Title.Font.Name = 'Verdana'
+      LeftAxis.Axis.Color = 4210752
+      LeftAxis.Grid.Color = 11119017
+      LeftAxis.LabelsFormat.Font.Name = 'Verdana'
+      LeftAxis.TicksInner.Color = 11119017
+      LeftAxis.Title.Font.Name = 'Verdana'
+      RightAxis.Axis.Color = 4210752
+      RightAxis.Grid.Color = 11119017
+      RightAxis.LabelsFormat.Font.Name = 'Verdana'
+      RightAxis.TicksInner.Color = 11119017
+      RightAxis.Title.Font.Name = 'Verdana'
+      TopAxis.Axis.Color = 4210752
+      TopAxis.Grid.Color = 11119017
+      TopAxis.LabelsFormat.Font.Name = 'Verdana'
+      TopAxis.TicksInner.Color = 11119017
+      TopAxis.Title.Font.Name = 'Verdana'
+      View3DOptions.Elevation = 315
+      View3DOptions.Orthogonal = False
+      View3DOptions.Perspective = 0
+      View3DOptions.Rotation = 360
+      TabOrder = 0
+      ExplicitHeight = 250
+      DefaultCanvas = 'TGDIPlusCanvas'
+      ColorPaletteIndex = 9
+      object Series1: TPieSeries
+        XValues.Order = loAscending
+        YValues.Name = 'Pie'
+        YValues.Order = loNone
+        Frame.InnerBrush.BackColor = clRed
+        Frame.InnerBrush.Gradient.EndColor = clGray
+        Frame.InnerBrush.Gradient.MidColor = clWhite
+        Frame.InnerBrush.Gradient.StartColor = 4210752
+        Frame.InnerBrush.Gradient.Visible = True
+        Frame.MiddleBrush.BackColor = clYellow
+        Frame.MiddleBrush.Gradient.EndColor = 8553090
+        Frame.MiddleBrush.Gradient.MidColor = clWhite
+        Frame.MiddleBrush.Gradient.StartColor = clGray
+        Frame.MiddleBrush.Gradient.Visible = True
+        Frame.OuterBrush.BackColor = clGreen
+        Frame.OuterBrush.Gradient.EndColor = 4210752
+        Frame.OuterBrush.Gradient.MidColor = clWhite
+        Frame.OuterBrush.Gradient.StartColor = clSilver
+        Frame.OuterBrush.Gradient.Visible = True
+        Frame.Width = 4
+        OtherSlice.Legend.Visible = False
+        Data = {
+          04080000000000000000E07C40FF04000000436172730000000000C08040FF06
+          00000050686F6E65730000000000688340FF060000005461626C657300000000
+          00807140FF080000004D6F6E69746F72730000000000006740FF050000004C61
+          6D70730000000000107140FF090000004B6579626F617264730000000000E079
+          40FF0500000042696B65730000000000E06440FF06000000436861697273}
+        Detail = {0000000000}
+      end
+      object MarkTips1: TMarksTipTool
+        Format.CustomPosition = True
+        Format.Left = 0
+        Format.TextAlignment = taCenter
+        Format.Top = 0
+        Format.Visible = False
+      end
     end
   end
   object BIGrid1: TBIGrid
@@ -127,10 +133,6 @@ object SeriesImport: TSeriesImport
     ParentColor = False
     TabOrder = 1
     Alternate.Enabled = True
-    ExplicitLeft = 480
-    ExplicitTop = 96
-    ExplicitWidth = 417
-    ExplicitHeight = 265
   end
   object Chart1: TChart
     Left = 0
@@ -188,9 +190,6 @@ object SeriesImport: TSeriesImport
     TopAxis.Title.Font.Name = 'Verdana'
     Align = alBottom
     TabOrder = 2
-    ExplicitLeft = 104
-    ExplicitTop = 40
-    ExplicitWidth = 400
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
   end
@@ -202,9 +201,6 @@ object SeriesImport: TSeriesImport
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitLeft = 280
-    ExplicitTop = 280
-    ExplicitWidth = 185
     object Button1: TButton
       Left = 16
       Top = 10

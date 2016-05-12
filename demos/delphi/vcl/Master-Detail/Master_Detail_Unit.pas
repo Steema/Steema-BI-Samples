@@ -7,10 +7,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ExtCtrls, Vcl.Grids,
   Vcl.DBGrids, BI.Data, BI.DataSet, BI.DataSource, Vcl.StdCtrls, BI.VCL.Grid,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  BI.VCL.Chart;
+  BI.VCL.Chart, BI.VCL.DataControl;
 
 // Note: This example uses TBIGrid controls to show the extra features of TBIGrid.
-//       Standard TDBGrid controls can also be used.
+//       Standard VCL TDBGrid (with DataSource) or FMX TGrid controls (with LiveBindings)
+//       can also be used.
 
 type
   TMasterDetailForm = class(TForm)
@@ -26,6 +27,8 @@ type
     Master: TBIDataset;
     Detail: TBIDataset;
     BIChart1: TBIChart;
+    BITChart1: TBITChart;
+    Splitter2: TSplitter;
     procedure FormShow(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
     procedure CheckBox2Click(Sender: TObject);
@@ -58,7 +61,7 @@ end;
 
 procedure TMasterDetailForm.DetailAfterRefresh(DataSet: TDataSet);
 begin
-  BIChart1.Init;
+  BIChart1.Clear;
   BIChart1.Fill(Detail.Cursor);
 end;
 
@@ -76,6 +79,11 @@ begin
 
   Detail.Data:=Data['"Order Details"'];
   Detail.Open;
+
+  // Pending:
+  // Connect Grid to Detail Cursor for automatic refresh (no AfterRefresh needed)
+
+  //BIChart1.Data:=Detail.Data;
 end;
 
 end.

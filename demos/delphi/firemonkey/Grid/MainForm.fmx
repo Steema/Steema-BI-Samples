@@ -10,20 +10,22 @@ object GridDemoForm: TGridDemoForm
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnShow = FormShow
   DesignerMasterStyle = 0
   object TabControl1: TTabControl
     Align = Left
     Size.Width = 369.000000000000000000
     Size.Height = 480.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     TabPosition = PlatformDefault
+    OnResize = TabControl1Resize
     object TabOptions: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 88.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -58,7 +60,7 @@ object GridDemoForm: TGridDemoForm
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 44.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False

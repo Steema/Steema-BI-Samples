@@ -56,6 +56,7 @@ object MainPDF: TMainPDF
       OnChange = BCreatePDFClick
     end
     object CBHeaderBack: TCheckBox
+      IsChecked = True
       Position.X = 448.000000000000000000
       Position.Y = 16.000000000000000000
       Size.Width = 89.000000000000000000
@@ -66,7 +67,6 @@ object MainPDF: TMainPDF
       OnChange = BCreatePDFClick
     end
     object CBAlternate: TCheckBox
-      IsChecked = True
       Position.X = 552.000000000000000000
       Position.Y = 16.000000000000000000
       Size.Width = 113.000000000000000000
@@ -111,8 +111,8 @@ object MainPDF: TMainPDF
       ExplicitSize.cy = 26.000000000000000000
       object BIGrid1: TBIGrid
         Align = Client
-        Size.Width = 1016.000000000000000000
-        Size.Height = 600.000000000000000000
+        Size.Width = 50.000000000000000000
+        Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
       end

@@ -16,7 +16,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.WebBrowser, BI.FMX.Grid,
   FMX.TabControl, FMX.Layouts, BI.Persist, BI.FMX.PDF,
-  FMXTee.Canvas.PDF, FMX.ListBox;
+  FMXTee.Canvas.PDF, FMX.ListBox, BI.FMX.DataControl;
 
 type
   TMainPDF = class(TForm)

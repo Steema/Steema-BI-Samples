@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
   VCLTee.Series, BI.VCL.Grid, VCLTee.TeeTools, Vcl.ExtCtrls, VCLTee.TeeProcs,
-  VCLTee.Chart, BI.VCL.Chart;
+  VCLTee.Chart, BI.VCL.Chart, BI.VCL.DataControl;
 
 type
   TFormXYTest = class(TForm)
@@ -14,8 +14,9 @@ type
     Panel1: TPanel;
     Splitter1: TSplitter;
     BIChart1: TBIChart;
-    Series1: TPointSeries;
     Chart1: TChart;
+    BITChart1: TBITChart;
+    Series1: TPointSeries;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
