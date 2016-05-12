@@ -8,7 +8,10 @@ uses
   ImportData in 'ImportData.pas' {ImportDataMain},
   Import_ByCode in 'Import_ByCode.pas' {ByCode},
   Import_FromComponents in 'Import_FromComponents.pas' {FromComponents},
-  Import_Store in 'Import_Store.pas' {FromBIStore};
+  Import_Store in 'Import_Store.pas' {FromBIStore},
+  Import_RTTI in 'Import_RTTI.pas' {FromRTTI},
+  Customers in '..\ORM_RTTI\Customers.pas',
+  Space_Flights in '..\ORM_RTTI\Space_Flights.pas';
 
 {$R *.res}
 

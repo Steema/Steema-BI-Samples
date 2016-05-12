@@ -88,6 +88,10 @@ object ByCode: TByCode
     TabOrder = 2
     object TabBIGrid: TTabSheet
       Caption = 'Data'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIGrid1: TBIGrid
         Left = 0
         Top = 0
@@ -103,10 +107,18 @@ object ByCode: TByCode
     object TabStructure: TTabSheet
       Caption = 'Structure'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabSource: TTabSheet
       Caption = 'Source Samples'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageExamples: TPageControl
         Left = 0
         Top = 0
@@ -117,6 +129,10 @@ object ByCode: TByCode
         TabOrder = 0
         object TabCSV: TTabSheet
           Caption = 'CSV'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object MemoCSV: TMemo
             Left = 0
             Top = 0
@@ -134,6 +150,10 @@ object ByCode: TByCode
         object TabJSON: TTabSheet
           Caption = 'JSON'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object MemoJSON: TMemo
             Left = 0
             Top = 0
@@ -172,6 +192,10 @@ object ByCode: TByCode
         object TabXML: TTabSheet
           Caption = 'XML'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object MemoXML: TMemo
             Left = 0
             Top = 0
@@ -201,6 +225,10 @@ object ByCode: TByCode
         object TabDatabase: TTabSheet
           Caption = 'Database'
           ImageIndex = 3
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGrid1: TDBGrid
             Left = 0
             Top = 0

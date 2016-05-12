@@ -41,7 +41,8 @@ implementation
 
 {$R *.dfm}
 
-uses Automatic_File_Import, Import_ByCode, Import_FromComponents, Import_Store;
+uses Automatic_File_Import, Import_ByCode, Import_FromComponents, Import_Store,
+  Import_RTTI;
 
 procedure TImportDataMain.Button1Click(Sender: TObject);
 begin

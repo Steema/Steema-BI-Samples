@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.VCL.Grid;
+  BI.VCL.Grid, BI.VCL.DataControl;
 
 type
   TFromBIStore = class(TForm)
@@ -54,7 +54,7 @@ begin
   try
     Web:=TBIWebClient.Create('steema.cat');
     try
-      LBRemoteDatas.Items.Text:=Web.GetDatas;
+      LBRemoteDatas.Items.Text:=Web.GetData;
     finally
       Web.Free;
     end;
@@ -84,10 +84,10 @@ procedure TFromBIStore.LBDataClick(Sender: TObject);
 var Store,
     Data : String;
 begin
-  if LBDatas.ItemIndex<>-1 then
+  if LBData.ItemIndex<>-1 then
   begin
     Store:=LBStores.Items[LBStores.ItemIndex];
-    Data:=LBDatas.Items[LBDatas.ItemIndex];
+    Data:=LBData.Items[LBData.ItemIndex];
 
     BIGrid1.Data:=TStore.Load(Store,Data);
   end;

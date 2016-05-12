@@ -114,7 +114,6 @@ object ImportDataMain: TImportDataMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 426
     object Button4: TButton
       Left = 272
       Top = 8

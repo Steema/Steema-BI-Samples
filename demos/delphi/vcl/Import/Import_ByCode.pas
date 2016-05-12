@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
   Vcl.ComCtrls, BI.VCL.DataViewer, BI.Data, Data.DB, Datasnap.DBClient,
-  Vcl.Grids, Vcl.DBGrids;
+  Vcl.Grids, Vcl.DBGrids, BI.VCL.DataControl;
 
 type
   TByCode = class(TForm)
