@@ -11,7 +11,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.Grid, Vcl.ExtCtrls, Vcl.ComCtrls,
-  BI.VCL.Editor.Grid, BI.VCL.DataManager, Vcl.DBCtrls;
+  BI.VCL.Editor.Grid, BI.VCL.DataManager, Vcl.DBCtrls, BI.VCL.DataControl;
 
 type
   TGridDemoForm = class(TForm)
@@ -78,7 +78,7 @@ end;
 procedure TGridDemoForm.SelectedData(Sender: TObject);
 var tmp : TDataItem;
 begin
-  tmp:=TDataManager(Sender).SelectedDatas;
+  tmp:=TDataManager(Sender).SelectedData;
 
   if tmp<>nil then
   begin

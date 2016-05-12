@@ -140,8 +140,8 @@ object FormSearchDemo: TFormSearchDemo
       OnClick = RGModeClick
     end
     object Button1: TButton
-      Left = 864
-      Top = 18
+      Left = 272
+      Top = 73
       Width = 105
       Height = 25
       Caption = 'Select Data...'
@@ -157,6 +157,7 @@ object FormSearchDemo: TFormSearchDemo
     Align = alClient
     UseDockManager = False
     ParentBackground = False
+    ParentColor = False
     TabOrder = 1
     DataSource = DataSource1
   end
@@ -189,6 +190,7 @@ object FormSearchDemo: TFormSearchDemo
     end
   end
   object BIDataset1: TBIDataset
+    RowNumbers = False
     Left = 536
     Top = 360
   end

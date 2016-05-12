@@ -17,7 +17,7 @@ uses
 
   BI.Data, BI.Persist, BI.Data.Search,
   BI.VCL.Grid, BI.VCL.DataManager,
-  BI.Dataset, BI.DataSource, BI.Arrays;
+  BI.Dataset, BI.DataSource, BI.Arrays, BI.VCL.DataControl;
 
 type
   TFormSearchDemo = class(TForm)
@@ -328,9 +328,14 @@ begin
     TCommonUI.AddItems(tmp,CBItems.Items);
 
     BIDataset1.Data:=tmp;
+
+    // Replace data to search
     Search.Source:=tmp;
 
     BIDataset1.Open;
+
+    // Replace data to search
+    CBItemsChange(Self);
 
     // Clear search, show full dataset
     ESearch.Text:='';

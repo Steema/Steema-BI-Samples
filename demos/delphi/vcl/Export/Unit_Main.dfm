@@ -29,14 +29,12 @@ object ExportDemo: TExportDemo
     Top = 41
     Width = 710
     Height = 582
-    ActivePage = TabPDF
+    ActivePage = TabExport
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
     object TabGrid: TTabSheet
       Caption = 'Grid'
-      ExplicitWidth = 1101
-      ExplicitHeight = 455
       object DBNavigator1: TDBNavigator
         Left = 0
         Top = 529
@@ -45,8 +43,6 @@ object ExportDemo: TExportDemo
         VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 0
-        ExplicitWidth = 1101
       end
       object BIGrid1: TBIGrid
         Left = 0
@@ -56,19 +52,13 @@ object ExportDemo: TExportDemo
         Align = alClient
         UseDockManager = False
         ParentBackground = False
+        ParentColor = False
         TabOrder = 1
-        ExplicitTop = 25
-        ExplicitWidth = 1101
-        ExplicitHeight = 180
       end
     end
     object TabExport: TTabSheet
       Caption = 'Export'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Memo1: TMemo
         Left = 0
         Top = 41
@@ -80,9 +70,6 @@ object ExportDemo: TExportDemo
         ScrollBars = ssBoth
         TabOrder = 0
         WordWrap = False
-        ExplicitLeft = 2
-        ExplicitWidth = 705
-        ExplicitHeight = 554
       end
       object Panel2: TPanel
         Left = 0
@@ -91,12 +78,11 @@ object ExportDemo: TExportDemo
         Height = 41
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 1101
         object RGExport: TRadioGroup
           Left = 8
-          Top = 4
+          Top = 1
           Width = 249
-          Height = 31
+          Height = 35
           Columns = 4
           DragMode = dmAutomatic
           ItemIndex = 0
@@ -122,8 +108,6 @@ object ExportDemo: TExportDemo
     object TabHTML: TTabSheet
       Caption = 'HTML'
       ImageIndex = 2
-      ExplicitWidth = 970
-      ExplicitHeight = 595
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -131,9 +115,6 @@ object ExportDemo: TExportDemo
         Height = 41
         Align = alTop
         TabOrder = 0
-        ExplicitLeft = 256
-        ExplicitTop = 256
-        ExplicitWidth = 185
         object Button1: TButton
           Left = 8
           Top = 8
@@ -148,7 +129,6 @@ object ExportDemo: TExportDemo
     object TabPDF: TTabSheet
       Caption = 'PDF'
       ImageIndex = 3
-      ExplicitLeft = 3
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -156,7 +136,6 @@ object ExportDemo: TExportDemo
         Height = 41
         Align = alTop
         TabOrder = 0
-        ExplicitTop = 8
         object Button2: TButton
           Left = 8
           Top = 8
@@ -177,8 +156,6 @@ object ExportDemo: TExportDemo
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 0
-    ExplicitHeight = 623
   end
   object Panel3: TPanel
     Left = 0
@@ -188,9 +165,6 @@ object ExportDemo: TExportDemo
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 408
-    ExplicitTop = 312
-    ExplicitWidth = 185
     object Label1: TLabel
       Left = 16
       Top = 14

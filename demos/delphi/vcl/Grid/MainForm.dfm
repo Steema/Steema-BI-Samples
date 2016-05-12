@@ -34,18 +34,10 @@ object GridDemoForm: TGridDemoForm
     TabOrder = 0
     object TabOptions: TTabSheet
       Caption = 'Grid Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object Panel1: TPanel
@@ -64,9 +56,8 @@ object GridDemoForm: TGridDemoForm
       Align = alClient
       UseDockManager = False
       ParentBackground = False
+      ParentColor = False
       TabOrder = 0
-      ExplicitLeft = 136
-      ExplicitTop = 80
     end
     object Panel2: TPanel
       Left = 0

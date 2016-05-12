@@ -35,7 +35,7 @@ uses
   BI.VCL.PDF,
   {$ENDIF}
 
-  ShDocVW, Clipbrd, ShellAPI;
+  ShDocVW, Clipbrd, ShellAPI, BI.VCL.DataControl;
 
 type
   TExportDemo = class(TForm)
@@ -136,7 +136,7 @@ end;
 procedure TExportDemo.SelectedData(Sender: TObject);
 var tmp : TDataItem;
 begin
-  tmp:=TDataManager(Sender).SelectedDatas;
+  tmp:=TDataManager(Sender).SelectedData;
 
   if tmp<>nil then
   begin
