@@ -22,9 +22,6 @@ object FromRTTI: TFromRTTI
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 200
-    ExplicitTop = 200
-    ExplicitWidth = 185
     object Label1: TLabel
       Left = 176
       Top = 14
@@ -39,7 +36,7 @@ object FromRTTI: TFromRTTI
       Top = 10
       Width = 145
       Height = 25
-      Caption = 'Import TPerson objects '
+      Caption = 'Import TCustomer objects '
       TabOrder = 0
       OnClick = Button1Click
     end
@@ -54,9 +51,5 @@ object FromRTTI: TFromRTTI
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
-    ExplicitLeft = 296
-    ExplicitTop = 216
-    ExplicitWidth = 100
-    ExplicitHeight = 40
   end
 end

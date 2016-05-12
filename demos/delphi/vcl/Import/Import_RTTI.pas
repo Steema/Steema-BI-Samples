@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BI.VCL.Grid, Vcl.ExtCtrls,
-  BI.Data;
+  BI.Data, BI.VCL.DataControl;
 
 type
   TFromRTTI = class(TForm)
@@ -16,8 +16,6 @@ type
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
-
-    Data : TDataItem;
   public
     { Public declarations }
 
@@ -29,32 +27,17 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.RTTI;
+  BI.Data.RTTI, Customers, Space_Flights;
 
-type
-  TPerson=record  // <-- can also be a class
-  public
-    Name : String;
-    Salary  : Single;
-    BirthDate : TDateTime;
-    IsDeveloper : Boolean;
-  end;
-
-var
-  Persons : Array[0..0] of TPerson;
-
-procedure FillSamplePersons;
-begin
-  Persons[0].  (Name: "John"; Salary: 1234; Birth
 { TFromRTTI }
 
 procedure TFromRTTI.Button1Click(Sender: TObject);
-var tmp : TTypeProvider<TPerson>;
+var tmp : TTypeProvider<TCustomer>;
 begin
-  tmp:=TTypeProvider<TPerson>.Create;
-  tmp.Add(Persons);
+  tmp:=TTypeProvider<TCustomer>.Create(Self);
+  tmp.Add(CustomerArray);
 
-  Data:=TDataItem.Create();
+  BIGrid1.Data:=tmp.Data;
 end;
 
 class procedure TFromRTTI.Show(const AOwner: TComponent);
