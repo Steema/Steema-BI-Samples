@@ -140,6 +140,7 @@ type
     procedure ReFill;
     procedure SetLastImport;
     procedure SetScheduling;
+    procedure SetSourcesWidth;
     procedure TryAdd(const Kind:TDataDefinitionKind);
 
     Constructor CreateStore(const AOwner:TComponent; const AStore:String);

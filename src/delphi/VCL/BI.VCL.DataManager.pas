@@ -92,15 +92,16 @@ type
 
     procedure AddNodeChildren(const ANode:TTreeNode);
     procedure AddNodeData(const AStore:String; const Children:Boolean; const Filter:String='');
-    procedure AddStores;
     function AskName:String;
     procedure CheckEditor;
     function Current:String;
+    procedure FillTree(const AStore:String);
     procedure ImportingData(const Sender:TObject; const Percent:Single; var Cancel:Boolean);
     function ImportingError(const Sender:TObject; const Text:String):Boolean;
     procedure LogException(const Text:String);
     function NodeWithData(const AData:TDataItem):TTreeNode;
     function SelectedText:String;
+    procedure SelectStore;
     procedure SetLastImport;
     procedure SetScheduling;
     procedure ShowDataInfo(SelectAtEditor:Boolean);

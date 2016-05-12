@@ -243,15 +243,15 @@ type
 
   TDateExpression=class(TUnaryDateTimeExpression)
   public
-    function ToString:String; override;
     class function FromData(const Value:TData):TDateTime; static;
+    function ToString:String; override;
     function Value:TData; override;
   end;
 
   TTimeExpression=class(TUnaryDateTimeExpression)
   public
-    function ToString:String; override;
     class function FromData(const Value:TData):TDateTime; static;
+    function ToString:String; override;
     function Value:TData; override;
   end;
 
@@ -304,8 +304,10 @@ type
       var QuarterFormat:String;
 
     class function AllToText:String; static;
+    class function Max:Integer; static;
     function AsString(const Index:Integer):String;
-    function ToString:String;
+    function ToString:String; overload;
+    class function ToString(const Index:Integer):String; overload; inline; static;
   end;
 
   TDateTimePartExpression=class(TUnaryExpression)

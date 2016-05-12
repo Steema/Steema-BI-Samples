@@ -13,9 +13,9 @@ uses
   System.Classes, System.SysUtils, Data.DB,
 
   {$IFDEF FMX}
-  FMXTee.Constants, FMXTee.Procs, BI.FMX.DataControl,
+  FMXTee.Constants, FMXTee.Procs, BI.FMX.DataControl, BI.FMX.Grid,
   {$ELSE}
-  VCLTee.TeeConst, VCLTee.TeeProcs, BI.VCL.DataControl,
+  VCLTee.TeeConst, VCLTee.TeeProcs, BI.VCL.DataControl, BI.VCL.Grid,
   {$ENDIF}
 
   {$IFDEF FPC}
@@ -62,11 +62,13 @@ type
     function NewSeries(const AClass:TChartSeriesClass):TChartSeries; overload;
     function NewSeries(const Count:Integer):TChartSeries; overload;
     function NewSeries(const X,Y:String):TCustomSeries; overload;
+  protected
   public
     SeriesClass : TChartSeriesClass;
 
     Constructor Create(AOwner:TComponent); override;
   published
+    property Align default TUICommon.AlignClient;
     property BevelOuter default bvNone;
     property View3D default False;
   end;
@@ -86,35 +88,33 @@ type
   {$ENDIF}
   TBIChart=class(TBIDataControl)
   private
-    tmpX,
-    tmpBool,
-    tmpNoMeasure,
-    tmpText : TDataItem;
+    tmpNoMeasure : TDataItem;
 
-    FData : TDataItem;
-
+    function AddCount(const AData:TDataItem):TChartSeries;
+    procedure AddXY(const X,Y,AText:TDataItem; const AData:TDataArray; const Dimensions:Integer);
+    procedure ApplyData(const AData:TDataItem);
     procedure CreateChart;
-
-    function CreateSeries(const Y:TDataItem):TChartSeries;
-    procedure FillSeries(const ASeries:TChartSeries; Y:TDataItem);
-
+    function CreateSeries(const X,Y:TDataItem):TChartSeries;
+    procedure FillSeries(const ASeries:TChartSeries; const X,Y,AText:TDataItem);
     function GetChart:TBITChart;
-
     function InitCountSeries(const ACount:TInteger):TChartSeries;
+
+  protected
+    Index : TCursorIndex;
 
     {$IFDEF TEEPRO}
     class function IsFinancial(const AData:TDataArray; const Dimensions:Integer):Boolean; static;
     {$ENDIF}
-  protected
-    Index : TCursorIndex;
 
-    function GetDataItem:TDataItem; override;
+    procedure Loaded; override;
     procedure ReadState(Reader: TReader); override;
-    procedure SetDataItem(const Value: TDataItem); override;
+    procedure SetDataDirect(const Value: TDataItem); override;
   public
     Mode : TBIChartMode;
 
     Constructor Create(AOwner:TComponent); override;
+
+    procedure Clear;
 
     function Fill(const AData:TInt32Array):TChartSeries; overload;
     function Fill(const AData:TInt64Array):TChartSeries; overload;
@@ -137,9 +137,14 @@ type
     function FillXY(const X,Y:TField):TChartSeries; overload;
   published
     property Chart:TBITChart read GetChart;
+
+    {$IFNDEF FMX}
+    property Height default 250;
+    property Width default 400;
+    {$ENDIF}
   end;
 
-  // Converts data from Chart or Series to TDataItem
+  // Converts data from a Chart or one or more Series to a TDataItem
   TChartData=record
   private
     class procedure InitNotMandatory(const ASeries:TChartSeries;
@@ -151,7 +156,7 @@ type
                         const AClass:TChartSeriesClass=nil):TChartSeries; overload; static;
     class function From(const ASeries:TChartSeries):TDataItem; overload; static;
     class function From(const AChart:TCustomChart):TDataItem; overload; static;
-    class function From(const ASeries:array of TChartSeries):TDataItem; overload; static;
+    class function From(const ASeries:Array of TChartSeries):TDataItem; overload; static;
   end;
 
 implementation

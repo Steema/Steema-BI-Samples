@@ -46,6 +46,6 @@ requires
 
 contains
   BI.Data.DB.FireDAC in '..\BI.Data.DB.FireDAC.pas',
-  BI.Data.DB.Tester in '..\BI.Data.DB.Tester.pas';
+  BI.Data.DB.FireDAC.AllDrivers in '..\BI.Data.DB.FireDAC.AllDrivers.pas';
 
 end.

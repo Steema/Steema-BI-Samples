@@ -3,7 +3,7 @@ unit BI.Store.Component;
 interface
 
 uses
-  System.Classes, System.Types, System.Generics.Collections,
+  System.Classes, System.Types, System.Generics.Collections, Data.DB,
   BI.Data, BI.Persist;
 
 type
@@ -16,32 +16,36 @@ type
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
-  TComponentImporter=class(TDataProvider)
+  TComponentImporter=class(TBaseDataImporter)
   private
-    FData : TDataItem;
-
     {$IFDEF AUTOREFCOUNT}[weak]{$ENDIF}
     FSource : TComponent;
 
-    function GetData: TDataItem;
-    procedure Notify(const AEvent:TBIEvent);
+    IDataLink : TDataLink;
+
     procedure SetSource(const Value: TComponent);
-    function TryFromStrings(const ASource:TComponent):TDataItem;
+    class function TryFromStrings(const ASource:TComponent):TDataItem;
   protected
     function DoImport(const AComponent: TComponent):TDataItem; virtual;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
-    function StringsOf(const ASource:TComponent):TStrings; virtual;
-    class function Supports(const AComponent:TComponent):Boolean; virtual;
+    class function StringsOf(const ASource:TComponent):TStrings; virtual;
   public
     class var
       Plugins : TList<TComponentImporterClass>;
 
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    class function From(const AOwner,AComponent:TComponent): TDataItem; static;
-
-    property Data:TDataItem read GetData;
+    class function DataOf(const AComponent:TComponent):TDataItem; virtual;
+    class function DataOfProvider(const AData:TDataItem):TDataItem; static;
+    class function From(const AOwner,AComponent:TComponent): TDataItem; overload; static;
+    class function From(const AOwner,AComponent:TComponent; const AOrigin:String): TDataItem; overload; static;
+    class function IsSupported(const AComponent:TComponent):Boolean; static;
+    class function Origin(const AComponent:TComponent; const AData:TDataItem):String; static;
+    class function ProviderOf(const AData:TDataItem):TComponent; static;
+    class function Supports(const AComponent:TComponent):Boolean; virtual;
+    class function TryLoadOrigin(const AOwner,AProvider:TComponent; var AOrigin:String):TDataItem; static;
   published
     property Source:TComponent read FSource write SetSource;
   end;

@@ -48,8 +48,15 @@ type
     function ToString:String;
   end;
 
+  TDataItem=class;
+
   TMissingData=record
   private
+    {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
+    IData : TDataItem;
+
+    procedure DestroyStats;
+
     // Returns True if the data value at Index position is null (missing)
     function GetItem(const Index:TInteger):Boolean; inline;
 
@@ -65,8 +72,6 @@ type
 
     property Item[const Index:TInteger]:Boolean read GetItem write SetItem; default;
   end;
-
-  TDataItem=class;
 
   TDataArray=Array of TDataItem;
 
@@ -95,6 +100,8 @@ type
     function GetLast: TDataItem;
     procedure InsertData(const AtIndex:TInteger);
   protected
+    Valid : Boolean;
+
     procedure AddDirect(const AData:TDataItem);
     procedure DestroyAll;
     function GetEmptyName:String;
@@ -169,7 +176,7 @@ type
   private
     Items : TArray<TBIConsumer>;
   public
-    Changing : Boolean;
+    Changing : Integer;
 
     procedure Add(const AConsumer:TBIConsumer);
     procedure Broadcast(const AEvent:TBIEvent);
@@ -179,11 +186,14 @@ type
 
   // Base class for TDataItem "Providers"
   TDataProvider=class(TComponent)
+  private
+    FTitle : String;
   protected
-    var
-      FConsumers : TBIConsumers;
+    FConsumers : TBIConsumers;
 
-    procedure Changed;
+    procedure BeginUpdate;
+    procedure EndUpdate;
+    procedure Changed; virtual;
     function Changing:Boolean;
     function GetStream(const AData,ANext:TDataItem):TStream; overload; virtual;
     function GetStream(const AItems:TDataArray):TStream; overload; virtual;
@@ -192,7 +202,11 @@ type
   public
     Destructor Destroy; override;
 
+    procedure Assign(Source: TPersistent); override;
+
     function NewData:TDataItem;
+  published
+    property Title:String read FTitle write FTitle;
   end;
 
   TNumericData=(Normal, Percentages);
@@ -202,6 +216,7 @@ type
     procedure SetName(const Value: String);
   type
     TMasterDetail=record
+    private
     public
       Data : TDataItem;
 
@@ -210,8 +225,14 @@ type
 
       Multiplier : TInt32Array;  // Contains length of each BitIndex arrays (for speed)
 
+      // Used only during link loading:
+      Origin : String;
+
       // Add a new entry in Index, accumulating the ACount parameter
       procedure AppendIndex(const ACount:Integer);
+
+      // Direct assign
+      procedure Assign(const Value:TMasterDetail);
 
       // Returns the array of detail Indexes for given master AIndex position
       function GetIndex(const AMaster:TDataItem; const AIndex:TInteger):TNativeIntArray;
@@ -235,7 +256,12 @@ type
 
     FStartTime: TStopwatch;
 
+    // Temporary. Anti re-entrancy, see usage
+    IGettingItems : Boolean;
+
     //IKeepParent : Boolean;
+
+    procedure DestroyStats;
 
     function GetItem(const AName:String):TDataItem; inline;
 
@@ -244,7 +270,6 @@ type
     {$ENDIF}
 
     function GetItems:TDataItems;
-
     function GetHistory:TImportHistory;
     function GetStats:TDataStats;
     function GetMaster: TDataItem;
@@ -272,9 +297,6 @@ type
 
     // foreign key
     IMaster : TMasterDetail;
-
-    // Used only during link loading:
-    IMasterOrigin : String;
 
     FUnique : Boolean;
 
@@ -375,7 +397,7 @@ type
 
     function TotalColumns: TInteger;
     function TotalRows: TInteger; // Int64 as it might overflow in 32bit cpu
-    procedure UnLoadData; virtual;
+    procedure UnLoadData(const InvalidItems:Boolean=False); virtual;
 
     property Count:TInteger read FCount;
     property DataMap:TDataMap read FDataMap;

@@ -17,12 +17,11 @@ type
   TControlImporter=class(TComponentImporter)
   protected
     function DoImport(const AComponent: TComponent):TDataItem; override;
-    function StringsOf(const ASource:TComponent):TStrings; override;
-    class function Supports(const AComponent:TComponent):Boolean; override;
   public
-    class function DataOf(const AComponent:TComponent):TDataItem; static;
-    class function HasData(const AComponent:TComponent):Boolean; static;
-    class function From(const AOwner,ASource:TComponent):TDataItem; static;
+    class function DataOf(const AComponent:TComponent):TDataItem; override;
+    class function HasDataProperty(const AComponent:TComponent):Boolean; static;
+    class function StringsOf(const ASource:TComponent):TStrings; override;
+    class function Supports(const AComponent:TComponent):Boolean; override;
   end;
 
 implementation

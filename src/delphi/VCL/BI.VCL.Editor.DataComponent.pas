@@ -1,10 +1,24 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Component Selector dialog                  }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.DataComponent;
 
 interface
 
+{
+  This dialog can be used at design-time or runtime to select a TComponent
+  that can be a provider of "Data".
+
+  The TDataSelector dialog (BI.VCL.DataSelect.pas unit) also uses this dialog.
+
+}
+
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
-  System.Generics.Collections, System.Rtti,
+  System.Generics.Collections,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls, Vcl.Grids, BI.Data, Vcl.Menus;
 
@@ -25,21 +39,20 @@ type
   private
     { Private declarations }
 
-    Rtti : TRttiContext;
-    tmpDataSource : TRttiType;
-
     IComponents : TList<TComponent>;
 
     //Dummy : TComponent;
-
-    FCurrent : TComponent;
 
     FOnFilter : TFilterEvent;
     FOnSelected : TNotifyEvent;
 
     procedure Add(const AParent:TTreeNode; const AComponent:TComponent; const AName:String);
+    function CanAdd(const AComponent:TComponent):Boolean;
     procedure FillTree;
   protected
+    FCurrent : TObject;
+
+    function SelectedHasData:Boolean;
     procedure TryFreeData;
   public
     { Public declarations }
@@ -55,17 +68,18 @@ type
 
     function Data(const AOwner:TComponent):TDataItem;
 
-    class function Import(const AOwner:TComponent;const AObject:TObject):TDataItem; static;
+    class function Import(const AOwner:TComponent; const AObject:TObject):TDataItem; static;
 
-    class function Select(const AOwner:TComponent;
+    class function Choose(const AOwner:TComponent;
                     const ACurrent:TComponent=nil):TComponent; static;
+
+    procedure Select(const AObject:TObject);
 
     function Selected:TComponent;
     function SelectedData:TDataItem;
 
-    property OnSelected:TNotifyEvent read FOnSelected write FOnSelected;
-
     property OnFilter:TFilterEvent read FOnFilter write FOnFilter;
+    property OnSelected:TNotifyEvent read FOnSelected write FOnSelected;
   end;
 
 implementation

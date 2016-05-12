@@ -27,7 +27,7 @@ type
     BOK: TButton;
     Button2: TButton;
     TabUnknown: TTabSheet;
-    Label1: TLabel;
+    LabelUnknown: TLabel;
     PageControlFile: TPageControl;
     TabFile: TTabSheet;
     TabFolder: TTabSheet;
@@ -111,6 +111,8 @@ type
     Label21: TLabel;
     EFTPPassword: TEdit;
     LFTPStatus: TLabel;
+    Button6: TButton;
+    OpenDialogDatabase: TOpenDialog;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -152,10 +154,12 @@ type
     procedure BFTPTestClick(Sender: TObject);
     procedure EFTPUserChange(Sender: TObject);
     procedure EFTPPasswordChange(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
     FOnChangeWeb : TNotifyEvent;
 
+    OwnsData,
     IChanging : Boolean;
 
     IStore : String;
@@ -185,6 +189,8 @@ type
     Data : TDataDefinition;
 
     function Description:String;
+
+    class function Edit(const AOwner:TComponent; const AData:TDataDefinition):Boolean; static;
 
     class function NewDefinition(const AOwner:TComponent;
                        const AKind:TDataDefinitionKind;

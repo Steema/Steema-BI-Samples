@@ -3,18 +3,55 @@ unit BI.Query;
 interface
 
 uses
-  System.Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression;
+  System.Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
+  BI.Persist;
 
 type
+  TDataCollectionItem=class(TCollectionItem)
+  private
+    FData : TDataItem;
+    FProvider : TComponent;
+
+    FOnChange: TNotifyEvent;
+
+    IOrigin : String;
+
+    procedure AddNotify;
+    function GetData: TDataItem;
+    procedure InternalSetProvider(const Value: TComponent);
+    function LoadOrigin:TDataItem;
+    procedure Notify(const AEvent:TBIEvent);
+    procedure NotifyDataDestroy(const AEvent:TBIEvent);
+    function Origin:String;
+    procedure ReadOrigin(Reader: TReader);
+    procedure RemoveNotify;
+    procedure SetData(const Value: TDataItem);
+    procedure SetDataDirect(const Value: TDataItem);
+    procedure SetProvider(const Value: TComponent);
+    procedure WriteOrigin(Writer: TWriter);
+  protected
+    procedure Changed; virtual;
+    procedure DefineProperties(Filer: TFiler); override;
+    procedure Loaded; virtual;
+    function Owner:TComponent; virtual;
+    procedure ValidateData(const AData:TDataItem); virtual;
+  public
+    Destructor Destroy; override;
+
+    procedure Assign(Source: TPersistent); override;
+  published
+    property Data:TDataItem read GetData write SetData;
+    property Provider:TComponent read FProvider write SetProvider;
+
+    property OnChange:TNotifyEvent read FOnChange write FOnChange;
+  end;
+
   TBIQuery=class;
 
   TQueryItemStyle=(Automatic,Row,Column,Measure);
 
-  TQueryItem=class(TCollectionItem)
+  TQueryItem=class(TDataCollectionItem)
   private
-    FData : TDataItem;
-    FOnChange: TNotifyEvent;
-    FProvider : TComponent;
     FStyle: TQueryItemStyle;
 
     FSelectIndex : Integer;
@@ -23,26 +60,26 @@ type
     // Only used during csLoading, see Loaded
     IActive : Boolean;
     IAggregate : TAggregate;
+    IDatePart : TDateTimePart;
 
-    procedure Changed;
+    function CanChange:Boolean;
     procedure DoRemove;
     function GetAggregate: TAggregate;
     function GetActive: Boolean;
-    procedure Loaded;
+    function GetDatePart:TDateTimePart;
     function Query:TBIQuery;
-    procedure ReadOrigin(Reader: TReader);
     function RealData:TDataItem;
     procedure Recreate;
-    procedure SetData(const Value: TDataItem);
     procedure SetStyle(const Value: TQueryItemStyle);
     procedure SetActive(const Value: Boolean);
     procedure SetAggregate(const Value: TAggregate);
-    procedure ValidateNew(const AData:TDataItem);
-    procedure WriteOrigin(Writer: TWriter);
-    procedure SetProvider(const Value: TComponent);
- protected
-    procedure DefineProperties(Filer: TFiler); override;
- public
+    procedure SetDatePart(const Value: TDateTimePart);
+    procedure TryReconnect;
+  protected
+    procedure Changed; override;
+    procedure Loaded; override;
+    procedure ValidateData(const AData:TDataItem); override;
+  public
     Constructor Create(Collection: TCollection); override;
 
     procedure Assign(Source:TPersistent); override;
@@ -55,11 +92,8 @@ type
   published
     property Active:Boolean read GetActive write SetActive default True;
     property Aggregate:TAggregate read GetAggregate write SetAggregate default TAggregate.Count;
-    property Data:TDataItem read FData write SetData;
-    property Provider:TComponent read FProvider write SetProvider;
+    property DatePart:TDateTimePart read GetDatePart write SetDatePart default TDateTimePart.None;
     property Style:TQueryItemStyle read FStyle write SetStyle default TQueryItemStyle.Automatic;
-
-    property OnChange:TNotifyEvent read FOnChange write FOnChange;
   end;
 
   TQueryItems=class(TOwnedCollection)
@@ -83,6 +117,7 @@ type
                  const AMeasure:TAggregate): TQueryItem; overload;
 
     procedure Exchange(const A,B:TQueryItem);
+    procedure Swap;
 
     property Items[const Index:Integer]:TQueryItem read Get write Put; default;
     property Query:TBIQuery read GetQuery;
@@ -110,7 +145,7 @@ type
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
-  TBIQuery=class(TDataProvider)
+  TBIQuery=class(TBaseDataImporter)
   private
     FItems: TQueryItems;
 
@@ -118,11 +153,18 @@ type
     FSelect : TDataSelect;
     FSummary : TSummary;
     FRemove: TQueryRemove;
-    FUseFilter : Boolean;
+
+    // Temporary during csLoading
+    IFilter : String;
+
+    ILoading : Boolean;
+    IClearing : Boolean;
 
     procedure AddItemsSelect(const ASelect:TDataSelect);
     procedure AddItemsSummary(const ASummary:TSummary);
     procedure DeleteSelect(const AIndex:Integer);
+    procedure DoClearData(const AData:TDataItem);
+    procedure DoSetFilter(const Value: String);
     function GetDistinct: Boolean;
     function GetFilter: String;
     function GetMax: Int64;
@@ -134,10 +176,15 @@ type
     procedure SetMax(const Value: Int64);
     procedure SetRemove(const Value: TQueryRemove);
     procedure SetUseFilter(const Value: Boolean);
+    function GetUseFilter: Boolean;
   protected
+    procedure Changed; override;
+    procedure GetItems(const AData: TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure Loaded; override;
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+
+    procedure Notification(AComponent: TComponent;
+                           Operation: TOperation); override;
 
     property Select:TDataSelect read FSelect write SetSelect;
     property Summary:TSummary read FSummary write SetSummary;
@@ -168,7 +215,7 @@ type
     property Items:TQueryItems read FItems write SetItems;
     property MaxRows:Int64 read GetMax write SetMax default 0;
     property RemoveMissing:TQueryRemove read FRemove write SetRemove;
-    property UseFilter:Boolean read FUseFilter write SetUseFilter default True;
+    property UseFilter:Boolean read GetUseFilter write SetUseFilter default True;
   end;
 
 implementation

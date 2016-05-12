@@ -9,7 +9,7 @@ uses
   Vcl.ExtCtrls, BI.VCL.Grid,
   VCL.ComCtrls, BI.Data, Vcl.StdCtrls, Vcl.Menus, BI.Data.Workflow,
   BI.VCL.Editor.WorkflowItem, BI.Persist, BI.VCL.NewColumn,
-  BI.VCL.DataSelect, BI.VCL.Tree;
+  BI.VCL.DataSelect, BI.VCL.Tree, BI.VCL.DataControl;
 
 type
   TBIWorkflowEditor = class(TForm)
@@ -80,6 +80,7 @@ type
     procedure ItemChanged(Sender: TObject);
     function ItemOf(const ANode:TBITreeNode):TWorkflowItem;
 
+    function NameOf(const AItem:TWorkflowItem):String;
     function NewShape(const AParent:TBITreeNode;
                       const AData:TDataItem):TBITreeNode; overload;
 

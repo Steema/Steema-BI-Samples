@@ -16,28 +16,43 @@ type
   // Base abstract Control that includes Data and Provider properties
   TBIDataControl=class({$IFDEF FMX}TLayout{$ELSE}TWinControl{$ENDIF})
   private
-    FProvider : TComponent;
-
     {$IFDEF FPC}
     FParentBack : Boolean;
     {$ENDIF}
 
+    {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
+    FData: TDataItem;
+
+    {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
+    FProvider : TComponent;
+
+    IOrigin : String;
+
+    procedure AddNotify;
+    procedure DoSetProvider(const Value: TComponent);
+    function GetDataItem:TDataItem;
+    function GetProvider:TComponent;
+    procedure InternalSetProvider(const Value:TComponent);
+    function LoadOrigin:TDataItem;
     procedure Notify(const AEvent:TBIEvent);
+    procedure NotifyDataDestroy(const AEvent:TBIEvent);
+    function Origin:String;
     procedure ReadOrigin(Reader: TReader);
+    procedure RemoveNotify;
+    procedure SetDataItem(const Value: TDataItem); // <-- do not rename to SetData (FMX conflict)
     procedure SetProvider(const Value: TComponent);
     procedure WriteOrigin(Writer: TWriter);
   protected
     procedure DefineProperties(Filer: TFiler); override;
-    function GetDataItem:TDataItem; virtual; abstract;
+    procedure Loaded; override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-    procedure SetDataItem(const Value: TDataItem); virtual; abstract; // <-- do not rename to SetData (FMX conflict)
-    procedure TryAddConsumer;
-    procedure TryRemoveConsumer;
+    procedure SetDataDirect(const Value: TDataItem); virtual;
 
     {$IFNDEF FMX}
     property DockManager;
     {$ENDIF}
   public
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     procedure DestroyData;
@@ -205,8 +220,8 @@ type
     {$ENDIF}
 
     // TBIDataControl
-    property Data:TDataItem read GetDataItem write SetDataItem;
-    property Provider:TComponent read FProvider write SetProvider;
+    property Data:TDataItem read GetDataItem write SetDataItem default nil;
+    property Provider:TComponent read GetProvider write SetProvider;
   end;
 
 implementation

@@ -28,7 +28,6 @@ object BIWorkflowEditor: TBIWorkflowEditor
     Left = 624
     Top = 41
     Height = 589
-    Align = alRight
     ExplicitLeft = 633
     ExplicitTop = 33
   end
@@ -37,7 +36,7 @@ object BIWorkflowEditor: TBIWorkflowEditor
     Top = 41
     Width = 394
     Height = 589
-    Align = alRight
+    Align = alClient
     UseDockManager = False
     ParentBackground = False
     ParentColor = False
@@ -126,9 +125,10 @@ object BIWorkflowEditor: TBIWorkflowEditor
     Top = 41
     Width = 332
     Height = 589
-    Align = alClient
+    Align = alLeft
     UseDockManager = False
     ParentBackground = False
+    ParentColor = False
     TabOrder = 3
     OnDragDrop = Tree1DragDrop
     OnDragOver = Tree1DragOver

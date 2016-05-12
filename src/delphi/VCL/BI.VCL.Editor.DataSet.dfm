@@ -3,7 +3,7 @@ object BIDataSetEditor: TBIDataSetEditor
   Top = 0
   Caption = 'DataSet Editor'
   ClientHeight = 444
-  ClientWidth = 522
+  ClientWidth = 412
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,42 +12,20 @@ object BIDataSetEditor: TBIDataSetEditor
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
-  OnResize = FormResize
+  OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
-    Left = 0
-    Top = 0
-    Width = 522
-    Height = 56
-    Align = alTop
-    BevelOuter = bvNone
-    TabOrder = 0
-    object RGMode: TRadioGroup
-      Left = 9
-      Top = 6
-      Width = 240
-      Height = 43
-      Caption = '&Mode:'
-      Columns = 3
-      ItemIndex = 0
-      Items.Strings = (
-        'Data'
-        'Query'
-        'Summary')
-      TabOrder = 0
-      OnClick = RGModeClick
-    end
-  end
   object Panel2: TPanel
     Left = 0
     Top = 403
-    Width = 522
+    Width = 412
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
+    ExplicitTop = 409
+    ExplicitWidth = 522
     object CBPreview: TCheckBox
       Left = 16
       Top = 12
@@ -58,48 +36,124 @@ object BIDataSetEditor: TBIDataSetEditor
       OnClick = CBPreviewClick
     end
     object Panel4: TPanel
-      Left = 337
+      Left = 227
       Top = 0
       Width = 185
       Height = 41
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      object Button1: TButton
+      ExplicitLeft = 337
+      object BOK: TButton
         Left = 13
         Top = 8
         Width = 75
         Height = 25
         Caption = 'OK'
-        Default = True
+        Enabled = False
         ModalResult = 1
         TabOrder = 0
-        OnClick = Button1Click
+        OnClick = BOKClick
       end
-      object Button2: TButton
+      object BCancel: TButton
         Left = 101
         Top = 8
         Width = 75
         Height = 25
         Cancel = True
         Caption = 'Cancel'
+        Default = True
         ModalResult = 2
         TabOrder = 1
       end
     end
+    object Button1: TButton
+      Left = 119
+      Top = 8
+      Width = 75
+      Height = 25
+      Caption = '&New...'
+      TabOrder = 2
+      OnClick = Button1Click
+    end
   end
-  object PanelMain: TPanel
+  object PageControl1: TPageControl
     Left = 0
-    Top = 56
-    Width = 522
-    Height = 347
+    Top = 0
+    Width = 412
+    Height = 403
+    ActivePage = TabOptions
     Align = alClient
-    BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
+    OnChange = PageControl1Change
+    ExplicitTop = 56
+    ExplicitWidth = 522
+    ExplicitHeight = 347
+    object TabOptions: TTabSheet
+      Caption = 'Options'
+      ExplicitWidth = 514
+      ExplicitHeight = 319
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 404
+        Height = 81
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitWidth = 514
+        object Label1: TLabel
+          Left = 3
+          Top = 63
+          Width = 49
+          Height = 13
+          Caption = 'Structure:'
+        end
+        object CBActive: TCheckBox
+          Left = 12
+          Top = 12
+          Width = 125
+          Height = 17
+          Caption = '&Active'
+          TabOrder = 0
+          OnClick = CBActiveClick
+        end
+        object CBReadonly: TCheckBox
+          Left = 12
+          Top = 35
+          Width = 125
+          Height = 17
+          Caption = '&Read only'
+          TabOrder = 1
+          OnClick = CBReadonlyClick
+        end
+      end
+      object BITree1: TBITree
+        Left = 0
+        Top = 81
+        Width = 404
+        Height = 294
+        Align = alClient
+        UseDockManager = False
+        ParentBackground = False
+        ParentColor = False
+        TabOrder = 1
+        ExplicitLeft = 56
+        ExplicitTop = 32
+        ExplicitWidth = 400
+        ExplicitHeight = 250
+      end
+    end
+    object TabData: TTabSheet
+      Caption = 'Data'
+      ImageIndex = 1
+      ExplicitWidth = 514
+      ExplicitHeight = 319
+    end
   end
   object Backup: TBIDataset
     RowNumbers = False
     Left = 256
-    Top = 152
+    Top = 224
   end
 end

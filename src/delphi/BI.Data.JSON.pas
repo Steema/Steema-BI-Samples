@@ -79,6 +79,7 @@ type
     procedure EmitDetail(const Data:TDataItem; const AIndex:TCursorIndex; const AItems:TStrings; const Indent:String);
     procedure EmitRow(const AIndex:TInteger; const Items:TDataArray; const AItems:TStrings; const Indent:String);
     procedure EmitRows(const AIndex:TInteger);
+    function Escape(const S:String):String;
   protected
     procedure DoEmit(const AItems: TStrings); override;
   public

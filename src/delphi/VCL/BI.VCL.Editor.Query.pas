@@ -1,12 +1,30 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Query Editor Dialog                        }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.Query;
 
 interface
+
+{
+  This form is used to edit a TBIQuery (pivot-table) component.
+
+  Data can be drag-dropped from the left tree to the Rows, Columns or Measures
+  listboxes.
+
+  The listboxes can also be drag-dropped to reorder elements or to move items
+  from one list to another.
+
+}
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BI.VCL.Grid, Vcl.ComCtrls,
   BI.Data, BI.Summary, BI.DataSource, BI.VCL.DataSelect, Vcl.StdCtrls, BI.Query,
-  VCL.CheckLst, Vcl.Buttons;
+  VCL.CheckLst, Vcl.Buttons, BI.VCL.DataControl, BI.Persist,
+  BI.Expression;
 
 type
   TBIQueryEditor = class(TForm)
@@ -14,7 +32,7 @@ type
     PanelEdit: TPanel;
     BIGrid1: TBIGrid;
     Splitter1: TSplitter;
-    Splitter2: TSplitter;
+    SplitterSelector: TSplitter;
     PanelRows: TPanel;
     PanelColumns: TPanel;
     PanelMeasures: TPanel;
@@ -75,6 +93,11 @@ type
     Label6: TLabel;
     EBins: TEdit;
     UDBins: TUpDown;
+    BIQuery1: TBIQuery;
+    SBSwap: TSpeedButton;
+    SBSelector: TSpeedButton;
+    Label7: TLabel;
+    ETitle: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure ListRowsDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -102,7 +125,6 @@ type
     procedure EFilterChange(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure BOKClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure CBFilterClick(Sender: TObject);
     procedure CBHistoActiveClick(Sender: TObject);
@@ -113,22 +135,23 @@ type
     procedure SBColUpClick(Sender: TObject);
     procedure SBColDownClick(Sender: TObject);
     procedure EBinsChange(Sender: TObject);
+    procedure SBSwapClick(Sender: TObject);
+    procedure SBSelectorClick(Sender: TObject);
+    procedure ETitleChange(Sender: TObject);
   private
     { Private declarations }
 
-    IQuery,
-    FQuery : TBIQuery;
+    IQuery : TBIQuery;
 
     CompTree,
     DataTree : TTreeView;
 
     IModified : Boolean;
 
-    ICurrentBy : TGroupBy;
+    ICurrent : TQueryItem;
 
     function AddData(const AList:TCheckListBox; const AData:TDataItem; const IsActive:Boolean=True):TQueryItem;
     procedure AddItem(const AList:TCheckListBox; const AItem:TQueryItem);
-    function By(const AList:TCheckListBox):TGroupBy;
     procedure ChangeItem(const AList:TCheckListBox);
     function ChangingQuery:Boolean;
     procedure DeleteItem(const AList:TCheckListBox);
@@ -136,16 +159,19 @@ type
     procedure DoExchangeItem(const AList:TCheckListBox; const Delta:Integer); overload;
 
     procedure EnableHistogramControls;
+    procedure EnableColumnButtons;
+    procedure EnableMeasureButtons;
+    procedure EnableRowButtons;
     procedure EnableRowSettings;
+    procedure EnableSwap;
     procedure FilterComponent(Sender: TComponent; var Valid:Boolean);
     function ListOf(const ABy:TGroupBy):TCheckListBox;
     function Measure:TMeasure;
     procedure Modified;
-    procedure Rebuild;
     procedure RemoveFromList(const AList:TCheckListBox);
-    procedure SetByProperties(const ABy:TGroupBy);
-    procedure SetMeasureProperties(const AMeasure:TMeasure);
-    procedure SetPart(const ACombo:TComboBox; const ABy:TGroupBy);
+    procedure SetByProperties(const ACurrent:TQueryItem);
+    procedure SetMeasureProperties(const ACurrent:TQueryItem);
+    procedure SetPart(const ACombo:TComboBox; const APart:TDateTimePart);
   public
     { Public declarations }
 

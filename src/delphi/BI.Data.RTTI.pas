@@ -8,22 +8,23 @@ unit BI.Data.RTTI;
 
 interface
 
-// This unit contains a class to implement "ORM" (Object Relational Mapping)
-// from custom records and classes to TDataItem objects, than can then be used
-// as with any other TDataItem.
-
-// Demo project: ..\Demos\Import\ORM_RTTI.dproj
-
-// Pending list of features:
 {
-  - Test with recursive classes (classes inside classes)
-  - Support for Array or TList properties to implement master-detail TDataItem
-  - Investigate adding "Primary Key" support for fast Find and non-duplicate checks.
+ This unit contains a class to implement "ORM" (Object Relational Mapping)
+ from custom records and classes to TDataItem objects, than can then be used
+ everywhere as any other TDataItem.
+
+ Demo project at folder: ..\Demos\Delphi\VCL\ORM_RTTI
+
+ Pending list of features:
+
+ - Test with recursive classes (classes inside classes)
+ - Support for Array or TList properties to implement master-detail TDataItem
+ - Investigate adding "Primary Key" support for fast Find and non-duplicate checks.
 }
 
 uses
   System.Classes, System.TypInfo, System.Rtti, System.Generics.Collections,
-  BI.Arrays, BI.Data;
+  BI.Arrays, BI.Data, BI.Persist;
 
 type
   TVisibility=set of TMemberVisibility;
@@ -31,7 +32,7 @@ type
   TRttiMembers=(Both, Fields, Properties);
 
   // Base RTTI Provider
-  TRTTIProvider=class(TDataProvider)
+  TRTTIProvider=class(TBaseDataImporter)
   private
   class var
     Context : TRttiContext;
@@ -68,7 +69,7 @@ type
   // Generic Provider
   TTypeProvider<T>=class(TRTTIProvider)
   private
-    FData : TDataItem;
+    //FData : TDataItem;
 
     function Get(const AIndex: TInteger):T;
     procedure GetError(const AIndex:TInteger);
@@ -94,7 +95,7 @@ type
     procedure Remove(const AValue:T);
     procedure Update(const AIndex:TInteger; const AValue:T);
 
-    property Data:TDataItem read FData;
+    //property Data:TDataItem read FData;
     property Items[const Index:TInteger]:T read Get write Put; default;
   end;
 

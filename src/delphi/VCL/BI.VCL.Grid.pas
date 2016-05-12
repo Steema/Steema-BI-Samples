@@ -116,8 +116,7 @@ type
     procedure SetTotals(const Value: Boolean);
     procedure TryShowItems;
   protected
-    function GetDataItem:TDataItem; override;
-    procedure SetDataItem(const Value: TDataItem); override;
+    procedure SetDataDirect(const Value: TDataItem); override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;

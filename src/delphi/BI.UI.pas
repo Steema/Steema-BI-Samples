@@ -26,7 +26,7 @@ type
     class function ItemsOf(const AData:TDataItem):TDataItem; overload; static;
   end;
 
-  TShowMessageProc={$IFNDEF FPC}reference to{$ENDIF} procedure(const AText:String);
+  TShowMessageProc=procedure(const AText:String);
 
   TCommonUI=record
   public

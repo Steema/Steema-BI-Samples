@@ -281,14 +281,15 @@ type
     function Append(const Value:Boolean):TInteger; overload; inline;
     procedure Append(const Value:TBooleanArray); overload;
     function Compare(const A,B:TInteger):SmallInt; inline;
-    function Copy:TBooleanArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TBooleanArray; overload; inline;
+    function Copy:TBooleanArray; overload; inline;
+    function Copy(const Missing:TBooleanArray):TBooleanArray; overload;
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Boolean);
-    function Map(const Missing:TBooleanArray):TBooleanMap;
+    function Map:TBooleanMap;
     procedure Resize(const Count:TInteger); inline;
     procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
@@ -303,8 +304,9 @@ type
   public
     function Append(const Value:String):TInteger; overload; inline;
     procedure Append(const Value:TTextArray); overload;
-    function Copy:TTextArray; overload;
     function Copy(const AIndex,ACount:TInteger):TTextArray; overload;
+    function Copy:TTextArray; overload;
+    function Copy(const Missing:TBooleanArray):TTextArray; overload;
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
@@ -312,7 +314,7 @@ type
     function IndexOf(const Value:String):TInteger; overload; inline;
     function IndexOf(const Value:String; const CaseSentitive:Boolean):TInteger; overload;
     procedure Insert(const Index:TInteger; const Value:String);
-    function Map(const Missing:TBooleanArray; const IgnoreCase:Boolean=False):TTextMap;
+    function Map(const IgnoreCase:Boolean=False):TTextMap;
     function MaxLength:Integer;
     procedure Resize(const Count:TInteger); inline;
     procedure Sort(const Ascending:Boolean=True; const IgnoreCase:Boolean=False); overload;
@@ -329,14 +331,15 @@ type
   public
     function Append(const Value:TDateTime):TInteger; overload; inline;
     procedure Append(const Value:TDateTimeArray); overload;
-    function Copy:TDateTimeArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TDateTimeArray; overload; inline;
+    function Copy:TDateTimeArray; overload; inline;
+    function Copy(const Missing:TBooleanArray):TDateTimeArray; overload;
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:TDateTime);
-    function Map(const Missing:TBooleanArray; out Median,Mode:TDateTime):TDateTimeMap; overload;
+    function Map(out Median,Mode:TDateTime):TDateTimeMap; overload;
     function Maximum:TDateTime;
     function Mean:TDateTime;
     function Minimum:TDateTime;
@@ -357,8 +360,9 @@ type
   public
     function Append(const Value:Integer):TInteger; overload; inline;
     procedure Append(const Value:TInt32Array); overload;
-    function Copy:TInt32Array; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TInt32Array; overload; inline;
+    function Copy:TInt32Array; overload; inline;
+    function Copy(const Missing:TBooleanArray):TInt32Array; overload;
     function Count:TInteger; inline;
     function Correlation(const Y: TInt32Array; const XMean,YMean: TFloat): TFloat;
     function CoVariance(const Y: TInt32Array; const XMean,YMean: TFloat):TFloat;
@@ -368,7 +372,7 @@ type
     function IndexOf(const Value:Integer):TInteger;
     function IndexOfMax:TInteger;
     procedure Insert(const Index:TInteger; const Value:Integer);
-    function Map(const Missing:TBooleanArray; out Median,Mode:Integer):TInt32Map;
+    function Map(out Median,Mode:Integer):TInt32Map;
     function Maximum:Integer;
     function Mean:TFloat;
     function Minimum:Integer;
@@ -392,8 +396,9 @@ type
   public
     function Append(const Value:Int64):TInteger; overload; inline;
     procedure Append(const Value:TInt64Array); overload;
-    function Copy:TInt64Array; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TInt64Array; overload; inline;
+    function Copy:TInt64Array; overload; inline;
+    function Copy(const Missing:TBooleanArray):TInt64Array; overload;
     function Count:TInteger; inline;
     function Correlation(const Y: TInt64Array; const XMean,YMean: TFloat): TFloat;
     function CoVariance(const Y: TInt64Array; const XMean,YMean: TFloat):TFloat;
@@ -403,7 +408,7 @@ type
     function IndexOf(const Value:Int64):TInteger;
     function IndexOfMax:TInteger;
     procedure Insert(const Index:TInteger; const Value:Int64);
-    function Map(const Missing:TBooleanArray; out Median,Mode:Int64):TInt64Map;
+    function Map(out Median,Mode:Int64):TInt64Map;
     function Maximum:Int64;
     function Mean:TFloat;
     function Minimum:Int64;
@@ -427,8 +432,9 @@ type
   public
     function Append(const Value:Single):TInteger; overload; inline;
     procedure Append(const Value:TSingleArray); overload;
-    function Copy:TSingleArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TSingleArray; overload; inline;
+    function Copy:TSingleArray; overload; inline;
+    function Copy(const Missing:TBooleanArray):TSingleArray; overload;
     function Count:TInteger; inline;
     function Correlation(const Y: TSingleArray; const XMean,YMean: Single): Single;
     function CoVariance(const Y: TSingleArray; const XMean,YMean: Single):Single;
@@ -436,7 +442,7 @@ type
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Single);
-    function Map(const Missing:TBooleanArray; out Median,Mode:Single):TSingleMap; overload;
+    function Map(out Median,Mode:Single):TSingleMap; overload;
     function Maximum:Single;
     function Mean:Single;
     function Minimum:Single;
@@ -460,8 +466,9 @@ type
   public
     function Append(const Value:Double):TInteger; overload; inline;
     procedure Append(const Value:TDoubleArray); overload;
-    function Copy:TDoubleArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TDoubleArray; overload; inline;
+    function Copy:TDoubleArray; overload; inline;
+    function Copy(const Missing:TBooleanArray):TDoubleArray; overload;
     function Count:TInteger; inline;
     function Correlation(const Y: TDoubleArray; const XMean,YMean: Double): Double;
     function CoVariance(const Y: TDoubleArray; const XMean,YMean: Double):Double;
@@ -469,7 +476,7 @@ type
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Double);
-    function Map(const Missing:TBooleanArray; out Median,Mode:Double):TDoubleMap; overload;
+    function Map(out Median,Mode:Double):TDoubleMap; overload;
     function Maximum:Double;
     function Mean:Double;
     function Minimum:Double;
@@ -494,8 +501,9 @@ type
   public
     function Append(const Value:Extended):TInteger; overload; inline;
     procedure Append(const Value:TExtendedArray); overload;
-    function Copy:TExtendedArray; overload; inline;
     function Copy(const AIndex,ACount:TInteger):TExtendedArray; overload; inline;
+    function Copy:TExtendedArray; overload; inline;
+    function Copy(const Missing:TBooleanArray):TExtendedArray; overload;
     function Count:TInteger; inline;
     function Correlation(const Y: TExtendedArray; const XMean,YMean: Extended): Extended;
     function CoVariance(const Y: TExtendedArray; const XMean,YMean: Extended):Extended;
@@ -503,7 +511,7 @@ type
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Extended);
-    function Map(const Missing:TBooleanArray; out Median,Mode:Extended):TExtendedMap; overload;
+    function Map(out Median,Mode:Extended):TExtendedMap; overload;
     function Maximum:Extended;
     function Mean:Extended;
     function Minimum:Extended;

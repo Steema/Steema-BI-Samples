@@ -55,7 +55,7 @@ type
 
   TCursorIndex=TNativeIntArray;
 
-  TDataCursorItem=record
+  TDataCursorItem=record // TDataCollectionItem ?
   public
     Active : Boolean;
     Data : TDataItem;
@@ -73,7 +73,7 @@ type
     function Find(const AData:TDataItem):Integer;
   end;
 
-  TDataCursor=class(TDataProvider)
+  TDataCursor=class(TDataProvider) // <-- pending: inherit from TBaseDataImporter
   private
     FCurrent : TInteger;
     FFilter : TExpression;
@@ -321,32 +321,28 @@ type
     FDistinct : Boolean;
 
     procedure AddItem(const AResult,AItem:TDataItem);
+    procedure AddItems(const AData: TDataItem; const AItems:TDataArray);
     function FoundLast(const AResult:TDataItem; const ACount:TInteger):Boolean;
+    procedure GuessMainData;
     procedure ReplaceSortData(const AData:TDataItem);
   protected
-    IMain : TDataItem;
-
     procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   public
     Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
-
     function Calculate:TDataItem; overload;
     procedure Calculate(const AData:TDataItem); overload;
-
     function MainData:TDataItem;
-
     class function SetupHops(const Hops:TDataHops; const AItems:TDataArray):TInt32Array;
-
     function ToString:String; override;
 
     property Distinct:Boolean read FDistinct write FDistinct default False;
   end;
 
   // Simple method to Clone a TDataItem using a temporary memory stream
-  TDataClone=record // class(TDataProvider) ?
+  TDataClone=record // class(TBaseDataImporter) ?
   public
     class function Clone(const AData:TDataItem):TDataItem; overload; static;
     class procedure Clone(const ASource,ADest:TDataItem); overload; static;

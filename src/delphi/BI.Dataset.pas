@@ -44,8 +44,6 @@ unit BI.Dataset;
 
 interface
 
-{$R-}  // <-- TItems
-
 uses System.Classes, System.Types,
 
      {$IFDEF D18}
@@ -89,8 +87,8 @@ type
     Missing : Boolean;
   end;
 
+  TItems=packed Array[0..10000] of TItem; // <-- dummy type, just for PItems
   PItems=^TItems;
-  TItems=packed Array[0..0] of TItem;
 
   PRecInfo = ^TRecInfo;
   TRecInfo = packed record
@@ -197,8 +195,6 @@ type
     //[Weak}
     ICursor : TDataCursor;
 
-    FQuery : TBIQuery;
-
     Items : TDataArray;
     FMaster: TBIDataSet;
 
@@ -211,23 +207,22 @@ type
 
     IAllRows : Boolean;
 
-    OwnsData : Boolean;
-
     function CreateLink(const ADataSet:TBIDataSet):TMasterDataLink;
     procedure DoHideDuplicates(Sender: TField; var Text: string; DisplayText: Boolean);
     procedure DoPostToColumn(const Rec:TInteger; const Col:TDataItem; const Buffer:Pointer);
     procedure FieldOnGetText(Sender: TField; var Text: string; DisplayText: Boolean);
     function GetData:TDataItem; inline;
+    function GetProvider: TComponent;
     procedure InitColumns;
     procedure PostToColumn(const Col:TDataItem; const Buffer:Pointer);
     procedure ReadOrigin(Reader: TReader);
     procedure SetData(const Value: TDataItem);
     procedure SetFieldProperties(const AField:TField; const AData:TDataItem);
     procedure SetMaster(const Value: TBIDataSet);
-    procedure SetQuery(const Value: TBIQuery);
+    procedure SetProvider(const Value: TComponent);
+    procedure SetRowNumbers(const Value: Boolean);
     procedure TryCreateLink;
     procedure WriteOrigin(Writer: TWriter);
-    procedure SetRowNumbers(const Value: Boolean);
   protected
     Index : TNativeIntArray;
 
@@ -279,15 +274,12 @@ type
 
     function DataOf(const AField:TField):TDataItem;
 
-    procedure OpenQuery;
-
     procedure PrepareIndex(const AIndex:TCursorIndex; const AllRows:Boolean=True);
 
     procedure SetItems(const AData:TDataArray);
     procedure SetFieldOnGetText(const AField:TField; const Hide:Boolean);
 
     property Cursor:TDataCursor read ICursor;
-    property Query:TBIQuery read FQuery write SetQuery;
   published
     property Data:TDataItem read GetData write SetData;
     property Master:TBIDataSet read FMaster write SetMaster;
@@ -307,7 +299,9 @@ type
     {$IFNDEF FPC}
     property ObjectView default True;
     {$ENDIF}
-    
+
+    property Provider:TComponent read GetProvider write SetProvider;
+
     property ReadOnly default True;
 
     property BeforeOpen;

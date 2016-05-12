@@ -15,7 +15,8 @@ uses
   System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB,
   Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, BI.Data, Vcl.StdCtrls, BI.Arrays,
-  BI.VCL.Grid, Vcl.Menus, BI.DataSet, Vcl.ComCtrls, Vcl.DBCtrls;
+  BI.VCL.Grid, Vcl.Menus, BI.DataSet, Vcl.ComCtrls, Vcl.DBCtrls,
+  BI.VCL.DataControl;
 
 type
   TDataViewer = class(TForm)

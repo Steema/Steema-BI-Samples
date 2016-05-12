@@ -1,6 +1,7 @@
 object DataComponent: TDataComponent
   Left = 0
   Top = 0
+  ActiveControl = Tree
   Caption = 'DataComponent'
   ClientHeight = 375
   ClientWidth = 310
@@ -21,6 +22,8 @@ object DataComponent: TDataComponent
     Width = 310
     Height = 375
     Align = alClient
+    HideSelection = False
+    HotTrack = True
     Indent = 19
     PopupMenu = PopupMenu1
     TabOrder = 0

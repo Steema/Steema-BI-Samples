@@ -1,62 +1,73 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Workflow Component                         }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.Data.Workflow;
 
 interface
 
+{
+  The TBIWorkflow component is a non-visual container of Data items.
+
+  Each data item is associated with an "action", like for example adding a
+  column, remove a column, perform a calculation etc.
+
+  Items are organized in a hierarchical tree, so the "action" of an item uses
+  its Parent data as the source.
+
+  At design-time or run-time, any BI control or component can use a Workflow
+  item output as data source.
+
+  This means data will be calculated propagating each tree node level to obtain
+  the final result.
+
+  Example:
+
+  Workflow:
+  Data2 = Data1 -> Add Column -> Query -> Calculation -> Query ... etc
+
+  BIGrid1.Data := Data2  // <-- process all steps above from Data1 to Data2
+
+}
+
 uses
   System.Classes, BI.Data, BI.Persist, BI.Query,
-  BI.DataSource, BI.Summary;
+  BI.DataSource, BI.Summary, BI.Store.Component;
 
 type
-  TWorkflowAction=class(TDataProvider)
+  TWorkflowAction=class(TBaseDataImporter)
   private
-    FData : TDataItem;
-
-    procedure Notify(const AEvent:TBIEvent);
-    procedure SetData(const Value: TDataItem);
-    procedure TryRemoveNotify;
+    FSource : TDataItem;
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   public
-    Destructor Destroy; override;
-  published
-    property Data:TDataItem read FData write SetData;
+    property Source:TDataItem read FSource write FSource;
   end;
 
   TWorkflowActions=class;
 
-  TWorkflowItem=class(TCollectionItem)
+  TWorkflowItem=class(TDataCollectionItem)
   private
-    FData: TDataItem;
     FItems: TWorkflowActions;
-    FOnChange: TNotifyEvent;
-
     OwnsData : Boolean;
 
-    procedure Changed;
 //    procedure ReadWorkAction(Reader: TReader);
-    procedure SetData(const Value: TDataItem);
     procedure SetItems(const Value: TWorkflowActions);
     procedure SetProvider(const AProvider:TDataProvider; const AName:String);
-    procedure TryRemoveNotify;
  //   procedure WriteWorkAction(Writer: TWriter);
     function IsItemsStored: Boolean;
     function GetWorkAction: TDataProvider;
     function IsWorkActionStored: Boolean;
   protected
-    //procedure DefineProperties(Filer: TFiler); override;
-    procedure Notify(const AEvent:TBIEvent);
-    function Owner:TComponent;
+    function Owner:TComponent; override;
   public
     Constructor Create(Collection: TCollection); override;
     Destructor Destroy; override;
-
-    property Data:TDataItem read FData write SetData;
   published
     property Items:TWorkflowActions read FItems write SetItems stored IsItemsStored;
-
     property WorkAction:TDataProvider read GetWorkAction stored IsWorkActionStored;
-
-    property OnChange:TNotifyEvent read FOnChange write FOnChange;
   end;
 
   TWorkflowActions=class(TOwnedCollection)
@@ -85,6 +96,9 @@ type
     FSelected: TWorkflowItem;
 
     procedure SetItems(const Value: TWorkflowActions);
+  protected
+    procedure Notification(AComponent: TComponent;
+                           Operation: TOperation); override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;

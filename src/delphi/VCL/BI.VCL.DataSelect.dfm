@@ -13,6 +13,7 @@ object DataSelector: TDataSelector
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
@@ -23,20 +24,13 @@ object DataSelector: TDataSelector
     ActivePage = TabStore
     Align = alClient
     TabOrder = 0
+    OnChange = PageControl1Change
     object TabStore: TTabSheet
       Caption = 'Store'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabComponent: TTabSheet
       Caption = 'Component'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object PanelButtons: TPanel
@@ -55,18 +49,19 @@ object DataSelector: TDataSelector
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      object Button1: TButton
+      object BOK: TButton
         Left = 0
-        Top = 6
+        Top = 8
         Width = 75
         Height = 25
         Caption = 'OK'
+        Enabled = False
         ModalResult = 1
         TabOrder = 0
       end
-      object Button2: TButton
+      object BCancel: TButton
         Left = 96
-        Top = 6
+        Top = 8
         Width = 75
         Height = 25
         Cancel = True
@@ -75,6 +70,16 @@ object DataSelector: TDataSelector
         ModalResult = 2
         TabOrder = 1
       end
+    end
+    object BClear: TButton
+      Left = 19
+      Top = 8
+      Width = 75
+      Height = 25
+      Caption = 'Clear'
+      Enabled = False
+      TabOrder = 1
+      OnClick = BClearClick
     end
   end
 end

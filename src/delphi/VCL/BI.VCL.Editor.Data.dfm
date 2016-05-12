@@ -1,7 +1,7 @@
 object DataEditor: TDataEditor
   Left = 220
   Top = 210
-  Caption = 'Data Editor'
+  Caption = 'Data Definition Editor'
   ClientHeight = 436
   ClientWidth = 518
   Color = clBtnFace
@@ -21,11 +21,15 @@ object DataEditor: TDataEditor
     Top = 0
     Width = 518
     Height = 395
-    ActivePage = TabWeb
+    ActivePage = TabFiles
     Align = alClient
     TabOrder = 0
     object TabFiles: TTabSheet
       Caption = 'Files'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageControlFile: TPageControl
         Left = 0
         Top = 0
@@ -36,6 +40,10 @@ object DataEditor: TDataEditor
         TabOrder = 0
         object TabFile: TTabSheet
           Caption = 'Single File'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label2: TLabel
             Left = 16
             Top = 16
@@ -79,6 +87,10 @@ object DataEditor: TDataEditor
         object TabFolder: TTabSheet
           Caption = 'Folder'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label3: TLabel
             Left = 16
             Top = 16
@@ -192,6 +204,10 @@ object DataEditor: TDataEditor
         object TabFTP: TTabSheet
           Caption = 'FTP'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label18: TLabel
             Left = 20
             Top = 16
@@ -296,6 +312,10 @@ object DataEditor: TDataEditor
     object TabDatabase: TTabSheet
       Caption = 'Database'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageControlDBItems: TPageControl
         Left = 0
         Top = 0
@@ -306,6 +326,10 @@ object DataEditor: TDataEditor
         TabOrder = 0
         object TabConnection: TTabSheet
           Caption = 'Connection'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label7: TLabel
             Left = 16
             Top = 8
@@ -384,7 +408,7 @@ object DataEditor: TDataEditor
           object EDBDatabase: TEdit
             Left = 18
             Top = 131
-            Width = 151
+            Width = 319
             Height = 21
             TabOrder = 3
             OnChange = EDBDatabaseChange
@@ -433,10 +457,23 @@ object DataEditor: TDataEditor
             TabOrder = 8
             OnChange = EDBPortChange
           end
+          object Button6: TButton
+            Left = 343
+            Top = 129
+            Width = 26
+            Height = 25
+            Caption = '...'
+            TabOrder = 9
+            OnClick = Button6Click
+          end
         end
         object SQL: TTabSheet
           Caption = 'Items'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object PageControl3: TPageControl
             Left = 0
             Top = 0
@@ -447,6 +484,10 @@ object DataEditor: TDataEditor
             TabOrder = 0
             object TabItemAllDB: TTabSheet
               Caption = 'All'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object LDBExclude: TLabel
                 Left = 16
                 Top = 96
@@ -516,6 +557,10 @@ object DataEditor: TDataEditor
             object TabSQL: TTabSheet
               Caption = 'Custom SQL'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object MemoSQL: TMemo
                 Left = 0
                 Top = 0
@@ -536,6 +581,10 @@ object DataEditor: TDataEditor
     object TabWeb: TTabSheet
       Caption = 'BI Web'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LayoutWebData: TPanel
         Left = 0
         Top = 257
@@ -572,6 +621,10 @@ object DataEditor: TDataEditor
         TabOrder = 1
         object TabHttpServer: TTabSheet
           Caption = 'Server'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label4: TLabel
             Left = 12
             Top = 8
@@ -647,6 +700,10 @@ object DataEditor: TDataEditor
         object TabHttpProxy: TTabSheet
           Caption = 'Proxy'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label13: TLabel
             Left = 12
             Top = 16
@@ -729,7 +786,11 @@ object DataEditor: TDataEditor
     object TabUnknown: TTabSheet
       Caption = 'Unknown'
       ImageIndex = 3
-      object Label1: TLabel
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object LabelUnknown: TLabel
         Left = 24
         Top = 24
         Width = 123
@@ -787,5 +848,11 @@ object DataEditor: TDataEditor
     Title = 'Select file to import'
     Left = 256
     Top = 224
+  end
+  object OpenDialogDatabase: TOpenDialog
+    Options = [ofReadOnly, ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+    Title = 'Select Database to import'
+    Left = 256
+    Top = 280
   end
 end

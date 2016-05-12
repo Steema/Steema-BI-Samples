@@ -29,10 +29,25 @@ type
 
   TRefreshUnit=(Seconds,Minutes,Hours,Days,Weeks,Months,Years);
 
+  // Abstract provider class with its own Data property
+  TBaseDataImporter=class(TDataProvider)
+  private
+    function GetData:TDataItem;
+  protected
+    FData : TDataItem;
+
+    procedure Changed; override;
+    procedure Notify(const AEvent:TBIEvent);
+  public
+    Destructor Destroy; override;
+
+    property Data:TDataItem read GetData;
+  end;
+
   // Abstract class with all settings necessary to import a given data
   TDataDefinitionKind=(Files,Database,Web,Unknown);
 
-  TDataDefinition=class(TDataProvider)
+  TDataDefinition=class(TBaseDataImporter)
   private
     FFileName : String;
 
@@ -41,11 +56,15 @@ type
 
     function GetKind: TDataDefinitionKind;
     procedure GetRefreshSettings;
+    function GetStrings:TStrings;
     function GetValue(const Index: String): String;
+    procedure SetFileName(const Value: String);
+    procedure SetKind(const Value: TDataDefinitionKind);
     procedure SetValue(const Index: String; const Value: String);
+    procedure SetStrings(const Value: TStrings);
     procedure TryLoadDetailRelations(const AData:TDataArray);
   protected
-    Strings : TStrings;
+    FStrings : TStrings;
 
     RefreshPeriod : Integer;
     RefreshUnit : TRefreshUnit;
@@ -63,8 +82,7 @@ type
     var
       Store : String;
 
-    Constructor FromFile(const AFileName:String);
-
+    Constructor FromFile(const AOwner:TComponent; const AFileName:String);
     Destructor Destroy; override;
 
     function AsBoolean(const Key:String):Boolean;
@@ -76,18 +94,22 @@ type
 
     function LastImport:String;
 
-    procedure LoadFromFile(const FileName:String);
+    procedure LoadFromFile(const AFileName:String);
     procedure LoadFromText(const AText:String);
 
+    class procedure Merge(const AData: TDataItem; const AItems:TDataArray); static;
     function MultiLineText(const ATag:String):String;
 
-    function Name: String;
+    function Title: String;
 
     function NextRefresh:TDateTime;
     class procedure SetMasters(const AData:TDataItem; const Items:TStrings); static;
 
-    property Kind:TDataDefinitionKind read GetKind;
     property Value[const Index:String]:String read GetValue write SetValue; default;
+  published
+    property Kind:TDataDefinitionKind read GetKind write SetKind default TDataDefinitionKind.Unknown;
+    property FileName:String read FFileName write SetFileName;
+    property Strings:TStrings read GetStrings write SetStrings;
 
     property OnError:TBIError read FOnError write FOnError;
     property OnImporting:TBIProgress read FOnImporting write FOnImporting;
@@ -106,6 +128,7 @@ type
 
     procedure DoProgress(const Percent:Single; var Cancel:Boolean);
     class function Find(const AClass:TDataImporterClass):Integer;
+    //procedure Load(const AData:TDataItem; const Children:Boolean); overload; virtual; abstract;
   public
     Constructor CreateDefinition(const AStore:String; const ADefinition:TDataDefinition); virtual;
 
@@ -280,6 +303,8 @@ type
     class function SteemaIni:String; static;
     {$ENDIF}
   public
+    class function Exists(const Key,Name:String):Boolean; static;
+
     class function ReadBoolean(const Key,Name:String; const Default:Boolean):Boolean; static;
     class function ReadInteger(const Key,Name:String; const Default:Integer):Integer; static;
     class function ReadString(const Key, Name, Default: String): String; static;

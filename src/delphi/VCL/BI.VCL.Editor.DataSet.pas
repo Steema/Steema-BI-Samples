@@ -14,48 +14,59 @@ uses
   {$ENDIF}
   System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataSet, Vcl.StdCtrls, Vcl.ComCtrls,
-  BI.VCL.Editor.Summary, Data.DB, Vcl.Grids, Vcl.DBGrids, BI.VCL.Grid,
-  Vcl.ExtCtrls, BI.VCL.DataManager, BI.VCL.GridForm,
-  BI.VCL.Editor.DataSelect, BI.Data, BI.Query;
+  Data.DB, Vcl.Grids, Vcl.DBGrids, BI.VCL.Grid,
+  Vcl.ExtCtrls, BI.VCL.GridForm,
+  BI.VCL.DataSelect, BI.Data, BI.Query, BI.Persist, BI.VCL.DataControl,
+  BI.VCL.Tree;
 
 type
   TBIDataSetEditor = class(TForm)
-    Panel1: TPanel;
-    RGMode: TRadioGroup;
     Panel2: TPanel;
     CBPreview: TCheckBox;
-    PanelMain: TPanel;
     Panel4: TPanel;
-    Button1: TButton;
-    Button2: TButton;
+    BOK: TButton;
+    BCancel: TButton;
+    PageControl1: TPageControl;
+    TabOptions: TTabSheet;
+    TabData: TTabSheet;
     Backup: TBIDataset;
+    Panel3: TPanel;
+    CBActive: TCheckBox;
+    CBReadonly: TCheckBox;
+    Label1: TLabel;
+    BITree1: TBITree;
+    Button1: TButton;
     procedure CBPreviewClick(Sender: TObject);
-    procedure RGModeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BOKClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormResize(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure CBActiveClick(Sender: TObject);
+    procedure CBReadonlyClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
 
-    Manager : TDataManager;
     DataSet : TBIDataSet;
 
-    SelectEditor : TDataSelectEditor;
-    SummaryEditor : TSummaryEditor;
-
+    ISelect : TDataSelector;
     IPreview : TBIGridForm;
 
+    IChanging,
+    IModified : Boolean;
+
+    procedure ChangeData(const AData:TDataItem);
     procedure ClosedPreview(Sender: TObject; var Action: TCloseAction);
-    procedure CreateManager;
-    function NewData:TDataItem;
     procedure PreviewNewData;
-    procedure Recalculate(Sender:TObject);
     procedure SelectedData(Sender: TObject);
+    procedure SetModified;
+    procedure SetStructure;
   public
     { Public declarations }
 
     class function Edit(const AOwner:TComponent; const ADataSet:TBIDataSet):Boolean; static;
+
     procedure Refresh(const ADataSet:TBIDataSet);
   end;
 

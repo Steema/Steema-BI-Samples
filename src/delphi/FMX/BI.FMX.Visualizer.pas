@@ -32,7 +32,7 @@ type
 
   TVisualizerItems=class;
 
-  TVisualizerItem=class(TCollectionItem)
+  TVisualizerItem=class(TCollectionItem) // TDataCollectionItem !
   private
     FEnabled : Boolean;
     FItems : TVisualizerItems;
@@ -440,8 +440,6 @@ type
   {$ENDIF}
   TBIComposer=class(TBIDataControl)
   private
-    FData : TDataItem;
-
     FGroups,
     FValues : TVisualizerItems;
 
@@ -464,9 +462,8 @@ type
              const ARows:TCursorIndex):TGroup;
 
     procedure AddItems;
-    function GetDataItem:TDataItem; override;
     procedure Loaded; override;
-    procedure SetDataItem(const Value:TDataItem); override;
+    procedure SetDataDirect(const Value:TDataItem); override;
   public
     class var
       ValuesGroupClass : TGroupClass;
@@ -478,6 +475,7 @@ type
     // procedure BindTo(const ASummary:TSummary);
 
     procedure BestOrder;
+    procedure Clear;
     procedure ReCalculate;
 
     property Main:TGroup read FMain;
