@@ -3,7 +3,7 @@ object FormSpeed: TFormSpeed
   Top = 0
   Caption = 'TeeBI Speed Benchmark Tests'
   ClientHeight = 397
-  ClientWidth = 738
+  ClientWidth = 851
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,11 +19,12 @@ object FormSpeed: TFormSpeed
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 738
+    Width = 851
     Height = 41
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 738
     object Label1: TLabel
       Left = 424
       Top = 13
@@ -55,11 +56,13 @@ object FormSpeed: TFormSpeed
   object BIGrid1: TBIGrid
     Left = 0
     Top = 41
-    Width = 738
+    Width = 851
     Height = 356
     Align = alClient
     UseDockManager = False
     ParentBackground = False
+    ParentColor = False
     TabOrder = 1
+    ExplicitWidth = 738
   end
 end

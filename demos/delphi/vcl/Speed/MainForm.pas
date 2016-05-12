@@ -12,7 +12,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   BI.VCL.Grid, BI.Data, BI.DataSource, BI.Summary, BI.Persist, BI.Data.HTML,
-  BI.DataSet, Data.DB;
+  BI.DataSet, Data.DB, BI.VCL.DataControl;
 
 type
   TFormSpeed = class(TForm)
@@ -62,11 +62,8 @@ begin
 
     Test;
 
-    // Show results at Grid
-    //BIGrid1.RefreshData;
-
-    BIGrid1.BindTo(nil);
-    BIGrid1.BindTo(Results);
+    // Refresh results at Grid
+    BIGrid1.RefreshData;
 
     // Enable export button
     BExport.Enabled:=True;
@@ -81,8 +78,9 @@ begin
   Results:=TDataItem.Create(True);
   Results.Items.Add('Description',TDataKind.dkText);
   Results.Items.Add('Times',TDataKind.dkInt32);
-  Results.Items.Add('Milliseconds',TDataKind.dkInt64);
+  Results.Items.Add('Total Milliseconds',TDataKind.dkInt64);
   Results.Items.Add('Times per Second',TDataKind.dkInt32);
+  Results.Items.Add('Milliseconds per Time',TDataKind.dkSingle);
 
   // Set data to grid
   BIGrid1.Data:=Results;
@@ -115,15 +113,29 @@ begin
   Results[1].Int32Data[Pos]:=Times;
   Results[2].Int64Data[Pos]:=Elapsed;
 
+  // Times per second:
   if Elapsed=0 then
      Results[3].Int32Data[Pos]:=0
   else
      Results[3].Int32Data[Pos]:=Round(1000*Times/Elapsed);
+
+  // Milliseconds per Time:
+  Results[4].SingleData[Pos]:=Elapsed/Times;
 end;
 
 procedure TFormSpeed.Test;
 const
   SampleNames:Array[0..5] of String=('Sam','Jane','Peter','Carla','Alex','Julie');
+
+  Times_CreateDestroy=100000;
+  Times_to_Sort=10;
+  Times_to_Save=10;
+  Times_to_Load=10;
+
+  Quantity_Add=300000;
+  Quantity_Insert=1000;
+  Quantity_Delete=10000;
+  Quantity_RandomDelete=10000;
 
 var Persons : TDataItem;
     Query : TDataSelect;
@@ -133,11 +145,11 @@ var Persons : TDataItem;
     SortedSalary : TDataItem;
     PersonsStream : TMemoryStream;
 begin
-  Bench('Create and Destroy Table',100000, procedure
+  Bench('Create and Destroy Table (3 columns)',Times_CreateDestroy, procedure
     var Data : TDataItem;
         t : Integer;
     begin
-      for t:=1 to 100000 do
+      for t:=1 to Times_CreateDestroy do
       begin
         // Create table structure
         Data:=TDataItem.Create(True);
@@ -155,65 +167,71 @@ begin
         Persons.Items.Add('Name',TDataKind.dkText);
         Persons.Items.Add('Salary',TDataKind.dkSingle);
 
-  Bench('Add Records',300000, procedure
+  Bench('Add '+Quantity_Add.ToString+' Records',Quantity_Add, procedure
     var t : Integer;
     begin
       // Prepare space
-      Persons.Resize(300000);
+      Persons.Resize(Quantity_Add);
 
       // Add all rows
-      for t:=0 to 300000-1 do
+      for t:=0 to Quantity_Add-1 do
       begin
+        // Fill row
         Persons[0].Int32Data[t]:=t;
         Persons[1].TextData[t]:=SampleNames[t mod High(SampleNames)];
         Persons[2].SingleData[t]:=456.789;
       end;
     end);
 
-  Bench('Insert Records',1000, procedure
+  Bench('Insert '+Quantity_Insert.ToString+' Records',Quantity_Insert, procedure
     const AtPosition=5;
     var t : Integer;
     begin
       // Insert rows
-      for t:=1 to 1000 do
+      for t:=1 to Quantity_Insert do
       begin
-        Persons.Insert(AtPosition);
+        Persons.Insert(AtPosition);  // <-- new record inserted at "AtPosition" index
+
         Persons[0].Int32Data[AtPosition]:=t;
         Persons[1].TextData[AtPosition]:=SampleNames[t mod High(SampleNames)];
         Persons[2].SingleData[AtPosition]:=456.789;
       end;
     end);
 
-  Bench('Delete last Records',10000, procedure
+  Bench('Delete last '+Quantity_Delete.ToString+' Records',Quantity_Delete, procedure
+    var t : Integer;
     begin
-      while Persons.Count>90000 do
-            Persons.Delete(Persons.Count-1);
+      for t:=1 to Quantity_Delete do
+          Persons.Delete(Persons.Count-1); // <-- delete last record
     end);
 
-  Bench('Delete random Records',10000, procedure
+  Bench('Delete random '+Quantity_RandomDelete.ToString+' Records',Quantity_RandomDelete, procedure
+    var t : Integer;
     begin
-      while Persons.Count>80000 do
-            Persons.Delete(Random(Persons.Count));
+      for t:=1 to Quantity_RandomDelete do
+          Persons.Delete(Random(Persons.Count)); // <-- delete random record
     end);
 
-  Bench('SQL: Select * from Persons where Name="Alex"',1, procedure
+  Bench('SQL ('+Persons.Count.ToString+' rows): Select * from Persons where Name="Alex"',1, procedure
     begin
-      Query:=TDataSelect.Create;
+      Query:=TDataSelect.Create(nil);
       try
-        Query.Add(Persons); // *
+        Query.Add(Persons); // * all fields
+
         Query.Filter:=TDataFilter.FromString(Persons,'Name="Alex"');
 
-        // Execute Query and destroy results
+        // Execute Query and after that, just destroy results
         Alex:=Query.Calculate;
         Alex.Free;
+
       finally
         Query.Free;
       end;
     end);
 
-  Bench('SQL: Select Average(Salary) from Persons group by Name',1, procedure
+  Bench('SQL ('+Persons.Count.ToString+' rows): Select Average(Salary) from Persons group by Name',1, procedure
     begin
-      Average:=TSummary.Create;
+      Average:=TSummary.Create(nil);
       try
         Average.AddMeasure(Persons['Salary'],TAggregate.Average);
         Average.AddGroupBy(Persons['Name']);
@@ -226,9 +244,9 @@ begin
       end;
     end);
 
-  Bench('SQL: Select ID,Salary from Persons order by Salary DESC',1, procedure
+  Bench('SQL ('+Persons.Count.ToString+' rows): Select ID,Salary from Persons order by Salary DESC',1, procedure
     begin
-      Query:=TDataSelect.Create;
+      Query:=TDataSelect.Create(nil);
       try
         Query.Add(Persons['ID']);
         Query.Add(Persons['Salary']);
@@ -242,7 +260,7 @@ begin
       end;
     end);
 
-  Bench('TDataSet Traverse',1, procedure
+  Bench('TDataSet Traverse to Sum ('+Persons.Count.ToString+' rows)',1, procedure
     var Dataset : TBIDataset;
         Salary : TSingleField;
         Sum : Double;
@@ -254,6 +272,7 @@ begin
 
         Salary:=DataSet.FieldByName('Salary') as TSingleField;
 
+        // Do a simple sum of all rows
         Sum:=0;
 
         DataSet.First;
@@ -269,10 +288,10 @@ begin
       end;
     end);
 
-  Bench('Sorting',10, procedure
+  Bench('Sorting '+Persons.Count.ToString+' rows',Times_to_Sort, procedure
     var t : Integer;
     begin
-      for t:=1 to 10 do
+      for t:=1 to Times_to_Sort do
       begin
         // Sort by text
         Persons.SortBy(Persons['Name']);
@@ -282,11 +301,11 @@ begin
       end;
     end);
 
-  Bench('Save table to stream',10, procedure
+  Bench('Save table ('+Persons.Count.ToString+' rows) to stream',Times_to_Save, procedure
     var t : Integer;
         tmp : TMemoryStream;
     begin
-      for t:=0 to 9 do
+      for t:=1 to Times_to_Save do
       begin
         // Save Persons data to a stream
         tmp:=TMemoryStream.Create;
@@ -298,16 +317,18 @@ begin
       end;
     end);
 
+  // Load back to a temporary stream
+
   PersonsStream:=TMemoryStream.Create;
   try
     // Save Persons data to stream
     TDataItemPersistence.Save(Persons,PersonsStream);
 
-    Bench('Load table from stream',10, procedure
+    Bench('Load table ('+Persons.Count.ToString+' rows) from stream',Times_to_Load, procedure
       var t : Integer;
           tmpData : TDataItem;
       begin
-        for t:=0 to 9 do
+        for t:=1 to Times_to_Load do
         begin
           // Reset stream to start
           PersonsStream.Position:=0;
