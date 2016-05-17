@@ -24,9 +24,6 @@ object FromComponents: TFromComponents
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 224
-    ExplicitTop = 208
-    ExplicitWidth = 185
     object Panel2: TPanel
       Left = 672
       Top = 0
@@ -57,8 +54,6 @@ object FromComponents: TFromComponents
     OnChange = PageControl1Change
     object TabMemo: TTabSheet
       Caption = 'Memo'
-      ExplicitLeft = 8
-      ExplicitTop = 22
       object Memo1: TMemo
         Left = 0
         Top = 0
@@ -1391,11 +1386,8 @@ object FromComponents: TFromComponents
         Align = alClient
         UseDockManager = False
         ParentBackground = False
+        ParentColor = False
         TabOrder = 1
-        ExplicitLeft = 384
-        ExplicitTop = 256
-        ExplicitWidth = 100
-        ExplicitHeight = 40
       end
     end
     object TabDataset: TTabSheet
@@ -1409,11 +1401,8 @@ object FromComponents: TFromComponents
         Align = alClient
         UseDockManager = False
         ParentBackground = False
+        ParentColor = False
         TabOrder = 0
-        ExplicitLeft = 384
-        ExplicitTop = 256
-        ExplicitWidth = 100
-        ExplicitHeight = 40
       end
     end
   end

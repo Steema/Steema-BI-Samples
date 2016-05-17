@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
-  Vcl.ComCtrls, Data.DB, Datasnap.DBClient;
+  Vcl.ComCtrls, Data.DB, Datasnap.DBClient, BI.VCL.DataControl;
 
 type
   TFromComponents = class(TForm)
