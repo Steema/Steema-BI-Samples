@@ -25,7 +25,7 @@ uses
 
 function SimpleColumn:TDataItem;
 begin
-  result:=TDataItem.Create(TDataKind.dkText); // <-- "dkXXX" means result is a field
+  result:=TDataItem.Create(TDataKind.dkText); // <-- "dkXXX" means result is a field (column)
   result.Name:='Simple Column';
 
   // Allocate space for 2 rows:
@@ -93,6 +93,7 @@ begin
   result.Name:='Group of Tables';
 
   // Add two items (they can be anything: tables, groups or normal fields)
+
   result.Items.Add(SimpleTable);
   result.Items.Add(AnotherTable);
 end;
@@ -145,9 +146,13 @@ begin
   result:=SimpleTable;
 end;
 
+function RandomText:String;
 const
-  RandomText:Array[0..5] of String=
+  Texts:Array[0..5] of String=
       ('Red','Green','Blue','Yellow','White','Black');
+begin
+  result:=Texts[Random(Length(Texts))];
+end;
 
 // When using different master and detail tables (not "embedded"),
 // we must "link" one item in the detail table to another in the master table.
@@ -180,11 +185,11 @@ begin
     ID.Int32Data[t]:=ID.Master.Int32Data[tmpID];
 
     // Just fill with random strings
-    result[1].TextData[t]:=RandomText[Random(Length(RandomText))];
+    result[1].TextData[t]:=RandomText;
   end;
 end;
 
-// An embedded detail table does not use "ID" fields to
+// An embedded detail table does not need "ID" fields to link to a master table
 function CreateDetail_Embedded:TDataItem;
 var t : Integer;
 begin
@@ -194,12 +199,9 @@ begin
   result.Items.Add('Sub Field',TDataKind.dkText);
   result.Resize(30);
 
-  // Lets fill some random data rows
+  // Lets fill rows with random text
   for t:=0 to result.Count-1 do
-  begin
-    // Just fill with random strings
-    result[0].TextData[t]:=RandomText[Random(Length(RandomText))];
-  end;
+      result[0].TextData[t]:=RandomText;
 end;
 
 end.
