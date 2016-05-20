@@ -1,6 +1,85 @@
 # TeeBI Release Notes
 -------------------
 
+## 20th-May-2016  Beta 11
+
+- **RAD Studio 10.1 Berlin**
+
+  Added TeeBI support for 10.1 Berlin release.
+  
+  Also working TeeBI controls with new "FireUI Live Preview" app in Berlin:
+  
+  ![](https://raw.github.com/Steema/BI/master/docs/img/Studio10_1_Berlin_TeeBI_FireUI_Live_Preview.png)
+  
+  For more information about integrating TeeBI and TeeChart with Live Preview, click here:
+  
+  [Berlin FireUI Live Preview and TeeBI, TeeChart](https://steema.com/wp/blog/2016/04/19/rad-studio-10-1-berlin-add-teechart-to-fireui-live-preview/)
+  
+- **Pivot-Tables**
+
+  New BIQuery component to create select queries, summaries and pivot-tables at both design and run-time.
+  Editor dialog enables drag-drop of data item fields and output preview.
+  
+  ![](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Pivot_Query_Editor.png)
+  
+- **BIChart improvements**
+
+  A complete refactoring of the BIChart control provides a new Options property with several settings to create charts from any kind of data structure and content in a smart way.
+  
+  The automatic decisions done by BIChart have been summarized here:
+  
+  [BIChart logic](https://plus.google.com/+DavidBerneda/posts/T6jVGbcFyak)
+  
+  ![](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Chart_Design_Time.png)
+  
+- **Dynamic Filter**
+
+  New class and editor dialog to enable visual building of filter "expressions" by checking / unchecking items on a tree view.
+  Linked data tables are automatically included in the tree, together with its individual items.
+  The BIQuery editor includes this new Dynamic Filter editor to define the query "where" clause.
+  
+  ![](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Dynamic_Filter.png)
+  
+- **Dashboards**
+
+  New TDashboard Layout property to customize the arrangement of dashboard panels inside a BIVisual control.
+  Predefined layouts are included in TLayouts.Predefined property.
+  
+- **Component Importing**
+
+  New class and editor dialog to "link" any BI control (BIGrid, BIChart etc) and BI components (BIQuery, etc) with any supported  Component living on any accessible Form or DataModule.
+  
+  The edialog dialog shows the available supported components, so selecting them creates an internal TDataItem and imports the component content into it automatically.
+  
+  For example, text from Memo controls (in csv,json,xml,etc) , any TDataset-derived component, ListBoxes, TXXConnection components are recognized and made available.
+  
+  Importing data from components is done transparent and at fast speed, so the BI controls receiving the output just get normal TDataItem(s) as if they were already imported and persisted from a TStore or by code.
+  
+  ![](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Component_design-time.png)
+  
+
+- **Data Selector**
+
+  New dialog that includes both the already existing data selector tree, and the new Component selector dialog.
+  This dialog is now the default editor for design-time choosing of all components "Data" property.
+  
+- **Provider events**
+
+  Many classes and components issue internal events when data is changed or destroyed.
+  Other components and controls (BIGrid, BIChart, etc) get notified of these events to refresh its output or make sure there are no memory leaks. This mechanism works at design-time too, so changes are refreshed automatically.
+  
+- **BI Arrays**
+
+  Improved all the Array classes with a new Copy method that can optionally copy a subset of the array based on an index parameter.
+  The "index" is just a TInt32Array containing the positions of the items to copy.
+  
+  These methods are also internally used to fix the issue of creating a "Map" of the array items considering only the non-null values.
+  TDataItem is now passing its "Missing" index array when creating the DataMap property.
+  
+  
+  
+  
+  
 ## 1st-April-2016  Beta 10
 
 - **Dashboards**
