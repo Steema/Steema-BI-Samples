@@ -15,6 +15,13 @@
   
   [Berlin FireUI Live Preview and TeeBI, TeeChart](https://steema.com/wp/blog/2016/04/19/rad-studio-10-1-berlin-add-teechart-to-fireui-live-preview/)
   
+- **New basic demo**
+
+  A small new test project describes how to create TDataItem objects in different modes by code:
+  
+  [Creating TDataItem manually](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Manual_Data)
+  
+  
 - **Pivot-Tables**
 
   New BIQuery component to create select queries, summaries and pivot-tables at both design and run-time.
@@ -47,9 +54,9 @@
   
 - **Component Importing**
 
-  New class and editor dialog to "link" any BI control (BIGrid, BIChart etc) and BI components (BIQuery, etc) with any supported  Component living on any accessible Form or DataModule.
+  New TComponentImporter class and editor dialog to "link" any BI control (BIGrid, BIChart etc) and BI components (BIQuery, etc) with any supported  Component living on any accessible Form or DataModule.
   
-  The edialog dialog shows the available supported components, so selecting them creates an internal TDataItem and imports the component content into it automatically.
+  The edit dialog shows the available supported components and VCL/FMX controls, and selecting them creates an internal TDataItem and imports the component content into it automatically.
   
   For example, text from Memo controls (in csv,json,xml,etc) , any TDataset-derived component, ListBoxes, TXXConnection components are recognized and made available.
   
@@ -63,10 +70,34 @@
   New dialog that includes both the already existing data selector tree, and the new Component selector dialog.
   This dialog is now the default editor for design-time choosing of all components "Data" property.
   
+  A new form has been added to the Import example project, using the new TComponentImport feature:
+  
+  [Import Components Example Project](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Import)
+  
+- **Importing from configuration**
+
+  The TDataDefinition class (used by the "Data Manager" dialog) is now a TComponent that can be used at design-time to define which data to import in several modes and settings, without needing to persist the import output to disk.
+  
+  This component is also a "provider" of data so it can be connected at design-time to any other BI control or BIQuery to perform disk-less queries on its data.
+  
 - **Provider events**
 
   Many classes and components issue internal events when data is changed or destroyed.
+  
   Other components and controls (BIGrid, BIChart, etc) get notified of these events to refresh its output or make sure there are no memory leaks. This mechanism works at design-time too, so changes are refreshed automatically.
+  
+- **RTTI and ORM**
+
+  Important improvement in BI.Data.RTTI unit.
+  
+  TTypeProvider class has been changed quite a lot to better support different types of data like dynamic arrays and TCollection objects.
+  
+  It also includes new Count and Delete methods, and a new Items[Index] default array property to access its elements.
+  
+  New example available, showing how to use TeeBI in ORM mode with your own data:
+  
+  [TeeBI and ORM Example Project](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/ORM_RTTI)
+  
   
 - **BI Arrays**
 
@@ -76,7 +107,51 @@
   These methods are also internally used to fix the issue of creating a "Map" of the array items considering only the non-null values.
   TDataItem is now passing its "Missing" index array when creating the DataMap property.
   
+- **TDataset**
+
+  New FromField class method to import just a single TField instead of the whole TDataset.
   
+- **TDataItem**
+
+  The base and most important class in TeeBI (TDataItem) has new features:
+  
+  - New LoadFromFile method (SaveToFile already existed)
+  - New Clear method to remove all data and destroy all sub-items
+  - New ClearData method to just remove all data without changing the structure or sub-items
+  
+- **Expressions**
+
+  - All TExpression classes now include an Assign method. 
+  
+  This has enabled a new TExpression.Clone method that is capable of duplicating an expression tree to return an identical one, recursively.
+
+- **BI Web Server**
+
+  - Improved the automatic re-import of data using an "scheduler" configuration.
+  
+  Each data can be configured to be re-imported at specific intervals (ie: "Every Day")
+  
+  This feature enables web-replication of databases from one BIWeb server to another. 
+  
+  That is, for example BIWeb server 1 re-imports an SQL Server database every 10 minutes, while other BIWeb servers 2 and 3 also do re-import that data from BIWeb server 1, just this time the data is already converted to ultra-fast binary TeeBI format so the transmission via web is much improved (with BIWeb zip compression).
+  
+  There is no limit on how many BIWeb servers access data from other BIWeb servers.
+  
+- **Fixes**
+
+  - Fixed bug at TBIExcel class, when importing Excel spreadsheets with non-English US decimal settings ("," <-> ".")
+  - Fixed bug at TBIJsonExport class, content with forbidden (non-valid json) characters are "escaped" 
+  - Adding or removing Data.Items now correctly change their Parent property
+  - Fixed potential access violation when closing the RAD Studio IDE in Seattle 10.0
+  
+- **Miscellaneous**
+
+  - New TDataItems Insert method
+  - New TDataCursor and TSummary UseFilter boolean property (to use or not the Filter property)
+  - New summary THistogram feature to distribute aggregations by text fields (in groups: ABC..DEF..GHI...JKL etc)
+  - BI.Summary.Totals unit: TSummaryTotals class is now a TComponent that can be used in queries and any other BI control
+  - New TDataColorizer AlphaColorOf( double ), returns the color in palette that corresponds to the double parameter
+  - New TDataKindConvert method to change a TDataItem from one Kind to another, previously verifying no data will be lost
   
   
   
