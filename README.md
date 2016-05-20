@@ -3,9 +3,9 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 10, April-1st 2016)
+[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 11, May-20th 2016)
 
-[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 10)
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 11)
 
  
 ### What is TeeBI ?
@@ -36,7 +36,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Supported development environments: 
 
-  *  Embarcadero Studio XE4 and up (Delphi and C++)
+  *  Embarcadero RAD Studio 10.1 Berlin, and from Studio XE4 and up (Delphi and C++)
   *  Visual Studio (.NET)
   *  Lazarus / FreePascal
   
