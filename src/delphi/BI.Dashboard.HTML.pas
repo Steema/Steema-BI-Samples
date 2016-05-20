@@ -54,14 +54,10 @@ type
     ItemSeparator='%----%';
 
   var
-    Charts : TStringList;
     Divs : TDivs;
     FHTML : TStringList;
     FMinify : Boolean;
     FTitle : String;
-
-    IAnyGauge : Boolean;
-    IAnyMap   : Boolean;
 
     IBody : String;
     IRadioCount,
@@ -109,6 +105,10 @@ type
     var
       CSS: String;
       SteemaSources:String;
+      Charts : TStringList;
+
+      IAnyGauge : Boolean;
+      IAnyMap   : Boolean;
 
     Constructor Create;
     Destructor Destroy; override;

@@ -38,6 +38,7 @@ type
     class procedure AddKinds(const AItems:TStrings); static;
     class function BytesToString(const Bytes: Int64): String; static;
     class function ToBooleanString(const Bool:Boolean):String; static;
+    class function UniqueName(const AComponent:TComponent):String; static;
   end;
 
   TCryptoClass=class of TCrypto;

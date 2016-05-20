@@ -57,6 +57,7 @@ type
     function GetData(const ANode:TBITreeNode):TObject; virtual; abstract;
     function GetNode(const AIndex:Integer):TBITreeNode; virtual; abstract;
     function GetOnChange: TNotifyEvent; virtual; abstract;
+    function GetOnCheck: TNotifyEvent; virtual; abstract;
     function GetSelected:TBITreeNode; virtual; abstract;
     function GetSelectedData:TBITreePlugin.TNodeData; virtual; abstract;
     function NewNodeData(const ATag:TObject; const AIndex:TInteger):TNodeData;
@@ -65,10 +66,14 @@ type
     procedure SetAllowDelete(const Value: Boolean); virtual; abstract;
     procedure SetData(const ANode:TBITreeNode; const AData:TObject); virtual; abstract;
     procedure SetOnChange(const Value: TNotifyEvent); virtual; abstract;
+    procedure SetOnCheck(const Value: TNotifyEvent); virtual; abstract;
     procedure SetSelected(const Value: TBITreeNode); virtual; abstract;
   public
     Constructor Create(const AOwner:TComponent); virtual; abstract;
     Destructor Destroy; override;
+
+    function Children(const ANode:TBITreeNode; const AIndex:Integer):TBITreeNode; virtual; abstract;
+    function ChildrenCount(const ANode:TBITreeNode):Integer; virtual; abstract;
 
     procedure Expand(const AIndex:Integer); overload; virtual; abstract;
 
@@ -78,11 +83,20 @@ type
 
     function Find(const ATag:TObject; const AIndex:Integer=-1):TBITreeNode; virtual; abstract;
 
+    function FirstNode:TBITreeNode; virtual; abstract;
+    function NextNode(const ANode:TBITreeNode):TBITreeNode; virtual; abstract;
+
+    function IsChecked(const ANode:TBITreeNode):Boolean; virtual; abstract;
+
     function NewNode(const AParent:TBITreeNode; const AText:String;
               const ATag:TObject=nil;
               const AIndex:TInteger=-1):TBITreeNode; virtual; abstract;
 
     function ParentOf(const ANode:TBITreeNode):TBITreeNode; virtual; abstract;
+
+    procedure SetChecked(const ANode:TBITreeNode; const Value:Boolean); virtual; abstract;
+    function SiblingIndex(const ANode:TBITreeNode):Integer; virtual; abstract;
+    function TextOf(const ANode:TBITreeNode):String; virtual; abstract;
 
     property AllowDelete:Boolean read GetAllowDelete write SetAllowDelete;
     property Control:TControl read GetControl;
@@ -91,6 +105,7 @@ type
     property SelectedData:TBITreePlugin.TNodeData read GetSelectedData;
 
     property OnChange:TNotifyEvent read GetOnChange write SetOnChange;
+    property OnCheck:TNotifyEvent read GetOnCheck write SetOnCheck;
   end;
 
   TBITreePluginClass=class of TBITreePlugin;

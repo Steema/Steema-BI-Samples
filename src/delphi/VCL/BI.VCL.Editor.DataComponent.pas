@@ -46,12 +46,15 @@ type
     FOnFilter : TFilterEvent;
     FOnSelected : TNotifyEvent;
 
-    procedure Add(const AParent:TTreeNode; const AComponent:TComponent; const AName:String);
+    function CalcName(const AComponent:TComponent; const AName:String):String;
     function CanAdd(const AComponent:TComponent):Boolean;
     procedure FillTree;
   protected
     FCurrent : TObject;
 
+    procedure Add(const AParent:TTreeNode; const AComponent:TComponent; const AName:String); overload;
+    procedure Add(const AParent,AComponent:TComponent); overload;
+    function NodeOf(const AObject:TObject):TTreeNode;
     function SelectedHasData:Boolean;
     procedure TryFreeData;
   public

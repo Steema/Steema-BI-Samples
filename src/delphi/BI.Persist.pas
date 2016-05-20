@@ -44,6 +44,15 @@ type
     property Data:TDataItem read GetData;
   end;
 
+  TRefreshSettings=record
+  private
+    function Increment(const ADate:TDateTime):TDateTime;
+  public
+    Period : Integer;
+    Units : TRefreshUnit;
+    Enabled : Boolean;
+  end;
+
   // Abstract class with all settings necessary to import a given data
   TDataDefinitionKind=(Files,Database,Web,Unknown);
 
@@ -66,8 +75,7 @@ type
   protected
     FStrings : TStrings;
 
-    RefreshPeriod : Integer;
-    RefreshUnit : TRefreshUnit;
+    Refresh : TRefreshSettings;
 
     Volatile : Boolean; // When True, changes to Strings aren't saved
 
@@ -100,7 +108,7 @@ type
     class procedure Merge(const AData: TDataItem; const AItems:TDataArray); static;
     function MultiLineText(const ATag:String):String;
 
-    function Title: String;
+    function Description: String;
 
     function NextRefresh:TDateTime;
     class procedure SetMasters(const AData:TDataItem; const Items:TStrings); static;

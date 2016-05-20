@@ -22,11 +22,13 @@ type
     FSource : TComponent;
 
     IDataLink : TDataLink;
+    ILoading : Boolean;
 
     procedure SetSource(const Value: TComponent);
     class function TryFromStrings(const ASource:TComponent):TDataItem;
   protected
     function DoImport(const AComponent: TComponent):TDataItem; virtual;
+    procedure GetItems(const AData:TDataItem); override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     class function StringsOf(const ASource:TComponent):TStrings; virtual;
@@ -36,6 +38,8 @@ type
 
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
+
+    procedure Refresh;
 
     class function DataOf(const AComponent:TComponent):TDataItem; virtual;
     class function DataOfProvider(const AData:TDataItem):TDataItem; static;

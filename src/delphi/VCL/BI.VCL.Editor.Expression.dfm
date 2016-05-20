@@ -54,7 +54,6 @@ object ExpressionEditor: TExpressionEditor
     BevelOuter = bvNone
     TabOrder = 1
     OnResize = Panel2Resize
-    ExplicitLeft = 239
     object BITree2: TBITree
       Left = 0
       Top = 113
@@ -68,8 +67,6 @@ object ExpressionEditor: TExpressionEditor
       OnDragDrop = BITree2DragDrop
       OnDragOver = BITree2DragOver
       OnChange = BITree2Change
-      ExplicitLeft = 3
-      ExplicitHeight = 389
     end
     object Panel3: TPanel
       Left = 0
@@ -129,7 +126,6 @@ object ExpressionEditor: TExpressionEditor
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 3
       object BDelete: TButton
         Left = 16
         Top = 6

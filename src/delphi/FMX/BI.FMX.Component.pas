@@ -1,7 +1,29 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Importing data from VCL Controls           }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.FMX.Component;
 {$DEFINE FMX}
 
 interface
+
+{
+  This unit contains a TControlImporter component for VCL.
+
+  Its purpose is to obtain data from any VCL TControl that is supported.
+
+  Like for example, using Memo.Lines text to import (in JSON, CSV, XML format),
+  or using the Data property of a BI control (Grid, Chart, Tree, etc).
+
+  Usage example:
+
+  tmp:=TControlImporter.Create(Self);
+  tmp.Source:=Memo1;
+
+  BIGrid1.Data:=tmp.Data;
+}
 
 uses
   System.Classes, BI.Data, BI.Store.Component;

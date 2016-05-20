@@ -91,6 +91,8 @@ object BIDataSetEditor: TBIDataSetEditor
     ExplicitHeight = 347
     object TabOptions: TTabSheet
       Caption = 'Options'
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 514
       ExplicitHeight = 319
       object Panel3: TPanel
@@ -147,6 +149,8 @@ object BIDataSetEditor: TBIDataSetEditor
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 514
       ExplicitHeight = 319
     end

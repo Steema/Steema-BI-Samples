@@ -83,32 +83,13 @@ object BIWorkflowEditor: TBIWorkflowEditor
       ParentFont = False
     end
     object BAdd: TButton
-      Left = 96
+      Left = 289
       Top = 10
       Width = 75
       Height = 25
-      Caption = 'Add...'
-      Enabled = False
+      Caption = '&Add...'
       TabOrder = 0
       OnClick = BAddClick
-    end
-    object Button1: TButton
-      Left = 194
-      Top = 10
-      Width = 75
-      Height = 25
-      Caption = '&Import...'
-      TabOrder = 1
-      OnClick = Button1Click
-    end
-    object Button2: TButton
-      Left = 295
-      Top = 10
-      Width = 75
-      Height = 25
-      Caption = '&Query'
-      TabOrder = 2
-      OnClick = Button2Click
     end
     object BDelete: TButton
       Left = 392
@@ -116,7 +97,7 @@ object BIWorkflowEditor: TBIWorkflowEditor
       Width = 75
       Height = 25
       Caption = 'Delete'
-      TabOrder = 3
+      TabOrder = 1
       OnClick = BDeleteClick
     end
   end
@@ -180,22 +161,6 @@ object BIWorkflowEditor: TBIWorkflowEditor
       object MachineLearning1: TMenuItem
         Caption = '&Machine-Learning'
       end
-    end
-  end
-  object PopupMenu2: TPopupMenu
-    Left = 424
-    Top = 56
-    object Files1: TMenuItem
-      Caption = '&Files...'
-      OnClick = Files1Click
-    end
-    object Database1: TMenuItem
-      Caption = '&Database...'
-      OnClick = Database1Click
-    end
-    object Web1: TMenuItem
-      Caption = '&BI Web...'
-      OnClick = Web1Click
     end
   end
 end

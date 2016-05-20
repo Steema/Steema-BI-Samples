@@ -40,6 +40,7 @@ contains
   BI.VCL.Visualizer.Chart in '..\VCL\BI.VCL.Visualizer.Chart.pas',
   BI.VCL.Editor.Visualizer.Chart in '..\VCL\BI.VCL.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
   BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas',
+  BI.VCL.Editor.Chart in '..\VCL\BI.VCL.Editor.Chart.pas' {BIChartEditor},
   BI.VCL.Chart.Functions in '..\VCL\BI.VCL.Chart.Functions';
 
 end.

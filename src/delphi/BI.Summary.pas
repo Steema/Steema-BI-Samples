@@ -320,8 +320,8 @@ type
     procedure DoRemoveMissing(const Data:TDataItem);
     procedure Fill;
     procedure GetActive;
-    function GetData: TDataItem;
     function GetHaving:TSummaryFilter;
+    function GetMainData: TDataItem;
     procedure SetFilter(const Value: TExpression);
     procedure SetHaving(const Value: TSummaryFilter);
   protected
@@ -361,8 +361,9 @@ type
     function ToString:String; override;
     function Valid:Boolean;
 
+    property MainData:TDataItem read GetMainData;
+
   published
-    property Data:TDataItem read GetData;
     property Description:String read FDescription write FDescription;
     property Filter:TExpression read FFilter write SetFilter;
     property Having:TSummaryFilter read GetHaving write SetHaving;

@@ -16,7 +16,6 @@ type
     BIGrid1: TBIGrid;
     PanelSelector: TPanel;
     Panel2: TPanel;
-    BAdd: TButton;
     PopupMenu1: TPopupMenu;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
@@ -27,38 +26,29 @@ type
     Sort1: TMenuItem;
     Reorder1: TMenuItem;
     Filter1: TMenuItem;
-    Button1: TButton;
+    BAdd: TButton;
     ranspose1: TMenuItem;
     Change1: TMenuItem;
     PanelEditor: TPanel;
     LError: TLabel;
-    PopupMenu2: TPopupMenu;
-    Files1: TMenuItem;
-    Database1: TMenuItem;
-    Web1: TMenuItem;
     N1: TMenuItem;
     Algorithm1: TMenuItem;
     Function1: TMenuItem;
     MachineLearning1: TMenuItem;
-    Button2: TButton;
     BITree1: TBITree;
     BDelete: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Tree1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure Tree1DragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure BAddClick(Sender: TObject);
     procedure Add1Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BAddClick(Sender: TObject);
     procedure ranspose1Click(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
     procedure Rename1Click(Sender: TObject);
     procedure Query1Click(Sender: TObject);
-    procedure Files1Click(Sender: TObject);
-    procedure Database1Click(Sender: TObject);
     procedure Web1Click(Sender: TObject);
     procedure Function1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
     procedure BITree1Change(Sender: TObject);
     procedure BDeleteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -73,6 +63,7 @@ type
     procedure AddNewRoot(const AData:TDataItem; const X,Y:Integer);
     function DataOf(const ANode:TBITreeNode):TDataItem;
     function DoAddNode(const AParent:TBITreeNode; const AItem:TWorkflowItem):TBITreeNode;
+    procedure DoChangeWorkflow(const Value: TBIWorkflow);
 
     procedure FillTree;
     procedure FilterSelf(Sender: TComponent; var Valid:Boolean);
@@ -88,8 +79,9 @@ type
                       const AName:String):TBITreeNode; overload;
 
     procedure SetWorkflow(const Value: TBIWorkflow);
-    procedure TryAddImport(const AKind:TDataDefinitionKind);
     procedure TryRefresh(const ANode:TBITreeNode);
+  protected
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     { Public declarations }
 

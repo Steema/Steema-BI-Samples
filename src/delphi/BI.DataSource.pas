@@ -28,7 +28,6 @@ type
 
     FOnError : TBIError;
     FOnProgress : TBIProgress;
-
   protected
     IDefinition : TDataDefinition;
 

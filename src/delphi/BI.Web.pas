@@ -142,8 +142,9 @@ type
 
   TSteema=class(TBIWebClient)
   public
-    class function Download(const Source,Dest:String):Boolean;
-    class function GetLatestVersion(out V: TBIWebServer.TVersion; out Error:String):Boolean;
+    class function CheckNewVersion(out AError:String):Boolean; static;
+    class function Download(const Source,Dest:String):Boolean; static;
+    class function GetLatestVersion(out V: TBIWebServer.TVersion; out Error:String):Boolean; static;
   end;
 
   TDelayHandlerWeb=class(TDataDelayProvider)

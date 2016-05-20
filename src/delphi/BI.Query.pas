@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  TBIQuery Component                         }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.Query;
 
 interface
@@ -5,6 +11,25 @@ interface
 uses
   System.Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
   BI.Persist;
+
+{
+  TBIQuery is a component capable of executing queries against TDataItem objects.
+
+  BIQuery.Items collection property contains the desired query output.
+  Each Item defines a data item (field or table) and an optional aggregation kind.
+
+  BIQuery automatically determines if the calculation must be done using
+  a TSummary class (because there is at least one item with aggregation),
+  or a TDataSelect class (a normal "select" query without any "Group By").
+
+  Items can also define expressions (ie: "sum(a+b)" or "Upper(ProductName)" ) and
+  can refer to data items from multiple databases or tables without the need to
+  specify the links between them (no "join" clauses).
+
+  The BIQuery Filter property can be set as a string (ie: City="London") or
+  as an expression object, and can also refer to any data item even it is not
+  included in the query output.
+}
 
 type
   TDataCollectionItem=class(TCollectionItem)
@@ -61,12 +86,14 @@ type
     IActive : Boolean;
     IAggregate : TAggregate;
     IDatePart : TDateTimePart;
+    IExpression : TExpression;
 
     function CanChange:Boolean;
     procedure DoRemove;
     function GetAggregate: TAggregate;
     function GetActive: Boolean;
     function GetDatePart:TDateTimePart;
+    function GetExpression: TExpression;
     function Query:TBIQuery;
     function RealData:TDataItem;
     procedure Recreate;
@@ -74,6 +101,7 @@ type
     procedure SetActive(const Value: Boolean);
     procedure SetAggregate(const Value: TAggregate);
     procedure SetDatePart(const Value: TDateTimePart);
+    procedure SetExpression(const Value: TExpression);
     procedure TryReconnect;
   protected
     procedure Changed; override;
@@ -89,6 +117,8 @@ type
     function RealStyle:TQueryItemStyle;
 
     function ToString:String; override;
+
+    property Expression:TExpression read GetExpression write SetExpression;
   published
     property Active:Boolean read GetActive write SetActive default True;
     property Aggregate:TAggregate read GetAggregate write SetAggregate default TAggregate.Count;
@@ -135,6 +165,28 @@ type
     property Columns:Boolean read GetColumns write SetColumns default False;
     property Rows:Boolean read GetRows write SetRows default False;
   end;
+
+  (* Pending
+  TQueryFilter=class(TPersistent)
+  private
+    FEnabled : Boolean;
+    FExpression : TLogicalExpression;
+    FText : String;
+
+    // Temporary during csLoading
+    IFilter : String;
+  public
+    Constructor Create;
+    Destructor Destroy; override;
+
+    procedure Assign(Source:TPersistent); override;
+
+    property Expression:TLogicalExpression read FExpression write SetExpression;
+  published
+    property Enabled:Boolean read FEnabled write SetEnabled default True;
+    property Text:String read FText write SetText;
+  end;
+  *)
 
   TQueryStyle=(Unknown,Select,Summary);
 
@@ -186,6 +238,8 @@ type
     procedure Notification(AComponent: TComponent;
                            Operation: TOperation); override;
 
+    procedure SetFilterExpression(const AFilter:TLogicalExpression);
+
     property Select:TDataSelect read FSelect write SetSelect;
     property Summary:TSummary read FSummary write SetSummary;
   public
@@ -202,6 +256,7 @@ type
     procedure Clear;
 
     function IsEmpty:Boolean;
+    function MainData:TDataItem;
 
     function Style:TQueryStyle;
 

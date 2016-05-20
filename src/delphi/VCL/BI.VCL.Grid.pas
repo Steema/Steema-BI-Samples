@@ -15,7 +15,7 @@ uses
   {$ENDIF}
   VCL.Controls, VCL.Forms, VCL.Grids, Data.DB, BI.Data,
   BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus, BI.UI.Colors, BI.UI,
-  BI.VCL.DataControl;
+  BI.VCL.DataControl, BI.Expression;
 
 type
   TBIGridPluginClass=class of TBIGridPlugin;
@@ -125,6 +125,8 @@ type
     procedure Colorize(const AItems:TDataColorizers);
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);
     procedure Invalidate; override;
+
+    procedure SetFilter(const AFilter:TLogicalExpression);
 
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
   published

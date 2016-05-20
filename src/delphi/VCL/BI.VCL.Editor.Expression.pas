@@ -57,8 +57,10 @@ type
 
     Resolver : TResolveProc;
 
-    class function EditNew(const AOwner:TComponent):TExpression; static;
-    class function Edit(const AOwner:TComponent; var AExpression:TExpression):Boolean; static;
+    class function EditNew(const AOwner:TComponent;
+                           const AResolver:TResolveProc=nil):TExpression; static;
+    class function Edit(const AOwner:TComponent; var AExpression:TExpression;
+                        const AResolver:TResolveProc=nil):Boolean; static;
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl):TExpressionEditor; static;
 
     procedure Refresh(const AExpression:TExpression);

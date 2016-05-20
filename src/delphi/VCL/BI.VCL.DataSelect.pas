@@ -24,7 +24,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.Data, BI.VCL.DataManager, BI.VCL.Editor.DataComponent;
+  BI.Data, BI.VCL.DataManager, BI.VCL.Editor.DataComponent, Vcl.Menus,
+  BI.Persist, BI.VCL.DataControl;
 
 type
   TDataSelector = class(TForm)
@@ -36,11 +37,24 @@ type
     BOK: TButton;
     BCancel: TButton;
     BClear: TButton;
+    PopupMenu2: TPopupMenu;
+    Files1: TMenuItem;
+    Database1: TMenuItem;
+    Web1: TMenuItem;
+    Import1: TMenuItem;
+    Query1: TMenuItem;
+    Panel1: TPanel;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure BClearClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
+    procedure Query1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Database1Click(Sender: TObject);
+    procedure Files1Click(Sender: TObject);
+    procedure Web1Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -48,15 +62,25 @@ type
     IComp : TDataComponent;
     FOnSelect: TNotifyEvent;
 
+    IEdited : TComponent;
+
     procedure FilterSelf(Sender: TComponent; var Valid:Boolean);
+    procedure FinishAddNew(const AComponent:TComponent);
+    function IsEmbedded:Boolean;
+    function NewOwner:TComponent;
     function SelectedHasData:Boolean;
     procedure SelectedItem(Sender: TObject);
+    procedure SetEdited(const AEdited:TComponent);
+    procedure TryAddImport(const AKind:TDataDefinitionKind);
   public
     { Public declarations }
 
+    class procedure Choose(const AOwner:TComponent;
+                           const AEdited:TBIDataControl); overload; static;
+
     class function Choose(const AOwner:TComponent;
                           const AEdited:TComponent;
-                          out AData:TDataItem):Boolean; static;
+                          out AData:TDataItem):Boolean; overload; static;
 
     class function Embedd(const AOwner:TComponent;
                           const AParent:TWinControl;

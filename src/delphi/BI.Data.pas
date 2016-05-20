@@ -515,10 +515,13 @@ type
   TDataInfo=class(TDataItem)
   private
     FData : TDataItem;
+
+    procedure Fill;
+    procedure SetData(const Value: TDataItem);
   public
     Constructor Create(const AData:TDataItem); overload;
 
-    property Data:TDataItem read FData;
+    property Data:TDataItem read FData write SetData;
   end;
 
   TIdentifiers=record

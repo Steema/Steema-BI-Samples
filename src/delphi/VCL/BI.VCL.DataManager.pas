@@ -40,7 +40,6 @@ type
     Splitter1: TSplitter;
     TabSettings: TTabSheet;
     TabData: TTabSheet;
-    TabSheet3: TTabSheet;
     BViewData: TButton;
     Label2: TLabel;
     LLastImport: TLabel;
@@ -100,10 +99,10 @@ type
     function ImportingError(const Sender:TObject; const Text:String):Boolean;
     procedure LogException(const Text:String);
     function NodeWithData(const AData:TDataItem):TTreeNode;
+    procedure ReplaceDummy(const Node:TTreeNode);
     function SelectedText:String;
     procedure SelectStore;
     procedure SetLastImport;
-    procedure SetScheduling;
     procedure ShowDataInfo(SelectAtEditor:Boolean);
     procedure TryAdd(const Kind:TDataDefinitionKind);
 

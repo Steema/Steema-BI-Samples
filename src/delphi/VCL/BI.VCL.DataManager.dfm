@@ -201,18 +201,10 @@ object DataManager: TDataManager
     OnChange = PageControl1Change
     object TabSettings: TTabSheet
       Caption = 'Settings'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 16
@@ -278,8 +270,10 @@ object DataManager: TDataManager
         Width = 312
         Height = 89
         Align = alBottom
+        ScrollBars = ssBoth
         TabOrder = 5
         Visible = False
+        WordWrap = False
       end
       object ImportProgress: TProgressBar
         Left = 11
@@ -289,14 +283,6 @@ object DataManager: TDataManager
         TabOrder = 6
         Visible = False
       end
-    end
-    object TabSheet3: TTabSheet
-      Caption = 'Schedule'
-      ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object PopupMenu1: TPopupMenu
