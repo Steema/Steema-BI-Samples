@@ -18,6 +18,7 @@ uses
   FMXTee.Constants, FMXTee.Procs, BI.FMX.DataControl, BI.FMX.Grid,
   {$ELSE}
   VCLTee.TeeConst, VCLTee.TeeProcs, BI.VCL.DataControl, BI.VCL.Grid,
+  VCLTee.TeeGDIPlus,
   {$ENDIF}
 
   {$IFDEF FPC}
@@ -69,23 +70,25 @@ type
     function Create3DSeries:TCustom3DSeries;
     procedure CreateGridTable(const AData:TDataArray; const ADirection:TBIChartDirection);
     procedure CreateXYZ(const X,Y,Z:TDataItem);
-    {$ENDIF}
-
     procedure FinishXYZ;
     class function GetDateTime(const AData:TDataItem; const Index:TInteger; const Reverse:Boolean):TDateTime;
+    procedure TryAddUniqueTool(const AClass:TTeeCustomToolClass; const AName:String);
+    procedure TryDisableTool(const AClass:TTeeCustomToolClass; const ADisable:Boolean);
+    {$ENDIF}
+
     class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
     procedure Init;
     function InitCountSeries(const ACount:TInteger):TChartSeries;
     function NewSeries(const AClass:TChartSeriesClass):TChartSeries; overload;
     function NewSeries(const Count:Integer):TChartSeries; overload;
     function NewSeries(const X,Y:String):TChartSeries; overload;
-    procedure TryAddUniqueTool(const AClass:TTeeCustomToolClass; const AName:String);
-    procedure TryDisableTool(const AClass:TTeeCustomToolClass; const ADisable:Boolean);
   protected
     FSeries2D : TChartSeriesClass;
 
     {$IFDEF TEEPRO}
     FSeries3D : TCustom3DSeriesClass;
+    {$ELSE}
+    FSeries3D : TChartSeriesClass;
     {$ENDIF}
 
     DefaultXYSeries : TChartSeriesClass;
@@ -131,7 +134,11 @@ type
     procedure ExchangeXZ;
     procedure ExchangeYZ;
     procedure Guess(const AData:TDataArray);
+
+    {$IFDEF TEEPRO}
     procedure GetXYZ(out AX,AY,AZ:TDataItem);
+    {$ENDIF}
+
     procedure MoveXToY;
 
     procedure ReadColors(Reader: TReader);

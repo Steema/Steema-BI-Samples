@@ -236,6 +236,9 @@ type
 
       // Returns the array of detail Indexes for given master AIndex position
       function GetIndex(const AMaster:TDataItem; const AIndex:TInteger):TNativeIntArray;
+
+      // Returns True when Origin='..', meaning our Master is our Parent (self-detail)
+      function IsSelfDetail:Boolean;
     end;
 
   var

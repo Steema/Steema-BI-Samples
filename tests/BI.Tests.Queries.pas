@@ -72,7 +72,7 @@ var tmp : TDataItem;
 begin
   for t:=0 to TSelectSamples.Count-1 do
   begin
-    tmp:=TDataItem.Create(TSelectSamples.Select(t));
+    tmp:=TDataItem.Create(TSelectSamples.CreateSelect(nil,t));
     try
       tmp.Load(tmp.AsTable);
     finally
@@ -117,7 +117,7 @@ var tmp : TDataItem;
 begin
   for t:=0 to Samples.Count-1 do
   begin
-    tmp:=TDataItem.Create(Samples.CreateSummary(t));
+    tmp:=TDataItem.Create(Samples.CreateSummary(nil,t));
     try
       tmp.Load(tmp.AsTable);
     finally
