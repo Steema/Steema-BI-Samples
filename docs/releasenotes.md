@@ -1,9 +1,9 @@
 # TeeBI Release Notes
 -------------------
 
-## 23th-May-2016  Beta 11 Hotfix 1
+## 23th-May-2016  Beta 11 Hotfix 1 and 2
 
-- Fixed BIChart compilation using TeeChart Lite / Standard version instead of Pro version
+- Fixed BIChart compilation errors when using TeeChart Lite / Standard version instead of Pro version
 
 ## 20th-May-2016  Beta 11
 
