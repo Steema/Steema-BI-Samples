@@ -48,6 +48,9 @@ type
     procedure AddItems(const AData:Array of TDataItem;
                        const AddBlank:Boolean=True); overload;
 
+    class procedure AddMap(const AData: TDataItem; const AItems:TStrings); overload; static;
+    procedure AddMap(const AData:TDataItem); overload;
+
     procedure CheckAll(const ACheck:Boolean);
     function CheckedCount:Integer;
 

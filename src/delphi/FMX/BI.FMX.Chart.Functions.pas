@@ -1,5 +1,5 @@
-unit BI.VCL.Chart.Functions;
-{.$DEFINE FMX}
+unit BI.FMX.Chart.Functions;
+{$DEFINE FMX}
 
 interface
 

@@ -30,6 +30,13 @@ uses
   {$ENDIF}
   {$ENDIF}
 
+  // XE6 dcc32 BUG, workaround not available
+  {$IF DECLARED(TeeVCLBuildVersionInteger)}
+    {$IF TeeVCLBuildVersionInteger >= 160406}
+      {$DEFINE SERIESLABELSRESIZE}
+    {$ENDIF}
+  {$ENDIF}
+
   {$IFDEF FMX}
   System.UITypes, FMXTee.Chart, FMXTee.Engine, FMXTee.Series,
   {$ELSE}

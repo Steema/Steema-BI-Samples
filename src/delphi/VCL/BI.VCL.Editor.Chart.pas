@@ -20,7 +20,21 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
   VclTee.TeeConst, VclTee.TeeEditCha, BI.VCL.Chart, BI.VCL.DataControl,
   BI.VCL.Grid, Vcl.Buttons, Vcl.CheckLst, BI.Data,
-  BI.VCL.Editor.ListItems, VCLTee.TeeProcs, VCLTee.TeeEdit;
+
+  {$IFDEF FPC}
+  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
+  {$ELSE}
+
+  {$IF TeeMsg_TeeChartPalette='TeeChart'}
+  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
+  {$ENDIF}
+  {$ENDIF}
+
+  {$IFDEF TEEPRO}
+  VCLTee.TeeEdit,
+  {$ENDIF}
+
+  BI.VCL.Editor.ListItems, VCLTee.TeeProcs;
 
 type
   TBIChartEditor = class(TForm)
@@ -79,7 +93,6 @@ type
     CBOpenGL: TCheckBox;
     RGLegend: TRadioGroup;
     RGMarks: TRadioGroup;
-    ChartEditorPanel1: TChartEditorPanel;
     Label12: TLabel;
     CBVolume: TComboBox;
     Panel3: TPanel;
@@ -139,6 +152,12 @@ type
 
     IListY,
     IListYTable : TFormListItems;
+
+    {$IFDEF TEEPRO}
+    ChartEditor : TChartEditorPanel;
+    {$ELSE}
+    ChartEditor : TChartEditForm;
+    {$ENDIF}
 
     procedure Changed3DItem;
     procedure ChangeY(const AIndex:Integer; const ACombo:TComboBox);

@@ -15,6 +15,7 @@ uses
   {$ELSE}
   VCL.Controls, BI.VCL.Chart, BI.VCL.Dashboard,
   {$ENDIF}
+
   System.Classes, BI.Dashboard, System.SysUtils, BI.Data;
 
 type

@@ -524,6 +524,8 @@ type
   public
     Constructor Create(const AData:TDataItem); overload;
 
+    class procedure GetMinMax(const AData:TDataItem; out AMin,AMax:Extended); static;
+
     property Data:TDataItem read FData write SetData;
   end;
 

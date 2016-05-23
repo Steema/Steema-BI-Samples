@@ -23,14 +23,9 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
     ActivePage = TabRange
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 328
-    ExplicitTop = 96
-    ExplicitWidth = 289
-    ExplicitHeight = 193
+    OnChange = PageControl1Change
     object TabRange: TTabSheet
       Caption = 'Range'
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object Label1: TLabel
         Left = 6
         Top = 6
@@ -141,8 +136,6 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
     object TabCalendar: TTabSheet
       Caption = 'Calendar'
       ImageIndex = 1
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object Label3: TLabel
         Left = 5
         Top = 3
@@ -164,7 +157,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
         Top = 20
         Width = 170
         Height = 143
-        Date = 42509.598440671300000000
+        Date = 42509.510965185180000000
         ShowToday = False
         ShowTodayCircle = False
         TabOrder = 0
@@ -175,7 +168,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
         Top = 20
         Width = 169
         Height = 143
-        Date = 42509.599302245370000000
+        Date = 42509.510965185180000000
         ShowToday = False
         ShowTodayCircle = False
         TabOrder = 1
@@ -185,8 +178,6 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
     object TabSheet3: TTabSheet
       Caption = 'Selected'
       ImageIndex = 2
-      ExplicitLeft = 8
-      ExplicitTop = 28
       object PanelMonths: TPanel
         Left = 0
         Top = 0
@@ -195,9 +186,6 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 128
-        ExplicitTop = 96
-        ExplicitHeight = 41
       end
       object PanelWeeks: TPanel
         Left = 185
@@ -207,10 +195,11 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitLeft = 128
-        ExplicitTop = 96
-        ExplicitHeight = 41
       end
+    end
+    object TabFromTo: TTabSheet
+      Caption = 'From / To'
+      ImageIndex = 3
     end
   end
 end

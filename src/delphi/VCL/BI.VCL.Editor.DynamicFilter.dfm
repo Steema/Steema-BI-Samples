@@ -27,7 +27,6 @@ object DynamicFilterEditor: TDynamicFilterEditor
     ParentColor = False
     TabOrder = 0
     OnChange = BITree1Change
-    ExplicitHeight = 525
   end
   object PanelCustom: TPanel
     Left = 0
@@ -139,8 +138,69 @@ object DynamicFilterEditor: TDynamicFilterEditor
     Visible = False
     object TabDateTime: TTabSheet
       Caption = 'Date Time'
-      ExplicitTop = 6
-      ExplicitHeight = 108
+    end
+    object TabBoolean: TTabSheet
+      Caption = 'Boolean'
+      ImageIndex = 1
+      ExplicitLeft = 8
+      ExplicitTop = 22
+      object CBTrue: TCheckBox
+        Left = 16
+        Top = 16
+        Width = 97
+        Height = 17
+        Caption = 'True'
+        TabOrder = 0
+        OnClick = CBTrueClick
+      end
+      object CBFalse: TCheckBox
+        Left = 16
+        Top = 39
+        Width = 97
+        Height = 17
+        Caption = 'False'
+        TabOrder = 1
+        OnClick = CBFalseClick
+      end
+    end
+    object TabNumeric: TTabSheet
+      Caption = 'Numeric'
+      ImageIndex = 2
+    end
+    object TabText: TTabSheet
+      Caption = 'Text'
+      ImageIndex = 3
+      object PageControlText: TPageControl
+        Left = 0
+        Top = 0
+        Width = 410
+        Height = 202
+        ActivePage = TabMultiText
+        Align = alClient
+        TabOrder = 0
+        OnChange = PageControlTextChange
+        object TabMultiText: TTabSheet
+          Caption = 'Multiple'
+        end
+        object TabSingleText: TTabSheet
+          Caption = 'Single'
+          ImageIndex = 1
+          object LBSingleText: TListBox
+            Left = 0
+            Top = 0
+            Width = 402
+            Height = 174
+            Align = alClient
+            ItemHeight = 13
+            TabOrder = 0
+            OnClick = LBSingleTextClick
+            ExplicitLeft = 144
+            ExplicitTop = 40
+            ExplicitWidth = 121
+            ExplicitHeight = 97
+          end
+        end
+      end
     end
   end
 end

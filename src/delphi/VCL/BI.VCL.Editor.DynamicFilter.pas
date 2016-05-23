@@ -37,6 +37,7 @@ interface
     IEditor.OnChange:=FilterChanged;
   end;
 
+  ----------------------
 
   Example 2:
   Using this editor as a modal dialog:
@@ -52,7 +53,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl,
   BI.VCL.Tree, BI.Data, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, BI.Expression,
-  BI.VCL.Editor.Expression, Vcl.Buttons, BI.VCL.Editor.DateTimeRange;
+  BI.VCL.Editor.Expression, Vcl.Buttons, BI.VCL.Editor.DateTimeRange,
+  BI.VCL.Editor.NumericFromTo, BI.VCL.Editor.ListItems;
 
 type
   TDynamicFilterEditor = class(TForm)
@@ -69,6 +71,15 @@ type
     LError: TLabel;
     PageItem: TPageControl;
     TabDateTime: TTabSheet;
+    TabBoolean: TTabSheet;
+    CBTrue: TCheckBox;
+    CBFalse: TCheckBox;
+    TabNumeric: TTabSheet;
+    TabText: TTabSheet;
+    PageControlText: TPageControl;
+    TabMultiText: TTabSheet;
+    TabSingleText: TTabSheet;
+    LBSingleText: TListBox;
     procedure FormCreate(Sender: TObject);
     procedure ECustomChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -76,6 +87,10 @@ type
     procedure SBCustomClick(Sender: TObject);
     procedure PanelCustomResize(Sender: TObject);
     procedure BITree1Change(Sender: TObject);
+    procedure CBTrueClick(Sender: TObject);
+    procedure CBFalseClick(Sender: TObject);
+    procedure PageControlTextChange(Sender: TObject);
+    procedure LBSingleTextClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -86,12 +101,17 @@ type
     IData,
     IMainData : TDataItem;
 
+    INumericFromTo : TNumericFromTo;
+    ITextItems     : TFormListItems;
     IDateTimeRange : TDateTimeRangeEditor;
 
     FOnChange: TNotifyEvent;
 
     procedure AddMapValues(const AParent:TBITreeNode; const AData:TDataItem);
     procedure ChangedDateTime(Sender: TObject);
+    procedure ChangedNumeric(Sender: TObject);
+    procedure ChangedText(Sender: TObject);
+    function CurrentData:TDataItem;
     procedure DoChanged;
     procedure Expanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
     function HasDummy(const ANode:TBITreeNode):Boolean;

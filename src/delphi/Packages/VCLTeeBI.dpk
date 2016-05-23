@@ -61,6 +61,7 @@ contains
   BI.VCL.Editor.DynamicFilter in '..\VCL\BI.VCL.Editor.DynamicFilter.pas' {DynamicFilterEditor},
   BI.VCL.Editor.Formats in '..\VCL\BI.VCL.Editor.Formats.pas' {DataFormatEditor},
   BI.VCL.Editor.ListItems in '..\VCL\BI.VCL.Editor.ListItems.pas' {FormListItems},
+  BI.VCL.Editor.NumericFromTo in '..\VCL\BI.VCL.Editor.NumericFromTo.pas' {NumericFromTo},
   BI.VCL.Editor.Query in '..\VCL\BI.VCL.Editor.Query.pas' {BIQueryEditor},
   BI.VCL.Editor.Stores in '..\VCL\BI.VCL.Editor.Stores.pas' {StoreEditor},
   BI.VCL.Editor.WorkflowItem in '..\VCL\BI.VCL.Editor.WorkflowItem.pas' {WorkflowItemEditor},

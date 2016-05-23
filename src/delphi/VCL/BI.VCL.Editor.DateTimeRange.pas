@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   BI.Data, Vcl.ComCtrls, BI.VCL.Editor.ListItems, Vcl.ExtCtrls,
-  BI.Expression;
+  BI.Expression, BI.VCL.Editor.NumericFromTo;
 
 type
   TDateTimeRangeEditor = class(TForm)
@@ -30,6 +30,7 @@ type
     Label4: TLabel;
     PanelMonths: TPanel;
     PanelWeeks: TPanel;
+    TabFromTo: TTabSheet;
     procedure CBYearChange(Sender: TObject);
     procedure CBMonthChange(Sender: TObject);
     procedure CBYearToChange(Sender: TObject);
@@ -41,6 +42,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure CBDayChange(Sender: TObject);
     procedure CBDayToChange(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
   private
     { Private declarations }
 
@@ -48,9 +50,12 @@ type
 
     FOnChanged : TNotifyEvent;
 
+    IFromTo : TNumericFromTo;
+
     IMonths,
     IWeeks : TFormListItems;
 
+    procedure ChangedFromTo(Sender: TObject);
     procedure ChangedSelected(Sender: TObject);
     function DateFrom(const AYear,AMonth,ADay:TComboBox):TDateTime;
     procedure DoAddDays(const AYear,AMonth,ADay:TComboBox; First:Boolean);

@@ -21,31 +21,23 @@ object BIChartEditor: TBIChartEditor
     Top = 0
     Width = 491
     Height = 360
-    ActivePage = TabView
+    ActivePage = TabOptions
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
     object TabOptions: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageMode: TPageControl
         Left = 129
         Top = 0
         Width = 354
         Height = 332
-        ActivePage = Tab2D
+        ActivePage = TabFinancial
         Align = alClient
         TabOrder = 0
         object Tab2D: TTabSheet
           Caption = '2D'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel3: TPanel
             Left = 0
             Top = 0
@@ -201,10 +193,6 @@ object BIChartEditor: TBIChartEditor
         object Tab3D: TTabSheet
           Caption = '3D'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel3D: TPanel
             Left = 3
             Top = 163
@@ -489,10 +477,6 @@ object BIChartEditor: TBIChartEditor
         object TabFinancial: TTabSheet
           Caption = 'Financial'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label7: TLabel
             Left = 10
             Top = 40
@@ -599,10 +583,6 @@ object BIChartEditor: TBIChartEditor
         object TabGeo: TTabSheet
           Caption = 'Geographic'
           ImageIndex = 3
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
       end
       object Panel2: TPanel
@@ -684,10 +664,6 @@ object BIChartEditor: TBIChartEditor
     object TabView: TTabSheet
       Caption = 'View'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object RGView: TRadioGroup
         Left = 11
         Top = 16
@@ -742,27 +718,10 @@ object BIChartEditor: TBIChartEditor
     object TabChart: TTabSheet
       Caption = 'Chart'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object ChartEditorPanel1: TChartEditorPanel
-        Left = 0
-        Top = 0
-        Width = 483
-        Height = 332
-        Align = alClient
-        BevelOuter = bvNone
-        TabOrder = 0
-      end
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
