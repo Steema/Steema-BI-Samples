@@ -1,6 +1,10 @@
 # TeeBI Release Notes
 -------------------
 
+## 23th-May-2016  Beta 11 Hotfix 1
+
+- Fixed BIChart compilation using TeeChart Lite / Standard version instead of Pro version
+
 ## 20th-May-2016  Beta 11
 
 - **RAD Studio 10.1 Berlin**
