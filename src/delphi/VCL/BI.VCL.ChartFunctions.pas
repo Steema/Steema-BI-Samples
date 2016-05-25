@@ -1,4 +1,10 @@
-unit BI.VCL.Chart.Functions;
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Using TeeChart "Functions" as BI providers }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
+unit BI.VCL.ChartFunctions;
 {.$DEFINE FMX}
 
 interface

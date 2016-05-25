@@ -1,4 +1,10 @@
-unit BI.FMX.Chart.Functions;
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Using TeeChart "Functions" as BI providers }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
+unit BI.FMX.ChartFunctions;
 {$DEFINE FMX}
 
 interface
