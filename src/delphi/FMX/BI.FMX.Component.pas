@@ -10,9 +10,9 @@ unit BI.FMX.Component;
 interface
 
 {
-  This unit contains a TControlImporter component for VCL.
+  This unit contains a TControlImporter component for VCL and FMX.
 
-  Its purpose is to obtain data from any VCL TControl that is supported.
+  Its purpose is to obtain data from any supported TControl.
 
   Like for example, using Memo.Lines text to import (in JSON, CSV, XML format),
   or using the Data property of a BI control (Grid, Chart, Tree, etc).
@@ -42,8 +42,10 @@ type
   public
     class function DataOf(const AComponent:TComponent):TDataItem; override;
     class function HasDataProperty(const AComponent:TComponent):Boolean; static;
+    class function HasTextProperty(const AComponent:TComponent):Boolean; static;
     class function StringsOf(const ASource:TComponent):TStrings; override;
     class function Supports(const AComponent:TComponent):Boolean; override;
+    class function TextOf(const AComponent:TComponent):String; overload; static;
   end;
 
 implementation

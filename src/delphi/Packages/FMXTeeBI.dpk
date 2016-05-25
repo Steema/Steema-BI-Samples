@@ -28,7 +28,7 @@ package FMXTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Tee BI Firemonkey Runtime'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

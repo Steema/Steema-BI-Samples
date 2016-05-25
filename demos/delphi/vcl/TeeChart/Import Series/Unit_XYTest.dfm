@@ -106,27 +106,8 @@ object FormXYTest: TFormXYTest
         TopAxis.TicksInner.Color = 11119017
         TopAxis.Title.Font.Name = 'Verdana'
         TabOrder = 0
-        ExplicitWidth = 400
-        ExplicitHeight = 250
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 9
-        object Series1: TPointSeries
-          ColorEachPoint = True
-          ClickableLine = False
-          Pointer.InflateMargins = True
-          Pointer.Style = psCircle
-          XValues.Name = 'X'
-          XValues.Order = loAscending
-          YValues.Name = 'Y'
-          YValues.Order = loNone
-        end
-        object MarkTips1: TMarksTipTool
-          Format.CustomPosition = True
-          Format.Left = 0
-          Format.TextAlignment = taCenter
-          Format.Top = 0
-          Format.Visible = False
-        end
       end
     end
     object Chart1: TChart
@@ -187,6 +168,15 @@ object FormXYTest: TFormXYTest
       TabOrder = 1
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
+      object Series1: TPointSeries
+        ClickableLine = False
+        Pointer.InflateMargins = True
+        Pointer.Style = psRectangle
+        XValues.Name = 'X'
+        XValues.Order = loAscending
+        YValues.Name = 'Y'
+        YValues.Order = loNone
+      end
     end
   end
 end

@@ -20,14 +20,16 @@ type
     procedure GuessFields(const ADataSet:TDataSet; const AData:TDataItem);
     procedure LoadData(const ADataSet:TDataSet; const AData:TDataItem);
   public
-    class procedure AddItemFields(const AFields:TFieldDefs; const AItems:TDataArray); static;
-    class procedure AddItemField(const AFields:TFieldDefs; const AData:TDataItem); static;
+    class procedure Add(const AFields:TFieldDefs; const AItems:TDataArray); overload; static;
+    class procedure Add(const AFields:TFieldDefs; const AData:TDataItem); overload; static;
 
     class function FieldKind(const AFieldType:TFieldType):TDataKind; static;
-    class function FieldOfData(const AData:TDataItem; const ADataSet:TDataSet):TField; static;
+    class function FieldOf(const AData:TDataItem; const ADataSet:TDataSet):TField; static;
 
-    class function FromDataSet(const ADataSet:TDataSet; const AName:String=''):TDataItem;
-    class function FromField(const AField:TField; const AName:String=''):TDataItem;
+    class function From(const ADataSet:TDataSet; const AName:String=''):TDataItem; overload; static;
+    class function From(const AField:TField; const AName:String=''):TDataItem; overload; static;
+    class function From(const AFields:Array of TField; const AName:String=''):TDataItem; overload; static;
+    class function From(const AConnection:TCustomConnection; const AName:String=''):TDataItem; overload; static;
 
     function Import(const AField:TField; const AName:String=''):TDataItem; overload;
     function Import(const ADataSet:TDataSet; const AName:String=''):TDataItem; overload;

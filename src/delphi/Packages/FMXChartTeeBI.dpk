@@ -28,7 +28,7 @@ package FMXChartTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'FMX TeeChart Lite for TeeBI '}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,
@@ -41,6 +41,7 @@ contains
   BI.FMX.Dashboard.Chart in '..\FMX\BI.FMX.Dashboard.Chart.pas',
   BI.FMX.Visualizer.Chart in '..\FMX\BI.FMX.Visualizer.Chart.pas',
   BI.FMX.Editor.Visualizer.Chart in '..\FMX\BI.FMX.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
-  BI.FMX.Chart in '..\FMX\BI.FMX.Chart.pas';
+  BI.FMX.Chart in '..\FMX\BI.FMX.Chart.pas',
+  BI.FMX.ChartFunctions in '..\FMX\BI.FMX.ChartFunctions.pas';
 
 end.

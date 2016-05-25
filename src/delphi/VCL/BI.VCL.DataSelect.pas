@@ -62,6 +62,7 @@ type
     IComp : TDataComponent;
     FOnSelect: TNotifyEvent;
 
+    IFilterOwner,
     IEdited : TComponent;
 
     procedure FilterSelf(Sender: TComponent; var Valid:Boolean);
@@ -70,8 +71,9 @@ type
     function NewOwner:TComponent;
     function SelectedHasData:Boolean;
     procedure SelectedItem(Sender: TObject);
-    procedure SetEdited(const AEdited:TComponent);
     procedure TryAddImport(const AKind:TDataDefinitionKind);
+  protected
+    procedure SetEdited(const AEdited:TComponent);
   public
     { Public declarations }
 
@@ -80,7 +82,8 @@ type
 
     class function Choose(const AOwner:TComponent;
                           const AEdited:TComponent;
-                          out AData:TDataItem):Boolean; overload; static;
+                          out AData:TDataItem;
+                          const AFilterOwner:TComponent=nil):Boolean; overload; static;
 
     class function Embedd(const AOwner:TComponent;
                           const AParent:TWinControl;

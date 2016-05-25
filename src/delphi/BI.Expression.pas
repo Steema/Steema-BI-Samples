@@ -272,6 +272,25 @@ type
     function ToString:String; override;
   end;
 
+  TDateTimeSpan=(None,
+                 //Nanosecond,
+                 //Microsecond,
+                 Millisecond,
+                 HundredsOfSecond,
+                 TenthsOfSecond,
+                 Second,
+                 Minute,
+                 QuarterHour,
+                 Hour,
+                 Day,
+                 Week,
+                 Month,
+                 Quarter,
+                 Year,
+                 Decade,
+                 Century,
+                 Millennium);
+
   TDateTimePart=(None,
                  //Nanosecond,
                  //Microsecond,

@@ -27,7 +27,7 @@ package TeeBIAlgorithms;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'TeeBI R and Python machine-learning algorithms'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

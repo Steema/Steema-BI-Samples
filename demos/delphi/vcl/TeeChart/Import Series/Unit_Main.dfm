@@ -81,45 +81,8 @@ object SeriesImport: TSeriesImport
       View3DOptions.Perspective = 0
       View3DOptions.Rotation = 360
       TabOrder = 0
-      ExplicitHeight = 250
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 9
-      object Series1: TPieSeries
-        XValues.Order = loAscending
-        YValues.Name = 'Pie'
-        YValues.Order = loNone
-        Frame.InnerBrush.BackColor = clRed
-        Frame.InnerBrush.Gradient.EndColor = clGray
-        Frame.InnerBrush.Gradient.MidColor = clWhite
-        Frame.InnerBrush.Gradient.StartColor = 4210752
-        Frame.InnerBrush.Gradient.Visible = True
-        Frame.MiddleBrush.BackColor = clYellow
-        Frame.MiddleBrush.Gradient.EndColor = 8553090
-        Frame.MiddleBrush.Gradient.MidColor = clWhite
-        Frame.MiddleBrush.Gradient.StartColor = clGray
-        Frame.MiddleBrush.Gradient.Visible = True
-        Frame.OuterBrush.BackColor = clGreen
-        Frame.OuterBrush.Gradient.EndColor = 4210752
-        Frame.OuterBrush.Gradient.MidColor = clWhite
-        Frame.OuterBrush.Gradient.StartColor = clSilver
-        Frame.OuterBrush.Gradient.Visible = True
-        Frame.Width = 4
-        OtherSlice.Legend.Visible = False
-        Data = {
-          04080000000000000000E07C40FF04000000436172730000000000C08040FF06
-          00000050686F6E65730000000000688340FF060000005461626C657300000000
-          00807140FF080000004D6F6E69746F72730000000000006740FF050000004C61
-          6D70730000000000107140FF090000004B6579626F617264730000000000E079
-          40FF0500000042696B65730000000000E06440FF06000000436861697273}
-        Detail = {0000000000}
-      end
-      object MarkTips1: TMarksTipTool
-        Format.CustomPosition = True
-        Format.Left = 0
-        Format.TextAlignment = taCenter
-        Format.Top = 0
-        Format.Visible = False
-      end
     end
   end
   object BIGrid1: TBIGrid
@@ -192,6 +155,15 @@ object SeriesImport: TSeriesImport
     TabOrder = 2
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
+    object Series1: TPointSeries
+      ClickableLine = False
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Y'
+      YValues.Order = loNone
+    end
   end
   object Panel1: TPanel
     Left = 0

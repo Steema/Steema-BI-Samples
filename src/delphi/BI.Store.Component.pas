@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Importing data from TComponent             }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.Store.Component;
 
 interface
@@ -29,6 +35,8 @@ type
   protected
     function DoImport(const AComponent: TComponent):TDataItem; virtual;
     procedure GetItems(const AData:TDataItem); override;
+    class function GuessFrom(const AStrings:TStrings):TDataItem; overload; static;
+    class function GuessFrom(const AString:String):TDataItem; overload; static;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     class function StringsOf(const ASource:TComponent):TStrings; virtual;

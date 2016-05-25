@@ -27,7 +27,7 @@ package VCLChartTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'VCL TeeChart for TeeBI'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,
@@ -41,6 +41,6 @@ contains
   BI.VCL.Visualizer.Chart in '..\VCL\BI.VCL.Visualizer.Chart.pas',
   BI.VCL.Editor.Visualizer.Chart in '..\VCL\BI.VCL.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
   BI.VCL.Editor.Chart in '..\VCL\BI.VCL.Editor.Chart.pas' {BIChartEditor},
-  BI.VCL.Chart.Functions in '..\VCL\BI.VCL.Chart.Functions';
+  BI.VCL.ChartFunctions in '..\VCL\BI.VCL.ChartFunctions.pas';
 
 end.

@@ -27,7 +27,7 @@ package TeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Tee BI Runtime'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

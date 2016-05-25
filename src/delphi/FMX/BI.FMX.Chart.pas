@@ -30,13 +30,6 @@ uses
   {$ENDIF}
   {$ENDIF}
 
-  // XE6 dcc32 BUG, workaround not available
-  {$IF DECLARED(TeeVCLBuildVersionInteger)}
-    {$IF TeeVCLBuildVersionInteger >= 160406}
-      {$DEFINE SERIESLABELSRESIZE}
-    {$ENDIF}
-  {$ENDIF}
-
   {$IFDEF FMX}
   System.UITypes, FMXTee.Chart, FMXTee.Engine, FMXTee.Series,
   {$ELSE}
@@ -52,6 +45,11 @@ uses
   {$ENDIF}
 
   BI.Data, BI.Arrays, BI.Summary, BI.DataSource;
+
+// XE6 dcc32 BUG, workaround not available
+{$IF CompilerVersion>27}
+{$I BI.Chart.Options.inc} // <-- see .inc contents for reason/explanation
+{$ENDIF}
 
 const
   WhiteColor={$IFDEF FMX}TAlphaColors.White{$ELSE}clWhite{$ENDIF};
@@ -79,11 +77,12 @@ type
     procedure CreateXYZ(const X,Y,Z:TDataItem);
     procedure FinishXYZ;
     class function GetDateTime(const AData:TDataItem; const Index:TInteger; const Reverse:Boolean):TDateTime;
-    procedure TryAddUniqueTool(const AClass:TTeeCustomToolClass; const AName:String);
+    procedure TryAddUniqueTool(const AOwner:TComponent;
+                               const AClass:TTeeCustomToolClass;
+                               const AName:String);
     procedure TryDisableTool(const AClass:TTeeCustomToolClass; const ADisable:Boolean);
     {$ENDIF}
 
-    class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
     procedure Init;
     function InitCountSeries(const ACount:TInteger):TChartSeries;
     function NewSeries(const AClass:TChartSeriesClass):TChartSeries; overload;
@@ -117,6 +116,9 @@ type
     function FillXY(const AData:TDataSet; const X,Y:Integer):TChartSeries; overload;
 
     Function GetParentComponent: TComponent; override;
+
+    class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
+
     Function HasParent:Boolean; override;
 //    procedure SetBounds(X, Y, AWidth, AHeight: Single); override;
     procedure SetParentComponent(AParent: TComponent); override;

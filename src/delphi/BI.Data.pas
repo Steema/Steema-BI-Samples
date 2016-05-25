@@ -242,7 +242,6 @@ type
     end;
 
   var
-    FDataMap : TDataMap;
     FHistory : TImportHistory;
     FItems   : TDataItems;
 
@@ -281,6 +280,7 @@ type
     procedure SetProvider(const Value: TDataProvider);
   protected
     FCount   : TInteger;
+    FDataMap : TDataMap;
     FKind    : TDataKind;
     FStats   : TDataStats;
 
@@ -312,11 +312,10 @@ type
 
     function MaxTextLength:Integer;
 
-    procedure SetInternalDate(const ADate:TDateTimePart);
     procedure CheckEmptyName;
     procedure ClearDelay;
     procedure CloneData(const ASource:TDataItem; const AStart,ACount:TInteger);
-    function CreateMap:TDataMap;
+    class function CreateMap(const AKind:TDataKind):TDataMap;
     function CreateStats:TDataStats;
 
     function ExistsBefore(const AIndex:TInteger):Boolean;
@@ -326,6 +325,7 @@ type
     function HasItems:Boolean; inline;
     function HasMaster:Boolean;
 
+    procedure SetInternalDate(const ADate:TDateTimePart);
     procedure SwapRows(const A,B:TInteger); //virtual;
   public
     // Arrays containing the data values:

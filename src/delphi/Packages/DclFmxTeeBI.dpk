@@ -28,7 +28,7 @@ package DclFmxTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Tee BI Firemonkey Components'}
 {$DESIGNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

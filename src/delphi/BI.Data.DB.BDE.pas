@@ -8,6 +8,9 @@ unit BI.Data.DB.BDE;
 
 interface
 
+// "Engine" class to support importing BDE ("Borland Database Engine")
+// databases, tables and queries (TDatabase, TTable and TQuery components)
+
 uses
   System.Classes, System.Types,
   Data.DB, BDE.DBTables, BI.Data, BI.Data.DB, BI.Persist, BI.DataSource;
@@ -25,10 +28,10 @@ type
     class function DriverToName(const ADriver:String):String; override;
     class function GetConnectionName(const AConnection:TCustomConnection):String; override;
     class function GetDriver(const AIndex:Integer):String; override;
+    class function GetItemNames(const AConnection:TCustomConnection; const IncludeSystem:Boolean):TStrings; override;
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; override;
     class function GetSchemas(const AConnection:TCustomConnection):TStrings;
     class function GetTable(const AConnection:TCustomConnection; const AName:String):TDataSet; override;
-    class function GetTableNames(const AConnection:TCustomConnection):TStrings; override;
     class procedure GuessForeignKeys(const AName:String; const Table:TDataSet; const AData:TDataItem; const Source:TBISource); override;
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;

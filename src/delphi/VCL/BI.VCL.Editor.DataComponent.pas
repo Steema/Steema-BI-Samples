@@ -51,6 +51,7 @@ type
     procedure FillTree;
   protected
     FCurrent : TObject;
+    IEdited : TComponent;
 
     procedure Add(const AParent:TTreeNode; const AComponent:TComponent; const AName:String); overload;
     procedure Add(const AParent,AComponent:TComponent); overload;
@@ -66,14 +67,11 @@ type
     class
        var OnGetDesignerNames : TProc<TBIAddComponent,TComponent>;
 
-    var
-      Edited : TComponent;
-
     function Data(const AOwner:TComponent):TDataItem;
 
     class function Import(const AOwner:TComponent; const AObject:TObject):TDataItem; static;
 
-    class function Choose(const AOwner:TComponent;
+    class function Choose(const AOwner,AEdited:TComponent;
                     const ACurrent:TComponent=nil):TComponent; static;
 
     procedure Select(const AObject:TObject);

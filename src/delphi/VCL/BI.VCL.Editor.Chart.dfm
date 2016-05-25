@@ -21,7 +21,7 @@ object BIChartEditor: TBIChartEditor
     Top = 0
     Width = 491
     Height = 360
-    ActivePage = TabOptions
+    ActivePage = TabData
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
@@ -32,7 +32,7 @@ object BIChartEditor: TBIChartEditor
         Top = 0
         Width = 354
         Height = 332
-        ActivePage = TabFinancial
+        ActivePage = TabGeo
         Align = alClient
         TabOrder = 0
         object Tab2D: TTabSheet
@@ -583,6 +583,15 @@ object BIChartEditor: TBIChartEditor
         object TabGeo: TTabSheet
           Caption = 'Geographic'
           ImageIndex = 3
+          object CBFlags: TCheckBox
+            Left = 16
+            Top = 134
+            Width = 137
+            Height = 17
+            Caption = 'Flags'
+            TabOrder = 0
+            OnClick = CBFlagsClick
+          end
         end
       end
       object Panel2: TPanel

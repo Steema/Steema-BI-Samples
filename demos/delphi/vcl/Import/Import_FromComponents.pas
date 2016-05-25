@@ -64,7 +64,7 @@ procedure TFromComponents.ImportDataset;
 begin
   BIGrid2.DestroyData;
 
-  BIGrid2.Data:=TBIDB.FromDataSet(ClientDataSet1);
+  BIGrid2.Data:=TBIDB.From(ClientDataSet1);
 end;
 
 procedure TFromComponents.Memo1Change(Sender: TObject);

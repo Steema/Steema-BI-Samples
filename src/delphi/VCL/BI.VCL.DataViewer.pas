@@ -87,8 +87,6 @@ type
     function SelectedItem:TDataItem;
 
     procedure TryAddInfoEditors(const AGrid:TObject);
-  protected
-    ICustomPosition : Boolean;
   public
     { Public declarations }
 

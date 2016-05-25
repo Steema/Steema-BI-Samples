@@ -201,10 +201,18 @@ object DataManager: TDataManager
     OnChange = PageControl1Change
     object TabSettings: TTabSheet
       Caption = 'Settings'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 16

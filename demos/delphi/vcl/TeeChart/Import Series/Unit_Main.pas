@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
   VCLTee.Series, BI.VCL.Grid, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart,
-  BI.VCL.Chart, Vcl.StdCtrls, VCLTee.TeeTools, BI.VCL.DataControl;
+  BI.VCL.Chart, Vcl.StdCtrls, BI.VCL.DataControl;
 
 type
   TSeriesImport = class(TForm)
@@ -17,7 +17,7 @@ type
     Button1: TButton;
     Button2: TButton;
     BITChart1: TBITChart;
-    Series1: TPieSeries;
+    Series1: TPointSeries;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -39,8 +39,7 @@ uses Unit_XYTest;
 
 procedure TSeriesImport.Button1Click(Sender: TObject);
 begin
-  BIChart1.Clear;
-  BIChart1.Fill(BIGrid1.Data);
+  BIChart1.Data:=BIGrid1.Data;
 end;
 
 procedure TSeriesImport.Button2Click(Sender: TObject);
@@ -55,11 +54,17 @@ end;
 
 procedure TSeriesImport.FormCreate(Sender: TObject);
 begin
+  // Fill Series1 with random sample values
+  Series1.FillSampleValues;
+
   // Convert Series1 to a TDataItem
   BIGrid1.Data:=TChartData.From(Series1);
 
   // Convert a TDataItem to a new Series
-  Chart1.AddSeries(TChartData.From(BIGrid1.Data, Self, TPieSeries));
+  Chart1.AddSeries(TChartData.From(BIGrid1.Data, Self, TLineSeries));
+
+  // Free Series1
+  Series1.Free;
 end;
 
 procedure TSeriesImport.FormDestroy(Sender: TObject);

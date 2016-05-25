@@ -28,7 +28,7 @@ package VCLChartProTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'VCL TeeChart for TeeBI'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,
@@ -44,13 +44,13 @@ requires
   TeeTree2D23Tee9;
 
 contains
+  BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas',
   BI.VCL.PDF in '..\VCL\BI.VCL.PDF.pas',
   BI.VCL.LinkDiagram in '..\VCL\BI.VCL.LinkDiagram.pas' {DataDiagram},
   BI.VCL.Dashboard.Chart in '..\VCL\BI.VCL.Dashboard.Chart.pas',
   BI.VCL.Visualizer.Chart in '..\VCL\BI.VCL.Visualizer.Chart.pas',
   BI.VCL.Editor.Visualizer.Chart in '..\VCL\BI.VCL.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
-  BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas',
-  BI.VCL.Editor.Chart in '..\VCL\BI.VCL.Editor.Chart.pas' {BIChartEditor};
-// dcp Error !!   BI.VCL.Chart.Functions in '..\VCL\BI.VCL.Chart.Functions';
+  BI.VCL.Editor.Chart in '..\VCL\BI.VCL.Editor.Chart.pas' {BIChartEditor},
+  BI.VCL.ChartFunctions in '..\VCL\BI.VCL.ChartFunctions.pas';
 
 end.

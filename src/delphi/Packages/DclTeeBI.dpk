@@ -27,7 +27,7 @@ package DclTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Tee BI VCL Components'}
 {$DESIGNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

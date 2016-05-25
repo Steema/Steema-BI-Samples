@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
-  VCLTee.Series, BI.VCL.Grid, VCLTee.TeeTools, Vcl.ExtCtrls, VCLTee.TeeProcs,
+  VCLTee.Series, BI.VCL.Grid, Vcl.ExtCtrls, VCLTee.TeeProcs,
   VCLTee.Chart, BI.VCL.Chart, BI.VCL.DataControl;
 
 type
@@ -33,7 +33,6 @@ procedure TFormXYTest.FormCreate(Sender: TObject);
 var t : Integer;
 begin
   // Fill series with random XY values
-
   Series1.Clear;
 
   Series1.XValues.Order:=TChartListOrder.loNone;
@@ -51,6 +50,12 @@ begin
   (Chart1[0] as TPointSeries).Pointer.Style:=psCircle;
   Chart1[0].ColorEachPoint:=True;
   Chart1.View3D:=False;
+
+  // Free Series1
+  Series1.Free;
+
+  // Test automatic charting of Grid data
+  BIChart1.Data:=BIGrid1.Data;
 end;
 
 procedure TFormXYTest.FormDestroy(Sender: TObject);

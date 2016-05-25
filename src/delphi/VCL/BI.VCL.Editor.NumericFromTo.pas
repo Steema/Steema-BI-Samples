@@ -5,18 +5,20 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
-  BI.Data;
+  BI.Data, Vcl.ExtCtrls;
 
 type
   TNumericFromTo = class(TForm)
+    PanelTracks: TPanel;
     Label1: TLabel;
-    TBFrom: TTrackBar;
     Label2: TLabel;
-    TBTo: TTrackBar;
     LFrom: TLabel;
     LTo: TLabel;
+    TBFrom: TTrackBar;
+    TBTo: TTrackBar;
     procedure TBFromChange(Sender: TObject);
     procedure TBToChange(Sender: TObject);
+    procedure PanelTracksResize(Sender: TObject);
   private
     { Private declarations }
 

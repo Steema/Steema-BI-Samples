@@ -63,6 +63,8 @@ type
     FOnError : TBIError;
     FOnImporting : TBIProgress;
 
+    ILoading : Boolean;
+
     function GetKind: TDataDefinitionKind;
     procedure GetRefreshSettings;
     function GetStrings:TStrings;
@@ -79,6 +81,7 @@ type
 
     Volatile : Boolean; // When True, changes to Strings aren't saved
 
+    procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure Load; overload;
     procedure LoadFromString(const AText:String);

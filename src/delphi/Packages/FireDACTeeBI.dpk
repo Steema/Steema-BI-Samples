@@ -27,7 +27,7 @@ package FireDACTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'TeeBI Components for FireDAC'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

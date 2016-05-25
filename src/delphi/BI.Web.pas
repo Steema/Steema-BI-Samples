@@ -38,6 +38,15 @@ type
     function ListFiles(const AFolder,AIncludeMask:String): TStrings; virtual; abstract;
   end;
 
+  TWebURL=record
+  private
+    procedure RemoveParam(const ATag:String);
+  public
+    Host : String;
+    Port : Integer;
+    Params : String;
+  end;
+
   TBIHttp=class abstract
   private
     class var
@@ -52,6 +61,7 @@ type
 
     procedure Get(const AURL:String; const AStream:TStream); overload; virtual; abstract;
     function Get(const AURL:String):String; overload; virtual; abstract;
+    class function Parse(const AURL:String):TWebURL; virtual; abstract;
     procedure SetProxy(const AProxy:TWebProxy); virtual; abstract;
 
     class property OnProgress:TBIHttpProgress read FOnProgress write FOnProgress;
@@ -70,6 +80,7 @@ type
 
     function GetHttp: TBIHttp;
   protected
+    function DoFromURL(const AURL:String): TDataItem;
     function GetDataStream(const Data:String; const Children:Boolean; const Compress:TWebCompression): TStream;
 
   public
@@ -96,17 +107,25 @@ type
 
     class function FTP(const ADef:TDataDefinition):TBIFtp; static;
 
-    procedure GetData(const Data:String; var Items:TDataArray; const Compress:TWebCompression); overload;
-    procedure GetData(const AData:TDataItem; const Children:Boolean; const Compress:TWebCompression); overload;
-    procedure GetData(const AOrigin:String; const AData:TDataItem; const Children:Boolean; const Compress:TWebCompression); overload;
-    function GetData(const AData:String; const Children:Boolean; const Compress:TWebCompression):TDataItem; overload;
+    procedure GetData(const Data:String; var Items:TDataArray; const ACompress:TWebCompression); overload;
+    procedure GetData(const AData:TDataItem; const Children:Boolean; const ACompress:TWebCompression); overload;
+    procedure GetData(const AOrigin:String; const AData:TDataItem; const Children:Boolean; const ACompress:TWebCompression); overload;
+    function GetData(const AData:String; const Children:Boolean; const ACompress:TWebCompression):TDataItem; overload;
 
     function GetData:String; overload;
-    function GetMetaData(const S:String; const Compress:TWebCompression): TDataItem;
+    function GetMetaData(const S:String; const ACompress:TWebCompression): TDataItem;
     function GetStream(const S:String):TStream;
     function GetString(const S:String):String;
 
-    function Load(const AData: String; const Compress: TWebCompression=TWebCompression.Yes): TDataItem;
+    function Load(const AData: String; const ACompress: TWebCompression=TWebCompression.Yes): TDataItem;
+
+    class function FromURL(const AServer:String;
+                           const APort:Integer;
+                           const AParams:String;
+                           const ACompress: TWebCompression=TWebCompression.Yes): TDataItem; overload; static;
+
+    class function FromURL(const AURL:String;
+                           const ACompress: TWebCompression=TWebCompression.Yes): TDataItem; overload; static;
 
     class function Query(const AStore,AData,ASQL:String):TDataItem; static;
 

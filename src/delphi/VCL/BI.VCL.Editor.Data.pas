@@ -113,6 +113,9 @@ type
     LFTPStatus: TLabel;
     Button6: TButton;
     OpenDialogDatabase: TOpenDialog;
+    Label1: TLabel;
+    EWebURL: TEdit;
+    RGKind: TRadioGroup;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -155,6 +158,10 @@ type
     procedure EFTPUserChange(Sender: TObject);
     procedure EFTPPasswordChange(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure LayoutWebDataResize(Sender: TObject);
+    procedure EWebURLChange(Sender: TObject);
+    procedure RGKindClick(Sender: TObject);
+    procedure BOKClick(Sender: TObject);
   private
     { Private declarations }
     FOnChangeWeb : TNotifyEvent;
@@ -177,7 +184,9 @@ type
     procedure TryChangeMultiLine(const ATag,AText:String);
     procedure TryWebChange(const ATag, AText: String);
     procedure TryFillWebData;
+    procedure TrySetHostPort;
     procedure WebSettings;
+    function WebURL:String;
   protected
     ITabFormats : TTabSheet;
 
@@ -193,6 +202,7 @@ type
     class function Edit(const AOwner:TComponent; const AData:TDataDefinition):Boolean; static;
 
     class function NewDefinition(const AOwner:TComponent;
+                       const ADataOwner:TComponent;
                        const AKind:TDataDefinitionKind;
                        out AName:String):TDataDefinition; static;
     procedure Select(const AStore,AName:String); overload;

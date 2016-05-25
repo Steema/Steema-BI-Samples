@@ -110,6 +110,7 @@ type
     CBColors: TComboBox;
     PanelY: TPanel;
     CBHoriz2D: TComboBox;
+    CBFlags: TCheckBox;
     procedure PageControl1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -143,6 +144,7 @@ type
     procedure CBVolumeChange(Sender: TObject);
     procedure CBStackedChange(Sender: TObject);
     procedure CBHoriz2DChange(Sender: TObject);
+    procedure CBFlagsClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -161,6 +163,7 @@ type
 
     procedure Changed3DItem;
     procedure ChangeY(const AIndex:Integer; const ACombo:TComboBox);
+    procedure CreateChartEditor;
     function CurrentText:TDataItem;
     function DataOf(const ACombo:TComboBox):TDataItem;
     procedure DoExchange(const A,B:TComboBox);
@@ -170,6 +173,7 @@ type
     procedure SetModeOptions;
     procedure SetPostSettings;
     procedure SetChart(const Value: TBIChart);
+    procedure SetChartEditorChart;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure RefreshData(const AItems:TBIChartItems); overload;
