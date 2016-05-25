@@ -20,7 +20,7 @@ uses
   Winapi.Windows, System.Win.Registry, System.SysUtils,
   BI.DataSource, System.IOUtils, System.Types, BI.Persist,
 
-  BI.Data.DB.Tester, BI.Data.Dataset, BI.Data.ClientDataset,
+  BI.Data.DB.FireDAC.AllDrivers, BI.Data.Dataset, BI.Data.ClientDataset,
   BI.Data.XML, BI.Data.JSON, BI.Data.Excel, BI.Data.HTML, BI.Data.DB;
 
 function GetStudioDemosFolder(const AVersion:Integer; out AFolder:String):Boolean;
