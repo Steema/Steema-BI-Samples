@@ -3,9 +3,9 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 11 hotfix 2, May-23th 2016)
+[Download latest version](https://drive.google.com/file/d/0BymV3q6di65nTHFOU2U1aENITFk) (Beta 12, May-25th 2016)
 
-[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 11)
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 12)
 
  
 ### What is TeeBI ?
