@@ -1,6 +1,72 @@
 # TeeBI Release Notes
 -------------------
 
+## 25th-May-2016  Beta 12
+
+This release contains mostly bug fixes, solving issues in beta 11.
+
+- Fixed issue with XE10.1 Berlin compiler ("Conditional expression is always False") when compiling the BIWeb server Firemonkey version.
+
+- Fixed issue with XE6 compiler (internal error "Bad packaged unit format")
+
+- Fixed compiler errors when compiling TeeBI without the "Pro" version of TeeChart control library.
+
+- New support in TControlImporter to import data from controls with a "Text" property like TEdit, TLabeledEdit etc.
+
+- New URL property in TDataDefinition component (Web mode) to configure importing data from a BIWeb server at design-time or runtime, using the same URL as in a Web browser.
+
+- Added support for geographic (World map) automatic charts in BIChart.
+(When using the "Pro" version of TeeChart)
+
+- Improved design-time support for BIChart control.
+
+- Renamed unit:
+
+- BI.VCL.Chart.Functions -> BI.VCL.ChartFunctions
+- BI.FMX.Chart.Functions -> BI.FMX.ChartFunctions
+
+- These units have been renamed to workaround a compiler issue that was generating an error: "Bad packaged unit format".
+Having this problem fixed, TeeBI will soon provide all the available TeeChart "Function" classes as a simple providers of TDataItem (ie, calculating a Moving Average at design-time without coding, without the need of using a TChart)
+
+- Renamed methods:
+
+TBIDataSetSource 
+  AddItemField -> Add
+  AddItemFields -> Add
+
+  FieldOfData -> FieldOf
+  FromDataSet -> From
+  FromField -> From
+
+- New method:
+
+TBIDataSetSource.From to import an array of TField, and to import all datasets in a TCustomConnection.
+
+- BDE "Borland Database Engine"
+
+Fixed and improved support to import data using the BDE, in the same way it is done with FireDAC for other database engines.
+Supported components are: TDatabase, TTable and TQuery
+
+- New TDataInfo.GetMinMax class procedure to obtain the minimum and maximum value of all data in a TDataItem that is numeric (integer, single, etc) or datetime.
+
+- New BI.Expression TDateTimeSpan enumeration type, used by Dynamic Filter and in future Expression classes involving calculating "span" of datetime values.
+
+- Fixed persistence issue when loading data with "map" values in TeeBI binary format.
+
+- Fixed problem with Data Selector dialog at design-time, it was showing all forms and components belonging to the IDE instead of just the forms in the active project.
+
+- Improvements in Dynamic Filter editor dialog (VCL), adding specific controls to filter numeric, text and boolean data types.
+
+- New BI.Expression.Filter unit contains a preliminary version of TFilterItem class, that will be soon used by Dynamic Filter editor.
+This class enables data filtering with simple properties instead of having to write and pass expressions in string format, like for example:
+
+`MyFilter.Data:=MyDateTimeField;
+MyFilter.DateTime.Style := Last;
+MyFilter.DateTime.Period := TDateTimeSpan.Month;`
+
+- Multiple filter objects can then be used together as for example the "where" clause of BIQuery components and many other uses.
+
+
 ## 23th-May-2016  Beta 11 Hotfix 1 and 2
 
 - Fixed BIChart compilation errors when using TeeChart Lite / Standard version instead of Pro version
