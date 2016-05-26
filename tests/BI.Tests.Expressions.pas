@@ -36,7 +36,7 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils, System.Variants;
 
 const
   CRLF=#13#10;
@@ -192,7 +192,13 @@ begin
       tmpResult:=E.Value;
       Assert.IsNotNull(tmpResult,Test(t)+' evaluates to null');
 
-      Value:=tmpResult;
+      // Special case for Date, converting from Variant is not using the regional
+      // setting
+      if t=70 then
+         Value:=DateToStr(tmpResult)
+      else
+         Value:=tmpResult;
+
       Assert.AreEqual(Right,Value,Test(t)+' '+Left+' -> ('+Right+') different value: '+Value);
     finally
       E.Free;
@@ -253,6 +259,7 @@ begin
 
   FormatSettings:=TFormatSettings.Invariant;
   FormatSettings.ShortTimeFormat:='hh:mm:ss';
+  FormatSettings.ShortDateFormat:='M/d/yyyy';
 end;
 
 procedure TExpressions_Test.TearDown;
