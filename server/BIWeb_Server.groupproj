@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{976E3151-7771-4F45-91EE-2855080B78F4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="VCL\BI_VCL_Web.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="FMX\BI_FMX_Web.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Stress_Test\BIWeb_Stress_Test.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Monitor\BIWeb_Monitor.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BI_VCL_Web">
+        <MSBuild Projects="VCL\BI_VCL_Web.dproj"/>
+    </Target>
+    <Target Name="BI_VCL_Web:Clean">
+        <MSBuild Projects="VCL\BI_VCL_Web.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BI_VCL_Web:Make">
+        <MSBuild Projects="VCL\BI_VCL_Web.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="BI_FMX_Web">
+        <MSBuild Projects="FMX\BI_FMX_Web.dproj"/>
+    </Target>
+    <Target Name="BI_FMX_Web:Clean">
+        <MSBuild Projects="FMX\BI_FMX_Web.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BI_FMX_Web:Make">
+        <MSBuild Projects="FMX\BI_FMX_Web.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="BIWeb_Stress_Test">
+        <MSBuild Projects="Stress_Test\BIWeb_Stress_Test.dproj"/>
+    </Target>
+    <Target Name="BIWeb_Stress_Test:Clean">
+        <MSBuild Projects="Stress_Test\BIWeb_Stress_Test.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BIWeb_Stress_Test:Make">
+        <MSBuild Projects="Stress_Test\BIWeb_Stress_Test.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="BIWeb_Monitor">
+        <MSBuild Projects="Monitor\BIWeb_Monitor.dproj"/>
+    </Target>
+    <Target Name="BIWeb_Monitor:Clean">
+        <MSBuild Projects="Monitor\BIWeb_Monitor.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BIWeb_Monitor:Make">
+        <MSBuild Projects="Monitor\BIWeb_Monitor.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BI_VCL_Web;BI_FMX_Web;BIWeb_Stress_Test;BIWeb_Monitor"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BI_VCL_Web:Clean;BI_FMX_Web:Clean;BIWeb_Stress_Test:Clean;BIWeb_Monitor:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BI_VCL_Web:Make;BI_FMX_Web:Make;BIWeb_Stress_Test:Make;BIWeb_Monitor:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
