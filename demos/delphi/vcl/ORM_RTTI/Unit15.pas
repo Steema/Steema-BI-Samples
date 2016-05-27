@@ -7,7 +7,7 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Data, BI.Data.RTTI, BI.VCL.Grid,
   Space_Flights, Vcl.StdCtrls, System.Diagnostics, Vcl.ExtCtrls,
-  BI.VCL.DataControl;
+  BI.VCL.DataControl, BI.Persist;
 
 type
   TRTTIDemo = class(TForm)
@@ -99,9 +99,6 @@ begin
   RefreshGrid;
 end;
 
-type
-  TORMAccess=class(TRTTIProvider);
-
 procedure TRTTIDemo.Button5Click(Sender: TObject);
 const
   Samples=1000;
@@ -118,8 +115,14 @@ begin
 
   for t:=1 to Samples do
   begin
+    {$IF CompilerVersion>25}
     ORM.Add(tmp1);
     ORM.Add(tmp2);
+
+    {$ELSE}
+    // XE4 limitation 
+    ORM.Add([tmp1,tmp2]);
+    {$ENDIF}
   end;
 
   Caption:='Time to add '+Samples.ToString+' Objects: '+t1.ElapsedMilliseconds.ToString+' msec';
@@ -210,7 +213,15 @@ end;
 procedure TRTTIDemo.AddData;
 begin
   ORM.Add(Flights);
+
+  {$IF CompilerVersion>25}
   ORM.Add(Vostok1);
+
+  {$ELSE}
+  // XE4 limitation 
+  ORM.Add([Vostok1]);
+  {$ENDIF}
+
   ORM.Add(Apollo);
   ORM.Add(Viking,'Data');
 end;
