@@ -3,9 +3,20 @@ unit Unit_Summary;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
-  BI.FMX.Grid, BI.Data, BI.Summary, FMX.Controls.Presentation, FMX.StdCtrls;
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  FMX.Types, FMX.Controls, FMX.Forms, 
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.Layouts,
+  BI.FMX.Grid, BI.Data, BI.Summary, FMX.StdCtrls,
+  BI.FMX.DataControl;
 
 type
   TForm17 = class(TForm)
@@ -43,17 +54,34 @@ end;
 
 procedure TForm17.FormCreate(Sender: TObject);
 var Summary : TSummary;
+    ByEmployee : TGroupBy;
+    ByCompany : TGroupBy;
 begin
+  // Load data
   Demo:=TStore.Load('SQLite_Demo');
 
-  Summary:=TSummary.Create;
+  // Create Summary
+  Summary:=TSummary.Create(Self);
+
+  // Add Sum of Quantity
   Summary.AddMeasure(Demo['"Order Details"']['Quantity'],TAggregate.Sum);
 
-  Summary.AddGroupBy(Demo['Orders']['EmployeeID']).Layout:=TGroupByLayout.Rows;
-  Summary.AddGroupBy(Demo['Shippers']['CompanyName']).Layout:=TGroupByLayout.Rows;
+  // Add "By EmployeeID"
+  ByEmployee:=Summary.AddGroupBy(Demo['Orders']['EmployeeID']);
+  ByEmployee.Layout:=TGroupByLayout.Rows; // <-- optional
 
-  BIGrid1.Data:=TDataItem.Create(Summary);
+  // Add "By CompanyName"
+  ByCompany:=Summary.AddGroupBy(Demo['Shippers']['CompanyName']);
 
+  // NOTE: Delphi 10.1 Berlin Firemonkey Grid is capable of displaying
+  // sub-tables, thus TGroupByLayout.Columns is supported
+
+  ByCompany.Layout:=TGroupByLayout.Rows; // <-- optional
+
+  // Show Summary in BIGrid
+  BIGrid1.Data:=Summary.NewData;
+
+  // Tell grid to not display cells with duplicate content
   BIGrid1.Duplicates(BIGrid1.Data['EmployeeID'],True);
 end;
 

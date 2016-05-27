@@ -8,10 +8,6 @@ unit Main_Unit;
 
 interface
 
-{$IF CompilerVersion<=20}
-{$DEFINE FMX20}
-{$ENDIF}
-
 // This example contains several tests of TExpression class.
 
 // TExpression is a general-purpose class to parse and evaluate formulas.
@@ -22,10 +18,26 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
-  {$IFNDEF FMX20}
-  FMX.Controls.Presentation, FMX.ScrollBox,
+  FMX.Types, FMX.Controls, FMX.Forms, 
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
   {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.StdCtrls,
+
+  {$IF CompilerVersion<=28}
+  {$DEFINE HASFMX21}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX21}
+  FMX.ScrollBox,
+  {$ENDIF}
+
   FMX.Edit, FMX.Layouts, FMX.TreeView, BI.Expression,
   BI.Summary, BI.Data, BI.Data.Dataset, Data.DB, Datasnap.DBClient,
   BI.Data.DB,

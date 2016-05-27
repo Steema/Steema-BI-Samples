@@ -13,8 +13,17 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  FMX.Controls.Presentation, FMX.StdCtrls, FMX.WebBrowser, BI.FMX.Grid,
+  FMX.Types, FMX.Controls, FMX.Forms, 
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.StdCtrls, FMX.WebBrowser, BI.FMX.Grid,
   FMX.TabControl, FMX.Layouts, BI.Persist, BI.FMX.PDF,
   FMXTee.Canvas.PDF, FMX.ListBox, BI.FMX.DataControl;
 
@@ -51,6 +60,9 @@ implementation
 uses
   System.IOUtils, BI.Data;
 
+const
+  BrushKindSolid:TBrushKind=TBrushKind.{$IF CompilerVersion<26}bkSolid{$ELSE}Solid{$ENDIF};
+
 procedure TMainPDF.BCreatePDFClick(Sender: TObject);
 var tmp : TBIPDFExport;
     tmpFile : String;
@@ -66,7 +78,7 @@ begin
     begin
       tmp.Header.Font.Color:=TAlphaColors.White;
       tmp.Header.Font.SizeFloat:=10;
-      tmp.Header.Brush.Style:=TBrushKind.Solid;
+      tmp.Header.Brush.Style:=BrushKindSolid;
       tmp.Header.Brush.Color:=TAlphaColors.Green;
     end;
 
@@ -75,7 +87,7 @@ begin
 
     if CBAlternate.IsChecked then
     begin
-      tmp.RowFormat.Brush.Style:=TBrushKind.Solid;
+      tmp.RowFormat.Brush.Style:=BrushKindSolid;
 
       // Paint rows in alternate background
       tmp.RowFormat.Alternate.Visible:=True;

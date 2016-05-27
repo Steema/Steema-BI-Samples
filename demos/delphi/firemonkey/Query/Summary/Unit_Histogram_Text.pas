@@ -4,8 +4,18 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
-  BI.FMX.Grid, BI.Data, BI.Summary;
+  FMX.Types, FMX.Controls, FMX.Forms, 
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.Layouts,
+  BI.FMX.Grid, BI.Data, BI.Summary, BI.FMX.DataControl;
 
 type
   TFormHistogramText = class(TForm)
@@ -35,7 +45,7 @@ var Summary : TSummary;
 begin
   Demo:=TStore.Load('SQLite_Demo');
 
-  Summary:=TSummary.Create;
+  Summary:=TSummary.Create(Self);
   Summary.AddMeasure(Demo['"Order Details"']['Quantity'],TAggregate.Sum);
 
   ByName:=Summary.AddGroupBy(Demo['Customers']['CompanyName']);

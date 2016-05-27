@@ -4,16 +4,49 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.TabControl,
-  FMX.Layouts, BI.FMX.DataManager, BI.FMX.Grid, BI.Persist, FMX.ListView.Types,
-  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView, BI.Data,
-  FMX.ListBox, FMX.Controls.Presentation, FMX.StdCtrls, BI.Arrays,
+  FMX.Types, FMX.Controls, FMX.Forms, 
 
-  BI.Algorithm.Model, BI.Algorithm, FMX.ScrollBox, FMX.Memo,
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.TabControl,
+  FMX.Layouts, BI.FMX.DataManager, BI.FMX.Grid, BI.Persist, FMX.ListView.Types,
+
+  {$IF CompilerVersion<=29}
+  {$DEFINE HASFMX23}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX23}
+  FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
+  {$ENDIF}
+
+  FMX.ListView, BI.Data, FMX.ListBox, FMX.StdCtrls, BI.Arrays,
+
+  BI.Algorithm.Model, BI.Algorithm, 
+
+  {$IF CompilerVersion<=28}
+  {$DEFINE HASFMX21}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX21}
+  FMX.ScrollBox,
+  {$ENDIF}
+
+  FMX.Memo,
   BI.FMX.R.Console,
 
   // Two different R "engines" (cmd batch and native)
-  BI.Plugins.R.Command, BI.Plugins.R.opaR, Data.DB, BI.Dataset;
+  {$WARN UNIT_DEPRECATED OFF}
+  BI.Plugins.R.Command,  // <-- cmd batch
+
+  BI.Plugins.R.opaR, // <-- native R dll
+
+  Data.DB, BI.Dataset, BI.FMX.DataControl;
 
 type
   TRDatasetsDemo = class(TForm)
@@ -89,7 +122,8 @@ implementation
 
 uses
   System.Diagnostics,
-  BI.Algorithm.Classify, BI.Plugins.Python, BI.Plugins.R;
+  BI.Algorithm.Classify, BI.Plugins.Python, BI.Plugins.R,
+  BI.Algorithm.Register;
 
 function TRDatasetsDemo.SelectedAttributes:TDataArray;
 var t : Integer;
@@ -157,7 +191,7 @@ var Model : TSupervisedModel;
 begin
   CheckEngine;
 
-  Model:=SelectedModelClass.Create;  //  (CurrentData)
+  Model:=SelectedModelClass.Create(nil);  //  (CurrentData)
   try
     Model.Target:=SelectedTarget;
     Model.Attributes:=SelectedAttributes;

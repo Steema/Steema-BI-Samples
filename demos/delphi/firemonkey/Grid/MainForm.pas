@@ -4,11 +4,21 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Types, FMX.Controls, FMX.Forms, 
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs,
   Data.Bind.Controls, Fmx.Bind.Navigator, BI.FMX.Grid, FMX.Layouts,
   FMX.StdCtrls, FMX.TabControl,
   //BI.FMX.Editor.Grid,
-  BI.FMX.DataManager, FMX.Controls.Presentation, BI.FMX.DataControl;
+  BI.FMX.DataManager, BI.FMX.DataControl;
 
 type
   TGridDemoForm = class(TForm)

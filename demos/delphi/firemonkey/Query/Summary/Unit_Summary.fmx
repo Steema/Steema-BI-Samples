@@ -1,9 +1,10 @@
 object Form17: TForm17
   Left = 0
   Top = 0
-  Caption = 'Form17'
+  Caption = 'TeeBI Firemonkey - Simple Summary Example'
   ClientHeight = 480
   ClientWidth = 640
+  Position = OwnerFormCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
