@@ -19,6 +19,9 @@ uses
   TestInsight.DUnitX,
   {$ENDIF }
 
+  // XE8 and up includes DUnitX
+  {$IF CompilerVersion>28}
+
   {$IFDEF USECONSOLE}
   DUnitX.Loggers.Console,
   {$ELSE}
@@ -28,6 +31,12 @@ uses
   DUnitX.TestRunner,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
+
+  {$ELSE}
+  DUnitTestRunner,
+  GUITestRunner,  
+  {$ENDIF}
+
   BI.Tests.TDataItem in 'BI.Tests.TDataItem.pas',
   BI.Tests.Expressions in 'BI.Tests.Expressions.pas',
   BI.Tests.Exporting in 'BI.Tests.Exporting.pas',
