@@ -8,7 +8,8 @@ uses
   VCLTee.TeEngine, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, BI.VCL.Chart,
   Vcl.ComCtrls, Vcl.StdCtrls, VCLTee.Series,
   BI.VCL.R.Console,
-  BI.Algorithm.Model, BI.DataSource, System.Diagnostics, BI.VCL.DataViewer;
+  BI.Algorithm.Model, BI.DataSource, System.Diagnostics, BI.VCL.DataViewer,
+  BI.VCL.DataControl;
 
 // Dependencies:
 // To use the native R <--> Delphi access, the following libraries are required:
@@ -53,7 +54,7 @@ type
     BIGrid2: TBIGrid;
     Splitter3: TSplitter;
     BIGrid5: TBIGrid;
-    CheckBox1: TCheckBox;
+    CBNativeR: TCheckBox;
     LTime: TLabel;
     Panel4: TPanel;
     Label2: TLabel;
@@ -69,7 +70,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button3Click(Sender: TObject);
-    procedure CheckBox1Click(Sender: TObject);
+    procedure CBNativeRClick(Sender: TObject);
     procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
@@ -98,7 +99,13 @@ implementation
 uses
   BI.Data.CSV, System.IOUtils, BI.UI, BI.Algorithm,
   BI.Algorithm.Classify, BI.Algorithm.Regression, BI.Persist,
-  BI.Plugins.R, BI.Plugins.R.opaR, BI.Plugins.R.Command;
+  BI.Plugins.R, BI.Plugins.R.opaR,
+
+  {$WARN UNIT_DEPRECATED OFF}  // <-- avoid warning
+  BI.Plugins.R.Command,
+
+
+  BI.Algorithm.Register;
 
 const
   IrisFile='Iris.csv';
@@ -136,7 +143,7 @@ end;
 procedure TFormkNN.Button1Click(Sender: TObject);
 var Cross : TBICrossTable;
 begin
-  Cross:=TBICrossTable.Create;
+  Cross:=TBICrossTable.Create(nil);
   try
     Cross.Real:=Model.Predicted.Items[1];
     Cross.Predicted:=Model.Predicted.Items[2];
@@ -147,6 +154,16 @@ begin
   finally
     Cross.Free;
   end;
+end;
+
+// Returns an array of TDataItem, with all AItems from AData
+function ArrayOfItems(const AData:TDataItem; const AItems:Array of String):TDataArray;
+var s : String;
+begin
+  result:=nil;
+
+  for s in AItems do
+      result.Add(AData[s]);
 end;
 
 procedure TFormkNN.SetupData;
@@ -168,7 +185,9 @@ begin
   // Visualization
 
   BIGrid1.BindTo(Data);
-  BIChart1.Fill([Data['Petal.Length'],Data['Petal.Width']], Data['Species']);
+
+  BIChart1.Fill(ArrayOfItems(Data,['Petal.Length','Petal.Width','Species']));
+
   BIGrid2.BindTo(TDataMapAsData.FromData(Data['Species']));
   BIGrid3.BindTo(Normalized);
 end;
@@ -178,7 +197,7 @@ begin
   FitAndPredict;
 end;
 
-procedure TFormkNN.Button3Click(Sender: TObject);
+procedure AddLinearRegression(const AChart:TChart; const X,Y:TDataItem);
 const
   LinearTitle='Linear Regression';
 
@@ -187,9 +206,9 @@ const
   function FindLinearSeries:TChartSeries;
   var t : Integer;
   begin
-    for t:=0 to BIChart1.SeriesCount-1 do
-        if SameText(BIChart1[t].Title,LinearTitle) then
-           Exit(BIChart1[t]);
+    for t:=0 to AChart.SeriesCount-1 do
+        if SameText(AChart[t].Title,LinearTitle) then
+           Exit(AChart[t]);
 
     result:=nil;
   end;
@@ -204,17 +223,17 @@ begin
   if S<>nil then
      S.Free;
 
-  L:=TLinearRegression.Create;
+  L:=TLinearRegression.Create(nil);
   try
-    L.X:=Data['Petal.Length'];
-    L.Y:=Data['Petal.Width'];
+    L.X:=X;
+    L.Y:=Y;
 
     L.Calculate;
 
-    MinX:=BIChart1.MinXValue(BIChart1.Axes.Bottom);
-    MaxX:=BIChart1.MaxXValue(BIChart1.Axes.Bottom);
+    MinX:=AChart.MinXValue(AChart.Axes.Bottom);
+    MaxX:=AChart.MaxXValue(AChart.Axes.Bottom);
 
-    S:=BIChart1.AddSeries(TLineSeries);
+    S:=AChart.AddSeries(TLineSeries);
     S.Title:=LinearTitle;
 
     S.AddXY(MinX,(L.M*MinX)+L.B);
@@ -224,15 +243,20 @@ begin
   end;
 end;
 
+procedure TFormkNN.Button3Click(Sender: TObject);
+begin
+  AddLinearRegression(BIChart1.Chart,Data['Petal.Length'],Data['Petal.Width']);
+end;
+
 procedure TFormkNN.Button4Click(Sender: TObject);
 begin
   if Model is TRSupervisedModel then
      TRSupervisedModel(Model).Plot;
 end;
 
-procedure TFormkNN.CheckBox1Click(Sender: TObject);
+procedure TFormkNN.CBNativeRClick(Sender: TObject);
 begin
-  if CheckBox1.Checked then
+  if CBNativeR.Checked then
      TBIREngine.Engine:=TopaR.Create
   else
      TBIREngine.Engine:=TRCommand.Create;
@@ -246,7 +270,7 @@ begin
   Model.Free;
 
   // Create model
-  Model:=TSupervisedModelClass(CBModel.Items.Objects[CBModel.ItemIndex]).Create;
+  Model:=TSupervisedModelClass(CBModel.Items.Objects[CBModel.ItemIndex]).Create(Self);
 
   // Default Parameter for kNN:
   if Model is TBINearestNeighbour then
@@ -278,7 +302,7 @@ begin
   RConsole:=TBIRConsole.Create(Self);
   TUICommon.AddForm(RConsole,TabConsole);
 
-  CheckBox1Click(Self);
+  CBNativeRClick(Self);
 
   TAllModels.AllModels(CBModel.Items);
   CBModel.ItemIndex:=CBModel.Items.IndexOfObject(TObject(TBINearestNeighbour));

@@ -81,7 +81,7 @@ object FormkNN: TFormkNN
       TabOrder = 3
       OnClick = Button3Click
     end
-    object CheckBox1: TCheckBox
+    object CBNativeR: TCheckBox
       Left = 688
       Top = 11
       Width = 137
@@ -90,7 +90,7 @@ object FormkNN: TFormkNN
       Checked = True
       State = cbChecked
       TabOrder = 4
-      OnClick = CheckBox1Click
+      OnClick = CBNativeRClick
     end
     object Button4: TButton
       Left = 311
@@ -120,10 +120,6 @@ object FormkNN: TFormkNN
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Iris'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Splitter3: TSplitter
           Left = 0
           Top = 493
@@ -160,10 +156,6 @@ object FormkNN: TFormkNN
       object TabSheet2: TTabSheet
         Caption = 'Normalized'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object BIGrid3: TBIGrid
           Left = 0
           Top = 0
@@ -179,10 +171,6 @@ object FormkNN: TFormkNN
       object TabSheet3: TTabSheet
         Caption = 'Predicted'
         ImageIndex = 2
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object BIGrid4: TBIGrid
           Left = 0
           Top = 0
@@ -240,10 +228,6 @@ object FormkNN: TFormkNN
     TabOrder = 2
     object TabSheet4: TTabSheet
       Caption = 'Chart'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -257,70 +241,33 @@ object FormkNN: TFormkNN
           Top = 0
           Width = 755
           Height = 613
-          BackWall.Brush.Gradient.Direction = gdBottomTop
-          BackWall.Brush.Gradient.EndColor = clWhite
-          BackWall.Brush.Gradient.StartColor = 15395562
-          BackWall.Brush.Gradient.Visible = True
-          BackWall.Transparent = False
-          Foot.Font.Color = clBlue
-          Foot.Font.Name = 'Verdana'
-          Gradient.Direction = gdBottomTop
-          Gradient.EndColor = clWhite
-          Gradient.MidColor = 15395562
-          Gradient.StartColor = 15395562
-          Gradient.Visible = True
-          LeftWall.Color = 14745599
-          Legend.Font.Name = 'Verdana'
-          Legend.Shadow.Transparency = 0
-          RightWall.Color = 14745599
-          Title.Font.Name = 'Verdana'
-          Title.Text.Strings = (
-            'TBIChart')
-          BottomAxis.Axis.Color = 4210752
-          BottomAxis.Grid.Color = 11119017
-          BottomAxis.LabelsFormat.Font.Name = 'Verdana'
-          BottomAxis.TicksInner.Color = 11119017
-          BottomAxis.Title.Font.Name = 'Verdana'
-          DepthAxis.Axis.Color = 4210752
-          DepthAxis.Grid.Color = 11119017
-          DepthAxis.LabelsFormat.Font.Name = 'Verdana'
-          DepthAxis.TicksInner.Color = 11119017
-          DepthAxis.Title.Font.Name = 'Verdana'
-          DepthTopAxis.Axis.Color = 4210752
-          DepthTopAxis.Grid.Color = 11119017
-          DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
-          DepthTopAxis.TicksInner.Color = 11119017
-          DepthTopAxis.Title.Font.Name = 'Verdana'
-          LeftAxis.Axis.Color = 4210752
-          LeftAxis.Grid.Color = 11119017
-          LeftAxis.LabelsFormat.Font.Name = 'Verdana'
-          LeftAxis.TicksInner.Color = 11119017
-          LeftAxis.Title.Font.Name = 'Verdana'
-          RightAxis.Axis.Color = 4210752
-          RightAxis.Grid.Color = 11119017
-          RightAxis.LabelsFormat.Font.Name = 'Verdana'
-          RightAxis.TicksInner.Color = 11119017
-          RightAxis.Title.Font.Name = 'Verdana'
-          TopAxis.Axis.Color = 4210752
-          TopAxis.Grid.Color = 11119017
-          TopAxis.LabelsFormat.Font.Name = 'Verdana'
-          TopAxis.TicksInner.Color = 11119017
-          TopAxis.Title.Font.Name = 'Verdana'
           Align = alClient
-          BevelOuter = bvNone
+          UseDockManager = False
+          Padding.Top = 24
+          ParentBackground = False
           TabOrder = 0
-          DefaultCanvas = 'TGDIPlusCanvas'
-          ColorPaletteIndex = 0
+          object BITChart1: TBITChart
+            Left = 0
+            Top = 24
+            Width = 755
+            Height = 589
+            TabOrder = 0
+            DefaultCanvas = 'TGDIPlusCanvas'
+            ColorPaletteIndex = 9
+            object TMarksTipTool
+              Format.CustomPosition = True
+              Format.Left = 0
+              Format.TextAlignment = taCenter
+              Format.Top = 0
+              Format.Visible = False
+            end
+          end
         end
       end
     end
     object TabConsole: TTabSheet
       Caption = 'Console'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
 end
