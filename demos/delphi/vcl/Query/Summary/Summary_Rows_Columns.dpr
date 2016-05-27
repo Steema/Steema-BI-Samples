@@ -8,7 +8,7 @@ uses
   Unit_Summary in 'Unit_Summary.pas' {FormSummary},
   Vcl.Themes,
   Vcl.Styles,
-  BI.Tests.SummarySamples in '..\..\github\tests\BI.Tests.SummarySamples.pas';
+  BI.Tests.SummarySamples in '..\..\..\..\..\tests\BI.Tests.SummarySamples.pas';
 
 {$R *.res}
 
