@@ -166,8 +166,12 @@ uses
   BI.VCL.DataTree, BI.Tests.SummarySamples, BI.Persist, BI.VCL.Editor.Stores,
   BI.VCL.DataManager, BI.VCL.Grid.DBGrid, BI.VCL.Editor.Chart,
 
+  {$IF CompilerVersion>27} // RAD XE7 and up
+  System.Threading,
+  {$ENDIF}
+
   BI.Data.JSON, BI.Data.XML, BI.Data.CSV, BI.Data.Excel,
-  BI.Languages.English, BI.UI, BI.Summary.Totals, System.Threading;
+  BI.Languages.English, BI.UI, BI.Summary.Totals;
 
 procedure AddStyles(const Items:TStrings);
 var s : String;
@@ -285,6 +289,8 @@ procedure TTest.Run(const MultiCPU:Boolean);
 var t : Integer;
     t1 : TStopwatch;
 begin
+
+  {$IF CompilerVersion>27} // RAD XE7 and up
   if MultiCPU then
   begin
     t1:=TStopwatch.StartNew;
@@ -298,6 +304,8 @@ begin
     Name:='Total: '+t1.ElapsedMilliseconds.ToString+' msec';
   end
   else
+  {$ENDIF}
+
   begin
     for t:=0 to Count-1 do
     begin
