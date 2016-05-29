@@ -21,6 +21,15 @@ uses
   Data.Bind.Components, Data.Bind.ObjectScope, System.Rtti,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Grid, Data.Bind.DBScope, FMX.Layouts, FMX.Grid,
+
+  {$IF CompilerVersion<31}
+  {$DEFINE HASFMX22}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX22}
+  FMX.Grid.Style,
+  {$ENDIF}
+  
   FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FMX.Edit;
 
 type
