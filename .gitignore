@@ -17,3 +17,9 @@ __history
 *.vlb
 *.rsm
 *.exe
+*.bak
+*.o
+*.ppu
+*.compiled
+*.or
+*.dbg
