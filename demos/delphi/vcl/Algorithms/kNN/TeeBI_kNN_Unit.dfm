@@ -120,6 +120,10 @@ object FormkNN: TFormkNN
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Iris'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Splitter3: TSplitter
           Left = 0
           Top = 493
@@ -156,6 +160,10 @@ object FormkNN: TFormkNN
       object TabSheet2: TTabSheet
         Caption = 'Normalized'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object BIGrid3: TBIGrid
           Left = 0
           Top = 0
@@ -254,13 +262,6 @@ object FormkNN: TFormkNN
             TabOrder = 0
             DefaultCanvas = 'TGDIPlusCanvas'
             ColorPaletteIndex = 9
-            object TMarksTipTool
-              Format.CustomPosition = True
-              Format.Left = 0
-              Format.TextAlignment = taCenter
-              Format.Top = 0
-              Format.Visible = False
-            end
           end
         end
       end
@@ -268,6 +269,10 @@ object FormkNN: TFormkNN
     object TabConsole: TTabSheet
       Caption = 'Console'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
 end

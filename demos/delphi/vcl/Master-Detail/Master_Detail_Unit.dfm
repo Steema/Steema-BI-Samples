@@ -66,16 +66,15 @@ object MasterDetailForm: TMasterDetailForm
       Align = alClient
       Color = clWhite
       UseDockManager = False
+      Padding.Top = 24
       ParentBackground = False
       ParentColor = False
       TabOrder = 1
-      ExplicitLeft = 456
-      ExplicitWidth = 312
       object BITChart1: TBITChart
         Left = 0
-        Top = 0
+        Top = 24
         Width = 368
-        Height = 260
+        Height = 236
         BackWall.Brush.Gradient.Direction = gdBottomTop
         BackWall.Brush.Gradient.EndColor = clWhite
         BackWall.Brush.Gradient.StartColor = 15395562
@@ -124,23 +123,15 @@ object MasterDetailForm: TMasterDetailForm
         TopAxis.TicksInner.Color = 11119017
         TopAxis.Title.Font.Name = 'Verdana'
         TabOrder = 0
-        ExplicitWidth = 312
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 9
         object Splitter2: TSplitter
           Left = 0
           Top = 0
-          Height = 260
+          Height = 236
           ExplicitLeft = 152
           ExplicitTop = 80
           ExplicitHeight = 100
-        end
-        object MarkTips1: TMarksTipTool
-          Format.CustomPosition = True
-          Format.Left = 0
-          Format.TextAlignment = taCenter
-          Format.Top = 0
-          Format.Visible = False
         end
       end
     end
