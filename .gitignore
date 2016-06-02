@@ -23,3 +23,10 @@ __history
 *.compiled
 *.or
 *.dbg
+*.map
+*.tds
+*.drc
+*.MSR
+*.nmt
+demos/lazarus/BIGrid/lib/
+*.nlt
