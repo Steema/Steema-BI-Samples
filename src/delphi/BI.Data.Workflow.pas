@@ -34,7 +34,7 @@ interface
 
 uses
   System.Classes, BI.Data, BI.Persist, BI.Query,
-  BI.DataSource, BI.Summary, BI.Store.Component;
+  BI.DataSource, BI.Summary, BI.Store.Component, BI.Data.CollectionItem;
 
 type
   TWorkflowAction=class(TBaseDataImporter)
@@ -83,12 +83,14 @@ type
     property Items[const Index:Integer]:TWorkflowItem read Get write Put; default;
   end;
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
               {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
               {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
+  {$ENDIF}
   {$ENDIF}
   TBIWorkflow=class(TComponent)
   private
@@ -167,7 +169,7 @@ type
     Destructor Destroy; override;
 
     function Add(const AData:TDataItem;
-                 const AStyle:TQueryItemStyle=TQueryItemStyle.Automatic;
+                 const AStyle:TDimensionStyle=TDimensionStyle.Automatic;
                  const IsActive:Boolean=True): TQueryItem; overload;
 
     function Add(const AData:TDataItem;

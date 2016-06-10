@@ -10,7 +10,7 @@ unit TeeBIDebugFrame;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  Winapi.Windows, Winapi.Messages, System.SysUtils,
   Vcl.Graphics, Vcl.Forms, Vcl.Dialogs,
   ToolsAPI, BI.VCL.DataViewer, Classes, Controls, StdCtrls;
 

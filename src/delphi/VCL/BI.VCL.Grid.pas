@@ -13,9 +13,9 @@ uses
   {$IFNDEF FPC}
   System.UITypes,
   {$ENDIF}
-  VCL.Controls, VCL.Forms, VCL.Grids, Data.DB, BI.Data,
-  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus, BI.UI.Colors, BI.UI,
-  BI.VCL.DataControl, BI.Expression;
+  VCL.Controls, VCL.Forms, Data.DB, BI.Data,
+  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus,
+  BI.UI, BI.VCL.DataControl, BI.Expression;
 
 type
   TBIGridPluginClass=class of TBIGridPlugin;
@@ -31,6 +31,7 @@ type
     procedure AutoWidth; virtual; abstract;
     procedure ChangedAlternate(Sender:TObject); virtual; abstract;
     function GetDataSource: TDataSource; virtual; abstract;
+    function GetEditorClass:String; virtual; abstract;
     function GetReadOnly:Boolean; virtual; abstract;
     function GetTotals:Boolean; virtual; abstract;
     procedure SetDataSource(const Value: TDataSource); virtual; abstract;
@@ -51,6 +52,7 @@ type
     function GetObject:TObject; virtual; abstract;
 
     property DataSource:TDataSource read GetDataSource write SetDataSource;
+    property EditorClass:String read GetEditorClass;
     property ReadOnly:Boolean read GetReadOnly write SetReadOnly;
     property Totals:Boolean read GetTotals write SetTotals;
   end;
@@ -78,6 +80,8 @@ type
     procedure SetEnabled(const Value: Boolean); override;
   end;
 
+  TGridShowItems=(Automatic, Yes, No); //, SubTables);
+
   TGridSearch=class(TBaseEnabled)
   protected
     procedure SetEnabled(const Value: Boolean); override;
@@ -97,14 +101,16 @@ type
     FOnDataChange : TNotifyEvent;
     FRowNumbers : TRowNumbers;
     FSearch : TGridSearch;
-    FShowItems : Boolean;
+    FShowItems : TGridShowItems;
 
     procedure ChangedRow(Sender: TObject; Field: TField);
     function GetDataSource: TDataSource;
     function GetReadOnly: Boolean;
     function GetTotals:Boolean;
+    function HasSubItem: Boolean;
     procedure HideShowItems;
     function PluginControl:TWinControl;
+
     procedure SetAlternate(const Value: TAlternateColor);
     procedure SetDataSource(const Value: TDataSource);
     procedure SetGridFilters(const Value: TGridFilters);
@@ -112,11 +118,14 @@ type
     procedure SetReadOnly(const Value: Boolean);
     procedure SetRowNumbers(const Value: TRowNumbers);
     procedure SetSearch(const Value: TGridSearch);
-    procedure SetShowItems(const Value: Boolean);
+    procedure SetShowItems(const Value: TGridShowItems);
     procedure SetTotals(const Value: Boolean);
     procedure TryShowItems;
   protected
     procedure SetDataDirect(const Value: TDataItem); override;
+
+    function SubItem:TDataItem;
+    function SubGrid:TBIGridPlugin;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
@@ -136,7 +145,7 @@ type
     property ReadOnly:Boolean read GetReadOnly write SetReadOnly default True;
     property RowNumbers:TRowNumbers read FRowNumbers write SetRowNumbers;
     property Search:TGridSearch read FSearch write SetSearch;
-    property ShowItems:Boolean read FShowItems write SetShowItems default False;
+    property ShowItems:TGridShowItems read FShowItems write SetShowItems default TGridShowItems.Automatic;
     property Totals:Boolean read GetTotals write SetTotals default False;
 
     property OnDataChange:TNotifyEvent read FOnDataChange write FOnDataChange;
@@ -160,6 +169,8 @@ type
     class var Diagram : TDiagramEvent;
 
     class procedure AddForm(const AForm: TCustomForm; const AParent: TWinControl); static;
+    class function AutoTest:Boolean; static;
+    class function EditColor(const AOwner:TComponent; const AColor:TColor; out ANew:TColor):Boolean; static;
     class procedure LoadPosition(const AForm:TCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AParent:TControl); static;
     class procedure SavePosition(const AForm:TCustomForm; const Key:String); static;

@@ -16,7 +16,7 @@ uses
   {$IFNDEF FPC}
   System.UITypes,
   {$ENDIF}
-  
+
   BI.Arrays, BI.Data, BI.DataSource,
 
   {$IFDEF FMX}
@@ -43,7 +43,7 @@ uses
   FMXTee.Tools.SubChart,
   {$ENDIF}
 
-  BI.FMX.Visualizer
+  BI.FMX.Visualizer, BI.FMX.Chart
   {$ELSE}
 
   VCL.Graphics, VCL.StdCtrls, VCL.Buttons,
@@ -54,46 +54,11 @@ uses
   VCLTee.TeeSubChart,
   {$ENDIF}
 
-  BI.VCL.Visualizer
+  BI.VCL.Visualizer, BI.VCL.Chart
   {$ENDIF}
   ;
 
 type
-  TGroupSeries=class;
-
-  TAutoStackSeries=(Automatic,Yes,Yes100,No);
-
-  TGroupSeriesStyle=(Automatic,Series2D,Series3D,Geographic);
-
-  TGroupSeriesOptions=class(TPersistent)
-  private
-    FAddNulls : Boolean;
-    FAutoStack : TAutoStackSeries;
-    FSeries2D : TChartSeriesClass;
-    FSeries3D : TChartSeriesClass;
-    FStyle : TGroupSeriesStyle;
-
-    IParent : TGroupSeries;
-
-    procedure SetAutoStack(const Value: TAutoStackSeries);
-    procedure SetSeries2D(const Value: TChartSeriesClass);
-    procedure SetSeries3D(const Value: TChartSeriesClass);
-    procedure SetStyle(const Value: TGroupSeriesStyle);
-    procedure SetAddNulls(const Value: Boolean);
-  public
-    Constructor Create(const AParent:TGroupSeries);
-
-    procedure Assign(Source:TPersistent); override;
-  published
-    property AddNulls:Boolean read FAddNulls write SetAddNulls default True;
-    property AutoStack:TAutoStackSeries read FAutoStack write SetAutoStack default TAutoStackSeries.Automatic;
-
-    property Series2D:TChartSeriesClass read FSeries2D write SetSeries2D;
-    property Series3D:TChartSeriesClass read FSeries3D write SetSeries3D;
-
-    property Style:TGroupSeriesStyle read FStyle write SetStyle default TGroupSeriesStyle.Automatic;
-  end;
-
   TGroupChart=class;
 
   TBIMultiAxis=(Automatic,Single,Two,Multiple);
@@ -115,8 +80,10 @@ type
     procedure SetMultiAxes(const Value: TBIMultiAxis);
     procedure SetRender(const Value:TCanvas3DClass);
     procedure SetSettings(const Value: Boolean);
+    procedure SetTemplate(const Value: TChart);
   public
     Constructor Create;
+    Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
   published
@@ -125,12 +92,12 @@ type
     property Marks:Boolean read GetMarks write SetMarks;
     property MultiAxes:TBIMultiAxis read FMultiAxes write SetMultiAxes default TBIMultiAxis.Automatic;
     property Render:TCanvas3DClass read FRender write SetRender;
-    property Template:TChart read GetTemplate;
+    property Template:TChart read GetTemplate write SetTemplate;
   end;
 
   TGroupChart=class(TGroup)
   private
-    FChart : TCustomChart;
+    FChart : TBIChart; //TCustomChart;
     FNext : TGroup;
     FOptions : TGroupChartOptions;
 
@@ -138,9 +105,10 @@ type
 
     procedure ClickedSettings(Sender: TObject);
     procedure EnteredChart(Sender:TObject);
+    function FirstZSeries:TChartSeries;
     class procedure InitChart(const AChart:TChart); static;
     procedure LeavedChart(Sender:TObject);
-    function NewChart:TChart;
+    function NewChart:TBIChart;
     procedure ShowSettingsButton(const Sender:TObject; const AShow:Boolean);
     procedure TryMultipleAxes(const AMulti:TBIMultiAxis);
     procedure SetCanvas(const AChart:TCustomChart);
@@ -153,7 +121,6 @@ type
     procedure Init; override;
     procedure Finished; override;
 
-    function NewSeries(const AName:String; const AOptions:TGroupSeriesOptions): TChartSeries;
     class procedure SetAxisTitle(const ASeries:TChartSeries; const AData:TDataItem); static;
   public
     Constructor CreateData(const AItem:TVisualizerItem; const AParent:TGroup); override;
@@ -164,10 +131,46 @@ type
 
     procedure Assign(Source:TPersistent); override;
 
-    property Chart:TCustomChart read FChart;
+    property Chart:TBIChart read FChart;
     property Group:TGroupChart read IParent;
   published
     property Options:TGroupChartOptions read FOptions; // write SetOptions
+  end;
+
+  TGroupSeries=class;
+
+  TAutoStackSeries=(Automatic,Yes,Yes100,No);
+
+  TGroupSeriesStyle=(Automatic,Series2D,Series3D,Geographic);
+
+  TGroupSeriesOptions=class(TPersistent)
+  private
+    FAddNulls : Boolean;
+    FAutoStack : TAutoStackSeries;
+    FSeries2D : TChartSeriesClass;
+    FSeries3D : TChartSeriesClass;
+    FStyle : TGroupSeriesStyle;
+
+    IParent : TGroupSeries;
+
+    function NewSeries(const AName:String; const AOptions:TGroupChartOptions):TChartSeries;
+    procedure SetAutoStack(const Value: TAutoStackSeries);
+    procedure SetSeries2D(const Value: TChartSeriesClass);
+    procedure SetSeries3D(const Value: TChartSeriesClass);
+    procedure SetStyle(const Value: TGroupSeriesStyle);
+    procedure SetAddNulls(const Value: Boolean);
+  public
+    Constructor Create(const AParent:TGroupSeries);
+
+    procedure Assign(Source:TPersistent); override;
+  published
+    property AddNulls:Boolean read FAddNulls write SetAddNulls default True;
+    property AutoStack:TAutoStackSeries read FAutoStack write SetAutoStack default TAutoStackSeries.Automatic;
+
+    property Series2D:TChartSeriesClass read FSeries2D write SetSeries2D;
+    property Series3D:TChartSeriesClass read FSeries3D write SetSeries3D;
+
+    property Style:TGroupSeriesStyle read FStyle write SetStyle default TGroupSeriesStyle.Automatic;
   end;
 
   TGroupSeries=class(TGroupChart)
@@ -181,7 +184,7 @@ type
       end;
 
     var
-    FOptions : TGroupSeriesOptions;
+    FSeriesOptions : TGroupSeriesOptions;
 
     SingleSeries : TChartSeries;
 
@@ -191,7 +194,7 @@ type
     function AddSingleSeries:TChartSeries;
     procedure CheckAutoStack;
     procedure DisableStack(const ASeries:TChartSeries);
-    procedure EnableStack(const AStack:TAutoStackSeries; const ASeries:TChartSeries);
+    procedure EnableStack(const AStack:TAutoStackSeries; const AChart:TCustomChart; const ASeries:TChartSeries);
     function GetParentDataString:String;
     function MultipleNormalColumns(const Values:TVisualizerItems):Boolean;
     procedure Reset;
@@ -212,7 +215,7 @@ type
 
     class function BestControl(const AIndex,ATotal,AValues:Integer):TGroupClass; override;
   published
-    property Options:TGroupSeriesOptions read FOptions write SetOptions;
+    property Options:TGroupSeriesOptions read FSeriesOptions write SetOptions;
   end;
 
   {$IFDEF TEEPRO}

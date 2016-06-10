@@ -18,14 +18,6 @@ uses
   BI.Data, BI.UI.Colors;
 
 type
-  TDataItemsInfo=record
-  private
-    class procedure AddItems(const AItems:TDataItems); static;
-    class procedure FillItemsOf(const AData,ADest:TDataItem); static;
-  public
-    class function ItemsOf(const AData:TDataItem):TDataItem; overload; static;
-  end;
-
   TShowMessageProc=procedure(const AText:String);
 
   TCommonUI=record
@@ -95,6 +87,7 @@ type
 
   TDataColorizersHelper=record helper for TDataColorizers
   public
+    procedure Add(const AItem:TDataItem);
     function TryColorize(const AItem:TDataItem; const AIndex:Integer;
                          out APercent:Double; out AColorIndex:Integer):Boolean;
   end;

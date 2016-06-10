@@ -92,12 +92,15 @@ object FromBIStore: TFromBIStore
         ParentBackground = False
         ParentColor = False
         TabOrder = 1
-        ShowItems = True
       end
     end
     object TabRemote: TTabSheet
       Caption = 'Remote Steema Web'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0

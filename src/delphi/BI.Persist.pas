@@ -83,7 +83,6 @@ type
 
     procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
-    procedure Load; overload;
     procedure LoadFromString(const AText:String);
     procedure Save;
   public
@@ -226,6 +225,7 @@ type
     class function All(const APart:Integer=0):TStringDynArray; static;
     class procedure ChangeName(const AOld,ANew:String); static;
     class procedure ChangePath(const AName,AOrigin:String); static;
+    class function Count:Integer; static;
     class function Exists(const AName:String):Boolean; static;
     class function GlobalCache:TDataItem; static;
     class function IndexOf(const AName:String):Integer; static;
@@ -308,12 +308,14 @@ type
   end;
 
   // Cross-platform registry / inifile
-  TBIRegistry=record
+  TBIRegistry=class
   private
-    {$IFNDEF MSWINDOWS}
     class function SteemaIni:String; static;
-    {$ENDIF}
   public
+    class var
+      IniFile:String;
+      UseRegistry:Boolean;
+
     class function Exists(const Key,Name:String):Boolean; static;
 
     class function ReadBoolean(const Key,Name:String; const Default:Boolean):Boolean; static;

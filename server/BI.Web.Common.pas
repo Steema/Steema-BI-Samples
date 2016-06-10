@@ -9,10 +9,9 @@ unit BI.Web.Common;
 interface
 
 uses
-  System.Classes, IdContext, IdCustomHTTPServer, System.Diagnostics,
-  System.SyncObjs,
+  System.Classes, System.Diagnostics, System.SyncObjs,
   BI.Web.AllData, BI.Data, BI.DataSource, BI.Expression, BI.Arrays,
-  BI.Summary, BI.Persist,
+  BI.Summary, BI.Persist, BI.Data.Info,
 
   {$IFDEF FMX}
   FMXTee.Constants, FMXTee.Canvas, FMXTee.Procs, FMXTee.Chart,
@@ -55,7 +54,21 @@ uses
   ;
 
 type
-  THistoryProc=procedure(const AContext:TIdContext;
+  TBIWebContext=class
+  public
+    ContentText: String;
+    ContentType: String;
+    ResponseInfo: TObject;
+    RequestInfo: TObject;
+    ResponseStream: TStream;
+
+    function FormParams: String; virtual; abstract;
+    function Params:TStrings; virtual; abstract;
+    function ResponseSize: Int64; virtual; abstract;
+    procedure ReturnFile(const AFile:String); virtual; abstract;
+  end;
+
+  THistoryProc=procedure(const AContext:TBIWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -131,8 +144,7 @@ type
     procedure DataLink(const Sender:TBIExport; const AData:TDataItem;
                              const AIndex:TInteger; var Text:String);
 
-    procedure DoAddHistory(const AContext: TIdContext;
-                           const AResponseInfo: TIdHTTPResponseInfo;
+    procedure DoAddHistory(const AContext: TBIWebContext;
                            const Command:String;
                            const Tag:String=''; const Success:Boolean=True);
 
@@ -144,20 +156,19 @@ type
     procedure PrepareCursor(const ACursor:TDataCursor; const AData:TDataItem;
                             const Params:TStrings);
 
-    function ProcessDashboard(const AContext: TIdContext;
-             const AResponseInfo: TIdHTTPResponseInfo;
-             const ARequestInfo:TIdHTTPRequestInfo):Boolean;
+    function ProcessDashboard(const AContext: TBIWebContext):Boolean;
 
-    procedure ProcessData(const AContext: TIdContext;
-                          const AResponseInfo: TIdHTTPResponseInfo;
+    procedure ProcessData(const AContext: TBIWebContext;
                           const Format:String;
                           const Params:TStrings);
 
-    procedure ReturnCursor(const AResponseInfo: TIdHTTPResponseInfo;
+    procedure ReturnCursor(const AContext:TBIWebContext;
                            const Params:TStrings;
                            var ACursor:TDataCursor; const AFormat:String;
                            const AURL:String='';
                            const GetText:TExportGetText=nil);
+
+    procedure SetupPublicFolder;
 
     function TotalsOf(const Params:TStrings; const ACursor:TDataCursor):TDataItem;
 
@@ -187,27 +198,25 @@ type
     function QueryOf(const AQuery,AData,AFilter,ADistinct: String): TDataItem;
     function SummaryOf(const ASummary,AData,AHaving,AFilter:String):TDataItem;
 
-    procedure ProcessFile(const ADocument:String; const AContext: TIdContext;
-                          const AResponseInfo: TIdHTTPResponseInfo);
+    procedure ProcessFile(const ADocument:String; const AContext: TBIWebContext);
 
-    procedure ProcessGet(const AContext: TIdContext; const AResponseInfo: TIdHTTPResponseInfo;
-                         const ARequestInfo:TIdHTTPRequestInfo);
-    procedure ProcessPost(const AContext: TIdContext; const AResponseInfo: TIdHTTPResponseInfo;
-                          const ARequestInfo:TIdHTTPRequestInfo);
+    procedure ProcessGet(const AContext: TBIWebContext);
+    procedure ProcessPost(const AContext: TBIWebContext);
   end;
 
 implementation
 
 uses
   System.SysUtils, System.IOUtils, System.Types,
-  BI.Data.SQL, BI.Data.Html, BI.Languages.English, IdSSL,
-  BI.Dashboard, BI.Dashboard.HTML;
+  BI.Data.SQL, BI.Data.Html, BI.Languages.English,
+  BI.Dashboard, BI.Dashboard.HTML, BI.Data.Expressions;
 
 Constructor TBIWebCommon.Create;
 begin
   inherited Create;
   Logs:=TWebLogs.Create;
   Scheduler:=TImportScheduler.Create;
+  SetupPublicFolder;
 end;
 
 Destructor TBIWebCommon.Destroy;
@@ -215,6 +224,12 @@ begin
   Scheduler.Free;
   Logs.Free;
   inherited;
+end;
+
+procedure TBIWebCommon.SetupPublicFolder;
+begin
+  PublicFolder.Enabled:=TBIRegistry.ReadBoolean('BIWeb','PublicEnabled',True);
+  PublicFolder.Path:=TBIRegistry.ReadString('BIWeb','PublicFolder','public');
 end;
 
 class function TBIWebCommon.ChartFromCursor(var ACursor: TDataCursor;
@@ -512,7 +527,7 @@ begin
         raise EBIException.CreateFmt(BIMsg_Summary_WrongAggregate,[tmpAgg]);
 end;
 
-procedure TBIWebCommon.ReturnCursor(const AResponseInfo: TIdHTTPResponseInfo;
+procedure TBIWebCommon.ReturnCursor(const AContext: TBIWebContext;
                     const Params:TStrings;
                     var ACursor:TDataCursor; const AFormat:String;
                     const AURL:String;
@@ -612,10 +627,10 @@ procedure TBIWebCommon.ReturnCursor(const AResponseInfo: TIdHTTPResponseInfo;
   var w,h : Integer;
   begin
     GetWidthHeight(Params,w,h);
-    AResponseInfo.ContentStream:=ChartToStream(ACursor,Params,AExtension,w,h);
+    AContext.ResponseStream:=ChartToStream(ACursor,Params,AExtension,w,h);
 
-    if AResponseInfo.ContentStream<>nil then
-       AResponseInfo.ContentType:=AContent;
+    if AContext.ResponseStream<>nil then
+       AContext.ContentType:=AContent;
   end;
 
   procedure ExportChartHTML5;
@@ -645,7 +660,7 @@ procedure TBIWebCommon.ReturnCursor(const AResponseInfo: TIdHTTPResponseInfo;
         tmpJS.Minify:=True;
         tmpJS.Panel:=tmp.Chart;
 
-        AResponseInfo.ContentText:=tmpJS.JScript.Text;
+        AContext.ContentText:=tmpJS.JScript.Text;
       finally
         tmpJS.Free;
       end;
@@ -712,7 +727,7 @@ begin
 
       tmpTotals:=TotalsOf(Params,ACursor);
       try
-        AResponseInfo.ContentText:=tmp+CursorToText(ACursor,AFormat,GetText,tmpTotals);
+        AContext.ContentText:=tmp+CursorToText(ACursor,AFormat,GetText,tmpTotals);
       finally
         tmpTotals.Free;
       end;
@@ -725,13 +740,12 @@ begin
   end;
 end;
 
-procedure TBIWebCommon.ProcessPost(const AContext: TIdContext; const AResponseInfo: TIdHTTPResponseInfo;
-                                   const ARequestInfo:TIdHTTPRequestInfo);
+procedure TBIWebCommon.ProcessPost(const AContext: TBIWebContext);
 var tmpS : String;
     Cursor : TDataCursor;
     tmpData : TDataItem;
 begin
-  tmpS:=ARequestInfo.Params.Values['data'];
+  tmpS:=AContext.Params.Values['data'];
 
   if tmpS<>'' then
   begin
@@ -739,7 +753,7 @@ begin
 
     if (not tmpData.AsTable) and (tmpData.Kind=TDataKind.dkUnknown) then
     begin
-      AResponseInfo.ContentText:=
+      AContext.ContentText:=
          'Data: '+tmpData.Name+TBIHtmlHelper.Return+TBIHtmlHelper.InitForm+
          'Items: '+TBIHtmlHelper.Combo('data',Data.GetData(tmpData.Items),
                   Data.GetDataOrigins(tmpData.Items))+TBIHtmlHelper.Return+
@@ -749,23 +763,23 @@ begin
     begin
       Cursor:=TDataCursor.Create(nil);
       try
-        PrepareCursor(Cursor,tmpData,ARequestInfo.Params);
+        PrepareCursor(Cursor,tmpData,AContext.Params);
 
-        ReturnCursor(AResponseInfo,ARequestInfo.Params,Cursor,'.htm','?data='+tmpS+'&format=.htm',DataLink);
+        ReturnCursor(AContext,AContext.Params,Cursor,'.htm','?data='+tmpS+'&format=.htm',DataLink);
 
-        AResponseInfo.ContentText:=
+        AContext.ContentText:=
             'Data: '+Cursor.Data.Name+TBIHtmlHelper.Return+TBIHtmlHelper.Return+
-            AResponseInfo.ContentText;
+            AContext.ContentText;
       finally
         Cursor.Free;
       end;
     end;
 
-    DoAddHistory(AContext,AResponseInfo,'post',tmpS,True);
+    DoAddHistory(AContext,'post',tmpS,True);
   end
   else
-  if not ProcessDashboard(AContext,AResponseInfo,ARequestInfo) then
-//     ProcessData(AContext,AResponseInfo,Format,Params);
+  if not ProcessDashboard(AContext) then
+//     ProcessData(AContext,Format,Params);
 end;
 
 class function TBIWebCommon.GetFilter(const AData:TDataItem; const AFilter:String):TBaseLogicalExpression;
@@ -790,19 +804,12 @@ begin
   end;
 end;
 
-procedure TBIWebCommon.DoAddHistory(const AContext: TIdContext;
-                       const AResponseInfo: TIdHTTPResponseInfo;
+procedure TBIWebCommon.DoAddHistory(const AContext: TBIWebContext;
                        const Command:String; const Tag:String='';
                        const Success:Boolean=True);
 var tmpSize : Int64;
 begin
-  tmpSize:=AResponseInfo.ContentLength;
-
-  if tmpSize=-1 then
-     if AResponseInfo.ContentStream<>nil then
-        tmpSize:=AResponseInfo.ContentStream.Size
-     else
-        tmpSize:=Length(AResponseInfo.ContentText);
+  tmpSize:=AContext.ResponseSize;
 
   Logs.Lock.Enter;
   try
@@ -903,8 +910,7 @@ begin
   end;
 end;
 
-procedure TBIWebCommon.ProcessData(const AContext: TIdContext;
-                                   const AResponseInfo: TIdHTTPResponseInfo;
+procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
                                    const Format:String;
                                    const Params:TStrings);
 
@@ -934,17 +940,17 @@ procedure TBIWebCommon.ProcessData(const AContext: TIdContext;
   procedure SetContentType;
   begin
     if SameText(Format,'.JSON') then
-       AResponseInfo.ContentType:='application/json'
+       AContext.ContentType:='application/json'
     else
     if SameText(Format,'.CSV') then
-       AResponseInfo.ContentType:='text/plain'
+       AContext.ContentType:='text/plain'
     else
     if SameText(Format,'.XML') then
-       AResponseInfo.ContentType:='application/xml'
+       AContext.ContentType:='application/xml'
     {$IFDEF TEEPRO}
     else
     if SameText(Format,'.PDF') then
-       AResponseInfo.ContentType:='application/pdf';
+       AContext.ContentType:='application/pdf';
     {$ENDIF}
   end;
 
@@ -965,11 +971,11 @@ begin
       PrepareCursor(Cursor,Logs.History,Params);
 
       if Format='' then
-         AResponseInfo.ContentStream:=CursorToBothStream(Cursor)
+         AContext.ResponseStream:=CursorToBothStream(Cursor)
       else
-         ReturnCursor(AResponseInfo,Params,Cursor,Format);
+         ReturnCursor(AContext,Params,Cursor,Format);
 
-      DoAddHistory(AContext,AResponseInfo,'history','',True);
+      DoAddHistory(AContext,'history','',True);
     end
     else
     begin
@@ -977,8 +983,8 @@ begin
 
       if tmpS='' then
       begin
-        AResponseInfo.ContentText:=GetDocument;
-        DoAddHistory(AContext,AResponseInfo,'UI','/');
+        AContext.ContentText:=GetDocument;
+        DoAddHistory(AContext,'UI','/');
       end
       else
       begin
@@ -995,14 +1001,14 @@ begin
           if Cursor.Data<>nil then
           try
             if Format='' then
-               AResponseInfo.ContentStream:=CursorToBothStream(Cursor)
+               AContext.ResponseStream:=CursorToBothStream(Cursor)
             else
-               ReturnCursor(AResponseInfo,Params,Cursor,Format);
+               ReturnCursor(AContext,Params,Cursor,Format);
           finally
             Cursor.Data.Free;
           end;
 
-          DoAddHistory(AContext,AResponseInfo,'summary',Summary,Cursor.Data<>nil);
+          DoAddHistory(AContext,'summary',Summary,Cursor.Data<>nil);
         end
         else
         begin
@@ -1018,14 +1024,14 @@ begin
             if Cursor.Data<>nil then
             try
               if Format='' then
-                 AResponseInfo.ContentStream:=CursorToBothStream(Cursor)
+                 AContext.ResponseStream:=CursorToBothStream(Cursor)
               else
-                 ReturnCursor(AResponseInfo,Params,Cursor,Format);
+                 ReturnCursor(AContext,Params,Cursor,Format);
             finally
               Cursor.Data.Free;
             end;
 
-            DoAddHistory(AContext,AResponseInfo,'query',Query,Cursor.Data<>nil);
+            DoAddHistory(AContext,'query',Query,Cursor.Data<>nil);
           end
           else
           begin
@@ -1038,14 +1044,14 @@ begin
               if Cursor.Data<>nil then
               try
                 if Format='' then
-                   AResponseInfo.ContentStream:=CursorToBothStream(Cursor)
+                   AContext.ResponseStream:=CursorToBothStream(Cursor)
                 else
-                   ReturnCursor(AResponseInfo,Params,Cursor,Format);
+                   ReturnCursor(AContext,Params,Cursor,Format);
               finally
                 Cursor.Data.Free;
               end;
 
-              DoAddHistory(AContext,AResponseInfo,'sql',SQL,Cursor.Data<>nil);
+              DoAddHistory(AContext,'sql',SQL,Cursor.Data<>nil);
             end
             else
             begin
@@ -1071,23 +1077,23 @@ begin
                      tmpCommand:='both';
 
                   if (tmpCommand='info') or (tmpCommand='both') then
-                     AResponseInfo.ContentStream:=CursorToBothStream(Cursor)
+                     AContext.ResponseStream:=CursorToBothStream(Cursor)
                   else
                   begin
                     if Params.Values['meta']<>'' then
                     begin
                       tmpCommand:='meta';
-                      AResponseInfo.ContentStream:=Data.MetaStream(Cursor.Data.Name,tmpZip);
+                      AContext.ResponseStream:=Data.MetaStream(Cursor.Data.Name,tmpZip);
                     end
                     else
-                      AResponseInfo.ContentStream:=Data.DataStream(Cursor,tmpZip);
+                      AContext.ResponseStream:=Data.DataStream(Cursor,tmpZip);
                   end;
                 end
                 else
-                  ReturnCursor(AResponseInfo,Params,Cursor,Format,'',DataLink);
+                  ReturnCursor(AContext,Params,Cursor,Format,'',DataLink);
               end;
 
-              DoAddHistory(AContext,AResponseInfo,tmpCommand,tmpS,tmpData<>nil);
+              DoAddHistory(AContext,tmpCommand,tmpS,tmpData<>nil);
             end;
           end;
         end;
@@ -1151,9 +1157,7 @@ begin
   end;
 end;
 
-function TBIWebCommon.ProcessDashboard(const AContext: TIdContext;
-           const AResponseInfo: TIdHTTPResponseInfo;
-           const ARequestInfo:TIdHTTPRequestInfo):Boolean;
+function TBIWebCommon.ProcessDashboard(const AContext: TBIWebContext):Boolean;
 
   function TitleOrName(const APanel:TBIPanel):String;
   begin
@@ -1177,7 +1181,7 @@ function TBIWebCommon.ProcessDashboard(const AContext: TIdContext;
   begin
     tmpTemplate:=TBITemplate.FromJSON(AText);
     try
-      tmpDash:=ARequestInfo.Params.Values['dashboard'];
+      tmpDash:=AContext.Params.Values['dashboard'];
 
       if tmpDash='' then
       begin
@@ -1192,7 +1196,7 @@ function TBIWebCommon.ProcessDashboard(const AContext: TIdContext;
                    TBIHtmlHelper.Return+TBIHTMLExport.CRLF;
         end;
 
-        AResponseInfo.ContentText:=tmpText;
+        AContext.ContentText:=tmpText;
       end
       else
       begin
@@ -1206,19 +1210,19 @@ function TBIWebCommon.ProcessDashboard(const AContext: TIdContext;
 
           tmpRender:=THTMLRender.Create;
           try
-            if ARequestInfo.FormParams='' then
-               tmpTemplate.Generate(tmpRender,tmpDashboard,ARequestInfo.Params.Values['layout'])
+            if AContext.FormParams='' then
+               tmpTemplate.Generate(tmpRender,tmpDashboard,AContext.Params.Values['layout'])
             else
-               tmpTemplate.Generate(tmpRender,tmpDashboard,'',ARequestInfo.FormParams);
+               tmpTemplate.Generate(tmpRender,tmpDashboard,'',AContext.FormParams);
 
-            AResponseInfo.ContentText:=tmpRender.HTML.Text;
+            AContext.ContentText:=tmpRender.HTML.Text;
           finally
             tmpRender.Free;
           end;
         end;
       end;
 
-      DoAddHistory(AContext,AResponseInfo,'dashboard',ATemplateName+' '+tmpDash);
+      DoAddHistory(AContext,'dashboard',ATemplateName+' '+tmpDash);
     finally
       tmpTemplate.Free;
     end;
@@ -1228,7 +1232,7 @@ var tmpTemplateName,
     tmpJSONFile : String;
     tmpText : String;
 begin
-  tmpTemplateName:=ARequestInfo.Params.Values['template'];
+  tmpTemplateName:=AContext.Params.Values['template'];
 
   result:=tmpTemplateName<>'';
 
@@ -1240,12 +1244,12 @@ begin
       try
         tmpText:=TBITextSource.LoadFromFile(tmpJSONFile);
 
-        if ARequestInfo.Params.Values['info']<>'' then
+        if AContext.Params.Values['info']<>'' then
         begin
-          AResponseInfo.ContentText:=tmpText;
-          AResponseInfo.ContentType:='application/json';
+          AContext.ContentText:=tmpText;
+          AContext.ContentType:='application/json';
 
-          DoAddHistory(AContext,AResponseInfo,'template',tmpTemplateName);
+          DoAddHistory(AContext,'template',tmpTemplateName);
         end
         else
           ReturnTemplate(tmpText,tmpTemplateName);
@@ -1261,8 +1265,7 @@ begin
   end;
 end;
 
-procedure TBIWebCommon.ProcessGet(const AContext: TIdContext; const AResponseInfo: TIdHTTPResponseInfo;
-                                  const ARequestInfo:TIdHTTPRequestInfo);
+procedure TBIWebCommon.ProcessGet(const AContext: TBIWebContext);
 var Def,
     Format : String;
     Cursor : TDataCursor;
@@ -1270,7 +1273,7 @@ var Def,
 begin
   T1:=TStopwatch.StartNew;
 
-  Params:=ARequestInfo.Params;
+  Params:=AContext.Params;
 
   Format:=Params.Values['format'];
 
@@ -1278,8 +1281,8 @@ begin
   begin
     if Format='' then
     begin
-      AResponseInfo.ContentText:=Data.GetData;
-      DoAddHistory(AContext,AResponseInfo,'data');
+      AContext.ContentText:=Data.GetData;
+      DoAddHistory(AContext,'data');
     end
     else
     begin
@@ -1289,7 +1292,7 @@ begin
 
         if Cursor.Data<>nil then
         try
-          ReturnCursor(AResponseInfo,Params,Cursor,Format,'',DataLink);
+          ReturnCursor(AContext,Params,Cursor,Format,'',DataLink);
         finally
           Cursor.Data.Free;
         end;
@@ -1297,7 +1300,7 @@ begin
         Cursor.Free;
       end;
 
-      DoAddHistory(AContext,AResponseInfo,'datainfo');
+      DoAddHistory(AContext,'datainfo');
     end;
   end
   else
@@ -1306,28 +1309,20 @@ begin
 
     if Def<>'' then
     begin
-      AResponseInfo.ContentText:=Data.GetDefinition(Def);
-      DoAddHistory(AContext,AResponseInfo,'definition',Def);
+      AContext.ContentText:=Data.GetDefinition(Def);
+      DoAddHistory(AContext,'definition',Def);
     end
     else
-    if not ProcessDashboard(AContext,AResponseInfo,ARequestInfo) then
-       ProcessData(AContext,AResponseInfo,Format,Params);
+    if not ProcessDashboard(AContext) then
+       ProcessData(AContext,Format,Params);
   end;
 end;
 
-procedure TBIWebCommon.ProcessFile(const ADocument:String; const AContext: TIdContext; const AResponseInfo: TIdHTTPResponseInfo);
+procedure TBIWebCommon.ProcessFile(const ADocument:String; const AContext: TBIWebContext);
 
   procedure ReturnFile(const AFile:String);
-  var Enable : Boolean;
   begin
-    if AResponseInfo.ContentType='' then
-       AResponseInfo.ContentType:=AResponseInfo.HTTPServer.MIMETable.GetFileMIMEType(AFile);
-
-    AResponseInfo.ContentLength:=TBIFileSource.GetFileSize(AFile);
-
-    AResponseInfo.WriteHeader;
-    Enable:=not (AContext.Connection.IOHandler is TIdSSLIOHandlerSocketBase);
-    AContext.Connection.IOHandler.WriteFile(AFile, Enable);
+    AContext.ReturnFile(AFile);
   end;
 
   procedure Return404;
@@ -1445,7 +1440,7 @@ function TBIWebCommon.SummaryOf(const ASummary,AData,AHaving,AFilter: String): T
         tmpS:=S[t];
 
         if TSQLParser.FindGroupByPart(tmpS,tmpPart) then
-           CreateGroup(tmpS).DateOptions.Part:=tmpPart
+           CreateGroup(tmpS).DatePart:=tmpPart
         else
            CreateGroup(tmpS);
       end;

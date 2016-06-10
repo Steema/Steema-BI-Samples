@@ -19,15 +19,12 @@ object ChartVisualizerEditor: TChartVisualizerEditor
     Top = 0
     Width = 427
     Height = 461
-    ActivePage = TabChart
+    ActivePage = TabOptions
     Align = alClient
     TabOrder = 0
-    object TabChart: TTabSheet
-      Caption = 'Chart'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+    OnChange = PageControl1Change
+    object TabOptions: TTabSheet
+      Caption = 'Options'
       object Label7: TLabel
         Left = 9
         Top = 48
@@ -122,10 +119,6 @@ object ChartVisualizerEditor: TChartVisualizerEditor
     object TabSeries: TTabSheet
       Caption = 'Series'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label4: TLabel
         Left = 9
         Top = 35
@@ -248,10 +241,6 @@ object ChartVisualizerEditor: TChartVisualizerEditor
     object TabSubChart: TTabSheet
       Caption = 'SubChart'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label15: TLabel
         Left = 9
         Top = 9
@@ -297,6 +286,12 @@ object ChartVisualizerEditor: TChartVisualizerEditor
         TabOrder = 3
         OnClick = CBSameAxisRangeClick
       end
+    end
+    object TabChart: TTabSheet
+      Caption = 'Chart'
+      ImageIndex = 3
+      ExplicitLeft = 8
+      ExplicitTop = 28
     end
   end
 end

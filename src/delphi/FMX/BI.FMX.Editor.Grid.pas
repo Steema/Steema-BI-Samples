@@ -1,0 +1,52 @@
+unit BI.FMX.Editor.Grid;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE FMX2}
+  {$ENDIF}
+
+  {$IF COMPILERVERSION>25}
+  FMX.Graphics,
+  {$ENDIF}
+  {$IFNDEF FMX2}
+  FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.StdCtrls,
+  BI.FMX.Grid, BI.FMX.Grid.Grid;
+
+type
+  TBIGridEditor = class(TForm)
+    TabControl1: TTabControl;
+    TabOptions: TTabItem;
+    TabPlugin: TTabItem;
+    CBAlternate: TCheckBox;
+    CBSort: TCheckBox;
+    GroupBox1: TGroupBox;
+    CBColorize: TCheckBox;
+    procedure CBAlternateChange(Sender: TObject);
+    procedure CBSortChange(Sender: TObject);
+    procedure CBColorizeChange(Sender: TObject);
+  private
+    { Private declarations }
+
+    Grid : TBIGrid;
+
+    function GetPlugin:TBIFMXGrid;
+  public
+    { Public declarations }
+
+    class function Edit(const AOwner:TComponent; const AGrid:TBIGrid):Boolean; static;
+
+    class function Embedd(const AOwner:TComponent; const AParent:TControl;
+                          const AGrid:TBIGrid):TBIGridEditor; static;
+
+    procedure Refresh(const AGrid:TBIGrid);
+  end;
+
+implementation

@@ -16,7 +16,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms,
   Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.CheckLst, Vcl.Buttons,
   Vcl.ComCtrls, Vcl.Menus,
-  BI.Data, BI.DataSource;
+  BI.Data, BI.DataSource, BI.Data.Expressions;
 
 type
   TDataSelectEditor = class(TForm)
@@ -60,6 +60,12 @@ type
     MenuItem2: TMenuItem;
     TabSQL: TTabSheet;
     MemoSQL: TMemo;
+    Label3: TLabel;
+    EItemName: TEdit;
+    PanelButtons: TPanel;
+    Panel9: TPanel;
+    BOK: TButton;
+    Button2: TButton;
     procedure CBDistinctClick(Sender: TObject);
     procedure LItemsClick(Sender: TObject);
     procedure LItemsClickCheck(Sender: TObject);
@@ -90,6 +96,7 @@ type
     procedure LBSortClickCheck(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
+    procedure EItemNameChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -119,6 +126,7 @@ type
     class function Edit(const AOwner:TComponent;
                         const ASelect:TDataSelect;
                         const OnChanged:TNotifyEvent=nil):Boolean; static;
+
     procedure Refresh(const ASelect:TDataSelect);
 
     property Select:TDataSelect read ISelect;

@@ -102,7 +102,8 @@ var
 implementation
 
 uses
-  BI.Arrays, BI.FMX.Expression.Tree, BI.Expression.Benchmark;
+  BI.Arrays, BI.Data.Expressions,
+  BI.FMX.Expression.Tree, BI.Expression.Benchmark;
 
 {$R *.fmx}
 

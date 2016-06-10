@@ -8,6 +8,7 @@ object RDatasetsDemo: TRDatasetsDemo
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnShow = FormShow
   DesignerMasterStyle = 0
@@ -179,14 +180,14 @@ object RDatasetsDemo: TRDatasetsDemo
     Size.Width = 428.000000000000000000
     Size.Height = 598.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 4
     TabPosition = PlatformDefault
     object TabItem2: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 70.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -197,8 +198,8 @@ object RDatasetsDemo: TRDatasetsDemo
       ExplicitSize.cy = 26.000000000000000000
       object PredictedGrid: TBIGrid
         Align = Client
-        Size.Width = 50.000000000000000000
-        Size.Height = 50.000000000000000000
+        Size.Width = 428.000000000000000000
+        Size.Height = 572.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
       end
@@ -260,7 +261,7 @@ object RDatasetsDemo: TRDatasetsDemo
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 45.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -282,5 +283,12 @@ object RDatasetsDemo: TRDatasetsDemo
     RowNumbers = False
     Left = 816
     Top = 264
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = Timer1Timer
+    Left = 552
+    Top = 312
   end
 end

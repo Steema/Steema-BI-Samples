@@ -19,7 +19,7 @@ uses
   System.Zip,
   {$ENDIF}
 
-  BI.Expression, System.Types;
+  BI.Expression, System.Types, BI.Data.Expressions;
 
 type
   TBISource=class
@@ -58,6 +58,7 @@ type
   public
     Active : Boolean;
     Data : TDataItem;
+    Name : String;
     OwnsData : Boolean;
   end;
 
@@ -319,11 +320,10 @@ type
   private
     FDistinct : Boolean;
 
-    procedure AddItem(const AResult,AItem:TDataItem);
-    procedure AddItems(const AData: TDataItem; const AItems:TDataArray);
+    procedure AddItem(const AResult,AItem:TDataItem; const AName:String);
+    procedure AddItems(const AData: TDataItem);
     function FoundLast(const AResult:TDataItem; const ACount:TInteger):Boolean;
     procedure GuessMainData;
-    procedure ReplaceSortData(const AData:TDataItem);
   protected
     procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;

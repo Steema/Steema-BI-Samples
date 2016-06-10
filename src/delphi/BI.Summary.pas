@@ -13,9 +13,17 @@ uses
   {$IFNDEF FPC}
   System.Generics.Collections,
   {$ENDIF}
-  BI.Arrays, BI.Data, BI.Expression;
+  BI.Arrays, BI.Data, BI.Expression, BI.Data.Expressions;
 
 type
+  TBaseSummaryPersistent=class(TPersistent)
+  protected
+    IChanged : TNotifyEvent;
+
+    procedure Changed;
+    procedure DoChanged(Sender:TObject);
+  end;
+
   // Count is the number of data values that belong to a Histogram interval <Maximum
   TBin=record
   public
@@ -27,17 +35,39 @@ type
   TBinArray=Array of TBin;
 
   // Accumulates data by numeric intervals
-  THistogram=class
+  THistogram=class(TBaseSummaryPersistent)
   private
     // Pending:
     // Derive THistogram from TSummaryItem, to allow expressions instead of just data Items.
 
     FActive : Boolean;
+    FBinSize : TFloat;
+    FNumBins : Integer;
+
+    FAutoMinimum : Boolean;
+    FMinimum : TFloat;
+
+    FAutoMaximum : Boolean;
+    FMaximum : TFloat;
+
+    FFloatFormat : String;
 
     FSource : TDataItem;
 
     Bins : TBinArray;
     HighBins : Integer;
+    procedure SetActive(const Value: Boolean);
+    procedure SetAutoMaximum(const Value: Boolean);
+    procedure SetAutoMinimum(const Value: Boolean);
+    procedure SetBinSize(const Value: TFloat);
+    procedure SetMaximum(const Value: TFloat);
+    procedure SetMinimum(const Value: TFloat);
+    procedure SetNumBins(const Value: Integer);
+
+  const
+    OrdA=Ord('A');
+    OrdZ=Ord('Z');
+    AllChars=OrdZ-OrdA+1;
 
     function BinOf(const AData:TDataItem; const AIndex:TInteger):Integer;
     function BinToString(const Index:Integer):String;
@@ -45,25 +75,26 @@ type
     procedure Fill(var Bins:TBinArray);
     function Prepare(const Source:TDataItem):Integer;
   public
-    NumBins : Integer;
-    BinSize : TFloat;
-
-    AutoMinimum : Boolean;
-    Minimum : TFloat;
-
-    AutoMaximum : Boolean;
-    Maximum : TFloat;
-
-    FloatFormat : String;
+    const
+      DefaultName='Histogram';
+      UpToText='Up to';
+      CountOfText='Count of ';
 
     Constructor Create;
 
-    procedure Assign(const Value:THistogram);
+    procedure Assign(Source:TPersistent); override;
 
     function Calculate(const Source:TDataItem):TDataItem;
     function BinCount:Integer; inline;
-
-    property Active:Boolean read FActive write FActive default False;
+  published
+    property Active:Boolean read FActive write SetActive default False;
+    property AutoMinimum : Boolean read FAutoMinimum write SetAutoMinimum default True;
+    property AutoMaximum : Boolean read FAutoMaximum write SetAutoMaximum default True;
+    property BinSize : TFloat read FBinSize write SetBinSize; // default 0
+    property FloatFormat : String read FFloatFormat write FFloatFormat;
+    property Minimum : TFloat read FMinimum write SetMinimum; // default 0
+    property Maximum : TFloat read FMaximum write SetMaximum; // default 0
+    property NumBins : Integer read FNumBins write SetNumBins default 0;
   end;
 
   // Basic summary operations
@@ -77,27 +108,38 @@ type
   end;
 
   // Options to include or not missing (null) values in summarizations
-  TMeasureMissing=record
+  TMeasureMissing=class(TBaseSummaryPersistent)
+  private
+    FAsZero : Boolean;
+    procedure SetAsZero(const Value: Boolean);
   public
-    AsZero : Boolean;
+    procedure Assign(Source:TPersistent); override;
+  published
+    property AsZero : Boolean read FAsZero write SetAsZero default False;
   end;
 
   TSummaryItemType=(GroupBy, Measure, GroupOrMeasure);
 
   // Base class for summary Measures and GroupBy dimensions
-  TSummaryItem=class(TPersistent)
+  TSummaryItem=class(TBaseSummaryPersistent)
   private
     FActive : Boolean;
+    FData : TDataItem;
+    FName : String;
 
     FDestData  : TDataItem;
     KeepSource : Boolean;
-    Source     : TExpression;
-    SourceData : TDataItem;
 
     procedure LoadData(const Item:TExpression);
-    procedure SetExpression(const Value:TExpression);
+    procedure SetActive(const Value: Boolean);
     procedure SetData(const Value: TDataItem);
+    procedure SetExpression(const Value:TExpression);
+    procedure SetName(const Value: String);
+    function UniqueName(const AData:TDataItem):String;
+  protected
+    Source : TExpression;
   public
+    Constructor Create; virtual;
     Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
@@ -107,11 +149,12 @@ type
     class function GuessType(const AData:TDataItem):TSummaryItemType; static;
 
     function RealData:TDataItem;
-
-    property Active:Boolean read FActive write FActive default True;
-    property Data:TDataItem read SourceData write SetData;
+  published
+    property Active:Boolean read FActive write SetActive default True;
+    property Data:TDataItem read FData write SetData;
     property DestData:TDataItem read FDestData;
     property Expression:TExpression read Source write SetExpression;
+    property Name:String read FName write SetName;
   end;
 
   // Apply a cumulative sum or difference with previous value
@@ -120,17 +163,30 @@ type
   // Calculate measure values as percentages on column total, row total, or grand total
   TCalculationPercentage=(None, Column, Row, Total);
 
-  TMeasureCalculation=record
-  public
-    Running : TCalculationRunning;
-    RunningByRows : Boolean;
+  TMeasureCalculation=class(TBaseSummaryPersistent)
+  private
+    FPercentage : TCalculationPercentage;
+    FRunning : TCalculationRunning;
+    FRunningByRows : Boolean;
 
-    Percentage : TCalculationPercentage;
+    procedure SetPercentage(const Value: TCalculationPercentage);
+    procedure SetRunning(const Value: TCalculationRunning);
+    procedure SetRunningByRows(const Value: Boolean);
+  public
+    procedure Assign(Source:TPersistent); override;
+  published
+    property Percentage : TCalculationPercentage read FPercentage write SetPercentage default TCalculationPercentage.None;
+    property Running : TCalculationRunning read FRunning write SetRunning default TCalculationRunning.No;
+    property RunningByRows : Boolean read FRunningByRows write SetRunningByRows default False;
   end;
 
   // Defines a data (item or expression), and an aggregation type
   TMeasure=class(TSummaryItem)
   private
+    FAggregate : TAggregate;
+    FCalculation: TMeasureCalculation;
+    FMissing : TMeasureMissing;
+
     CalcCounts : Boolean;
     BinCounts : Array of TInt32Array;
 
@@ -148,22 +204,33 @@ type
     procedure Finish;
     procedure Prepare;
     procedure SetZeroAsMissing;
+    procedure SetAggregate(const Value: TAggregate);
+    procedure SetCalculation(const Value: TMeasureCalculation);
+    procedure SetMissing(const Value: TMeasureMissing);
   public
-    Aggregate : TAggregate;
-    Calculation : TMeasureCalculation;
-    Missing : TMeasureMissing;
+    Constructor Create; override;
+    Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
 
     function Clone:TMeasure;
     function Kind:TDataKind;
     function ToString:String; override;
+
+  published
+    property Aggregate : TAggregate read FAggregate write SetAggregate default TAggregate.Count;
+    property Calculation : TMeasureCalculation read FCalculation write SetCalculation;
+    property Missing : TMeasureMissing read FMissing write SetMissing;
   end;
 
   TMeasures=Array of TMeasure;
 
   // Pending: Remove this helper, use a TList
   TMeasuresHelper=record helper for TMeasures
+  private
+    function Active:TMeasures;
+    procedure Finish; inline;
+    procedure Prepare; inline;
   public
     function Add(const AData: TDataItem; const Aggregate: TAggregate):TMeasure; overload;
     function Add(const AExpression: TExpression; const Aggregate: TAggregate):TMeasure; overload;
@@ -180,8 +247,8 @@ type
   private
     MinYear : Integer;
 
-    function BinCount(const AData:TDataItem): Integer;
-    function BinIndex(const AData:TDataItem; const Index: TInteger; out ABin:TNativeInteger):Boolean;
+    function BinCount(const AData:TDataItem):Integer;
+    function BinIndex(const ADate:TDateTime):TNativeInteger;
     procedure FillGroupBy(const Source,Dest:TDataItem; const Repeated,MaxSteps:TInteger); overload; // 1D
     procedure FillGroupBy(const Source:TDataItem; const Items:TDataArray); overload; // 2D
   public
@@ -209,32 +276,32 @@ type
 
     function CalcBinCount: Integer;
     function BinIndex(Index:TInteger; out ABin:TNativeInteger):Boolean;
+    function DestName:String;
     procedure DoFill;
     procedure DoFillParent;
     procedure FillDest(const ADest:TDataItem); // 2D
     procedure FillGroupBy(const AData:TDataItem; const Repeated,MaxSteps:TInteger); // 1D
+    function GetDatePart: TDateTimePart;
 
-    function GetHistogram: THistogram;
     procedure Prepare(const AHops:TDataHops; const AData:TDataItem);
+    procedure SetDatePart(const Value: TDateTimePart);
     procedure SetHistogram(const Value: THistogram);
     procedure TryFreeData;
   protected
-    RealLayout : TGroupByLayout;
-
-    function HasHistogram:Boolean; inline;
-  public
     DateOptions : TGroupByDate;
-
+    RealLayout : TGroupByLayout;
+  public
+    Constructor Create; override;
     Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
 
     function Clone:TGroupBy;
-    function IsHistogram:Boolean; inline;
     function ToString:String; override;
-
-    property Histogram:THistogram read GetHistogram write SetHistogram;
-    property Layout:TGroupByLayout read FLayout write FLayout; // default TGroupByLayout.Automatic;
+  published
+    property DatePart:TDateTimePart read GetDatePart write SetDatePart default TDateTimePart.None;
+    property Histogram:THistogram read FHistogram write SetHistogram;
+    property Layout:TGroupByLayout read FLayout write FLayout default TGroupByLayout.Automatic;
   end;
 
   TGroupBys=Array of TGroupBy;
@@ -242,6 +309,8 @@ type
   // Pending: Remove this helper, use a TList
   TGroupBysHelper=record helper for TGroupBys
   private
+    function Active:TGroupBys;
+    function Position(const Pos:TInteger; out Index:TInteger):Boolean;
     procedure GuessSteps;
     function Total:TInteger;
   public
@@ -297,24 +366,35 @@ type
     function ToString:String; override;
   end;
 
+  TRemoveMissing=class(TBaseSummaryPersistent)
+  private
+    FColumns : Boolean;
+    FRows : Boolean;
+
+    procedure SetColumns(const Value: Boolean);
+    procedure SetRows(const Value: Boolean);
+  public
+    procedure Assign(Source:TPersistent); override;
+  published
+    property Columns:Boolean read FColumns write SetColumns default False;
+    property Rows:Boolean read FRows write SetRows default False;
+  end;
+
   // Returns a data structure from measures and dimensions.
   // This is similar to an SQL select query.
   TSummary=class(TDataProvider)
   private
-    //GridMode : Boolean; // pending, temporary solution
+    FDescription : String;
+    FFilter : TExpression;
+    FRemove : TRemoveMissing;
+    FUseFilter : Boolean;
+    FHaving : TSummaryFilter;
 
     ActiveMeasures : TMeasures;
     ActiveMeasuresCount : Integer;
 
     ActiveBy : TGroupBys;
     ActiveByCount : Integer;
-
-    FFilter : TExpression;
-    FUseFilter : Boolean;
-
-    FHaving : TSummaryFilter;
-
-    FDescription : String;
 
     procedure ApplyHaving(const AData:TDataItem);
     procedure DoRemoveMissing(const Data:TDataItem);
@@ -324,6 +404,7 @@ type
     function GetMainData: TDataItem;
     procedure SetFilter(const Value: TExpression);
     procedure SetHaving(const Value: TSummaryFilter);
+    procedure SetRemove(const Value: TRemoveMissing);
   protected
     ByRows,
     ByCols : TGroupBys;
@@ -337,9 +418,7 @@ type
   public
     By : TGroupBys;
     Measures : TMeasures;
-
-    RemoveMissing,
-    RemoveMissingCols : Boolean;
+    SortBy : TSortItems;
 
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
@@ -362,12 +441,26 @@ type
     function Valid:Boolean;
 
     property MainData:TDataItem read GetMainData;
-
   published
     property Description:String read FDescription write FDescription;
     property Filter:TExpression read FFilter write SetFilter;
     property Having:TSummaryFilter read GetHaving write SetHaving;
+    property RemoveMissing:TRemoveMissing read FRemove write SetRemove;
     property UseFilter:Boolean read FUseFilter write FUseFilter default True;
+  end;
+
+  // Expression to Aggregate data using all items in a row
+  TRowFunction=class(TColumnExpression)
+  protected
+    procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
+    function KindOf:TDataKind; override;
+    class function TryParse(const S:String):TColumnExpression; override;
+  public
+    Operand : TAggregate;
+    MissingAsZero : Boolean;
+
+    function ToString:String; override;
+    function Value:TData; override;
   end;
 
 implementation

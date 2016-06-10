@@ -16,18 +16,6 @@ object DynamicFilterEditor: TDynamicFilterEditor
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
-  object BITree1: TBITree
-    Left = 0
-    Top = 57
-    Width = 418
-    Height = 295
-    Align = alClient
-    UseDockManager = False
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 0
-    OnChange = BITree1Change
-  end
   object PanelCustom: TPanel
     Left = 0
     Top = 0
@@ -35,7 +23,7 @@ object DynamicFilterEditor: TDynamicFilterEditor
     Height = 57
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
     OnResize = PanelCustomResize
     object SBCustom: TSpeedButton
       Left = 386
@@ -96,7 +84,7 @@ object DynamicFilterEditor: TDynamicFilterEditor
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
     object Panel1: TPanel
       Left = 233
       Top = 0
@@ -127,77 +115,147 @@ object DynamicFilterEditor: TDynamicFilterEditor
       end
     end
   end
-  object PageItem: TPageControl
+  object PageControl1: TPageControl
     Left = 0
-    Top = 352
+    Top = 57
     Width = 418
-    Height = 230
-    ActivePage = TabDateTime
-    Align = alBottom
-    TabOrder = 3
-    Visible = False
-    object TabDateTime: TTabSheet
-      Caption = 'Date Time'
-    end
-    object TabBoolean: TTabSheet
-      Caption = 'Boolean'
-      ImageIndex = 1
-      ExplicitLeft = 8
-      ExplicitTop = 22
-      object CBTrue: TCheckBox
-        Left = 16
-        Top = 16
-        Width = 97
-        Height = 17
-        Caption = 'True'
+    Height = 525
+    ActivePage = TabItems
+    Align = alClient
+    TabOrder = 2
+    object TabData: TTabSheet
+      Caption = 'Data'
+      object BITree1: TBITree
+        Left = 0
+        Top = 41
+        Width = 410
+        Height = 456
+        Align = alClient
+        UseDockManager = False
+        ParentBackground = False
+        ParentColor = False
         TabOrder = 0
-        OnClick = CBTrueClick
+        OnChange = BITree1Change
       end
-      object CBFalse: TCheckBox
-        Left = 16
-        Top = 39
-        Width = 97
-        Height = 17
-        Caption = 'False'
-        TabOrder = 1
-        OnClick = CBFalseClick
-      end
-    end
-    object TabNumeric: TTabSheet
-      Caption = 'Numeric'
-      ImageIndex = 2
-    end
-    object TabText: TTabSheet
-      Caption = 'Text'
-      ImageIndex = 3
-      object PageControlText: TPageControl
+      object Panel4: TPanel
         Left = 0
         Top = 0
         Width = 410
-        Height = 202
-        ActivePage = TabMultiText
-        Align = alClient
-        TabOrder = 0
-        OnChange = PageControlTextChange
-        object TabMultiText: TTabSheet
-          Caption = 'Multiple'
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        object BAdd: TButton
+          Left = 8
+          Top = 8
+          Width = 75
+          Height = 25
+          Caption = '&Add'
+          Enabled = False
+          TabOrder = 0
+          OnClick = BAddClick
         end
-        object TabSingleText: TTabSheet
-          Caption = 'Single'
+      end
+    end
+    object TabItems: TTabSheet
+      Caption = 'Items'
+      ImageIndex = 1
+      object Splitter1: TSplitter
+        Left = 0
+        Top = 264
+        Width = 410
+        Height = 3
+        Cursor = crVSplit
+        Align = alBottom
+        ExplicitTop = 41
+        ExplicitWidth = 226
+      end
+      object CBItems: TCheckListBox
+        Left = 0
+        Top = 41
+        Width = 410
+        Height = 223
+        OnClickCheck = CBItemsClickCheck
+        Align = alClient
+        ItemHeight = 13
+        TabOrder = 0
+        OnClick = CBItemsClick
+        ExplicitHeight = 226
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 410
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        object CBEnabled: TCheckBox
+          Left = 5
+          Top = 8
+          Width = 97
+          Height = 17
+          Caption = '&Enabled'
+          TabOrder = 0
+          OnClick = CBEnabledClick
+        end
+      end
+      object PageItem: TPageControl
+        Left = 0
+        Top = 267
+        Width = 410
+        Height = 230
+        ActivePage = TabDateTime
+        Align = alBottom
+        TabOrder = 2
+        Visible = False
+        object TabDateTime: TTabSheet
+          Caption = 'Date Time'
+        end
+        object TabBoolean: TTabSheet
+          Caption = 'Boolean'
           ImageIndex = 1
-          object LBSingleText: TListBox
+          object CBTrue: TCheckBox
+            Left = 16
+            Top = 16
+            Width = 97
+            Height = 17
+            Caption = 'True'
+            TabOrder = 0
+            OnClick = CBTrueClick
+          end
+          object CBFalse: TCheckBox
+            Left = 16
+            Top = 39
+            Width = 97
+            Height = 17
+            Caption = 'False'
+            TabOrder = 1
+            OnClick = CBFalseClick
+          end
+        end
+        object TabNumeric: TTabSheet
+          Caption = 'Numeric'
+          ImageIndex = 2
+        end
+        object TabText: TTabSheet
+          Caption = 'Text'
+          ImageIndex = 3
+          object PageControl2: TPageControl
             Left = 0
             Top = 0
             Width = 402
-            Height = 174
+            Height = 202
+            ActivePage = TabIncluded
             Align = alClient
-            ItemHeight = 13
             TabOrder = 0
-            OnClick = LBSingleTextClick
-            ExplicitLeft = 144
-            ExplicitTop = 40
-            ExplicitWidth = 121
-            ExplicitHeight = 97
+            object TabIncluded: TTabSheet
+              Caption = 'Include'
+            end
+            object TabExcluded: TTabSheet
+              Caption = 'Exclude'
+              ImageIndex = 1
+            end
           end
         end
       end

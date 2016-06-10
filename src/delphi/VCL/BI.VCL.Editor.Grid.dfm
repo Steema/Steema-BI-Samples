@@ -1,4 +1,4 @@
-object BIGridEditor: TBIGridEditor
+object BIDBGridEditor: TBIDBGridEditor
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
@@ -22,7 +22,7 @@ object BIGridEditor: TBIGridEditor
     Top = 0
     Width = 283
     Height = 394
-    ActivePage = TabSheet1
+    ActivePage = TabMenu
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -109,10 +109,6 @@ object BIGridEditor: TBIGridEditor
     object TabSheet2: TTabSheet
       Caption = 'Options'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CBOptions: TCheckListBox
         Left = 6
         Top = 7
@@ -235,10 +231,6 @@ object BIGridEditor: TBIGridEditor
     object TabSheet3: TTabSheet
       Caption = 'Style'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CBStyle: TComboBox
         Left = 8
         Top = 11
@@ -294,80 +286,23 @@ object BIGridEditor: TBIGridEditor
     object TabMenu: TTabSheet
       Caption = 'Menu'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CBMenu: TCheckBox
-        Left = 16
-        Top = 16
+        Left = 24
+        Top = 24
         Width = 153
         Height = 17
-        Caption = '&Visible'
+        Caption = '&Menu Visible'
         TabOrder = 0
         OnClick = CBMenuClick
       end
-      object GroupBox1: TGroupBox
-        Left = 16
-        Top = 56
-        Width = 145
-        Height = 89
-        Caption = '&Alternate Rows:'
-        TabOrder = 1
-        object CBAltRows: TCheckBox
-          Left = 16
-          Top = 24
-          Width = 123
-          Height = 17
-          Caption = '&Enabled'
-          TabOrder = 0
-          OnClick = CBAltRowsClick
-        end
-        object BAltColor: TButton
-          Left = 16
-          Top = 48
-          Width = 89
-          Height = 25
-          Caption = '&Color...'
-          TabOrder = 1
-          OnClick = BAltColorClick
-        end
-      end
-      object CBRowNumbers: TCheckBox
-        Left = 16
-        Top = 160
-        Width = 161
-        Height = 17
-        Caption = '&Row Numbers'
-        TabOrder = 2
-        OnClick = CBRowNumbersClick
-      end
       object CBSort: TCheckBox
-        Left = 16
-        Top = 183
+        Left = 24
+        Top = 47
         Width = 137
         Height = 17
         Caption = 'Column Sorting'
-        TabOrder = 3
+        TabOrder = 1
         OnClick = CBSortClick
-      end
-      object CBFilter: TCheckBox
-        Left = 16
-        Top = 206
-        Width = 137
-        Height = 17
-        Caption = 'Filter'
-        TabOrder = 4
-        OnClick = CBFilterClick
-      end
-      object CBSearch: TCheckBox
-        Left = 16
-        Top = 229
-        Width = 137
-        Height = 17
-        Caption = '&Search'
-        TabOrder = 5
-        OnClick = CBSearchClick
       end
     end
   end

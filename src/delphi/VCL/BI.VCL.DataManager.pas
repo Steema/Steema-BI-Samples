@@ -17,6 +17,13 @@ uses
   BI.Data, BI.Persist, BI.DataSource, BI.UI, Vcl.Menus, BI.VCL.Editor.Data;
 
 type
+  TDataManagerFilter=class abstract
+  public
+    procedure Clear; virtual; abstract;
+    function Valid(const AName:String):Boolean; overload; virtual; abstract;
+    function Valid(const AData:TDataItem):Boolean; overload; virtual; abstract;
+  end;
+
   TDataManager = class(TForm)
     PanelButtons: TPanel;
     PanelOk: TPanel;
@@ -82,18 +89,27 @@ type
     { Private declarations }
 
     IEditor : TDataEditor;
+
     IStore : String;
+    IFilterTree : TDataManagerFilter;
+
     FOnSelect : TNotifyEvent;
 
     ICurrent : TDataItem;
 
+    IFillingTree,
     IUpdatingTree : Boolean;
 
+    procedure AddAllStores;
     procedure AddNodeChildren(const ANode:TTreeNode);
     procedure AddNodeData(const AStore:String; const Children:Boolean; const Filter:String='');
     function AskName:String;
+    function CanAdd(const AName:String):Boolean; overload;
+    function CanAdd(const AData:TDataItem):Boolean; overload;
     procedure CheckEditor;
     function Current:String;
+    function DoImportData:TDataArray;
+    procedure DoSaveData(const AData:TDataArray);
     procedure FillTree(const AStore:String);
     procedure ImportingData(const Sender:TObject; const Percent:Single; var Cancel:Boolean);
     function ImportingError(const Sender:TObject; const Text:String):Boolean;
@@ -107,6 +123,7 @@ type
     procedure TryAdd(const Kind:TDataDefinitionKind);
 
     constructor CreateStore(const AOwner: TComponent; const AStore: String='');
+    procedure SetFilterTree(const Value: TDataManagerFilter);
   public
     { Public declarations }
 
@@ -131,7 +148,26 @@ type
     function Selected: TDataItem;
     procedure SelectData(const AData:TDataItem);
 
+    property OnFilter:TDataManagerFilter read IFilterTree write SetFilterTree;
     property OnSelect:TNotifyEvent read FOnSelect write FOnSelect;
+  end;
+
+  TMasterFilter=class(TDataManagerFilter)
+  private
+    IData : TDataArray;
+    INames : TStrings;
+
+    class function DataNameOf(const AData:TDataItem):String; static;
+  public
+    Constructor Create;
+    Destructor Destroy; override;
+
+    procedure Add(const AData:TDataItem);
+    procedure AddName(const AData:TDataItem);
+
+    procedure Clear; override;
+    function Valid(const AName:String):Boolean; override;
+    function Valid(const AData:TDataItem):Boolean; override;
   end;
 
 implementation

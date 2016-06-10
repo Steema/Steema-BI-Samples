@@ -10,17 +10,26 @@ uses
 type
   TNumericFromTo = class(TForm)
     PanelTracks: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    LFrom: TLabel;
-    LTo: TLabel;
     TBFrom: TTrackBar;
     TBTo: TTrackBar;
+    EFrom: TEdit;
+    LErrorFrom: TLabel;
+    LErrorTo: TLabel;
+    ETo: TEdit;
+    CBFrom: TCheckBox;
+    CBTo: TCheckBox;
     procedure TBFromChange(Sender: TObject);
     procedure TBToChange(Sender: TObject);
     procedure PanelTracksResize(Sender: TObject);
+    procedure EFromChange(Sender: TObject);
+    procedure EToChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure CBFromClick(Sender: TObject);
+    procedure CBToClick(Sender: TObject);
   private
     { Private declarations }
+
+    IChanging : Boolean;
 
     Min,
     Max,
@@ -30,19 +39,30 @@ type
 
     function AsString(const AValue:Extended):String;
     procedure DoChanged;
+    procedure EnableFrom;
+    procedure EnableTo;
+    function GetFrom: Extended;
+    function GetTo: Extended;
     function PositionOf(const AValue:Extended):Integer;
+    procedure SetFrom(const Value: Extended);
+    procedure SetTo(const Value: Extended);
+    function TrySetTrack(const S:String; const ATrack:TTrackBar):Boolean;
     function ValueOf(const APosition:Integer):Extended;
   public
     { Public declarations }
 
+    Float : Boolean;
     DateTime : Boolean;
 
     class function Embedd(const AOwner:TComponent;
                           const AParent:TWinControl;
                           const OnChange:TNotifyEvent):TNumericFromTo; static;
 
-    function FromValue:Extended;
-    function ToValue:Extended;
+    function EnabledFrom:Boolean;
+    function EnabledTo:Boolean;
+
+    property FromValue:Extended read GetFrom write SetFrom;
+    property ToValue:Extended read GetTo write SetTo;
 
     procedure Refresh(const AData:TDataItem); overload;
     procedure Refresh(const AMin,AMax,AFrom,ATo:Extended); overload;

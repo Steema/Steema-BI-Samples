@@ -39,9 +39,9 @@ requires
 contains
   TeeBIRegister in 'TeeBIRegister.pas',
   TeeBIAbout in 'TeeBIAbout.pas' {AboutBI},
-  BI.Delphi.Generator in '..\BI.Delphi.Generator.pas',
   TeeBIDebugVisualizer in 'TeeBIDebugVisualizer.pas',
-  TeeBIDebugFrame in 'TeeBIDebugFrame.pas' {DataItemDebugFrame: TFrame};
+  TeeBIDebugFrame in 'TeeBIDebugFrame.pas' {DataItemDebugFrame: TFrame},
+  BI.Delphi.Generator in '..\BI.Delphi.Generator.pas';
 
 end.
 

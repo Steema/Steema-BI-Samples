@@ -81,9 +81,6 @@ begin
 
   // Create DataViewer
   DataViewer:=TDataViewer.Embedd(Self,TabStructure,nil);
-
-  // Enable displaying sub-grids when data has children sub-data
-  BIGrid1.ShowItems:=True;
 end;
 
 procedure TByCode.FormDestroy(Sender: TObject);

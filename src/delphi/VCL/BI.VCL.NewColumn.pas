@@ -56,7 +56,6 @@ type
     Constructor CreateData(const AOwner:TComponent; const AData:TDataItem);
 
     class function NewColumn(const AOwner:TComponent; const AData:TDataItem):TDataItem;
-    class function NewDetail(const AName:String; const AMaster:TDataItem; const ADetail:TDataItem):TDataItem;
   end;
 
 implementation

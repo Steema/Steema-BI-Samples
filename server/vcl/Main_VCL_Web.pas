@@ -10,11 +10,16 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdCustomHTTPServer, IdHTTPServer, IdContext, Vcl.StdCtrls,
-  Vcl.ComCtrls, BI.Web.AllData, BI.Web, BI.Web.Common,
-  BI.Persist, Data.DB, Vcl.ExtCtrls, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids,
-  BI.VCL.Grid, Vcl.Menus, BI.VCL.DataControl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
+  Data.DB, Vcl.ExtCtrls, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids,
+  Vcl.Menus,
+
+  // Indy
+  IdBaseComponent, IdComponent, IdCustomTCPServer, IdCustomHTTPServer,
+  IdHTTPServer, IdContext,
+
+  BI.Web.AllData, BI.Web, BI.Web.Common, BI.Persist,
+  BI.VCL.Grid, BI.VCL.DataControl;
 
 type
   TFormBIWeb = class(TForm)
@@ -99,12 +104,11 @@ type
     CloseFromMenu,
     FirstTime : Boolean;
 
-    procedure AddHistory(const AContext:TIdContext;
+    procedure AddHistory(const AContext:TBIWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
                          const Millisec:Integer; const Size:Int64);
-
 
     procedure CheckForUpdates;
     procedure CreateAllData(const AStore:String);
@@ -140,7 +144,8 @@ uses
   {$ENDIF}
   {$ENDIF}
 
-  System.UITypes, BI.VCL.Editor.Stores, BI.Languages.English;
+  System.UITypes, BI.VCL.Editor.Stores, BI.Languages.English,
+  BI.Web.IndyContext;
 
 procedure TFormBIWeb.Log(const S:String);
 begin
@@ -156,7 +161,7 @@ begin
      RefreshMemory;
 end;
 
-procedure TFormBIWeb.AddHistory(const AContext:TIdContext;
+procedure TFormBIWeb.AddHistory(const AContext:TBIWebContext;
                           const Command, Tag: String; const Success: Boolean;
                           const Millisec:Integer; const Size:Int64);
 var tmpNow : TDateTime;
@@ -164,7 +169,7 @@ var tmpNow : TDateTime;
 begin
   tmpNow:=Now;
 
-  IP:=AContext.Connection.Socket.Binding.PeerIP;
+  IP:=TBIIndyContext(AContext).PeerIP;
 
   History.Add(tmpNow,IP,Command,Tag,Success,Millisec,Size);
 
@@ -301,10 +306,7 @@ end;
 
 procedure TFormBIWeb.SetupPublicFolder;
 begin
-  BIWeb.PublicFolder.Enabled:=TBIRegistry.ReadBoolean('BIWeb','PublicEnabled',True);
   CBPublic.Checked:=BIWeb.PublicFolder.Enabled;
-
-  BIWeb.PublicFolder.Path:=TBIRegistry.ReadString('BIWeb','PublicFolder','public');
   CBPublic.Checked:=BIWeb.PublicFolder.Enabled;
 end;
 
@@ -462,15 +464,7 @@ begin
   else
   try
     try
-      if ARequestInfo.Document<>'/' then
-         BIWeb.ProcessFile(ARequestInfo.Document,AContext,AResponseInfo)
-      else
-      if ARequestInfo.CommandType=hcGET then
-         BIWeb.ProcessGet(AContext,AResponseInfo,ARequestInfo)
-      else
-      if ARequestInfo.CommandType=hcPOST then
-         BIWeb.ProcessPost(AContext,AResponseInfo,ARequestInfo);
-
+      TBIIndyContext.Process(BIWeb,AContext,ARequestInfo,AResponseInfo);
     except
       on E:Exception do
       begin

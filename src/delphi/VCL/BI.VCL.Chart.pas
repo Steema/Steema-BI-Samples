@@ -44,7 +44,7 @@ uses
   {$ENDIF}
   {$ENDIF}
 
-  BI.Data, BI.Arrays, BI.Summary, BI.DataSource;
+  BI.Data, BI.Arrays, BI.Summary, BI.DataSource, BI.Data.Info;
 
 // XE6 dcc32 BUG, workaround not available
 {$IF CompilerVersion>27}
@@ -275,6 +275,7 @@ type
     procedure FillSeries(const ASeries:TChartSeries; const X,Y,AText:TDataItem);
     function GetChart:TBITChart;
     function GuessRealData(const AData:TDataArray):TDataArray;
+    function IsDesigning:Boolean;
     procedure SetOptions(const Value: TBIChartOptions);
   protected
     Index : TCursorIndex;
@@ -310,6 +311,9 @@ type
 
     function GetChildOwner: TComponent; override;
     Procedure GetChildren(Proc:TGetChildProc; Root:TComponent); override;
+
+    procedure SetTwoAxes;
+    procedure SplitAxes(const Vertical:Boolean);
   published
     property Chart:TBITChart read GetChart;
 

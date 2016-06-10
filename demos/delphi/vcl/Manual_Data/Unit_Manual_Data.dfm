@@ -65,6 +65,8 @@ object FormManual: TFormManual
       Caption = 'Preview'
       ExplicitLeft = 6
       ExplicitTop = 16
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 173

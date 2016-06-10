@@ -10,6 +10,8 @@ uses
 type
   TListItemsEvent=procedure(const AItems:TDataArray; const ARefresh:Boolean) of object;
 
+  TListExchangedEvent=procedure(const Sender:TObject; const A,B:Integer) of object;
+
   TFormListItems = class(TForm)
     LBItems: TCheckListBox;
     Panel1: TPanel;
@@ -30,10 +32,14 @@ type
   private
     { Private declarations }
 
-    FOnChanged : TNotifyEvent;
+    FOnChanged,
+    FOnSelected,
+    FOnChecked,
+    FOnCheckedAll : TNotifyEvent;
+
+    FOnExchanged : TListExchangedEvent;
 
     procedure DoChanged;
-    procedure EnableCheckButtons;
     procedure Exchange(const A,B:Integer);
     procedure Recreate;
 
@@ -51,9 +57,11 @@ type
     class procedure AddMap(const AData: TDataItem; const AItems:TStrings); overload; static;
     procedure AddMap(const AData:TDataItem); overload;
 
+    procedure Check(const AIndex:Integer; const ACheck:Boolean);
     procedure CheckAll(const ACheck:Boolean);
     function CheckedCount:Integer;
 
+    procedure EnableCheckButtons;
     procedure EnableDrag(const AEnabled:Boolean);
 
     class procedure DoAddItems(const AItems:TStrings; const AData:Array of TDataItem); static;
@@ -63,6 +71,10 @@ type
     procedure TryAdd(const AData:TDataItem);
 
     property OnChanged:TNotifyEvent read FOnChanged write FOnChanged;
+    property OnChecked:TNotifyEvent read FOnChecked write FOnChecked;
+    property OnCheckedAll:TNotifyEvent read FOnCheckedAll write FOnCheckedAll;
+    property OnExchanged:TListExchangedEvent read FOnExchanged write FOnExchanged;
+    property OnSelected:TNotifyEvent read FOnSelected write FOnSelected;
   end;
 
 implementation

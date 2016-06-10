@@ -49,6 +49,9 @@ type
     procedure BRenameClick(Sender: TObject);
     procedure CBDefaultClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure LBStoresDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
 
@@ -56,7 +59,8 @@ type
 
     procedure AddPrefix(const APrefix:String);
     procedure ChangeWeb(Sender:TObject);
-    function Store:String;
+    function CurrentStore:String;
+    function StoreAt(const AIndex:Integer): String;
     function WebPath:String;
   public
     { Public declarations }

@@ -41,7 +41,6 @@ object BIWorkflowEditor: TBIWorkflowEditor
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
-    ShowItems = True
   end
   object PanelSelector: TPanel
     Left = 0

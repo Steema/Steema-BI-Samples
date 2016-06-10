@@ -935,8 +935,9 @@ const
   //https://quality.embarcadero.com/browse/RSP-15030
   // WRITE_RESTRICTED              = 4;
 
-  _WRITE_RESTRICTED              = 4;
-  RESTRICTED                    = (READ_RESTRICTED or _WRITE_RESTRICTED);
+  {$EXTERNALSYM WRITE_RESTRICTED}
+  WRITE_RESTRICTED              = 4;
+  RESTRICTED                    = (READ_RESTRICTED or WRITE_RESTRICTED);
 
 type
   TPyMemberType = (mtShort, mtInt, mtLong, mtFloat, mtDouble, mtString, mtObject,

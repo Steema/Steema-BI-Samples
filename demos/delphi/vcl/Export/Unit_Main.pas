@@ -103,8 +103,6 @@ begin
   // Set Navigator control source
   DBNavigator1.DataSource:=BIGrid1.DataSource;
 
-  BIGrid1.ShowItems:=True; // <-- Show Sub-Items at a secondary BIGrid
-
   SetNumberOfRows;
 end;
 

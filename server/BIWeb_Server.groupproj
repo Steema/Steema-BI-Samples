@@ -9,10 +9,7 @@
         <Projects Include="FMX\BI_FMX_Web.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Stress_Test\BIWeb_Stress_Test.dproj">
-            <Dependencies/>
-        </Projects>
-        <Projects Include="Monitor\BIWeb_Monitor.dproj">
+        <Projects Include="IIS\VCL\BI_VCL_IIS_Web.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -41,32 +38,23 @@
     <Target Name="BI_FMX_Web:Make">
         <MSBuild Projects="FMX\BI_FMX_Web.dproj" Targets="Make"/>
     </Target>
-    <Target Name="BIWeb_Stress_Test">
-        <MSBuild Projects="Stress_Test\BIWeb_Stress_Test.dproj"/>
+    <Target Name="BI_VCL_IIS_Web">
+        <MSBuild Projects="IIS\VCL\BI_VCL_IIS_Web.dproj"/>
     </Target>
-    <Target Name="BIWeb_Stress_Test:Clean">
-        <MSBuild Projects="Stress_Test\BIWeb_Stress_Test.dproj" Targets="Clean"/>
+    <Target Name="BI_VCL_IIS_Web:Clean">
+        <MSBuild Projects="IIS\VCL\BI_VCL_IIS_Web.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="BIWeb_Stress_Test:Make">
-        <MSBuild Projects="Stress_Test\BIWeb_Stress_Test.dproj" Targets="Make"/>
-    </Target>
-    <Target Name="BIWeb_Monitor">
-        <MSBuild Projects="Monitor\BIWeb_Monitor.dproj"/>
-    </Target>
-    <Target Name="BIWeb_Monitor:Clean">
-        <MSBuild Projects="Monitor\BIWeb_Monitor.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="BIWeb_Monitor:Make">
-        <MSBuild Projects="Monitor\BIWeb_Monitor.dproj" Targets="Make"/>
+    <Target Name="BI_VCL_IIS_Web:Make">
+        <MSBuild Projects="IIS\VCL\BI_VCL_IIS_Web.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="BI_VCL_Web;BI_FMX_Web;BIWeb_Stress_Test;BIWeb_Monitor"/>
+        <CallTarget Targets="BI_VCL_Web;BI_FMX_Web;BI_VCL_IIS_Web"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="BI_VCL_Web:Clean;BI_FMX_Web:Clean;BIWeb_Stress_Test:Clean;BIWeb_Monitor:Clean"/>
+        <CallTarget Targets="BI_VCL_Web:Clean;BI_FMX_Web:Clean;BI_VCL_IIS_Web:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="BI_VCL_Web:Make;BI_FMX_Web:Make;BIWeb_Stress_Test:Make;BIWeb_Monitor:Make"/>
+        <CallTarget Targets="BI_VCL_Web:Make;BI_FMX_Web:Make;BI_VCL_IIS_Web:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

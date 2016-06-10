@@ -8,19 +8,26 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BI.Data, BI.Persist,
   BI.DataSource, BI.VCL.DataControl, BI.VCL.Grid,
-  System.Diagnostics;
+  System.Diagnostics, Vcl.ComCtrls, Vcl.ExtCtrls;
 
 type
   TDemoForm = class(TForm)
-    Button1: TButton;
-    Memo1: TMemo;
-    BIGrid1: TBIGrid;
-    BIGrid2: TBIGrid;
+    Panel1: TPanel;
     CBParallel: TCheckBox;
-    procedure Button1Click(Sender: TObject);
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    BIGrid2: TBIGrid;
+    BIGrid1: TBIGrid;
+    LBTest: TListBox;
+    Label1: TLabel;
+    LabelRows: TLabel;
+    LabelTime: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure CBParallelClick(Sender: TObject);
+    procedure LBTestClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
 
@@ -32,6 +39,8 @@ type
     Rating : TDataItem;
 
     function DoMapReduce:TDataItem;
+    function Map_IsLeapYear:TDataItem;
+    procedure RunTest;
   public
     { Public declarations }
   end;
@@ -56,18 +65,44 @@ begin
   TMapReduce.Parallel:=CBParallel.Checked;
 end;
 
+type
+  TDataAccess=class(TDataItem);
+
+function TDemoForm.Map_IsLeapYear:TDataItem;
+var tmpLeap : TDataItem;
+begin
+  tmpLeap:=TMapReduce<Boolean>.ForAll(Year,
+            function(const Index:TInteger):Boolean
+            begin
+              result:=IsLeapYear(Year.Int32Data[Index]);
+            end);
+
+  tmpLeap.Name:='Is Leap Year?';
+
+  result:=TDataItem.Create(True);
+  result.Items.Add(TDataClone.Clone(Year));
+  result.Items.Add(tmpLeap);
+  TDataAccess(result).FCount:=Year.Count;
+end;
+
 function TDemoForm.DoMapReduce:TDataItem;
 begin
+  case LBTest.ItemIndex of
+
   // Easy mode:
 
-  // Return the count of ocurrences for each distinct Year value
-  //  result:=TMapReduce.Count(Year);
+    0: // Return the count of ocurrences for each distinct Year value
+       result:=TMapReduce.Count(Year);
 
-  // Return the average of Rating field values for each distinct Year value
-  //  result:=TMapReduce.Aggregate(Year,Rating,TAggregate.Average);
+    1: // Return the average of Rating field values for each distinct Year value
+       result:=TMapReduce.Aggregate(Year,Rating,TAggregate.Average);
 
-  // Return the average of an expression values for each distinct Year value
-  //  result:=TMapReduce.Aggregate(Year,'Votes/Length',TAggregate.Average);
+    2: // Return the average of an expression values for each distinct Year value
+       result:=TMapReduce.Aggregate(Year,'Votes/Length',TAggregate.Average);
+
+    3: // Map all values in Year field, to calculate IsLeapYear
+       result:=Map_IsLeapYear;
+  else
 
   // Advanced mode, using one Map and one Reduce function
 
@@ -84,24 +119,7 @@ begin
          begin
            result:=TMapReduce.Mean(Rating,List); // Use "List" indices to return a mean
          end);
-end;
 
-procedure TDemoForm.Button1Click(Sender: TObject);
-var t1 : TStopWatch;
-begin
-  Memo1.Clear;
-
-  Memo1.Lines.Add('Data: '+Movies.Name+' rows: '+Movies.Count.ToString);
-
-  t1:=TStopwatch.StartNew;
-  try
-    BIGrid1.Data.Free;
-
-    // Calculate map-reduce and show results at BIGrid1
-    BIGrid1.Data:=DoMapReduce;
-
-  finally
-    Memo1.Lines.Add('Time: '+t1.ElapsedMilliseconds.ToString+' msec');
   end;
 end;
 
@@ -117,12 +135,47 @@ begin
   // Show full Movies data on BIGrid2
   Movies.Load;
   BIGrid2.Data:=Movies;
+
+  LabelRows.Caption:=Movies.Count.ToString;
 end;
 
 procedure TDemoForm.FormDestroy(Sender: TObject);
 begin
   // Just release memory to avoid leak
   BIGrid1.Data.Free;
+end;
+
+procedure TDemoForm.RunTest;
+var t : Integer;
+begin
+  for t:=0 to LBTest.Count-1 do
+  begin
+    LBTest.ItemIndex:=t;
+    LBTestClick(Self);
+  end;
+end;
+
+procedure TDemoForm.FormShow(Sender: TObject);
+begin
+  if TUICommon.AutoTest then
+  begin
+    RunTest;
+    Close;
+  end;
+end;
+
+procedure TDemoForm.LBTestClick(Sender: TObject);
+var t1 : TStopWatch;
+begin
+  t1:=TStopwatch.StartNew;
+  try
+    BIGrid1.Data.Free;
+
+    // Calculate map-reduce and show results at BIGrid1
+    BIGrid1.Data:=DoMapReduce;
+  finally
+    LabelTime.Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
+  end;
 end;
 
 end.

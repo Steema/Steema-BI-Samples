@@ -63,6 +63,7 @@ type
     function Get(const AURL:String):String; overload; virtual; abstract;
     class function Parse(const AURL:String):TWebURL; virtual; abstract;
     procedure SetProxy(const AProxy:TWebProxy); virtual; abstract;
+    procedure SetTimeout(const ATimeout:Integer); virtual; abstract;
 
     class property OnProgress:TBIHttpProgress read FOnProgress write FOnProgress;
   end;
@@ -86,6 +87,7 @@ type
   public
   const
     DefaultPort=15015;
+    DefaultTimeout=2000;
 
     class property OnFinish:TNotifyEvent read FOnFinish write FOnFinish;
     class property OnStart:TNotifyEvent read FOnStart write FOnStart;
@@ -93,6 +95,7 @@ type
   var
     Server : String;
     Port : Integer;
+    Timeout : Integer;
     Compress : TWebCompression;
     Store : String;
 

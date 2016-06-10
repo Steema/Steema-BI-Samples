@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, 
+  FMX.Types, FMX.Controls, FMX.Forms,
 
   {$IF CompilerVersion<=27}
   {$DEFINE HASFMX20}
@@ -17,7 +17,7 @@ uses
   FMX.Dialogs,
   Data.Bind.Controls, Fmx.Bind.Navigator, BI.FMX.Grid, FMX.Layouts,
   FMX.StdCtrls, FMX.TabControl,
-  //BI.FMX.Editor.Grid,
+  BI.FMX.Editor.Grid,
   BI.FMX.DataManager, BI.FMX.DataControl;
 
 type
@@ -29,15 +29,13 @@ type
     Layout1: TLayout;
     BIGrid1: TBIGrid;
     BindNavigator1: TBindNavigator;
-    CBAlternate: TCheckBox;
-    CBSort: TCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure CBAlternateChange(Sender: TObject);
-    procedure CBSortChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure TabControl1Resize(Sender: TObject);
   private
     { Private declarations }
+
+    GridEditor : TBIGridEditor;
 
     IManager : TDataManager;
 
@@ -54,29 +52,17 @@ implementation
 {$R *.fmx}
 
 uses
-  BI.Persist, BI.Data, BI.FMX.Grid.Grid;
-
-procedure TGridDemoForm.CBAlternateChange(Sender: TObject);
-begin
-  BIGrid1.Alternate.Enabled:=CBAlternate.IsChecked;
-end;
-
-procedure TGridDemoForm.CBSortChange(Sender: TObject);
-begin
-  // Pending: Move up ColumnSort to parent TBIGrid class
-  (BIGrid1.Plugin.GetObject as TBIFMXGrid).ColumnSort:=CBSort.IsChecked;
-end;
+  BI.Persist, BI.Data;
 
 procedure TGridDemoForm.FormCreate(Sender: TObject);
 begin
   TabControl1.ActiveTab:=TabOptions;
 
-  //GridEditor:=TBIGridEditor.Embedd(Self,TabOptions,BIGrid1);
-  //GridEditor.FillColumns;
+  GridEditor:=TBIGridEditor.Embedd(Self,TabOptions,BIGrid1);
 
-  BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Customers'];
+  BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Products'];
 
-  //BindNavigator1.DataSource:=BIGrid1.DataSource;
+//  BindNavigator1.DataSource:=BIGrid1.Plugin.DataSource;
 end;
 
 procedure TGridDemoForm.FormShow(Sender: TObject);
@@ -93,10 +79,7 @@ begin
   tmp:=TDataManager(Sender).Selected;
 
   if tmp<>nil then
-  begin
-    BIGrid1.Data:=tmp;
-    //GridEditor.FillColumns;
-  end;
+     BIGrid1.Data:=tmp;
 end;
 
 procedure TGridDemoForm.TabControl1Resize(Sender: TObject);

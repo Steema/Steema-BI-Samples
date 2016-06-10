@@ -20,7 +20,7 @@ type
   private
     FStore : String;
   public
-    Constructor Create(const AStore:String);
+    Constructor Create(const AStore:String='');
 
     function AllData:TDataItem;
 
@@ -50,7 +50,11 @@ uses
 Constructor TAllData.Create(const AStore: String);
 begin
   inherited Create;
-  FStore:=AStore;
+
+  if AStore='' then
+     FStore:=TStore.DefaultName
+  else
+     FStore:=AStore;
 end;
 
 function TAllData.AllData: TDataItem;

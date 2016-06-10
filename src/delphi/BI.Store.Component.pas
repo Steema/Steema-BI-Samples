@@ -9,18 +9,23 @@ unit BI.Store.Component;
 interface
 
 uses
-  System.Classes, System.Types, System.Generics.Collections, Data.DB,
-  BI.Data, BI.Persist;
+  System.Classes, System.Types,
+  {$IFNDEF FPC}
+  System.Generics.Collections,
+  {$ENDIF}
+  Data.DB, BI.Data, BI.Persist;
 
 type
   TComponentImporterClass=class of TComponentImporter;
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
               {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
               {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
+  {$ENDIF}
   {$ENDIF}
   TComponentImporter=class(TBaseDataImporter)
   private
@@ -42,7 +47,7 @@ type
     class function StringsOf(const ASource:TComponent):TStrings; virtual;
   public
     class var
-      Plugins : TList<TComponentImporterClass>;
+      Plugins : TList{$IFNDEF FPC}<TComponentImporterClass>{$ENDIF};
 
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;

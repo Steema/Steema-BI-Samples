@@ -44,7 +44,7 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Diagnostics, Vcl.Clipbrd;
+  System.Diagnostics, Vcl.Clipbrd, BI.Data.Expressions;
 
 // Execute all tests
 procedure TFormSpeed.BExportClick(Sender: TObject);

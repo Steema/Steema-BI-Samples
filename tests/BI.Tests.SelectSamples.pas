@@ -22,7 +22,7 @@ implementation
 
 uses
   System.SysUtils,
-  BI.Data, BI.Persist, BI.Summary, BI.Expression,
+  BI.Data, BI.Persist, BI.Summary, BI.Expression, BI.Data.Expressions,
   BI.Tests.SummarySamples;
 
 { TSelectSamples }
@@ -298,7 +298,7 @@ class function TSelectSamples.CreateSelect(const AOwner:TComponent; const AIndex
              tmpSum.By.Delete(0);
              tmpSum.By.Delete(1);
 
-             tmpSum.By[0].DateOptions.Part:=TDateTimePart.WeekOfYear;
+             tmpSum.By[0].DatePart:=TDateTimePart.WeekOfYear;
 
              Samples.SumData3.Free;
              Samples.SumData3:=tmpSum.Calculate;

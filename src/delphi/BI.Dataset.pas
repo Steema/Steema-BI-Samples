@@ -55,7 +55,8 @@ uses System.Classes, System.Types,
      {$ENDIF}
      {$ENDIF}
      {$ENDIF}
-     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Query;
+     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary,
+     BI.Expression.Filter;
 
 const
   MaxDataSize=512;
@@ -192,6 +193,8 @@ type
   {$ENDIF}
   TBIDataset = class(TBICustomDataSet)
   private
+    FFilter : TBIFilter;
+
     //[Weak}
     ICursor : TDataCursor;
 
@@ -223,8 +226,9 @@ type
     procedure SetRowNumbers(const Value: Boolean);
     procedure TryCreateLink;
     procedure WriteOrigin(Writer: TWriter);
+    procedure SetFilter(const Value: TBIFilter);
   protected
-    Index : TNativeIntArray;
+    Index : TCursorIndex;
 
     function BookMarkToIndex(const ABookMark:TInteger):TInteger; override;
     procedure DefineProperties(Filer: TFiler); override;
@@ -281,19 +285,16 @@ type
 
     property Cursor:TDataCursor read ICursor;
   published
+    property Active;
+
     property Data:TDataItem read GetData write SetData;
+    property Filter:TBIFilter read FFilter write SetFilter;
     property Master:TBIDataSet read FMaster write SetMaster;
     property RowNumbers:Boolean read FRowNumbers write SetRowNumbers;
-
-    property Active;
 
     //property AutoCalcFields;
     //property Constraints;
     //property DataSetField;
-
-    //property Filter;
-    //property Filtered;
-    //property FilterOptions;
     //property FieldDefs;
 
     {$IFNDEF FPC}

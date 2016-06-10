@@ -73,7 +73,8 @@ type
     procedure BindTo(const AData: TDataItem); overload;
     procedure BindTo(const AData: TDataArray); overload;
 
-    procedure Colorize(const AItems:TDataColorizers);
+    procedure Colorize; overload;
+    procedure Colorize(const AItems:TDataColorizers); overload;
 
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);
 
@@ -102,6 +103,7 @@ type
 
     class procedure AddForm(const AForm: TCommonCustomForm; const AParent: TFmxObject); static;
     class function Ask(const ATitle,ACaption:String; var AValue:String):Boolean; static;
+    class function AutoTest:Boolean; static;
     class procedure LoadPosition(const AForm:TCommonCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AControl:TControl); static;
     class procedure SavePosition(const AForm:TCommonCustomForm; const Key:String); static;

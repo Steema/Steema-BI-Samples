@@ -3,9 +3,9 @@ unit BI.VCL.R.Console;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  Vcl.ExtCtrls, BI.Plugins.R;
+  Windows, Messages, SysUtils, Classes,
+  Graphics, Controls, Forms, Dialogs, StdCtrls,
+  ExtCtrls, BI.Plugins.R;
 
 type
   TBIRConsole = class(TForm)

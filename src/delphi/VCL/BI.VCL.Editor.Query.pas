@@ -24,9 +24,9 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
   Vcl.CheckLst, Vcl.Buttons,
 
-  BI.Data,  BI.Summary, BI.DataSource, BI.VCL.DataSelect, BI.Query,
+  BI.Data, BI.Summary, BI.DataSource, BI.VCL.DataSelect, BI.Query,
   BI.VCL.Grid, BI.VCL.DataControl, BI.Persist, BI.VCL.Editor.DynamicFilter,
-  BI.Expression;
+  BI.Expression, BI.VCL.Editor.Sort, BI.VCL.DataManager;
 
 type
   TOnShowQueryEditor=procedure(const AEditor:TForm);
@@ -35,7 +35,7 @@ type
     PanelSelector: TPanel;
     PanelEdit: TPanel;
     OuterPanel: TPanel;
-    Splitter1: TSplitter;
+    SplitterPreview: TSplitter;
     SplitterSelector: TSplitter;
     PanelRows: TPanel;
     PanelColumns: TPanel;
@@ -66,8 +66,8 @@ type
     EItemExpression: TEdit;
     CBRemoveRows: TCheckBox;
     CBRemoveCols: TCheckBox;
+    PanelOptions: TPanel;
     PanelButtons: TPanel;
-    Panel9: TPanel;
     BOK: TButton;
     Button1: TButton;
     LMax: TLabel;
@@ -92,7 +92,6 @@ type
     Label6: TLabel;
     EBins: TEdit;
     UDBins: TUpDown;
-    BIQuery1: TBIQuery;
     SBSwap: TSpeedButton;
     SBSelector: TSpeedButton;
     Label7: TLabel;
@@ -106,8 +105,13 @@ type
     PageData: TPageControl;
     TabData: TTabSheet;
     TabFilter: TTabSheet;
-    PanelFilter: TPanel;
-    CBFilter: TCheckBox;
+    LStart: TLabel;
+    EStart: TEdit;
+    TabSort: TTabSheet;
+    BIQuery1: TBIQuery;
+    TabSQL: TTabSheet;
+    MemoSQL: TMemo;
+    CBPreview: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure ListRowsDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -135,7 +139,6 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure BOKClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure CBFilterClick(Sender: TObject);
     procedure CBHistoActiveClick(Sender: TObject);
     procedure SBRowUpClick(Sender: TObject);
     procedure SBRowDownClick(Sender: TObject);
@@ -150,30 +153,47 @@ type
     procedure FormShow(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure PageDataChange(Sender: TObject);
+    procedure EStartChange(Sender: TObject);
+    procedure PagePreviewChange(Sender: TObject);
+    procedure CBPreviewClick(Sender: TObject);
   private
     { Private declarations }
 
+    type
+      TAddMasterProc=procedure(const AData:TDataItem) of object;
+
+    var
     IQuery : TBIQuery;
+
+    ISelector : TDataSelector;
 
     CompTree,
     DataTree : TTreeView;
 
     IFilter : TDynamicFilterEditor;
+    ISort : TSortEditor;
 
     IChanging,
+    ISettingPreview,
     IModified : Boolean;
 
-    ICurrent : TQueryItem;
+    IMasterFilter : TMasterFilter;
+
+    IDimension : TQueryDimension;
+    IMeasure : TQueryMeasure;
 
     function AddData(const AList:TCheckListBox; const AData:TDataItem; const IsActive:Boolean=True):TQueryItem;
     procedure AddItem(const AList:TCheckListBox; const AItem:TQueryItem);
+    procedure AdjustSelectorCaption;
     procedure ChangeCurrentBy;
     procedure ChangeCurrentMeasure;
-    procedure ChangeItem(const AList:TCheckListBox); overload;
-    procedure ChangeItem(const AItem:TQueryItem); overload;
+    procedure ChangeDimension(const AList:TCheckListBox); overload;
+    procedure ChangeDimension(const AItem:TQueryDimension); overload;
+    procedure ChangeMeasure; overload;
+    procedure ChangeMeasure(const AItem:TQueryMeasure); overload;
     procedure ChangedFilter(Sender: TObject);
     function ChangingQuery:Boolean;
-    procedure DeleteItem(const AList:TCheckListBox);
+    procedure DeleteDimension(const AList:TCheckListBox);
     procedure DoExchangeItem(const AList:TCheckListBox; const A,B:Integer); overload;
     procedure DoExchangeItem(const AList:TCheckListBox; const Delta:Integer); overload;
 
@@ -184,27 +204,47 @@ type
     procedure EnableRowSettings;
     procedure EnableSwap;
     procedure FilterComponent(Sender: TComponent; var Valid:Boolean);
-    function ListOf(const ABy:TGroupBy):TCheckListBox;
-    function Measure:TMeasure;
+
+    function GetPreview: Boolean;
+    function ListOf(const ABy:TQueryDimension):TCheckListBox;
+    function Measure:TQueryMeasure;
     procedure Modified;
+    procedure RefreshFilter;
+    procedure RefreshFilterAndSort;
+    procedure RefreshQuery;
+    procedure RefreshSelector;
     procedure RemoveFromList(const AList:TCheckListBox);
     function Resolver(const S:String; IsFunction:Boolean):TExpression;
-    procedure SetDataProperties(const AItem:TQueryItem);
-    procedure SetItemProperties(const ACurrent:TQueryItem; const IsMeasure:Boolean);
+
+    procedure SetDataProperties(const AItem:TQueryDimension); overload;
+    procedure SetDataProperties(const AItem:TQueryMeasure); overload;
+    procedure SetDataProperties(const AData:TDataItem; const AExpression:TExpression); overload;
+
+    procedure SetItemProperties(const ACurrent:TQueryDimension); overload;
+    procedure SetItemProperties(const ACurrent:TQueryMeasure); overload;
+
     procedure SetPart(const ACombo:TComboBox; const APart:TDateTimePart);
+    procedure SetPreview(const Value: Boolean);
+
+    procedure ShowSQL;
+    procedure SortChanged(Sender:TObject);
+    procedure TryAddMasters(const AProc:TAddMasterProc);
+    procedure TryShowPreviewGrid;
   public
     { Public declarations }
 
     class
       var OnShowEditor : TOnShowQueryEditor;
 
-    var
-      Selector : TDataSelector;
+    function Selector:TDataSelector;
 
     class function Edit(const AOwner:TComponent; const AQuery:TBIQuery):Boolean; static;
-    class function Embedd(const AOwner: TComponent; const AParent: TWinControl): TBIQueryEditor; static;
+    class function Embedd(const AOwner: TComponent; const AParent: TWinControl; const AQuery:TBIQuery): TBIQueryEditor; static;
 
     procedure Refresh(const AQuery:TBIQuery);
+    procedure ShowSelector(const AShow:Boolean);
+
+    property Preview:Boolean read GetPreview write SetPreview;
   end;
 
 implementation

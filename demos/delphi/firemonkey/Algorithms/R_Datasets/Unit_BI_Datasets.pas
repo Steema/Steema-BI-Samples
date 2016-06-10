@@ -78,6 +78,7 @@ type
     TabItem4: TTabItem;
     TrainGrid: TBIGrid;
     BIDataset1: TBIDataset;
+    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure LDatasetsChange(Sender: TObject);
     procedure CBTargetChange(Sender: TObject);
@@ -86,6 +87,8 @@ type
     procedure LModelChange(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
 
@@ -99,6 +102,8 @@ type
     procedure EnableFit;
     procedure FillDatas;
     procedure FillModels;
+
+    procedure RunTest;
 
     function SelectedAttributes:TDataArray;
     function SelectedTarget:TDataItem;
@@ -161,6 +166,19 @@ begin
   TBIDataSetAccess(BIDataSet1).Index:=AModel.Indices.A;
 
   TrainGrid.DataSet:=BIDataset1;
+end;
+
+procedure TRDatasetsDemo.Timer1Timer(Sender: TObject);
+begin
+  // Timer is used to leave time to FMX to initialize this form
+  // completely, before running tests.
+  Timer1.Enabled:=False;
+
+  // Without this timer, an exception is raised at OpaR Engine
+  // ( "memory.limit function not found" )
+
+  RunTest;
+  Close;
 end;
 
 procedure TRDatasetsDemo.ShowResults(const AModel:TSupervisedModel);
@@ -299,6 +317,12 @@ begin
   LModel.ItemIndex:=LModel.Items.IndexOfObject(TObject(TBINearestNeighbour)); // kNN
 end;
 
+procedure TRDatasetsDemo.FormActivate(Sender: TObject);
+begin
+  if TUICommon.AutoTest then
+     Timer1.Enabled:=True;
+end;
+
 procedure TRDatasetsDemo.FormCreate(Sender: TObject);
 begin
   Data:=TStore.Load('BISamples','R Datasets');
@@ -311,6 +335,11 @@ begin
   SelectDefaultDatas;
 
   EnableFit;
+end;
+
+procedure TRDatasetsDemo.RunTest;
+begin
+  BFitClick(Self);
 end;
 
 procedure TRDatasetsDemo.FormShow(Sender: TObject);

@@ -10,6 +10,7 @@ object NumericFromTo: TNumericFromTo
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object PanelTracks: TPanel
@@ -21,43 +22,33 @@ object NumericFromTo: TNumericFromTo
     BevelOuter = bvNone
     TabOrder = 0
     OnResize = PanelTracksResize
-    ExplicitLeft = 8
-    ExplicitTop = 160
-    ExplicitWidth = 518
-    ExplicitHeight = 249
-    object Label1: TLabel
-      Left = 11
+    object LErrorFrom: TLabel
+      Left = 194
       Top = 7
-      Width = 28
+      Width = 3
       Height = 13
-      Caption = '&From:'
-      FocusControl = TBFrom
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
-    object Label2: TLabel
-      Left = 11
-      Top = 55
-      Width = 16
+    object LErrorTo: TLabel
+      Left = 194
+      Top = 59
+      Width = 3
       Height = 13
-      Caption = '&To:'
-      FocusControl = TBTo
-    end
-    object LFrom: TLabel
-      Left = 177
-      Top = 7
-      Width = 5
-      Height = 13
-      Caption = '?'
-    end
-    object LTo: TLabel
-      Left = 177
-      Top = 55
-      Width = 5
-      Height = 13
-      Caption = '?'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
     object TBFrom: TTrackBar
-      Left = 3
-      Top = 26
+      Left = 0
+      Top = 31
       Width = 373
       Height = 30
       Max = 100
@@ -68,7 +59,7 @@ object NumericFromTo: TNumericFromTo
     end
     object TBTo: TTrackBar
       Left = 6
-      Top = 74
+      Top = 78
       Width = 373
       Height = 30
       Max = 100
@@ -77,6 +68,40 @@ object NumericFromTo: TNumericFromTo
       TabOrder = 1
       ThumbLength = 14
       OnChange = TBToChange
+    end
+    object EFrom: TEdit
+      Left = 69
+      Top = 4
+      Width = 121
+      Height = 21
+      TabOrder = 2
+      OnChange = EFromChange
+    end
+    object ETo: TEdit
+      Left = 69
+      Top = 56
+      Width = 121
+      Height = 21
+      TabOrder = 3
+      OnChange = EToChange
+    end
+    object CBFrom: TCheckBox
+      Left = 11
+      Top = 6
+      Width = 56
+      Height = 17
+      Caption = 'From:'
+      TabOrder = 4
+      OnClick = CBFromClick
+    end
+    object CBTo: TCheckBox
+      Left = 11
+      Top = 58
+      Width = 56
+      Height = 17
+      Caption = 'To:'
+      TabOrder = 5
+      OnClick = CBToClick
     end
   end
 end

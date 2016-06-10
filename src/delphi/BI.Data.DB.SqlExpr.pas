@@ -36,6 +36,7 @@ type
     class procedure GuessForeignKeys(const AName:String; const Table:TDataSet; const AData:TDataItem; const Source:TBISource); override;
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;
+    class function Tester:TBIDBTesterClass; override;
   end;
 
 implementation

@@ -10,12 +10,13 @@ interface
 
 uses
   {$IFDEF MSWINDOWS}
-  Windows,
+  WinAPI.Windows,
   {$ENDIF}
   {$IFNDEF FPC}
   Messages, UITypes,
+  System.Types, // <-- due to inlining
   {$ENDIF}
-  Types, Classes, SysUtils,
+  Classes, SysUtils,
   Controls, Grids, DBGrids, Graphics, DB, Buttons, Menus, StdCtrls, ExtCtrls,
   BI.VCL.Grid, BI.Data, BI.UI, BI.DataSet, BI.DataSource;
 
@@ -36,6 +37,7 @@ type
     public
       Alternate : TMenuItem;
       Button : TSpeedButton;
+      Detail : TMenuItem;
       Filters : TMenuItem;
       GroupBy : TMenuItem;
       Search : TMenuItem;
@@ -80,10 +82,14 @@ type
 
     IMenu : TGridMenu;
 
+    IDetailGrid : TBIGrid;
+    IDetailSplitter : TSplitter;
+
     IGroup : TGridGroup;
 
     IWasDragging : Boolean;
 
+    procedure AddDetailMenu;
     procedure AddGroupByMenu;
     class function AddMenuButton(const AParent:TWinControl; const ACaption:String;
                            const AHeight:Integer;
@@ -98,8 +104,11 @@ type
     procedure CheckDataSource;
     procedure CloseGroup(Sender:TObject);
     procedure DestroyMenu;
+    function DetailItems:TDataArray;
+    procedure DetailClicked(Sender: TObject);
     procedure DoGroupBy(Sender:TObject);
     procedure DoTitleClick(AColumn:TColumn);
+    function GetData:TDataItem;
     procedure GroupDataChange(Sender: TObject; Field: TField);
     procedure MenuClick(Sender:TObject);
     procedure MenuFiltersClick(Sender: TObject);
@@ -194,6 +203,7 @@ type
     procedure AutoWidth; override;
     procedure ChangedAlternate(Sender:TObject); override;
     function GetDataSource: TDataSource; override;
+    function GetEditorClass:String; override;
     function GetReadOnly:Boolean; override;
     function GetTotals:Boolean; override;
     procedure SetDataSource(const Value: TDataSource); override;

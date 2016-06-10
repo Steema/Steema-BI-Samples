@@ -134,10 +134,7 @@ object DataViewer: TDataViewer
           ParentBackground = False
           ParentColor = False
           TabOrder = 0
-          ShowItems = True
           OnDataChange = DataGridDataChange
-          ExplicitLeft = 3
-          ExplicitTop = -6
         end
         object PanelNav: TPanel
           Left = 0
@@ -155,7 +152,6 @@ object DataViewer: TDataViewer
             Align = alLeft
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitHeight = 34
             object LRow: TLabel
               Left = 8
               Top = 11
@@ -172,7 +168,6 @@ object DataViewer: TDataViewer
             Align = alLeft
             BevelOuter = bvNone
             TabOrder = 1
-            ExplicitHeight = 34
             object DBNavigator1: TDBNavigator
               Left = 0
               Top = 0
@@ -181,9 +176,6 @@ object DataViewer: TDataViewer
               VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
               Align = alClient
               TabOrder = 0
-              ExplicitLeft = 113
-              ExplicitWidth = 762
-              ExplicitHeight = 34
             end
           end
         end
@@ -197,10 +189,6 @@ object DataViewer: TDataViewer
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 344
-      ExplicitTop = 304
-      ExplicitWidth = 185
-      ExplicitHeight = 41
       object ItemsGrid: TBIGrid
         Left = 0
         Top = 30
@@ -212,8 +200,6 @@ object DataViewer: TDataViewer
         ParentColor = False
         TabOrder = 0
         DataSource = DataSource2
-        ExplicitTop = 0
-        ExplicitHeight = 261
       end
       object Panel3: TPanel
         Left = 0
@@ -232,7 +218,6 @@ object DataViewer: TDataViewer
           VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
           Align = alLeft
           TabOrder = 0
-          ExplicitHeight = 41
         end
       end
     end

@@ -16,7 +16,7 @@ uses
   System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.Visualizer, Vcl.StdCtrls,
   Vcl.ExtCtrls, Vcl.Buttons, Vcl.CheckLst, Vcl.ComCtrls, BI.VCL.Grid,
-  BI.Summary;
+  BI.Summary, BI.VCL.DataControl;
 
 type
   TVisualizerEditor = class(TForm)

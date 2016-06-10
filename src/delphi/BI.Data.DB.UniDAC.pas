@@ -29,6 +29,7 @@ type
     class function GetTableNames(const AConnection:TCustomConnection):TStrings; override;
     class procedure GuessForeignKeys(const AName:String; const Table:TDataSet; const AData:TDataItem; const Source:TBISource); override;
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; override;
+    class function Tester:TBIDBTesterClass; override;
   end;
 
   {

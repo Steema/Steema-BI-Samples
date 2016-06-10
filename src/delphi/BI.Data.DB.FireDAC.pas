@@ -31,6 +31,7 @@ type
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; override;
     class procedure StartParallel; override;
     class function Supports(const Extension:String):Boolean; override;
+    class function Tester:TBIDBTesterClass; override;
   end;
 
 implementation

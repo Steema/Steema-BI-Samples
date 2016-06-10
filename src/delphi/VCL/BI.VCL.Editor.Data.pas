@@ -116,6 +116,10 @@ type
     Label1: TLabel;
     EWebURL: TEdit;
     RGKind: TRadioGroup;
+    Label22: TLabel;
+    ETimeout: TEdit;
+    UDTimeout: TUpDown;
+    Label23: TLabel;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -162,6 +166,7 @@ type
     procedure EWebURLChange(Sender: TObject);
     procedure RGKindClick(Sender: TObject);
     procedure BOKClick(Sender: TObject);
+    procedure ETimeoutChange(Sender: TObject);
   private
     { Private declarations }
     FOnChangeWeb : TNotifyEvent;
@@ -173,6 +178,7 @@ type
 
     procedure DatabaseSettings;
     function DBDriverID:String;
+    procedure EnableTestButton;
     procedure FileSettings;
     function FileTypeExtension(const Index:Integer):String;
     procedure FillDBDrivers;

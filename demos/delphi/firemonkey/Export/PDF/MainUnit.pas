@@ -44,8 +44,11 @@ type
     CBAlign: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure BCreatePDFClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+
+    procedure PreparePDF(const PDF:TBIPDFExport);
   public
     { Public declarations }
   end;
@@ -63,6 +66,61 @@ uses
 const
   BrushKindSolid:TBrushKind=TBrushKind.{$IF CompilerVersion<26}bkSolid{$ELSE}Solid{$ENDIF};
 
+procedure TMainPDF.PreparePDF(const PDF:TBIPDFExport);
+begin
+  // Header font
+  PDF.Header.Font.Name:='Courier New';
+
+  // Fill header background ?
+  if CBHeaderBack.IsChecked then
+  begin
+    PDF.Header.Font.Color:=TAlphaColors.White;
+    PDF.Header.Font.SizeFloat:=10;
+    PDF.Header.Brush.Style:=BrushKindSolid;
+    PDF.Header.Brush.Color:=TAlphaColors.Green;
+  end;
+
+  // Rows font size
+  PDF.RowFormat.Font.SizeFloat:=8;
+
+  if CBAlternate.IsChecked then
+  begin
+    PDF.RowFormat.Brush.Style:=BrushKindSolid;
+
+    // Paint rows in alternate background
+    PDF.RowFormat.Alternate.Visible:=True;
+  end;
+
+  // Global horizontal Alignment
+  case CBAlign.ItemIndex of
+    0 : PDF.Alignment:=TAlignment.Left;
+    1 : PDF.Alignment:=TAlignment.Center;
+  else
+    PDF.Alignment:=TAlignment.Right;
+  end;
+
+  // Footer
+  PDF.Footer.Text.Clear;
+  PDF.Footer.Text.Add('This is a footer text');
+  PDF.Footer.Font.Color:=TAlphaColors.Navy;
+  PDF.Footer.Alignment:=TAlignment.Right;
+
+  // Font Size automatic ? (auto-fit all items)
+  PDF.AutoWidth:=CBAuto.IsChecked;
+
+  // Document Page properties
+  PDF.Page.Size:=TPDFPageSize.psA4;
+  PDF.Page.Orientation:=TPDFPageOrientation.poPortrait;
+
+  // Page Numbers
+  PDF.Page.Numbering.Visible:=CBPageNumbers.IsChecked;
+  PDF.Page.Numbering.Font.Style:=[TFontStyle.fsItalic];
+
+  // Grid lines
+  PDF.GridLines.Horizontal.Visible:=CBGridLines.IsChecked;
+  PDF.GridLines.Vertical.Visible:=CBGridLines.IsChecked;
+end;
+
 procedure TMainPDF.BCreatePDFClick(Sender: TObject);
 var tmp : TBIPDFExport;
     tmpFile : String;
@@ -70,63 +128,17 @@ begin
   // Create a PDF Export object
   tmp:=TBIPDFExport.Create;
   try
-    // Header font
-    tmp.Header.Font.Name:='Courier New';
-
-    // Fill header background ?
-    if CBHeaderBack.IsChecked then
-    begin
-      tmp.Header.Font.Color:=TAlphaColors.White;
-      tmp.Header.Font.SizeFloat:=10;
-      tmp.Header.Brush.Style:=BrushKindSolid;
-      tmp.Header.Brush.Color:=TAlphaColors.Green;
-    end;
-
-    // Rows font size
-    tmp.RowFormat.Font.SizeFloat:=8;
-
-    if CBAlternate.IsChecked then
-    begin
-      tmp.RowFormat.Brush.Style:=BrushKindSolid;
-
-      // Paint rows in alternate background
-      tmp.RowFormat.Alternate.Visible:=True;
-    end;
-
-    // Global horizontal Alignment
-    case CBAlign.ItemIndex of
-      0 : tmp.Alignment:=TAlignment.Left;
-      1 : tmp.Alignment:=TAlignment.Center;
-    else
-      tmp.Alignment:=TAlignment.Right;
-    end;
-
-    // Footer
-    tmp.Footer.Text.Clear;
-    tmp.Footer.Text.Add('This is a footer text');
-    tmp.Footer.Font.Color:=TAlphaColors.Navy;
-    tmp.Footer.Alignment:=TAlignment.Right;
-
-    // Font Size automatic ? (auto-fit all items)
-    tmp.AutoWidth:=CBAuto.IsChecked;
-
-    // Document Page properties
-    tmp.Page.Size:=TPDFPageSize.psA4;
-    tmp.Page.Orientation:=TPDFPageOrientation.poPortrait;
-
-    // Page Numbers
-    tmp.Page.Numbering.Visible:=CBPageNumbers.IsChecked;
-    tmp.Page.Numbering.Font.Style:=[TFontStyle.fsItalic];
-
-    // Grid lines
-    tmp.GridLines.Horizontal.Visible:=CBGridLines.IsChecked;
-    tmp.GridLines.Vertical.Visible:=CBGridLines.IsChecked;
+    PreparePDF(tmp);
 
     // Set Data item
     tmp.Data:=BIGrid1.Data;
 
     // Temporary file name to save PDF
     tmpFile:=TPath.Combine(TPath.GetTempPath,'deleteme.pdf');
+
+    if TFile.Exists(tmpFile) then
+       TFile.Delete(tmpFile);
+
 
     // Just in case, release browser locked pdf file, before saving it again
     WebBrowserPDF.Navigate('about:blank');
@@ -152,6 +164,12 @@ begin
   // Go directly to PDF preview
   TabControl1.ActiveTab:=TabPDF;
   BCreatePDFClick(Self);
+end;
+
+procedure TMainPDF.FormShow(Sender: TObject);
+begin
+  if TUICommon.AutoTest then
+     Close;
 end;
 
 end.

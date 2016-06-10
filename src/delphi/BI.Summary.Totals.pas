@@ -23,12 +23,15 @@ type
     FSummary : TSummary;
 
     procedure CheckSummary;
+    procedure DestroySummaries;
     procedure SetSummary(const Value: TSummary);
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
-    Constructor CreateSummary(const ASummary:TSummary);
+    Constructor CreateSummary(const AOwner:TComponent; const ASummary:TSummary);
+    Destructor Destroy; override;
+
     procedure Calculate(const AData:TDataItem);
   published
     property Summary:TSummary read FSummary write SetSummary;

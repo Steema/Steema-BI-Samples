@@ -69,8 +69,6 @@ type
   // Generic Provider
   TTypeProvider<T>=class(TRTTIProvider)
   private
-    //FData : TDataItem;
-
     function Get(const AIndex: TInteger):T;
     procedure GetError(const AIndex:TInteger);
     procedure Put(const AIndex:TInteger; const AValue:T); inline;
@@ -95,7 +93,6 @@ type
     procedure Remove(const AValue:T);
     procedure Update(const AIndex:TInteger; const AValue:T);
 
-    //property Data:TDataItem read FData;
     property Items[const Index:TInteger]:T read Get write Put; default;
   end;
 

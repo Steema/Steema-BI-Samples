@@ -10,7 +10,7 @@ interface
 
 uses
   BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
-  BI.Persist;
+  BI.Persist, BI.Data.Expressions;
 
 type
   ESQLParser=class(EBIException);
@@ -64,7 +64,7 @@ type
   // its equivalent SQL string
   TBISQL=record
   private
-    class function FilterOf(const AFilter:TExpression; const AWhereCount:Integer):String; static;
+    class function FilterOf(const AFilter:TExpression):String; static;
 
     // Return the "equivalent" SQL script:
     class function From(const ASelect:TDataSelect):String; overload; static;
@@ -72,10 +72,15 @@ type
     // Return the "equivalent" SQL script:
     class function From(const ASummary:TSummary):String; overload; static;
 
-    // Return SQL from AData Provider:
-    class function From(const AData:TDataItem):String; overload; static;
+    class function From(const AMain:TDataItem; const AData:TDataArray):String; overload; static;
 
-    class function FromAndWhere(const AMain:TDataItem; const AData:TDataArray):String; static;
+    class function FromItems(const AMain:TDataItem; const AData:TDataArray):TDataArray; static;
+
+    class function FromWhereFilter(const AMain:TDataItem;
+                                   const AFilter:TExpression;
+                                   const AData:TDataArray): String; static;
+
+    class function Where(const AMain:TDataItem; const AData:TDataArray):String; static;
   public
     // Return the "equivalent" SQL script:
     class function From(const AProvider:TDataProvider):String; overload; static;
@@ -84,6 +89,9 @@ type
     class function From(const AData:TDataItem; const SQL:String;
                         const GetData:TGetDataProc=nil;
                         const ErrorProc:TBIErrorProc=nil):TDataItem; overload; static;
+
+    // Return SQL from AData Provider:
+    class function From(const AData:TDataItem):String; overload; static;
   end;
 
 implementation

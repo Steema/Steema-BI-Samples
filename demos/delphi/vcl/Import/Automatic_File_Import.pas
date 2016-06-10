@@ -125,8 +125,6 @@ begin
     Samples.Selected.Expanded:=True;
   end;
 
-  BIGrid1.ShowItems:=True;
-
   {$IFDEF HASFIREDAC}
   WaitCursor:=TFDGUIxWaitCursor.Create(Self);
   {$ENDIF}

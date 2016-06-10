@@ -38,38 +38,28 @@ object BIQueryEditor: TBIQueryEditor
       Top = 0
       Width = 257
       Height = 619
-      ActivePage = TabFilter
+      ActivePage = TabData
       Align = alClient
       TabOrder = 0
       OnChange = PageDataChange
       object TabData: TTabSheet
         Caption = 'Data'
+      end
+      object TabFilter: TTabSheet
+        Caption = 'Filter'
+        ImageIndex = 1
         ExplicitLeft = 0
         ExplicitTop = 0
         ExplicitWidth = 0
         ExplicitHeight = 0
       end
-      object TabFilter: TTabSheet
-        Caption = 'Filter'
-        ImageIndex = 1
-        object PanelFilter: TPanel
-          Left = 0
-          Top = 0
-          Width = 249
-          Height = 50
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 0
-          object CBFilter: TCheckBox
-            Left = 10
-            Top = 11
-            Width = 79
-            Height = 17
-            Caption = 'Enabled'
-            TabOrder = 0
-            OnClick = CBFilterClick
-          end
-        end
+      object TabSort: TTabSheet
+        Caption = 'Sort'
+        ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
       end
     end
   end
@@ -80,6 +70,17 @@ object BIQueryEditor: TBIQueryEditor
     Height = 619
     Align = alClient
     TabOrder = 1
+    object SplitterPreview: TSplitter
+      Left = 1
+      Top = 313
+      Width = 642
+      Height = 3
+      Cursor = crVSplit
+      Align = alTop
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 312
+    end
     object PanelEdit: TPanel
       Left = 1
       Top = 1
@@ -88,21 +89,11 @@ object BIQueryEditor: TBIQueryEditor
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      object Splitter1: TSplitter
-        Left = 0
-        Top = 309
-        Width = 642
-        Height = 3
-        Cursor = crVSplit
-        Align = alBottom
-        ExplicitTop = 0
-        ExplicitWidth = 312
-      end
       object PanelRows: TPanel
         Left = 0
         Top = 75
         Width = 185
-        Height = 234
+        Height = 237
         Align = alLeft
         Color = clWhite
         ParentBackground = False
@@ -155,7 +146,7 @@ object BIQueryEditor: TBIQueryEditor
           Left = 1
           Top = 42
           Width = 183
-          Height = 103
+          Height = 106
           OnClickCheck = ListRowsClickCheck
           Align = alClient
           ItemHeight = 13
@@ -166,7 +157,7 @@ object BIQueryEditor: TBIQueryEditor
         end
         object Panel4: TPanel
           Left = 1
-          Top = 145
+          Top = 148
           Width = 183
           Height = 88
           Align = alBottom
@@ -177,6 +168,13 @@ object BIQueryEditor: TBIQueryEditor
             Width = 24
             Height = 13
             Caption = '&Max:'
+          end
+          object LStart: TLabel
+            Left = 99
+            Top = 56
+            Width = 28
+            Height = 13
+            Caption = '&Start:'
           end
           object CBDistinct: TCheckBox
             Left = 10
@@ -199,12 +197,20 @@ object BIQueryEditor: TBIQueryEditor
             OnClick = CBRemoveRowsClick
           end
           object EMax: TEdit
-            Left = 50
+            Left = 38
             Top = 54
-            Width = 83
+            Width = 51
             Height = 21
             TabOrder = 2
             OnChange = EMaxChange
+          end
+          object EStart: TEdit
+            Left = 131
+            Top = 53
+            Width = 44
+            Height = 21
+            TabOrder = 3
+            OnChange = EStartChange
           end
         end
       end
@@ -350,7 +356,7 @@ object BIQueryEditor: TBIQueryEditor
         Left = 185
         Top = 75
         Width = 457
-        Height = 234
+        Height = 237
         Align = alClient
         TabOrder = 2
         object Panel3: TPanel
@@ -403,7 +409,7 @@ object BIQueryEditor: TBIQueryEditor
           Left = 1
           Top = 42
           Width = 181
-          Height = 191
+          Height = 194
           OnClickCheck = ListRowsClickCheck
           Align = alClient
           ItemHeight = 13
@@ -415,7 +421,7 @@ object BIQueryEditor: TBIQueryEditor
           Left = 182
           Top = 42
           Width = 274
-          Height = 191
+          Height = 194
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 2
@@ -423,8 +429,8 @@ object BIQueryEditor: TBIQueryEditor
             Left = 0
             Top = 0
             Width = 274
-            Height = 191
-            ActivePage = TabItem
+            Height = 194
+            ActivePage = TabMeasureOptions
             Align = alClient
             TabOrder = 0
             Visible = False
@@ -493,24 +499,16 @@ object BIQueryEditor: TBIQueryEditor
             object TabMeasureOptions: TTabSheet
               Caption = 'Options'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object PageMeasures: TPageControl
                 Left = 0
                 Top = 0
                 Width = 266
-                Height = 163
+                Height = 166
                 ActivePage = TabCalc
                 Align = alClient
                 TabOrder = 0
                 object TabMeasure: TTabSheet
                   Caption = 'Aggregate'
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object CBAggregate: TComboBox
                     Left = 8
                     Top = 14
@@ -541,10 +539,6 @@ object BIQueryEditor: TBIQueryEditor
                 object TabCalc: TTabSheet
                   Caption = 'Calculation'
                   ImageIndex = 3
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object RGRunning: TRadioGroup
                     Left = 135
                     Top = 3
@@ -569,7 +563,7 @@ object BIQueryEditor: TBIQueryEditor
                     OnClick = CBRunningRowsClick
                   end
                   object RGPercentage: TRadioGroup
-                    Left = 5
+                    Left = 4
                     Top = 3
                     Width = 113
                     Height = 100
@@ -589,13 +583,9 @@ object BIQueryEditor: TBIQueryEditor
             object TabItemData: TTabSheet
               Caption = 'Data'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object SpeedButton1: TSpeedButton
                 Left = 231
-                Top = 21
+                Top = 22
                 Width = 23
                 Height = 22
                 Caption = '...'
@@ -648,19 +638,20 @@ object BIQueryEditor: TBIQueryEditor
     end
     object PagePreview: TPageControl
       Left = 1
-      Top = 313
+      Top = 316
       Width = 642
-      Height = 305
+      Height = 302
       ActivePage = TabGrid
       Align = alClient
       TabOrder = 0
+      OnChange = PagePreviewChange
       object TabGrid: TTabSheet
         Caption = 'Grid'
         object BIGrid1: TBIGrid
           Left = 0
           Top = 0
           Width = 634
-          Height = 277
+          Height = 274
           Align = alClient
           UseDockManager = False
           ParentBackground = False
@@ -671,14 +662,22 @@ object BIQueryEditor: TBIQueryEditor
       object TabChart: TTabSheet
         Caption = 'Chart'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
+      end
+      object TabSQL: TTabSheet
+        Caption = 'SQL'
+        ImageIndex = 2
+        object MemoSQL: TMemo
+          Left = 0
+          Top = 0
+          Width = 634
+          Height = 274
+          Align = alClient
+          TabOrder = 0
+        end
       end
     end
   end
-  object PanelButtons: TPanel
+  object PanelOptions: TPanel
     Left = 0
     Top = 619
     Width = 904
@@ -693,7 +692,7 @@ object BIQueryEditor: TBIQueryEditor
       Height = 13
       Caption = 'Title:'
     end
-    object Panel9: TPanel
+    object PanelButtons: TPanel
       Left = 719
       Top = 0
       Width = 185
@@ -732,10 +731,20 @@ object BIQueryEditor: TBIQueryEditor
       TabOrder = 1
       OnChange = ETitleChange
     end
+    object CBPreview: TCheckBox
+      Left = 384
+      Top = 14
+      Width = 119
+      Height = 17
+      Caption = 'Preview'
+      Checked = True
+      State = cbChecked
+      TabOrder = 2
+      OnClick = CBPreviewClick
+    end
   end
   object BIQuery1: TBIQuery
-    Items = <>
-    Left = 440
-    Top = 432
+    Left = 416
+    Top = 424
   end
 end

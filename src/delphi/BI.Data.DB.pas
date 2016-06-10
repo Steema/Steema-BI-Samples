@@ -15,6 +15,14 @@ uses
 type
   TBIDB=class;
 
+  TBIDBTester=class abstract
+  public
+    class function Test(const Driver,Database,Server,Port,User,Password:String;
+                        const Prompt:Boolean):Boolean; virtual; abstract;
+  end;
+
+  TBIDBTesterClass=class of TBIDBTester;
+
   TBIDBEngine=class abstract
   public
     class procedure AddFields(const Fields:TFieldDefs; const Data:TDataItem);
@@ -34,6 +42,8 @@ type
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; virtual; abstract;
     class procedure StartParallel; virtual;
     class function Supports(const Extension:String):Boolean; virtual; abstract;
+    class function SupportsParallel:Boolean; virtual;
+    class function Tester:TBIDBTesterClass; virtual; abstract;
   end;
 
   TBIDB=class(TBIDatasetSource)

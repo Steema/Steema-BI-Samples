@@ -215,21 +215,21 @@ object DataManager: TDataManager
       ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
-        Top = 16
+        Top = 44
         Width = 57
         Height = 13
         Caption = 'Last import:'
       end
       object LLastImport: TLabel
         Left = 11
-        Top = 35
+        Top = 63
         Width = 5
         Height = 13
         Caption = '?'
       end
       object BViewData: TButton
-        Left = 161
-        Top = 158
+        Left = 129
+        Top = 10
         Width = 102
         Height = 25
         Caption = '&View Data...'
@@ -239,7 +239,7 @@ object DataManager: TDataManager
       end
       object MemoDataInfo: TMemo
         Left = 11
-        Top = 54
+        Top = 82
         Width = 254
         Height = 89
         ReadOnly = True
@@ -248,7 +248,7 @@ object DataManager: TDataManager
       end
       object BImportNow: TButton
         Left = 11
-        Top = 158
+        Top = 10
         Width = 75
         Height = 25
         Caption = 'Import &Now'

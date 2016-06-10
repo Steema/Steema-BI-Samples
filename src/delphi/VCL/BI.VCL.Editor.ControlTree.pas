@@ -63,6 +63,8 @@ type
   private
     { Private declarations }
 
+    IChanging : Boolean;
+
     procedure RefreshBounds(const AControl:TControl);
   public
     { Public declarations }

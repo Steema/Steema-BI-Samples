@@ -11,7 +11,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.Grid, Vcl.ExtCtrls, Vcl.ComCtrls,
-  BI.VCL.Editor.Grid, BI.VCL.DataManager, Vcl.DBCtrls, BI.VCL.DataControl;
+  BI.VCL.Editor.BIGrid, BI.VCL.DataManager, Vcl.DBCtrls, BI.VCL.DataControl;
 
 type
   TGridDemoForm = class(TForm)
@@ -60,18 +60,15 @@ begin
   // Set Navigator control source
   DBNavigator1.DataSource:=BIGrid1.DataSource;
 
-  // Initialize Grid editor
-  GridEditor.FillColumns;
+// Several BIGrid features that can be activated:
 
-  // Several BIGrid features that can be activated:
-
-  BIGrid1.ShowItems:=True; // <-- Show Sub-Items at a secondary BIGrid
-
+//  BIGrid1.ShowItems:=TGridShowItems.Automatic; // <-- Yes,No,SubTables
 //  BIGrid1.Alternate.Enabled:=True;
 //  BIGrid1.Filters.Enabled:=True;
 //  BIGrid1.ReadOnly:=False;
 //  BIGrid1.RowNumbers.Enabled:=True;
 //  BIGrid1.Search.Enabled:=True;
+//  BIGrid1.ColumnSort:=True;
 end;
 
 // When a new Data is selected, reset Grid:
@@ -80,10 +77,10 @@ var tmp : TDataItem;
 begin
   tmp:=TDataManager(Sender).SelectedData;
 
-  if tmp<>nil then
+  if tmp<>BIGrid1.Data then
   begin
     BIGrid1.Data:=tmp;
-    GridEditor.FillColumns;
+    GridEditor.Refresh(BIGrid1);
   end;
 end;
 

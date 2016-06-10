@@ -78,7 +78,6 @@ end;
 
 procedure TFormManual.FormCreate(Sender: TObject);
 begin
-  BIGrid1.ShowItems:=True; // <-- useful property, to display sub-tables
 end;
 
 // Manually created data must also be manually destroyed

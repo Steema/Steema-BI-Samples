@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   BI.Data, Vcl.ComCtrls, BI.VCL.Editor.ListItems, Vcl.ExtCtrls,
-  BI.Expression, BI.VCL.Editor.NumericFromTo;
+  BI.Expression, BI.VCL.Editor.NumericFromTo, BI.Arrays;
 
 type
   TDateTimeRangeEditor = class(TForm)
@@ -73,7 +73,11 @@ type
     function FromDate:TDateTime;
     function ToDate:TDateTime;
 
+    function Months:TBooleanArray;
+    function WeekDays:TBooleanArray;
+
     procedure Refresh(const AData:TDataItem);
+
     procedure SelectRange(const AFrom,ATo:TDateTime); overload;
     procedure SelectRange(const AData:TDataItem); overload;
 

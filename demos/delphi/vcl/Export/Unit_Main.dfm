@@ -35,6 +35,10 @@ object ExportDemo: TExportDemo
     OnChange = PageControl1Change
     object TabGrid: TTabSheet
       Caption = 'Grid'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBNavigator1: TDBNavigator
         Left = 0
         Top = 529
@@ -108,6 +112,10 @@ object ExportDemo: TExportDemo
     object TabHTML: TTabSheet
       Caption = 'HTML'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -129,6 +137,10 @@ object ExportDemo: TExportDemo
     object TabPDF: TTabSheet
       Caption = 'PDF'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0

@@ -14,52 +14,99 @@ object DemoForm: TDemoForm
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Button1: TButton
-    Left = 32
-    Top = 24
-    Width = 75
-    Height = 25
-    Caption = '&Run !'
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1085
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
     TabOrder = 0
-    OnClick = Button1Click
+    object Label1: TLabel
+      Left = 16
+      Top = 14
+      Width = 54
+      Height = 13
+      Caption = 'Total rows:'
+    end
+    object LabelRows: TLabel
+      Left = 76
+      Top = 14
+      Width = 3
+      Height = 13
+    end
+    object LabelTime: TLabel
+      Left = 528
+      Top = 16
+      Width = 3
+      Height = 13
+    end
+    object CBParallel: TCheckBox
+      Left = 237
+      Top = 13
+      Width = 97
+      Height = 17
+      Caption = '&Parallel'
+      TabOrder = 0
+      OnClick = CBParallelClick
+    end
   end
-  object Memo1: TMemo
-    Left = 32
-    Top = 72
-    Width = 321
-    Height = 113
-    ScrollBars = ssBoth
+  object PageControl1: TPageControl
+    Left = 233
+    Top = 41
+    Width = 852
+    Height = 636
+    ActivePage = TabSheet2
+    Align = alClient
     TabOrder = 1
+    object TabSheet1: TTabSheet
+      Caption = 'Output'
+      object BIGrid1: TBIGrid
+        Left = 0
+        Top = 0
+        Width = 844
+        Height = 608
+        Align = alClient
+        UseDockManager = False
+        ParentBackground = False
+        ParentColor = False
+        TabOrder = 0
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Data'
+      ImageIndex = 1
+      object BIGrid2: TBIGrid
+        Left = 0
+        Top = 0
+        Width = 844
+        Height = 608
+        Align = alClient
+        UseDockManager = False
+        ParentBackground = False
+        ParentColor = False
+        TabOrder = 0
+        Alternate.Enabled = True
+      end
+    end
   end
-  object BIGrid1: TBIGrid
-    Left = 32
-    Top = 209
-    Width = 321
-    Height = 460
-    UseDockManager = False
-    ParentBackground = False
-    ParentColor = False
+  object LBTest: TListBox
+    Left = 0
+    Top = 41
+    Width = 233
+    Height = 636
+    Align = alLeft
+    ItemHeight = 13
+    Items.Strings = (
+      'Count by Year'
+      'Average Rating by Year'
+      'Average Votes/Length by Year'
+      'Map For All'
+      'Custom')
     TabOrder = 2
-  end
-  object BIGrid2: TBIGrid
-    Left = 376
-    Top = 24
-    Width = 689
-    Height = 645
-    UseDockManager = False
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 3
-  end
-  object CBParallel: TCheckBox
-    Left = 152
-    Top = 28
-    Width = 97
-    Height = 17
-    Caption = '&Parallel'
-    TabOrder = 4
-    OnClick = CBParallelClick
+    OnClick = LBTestClick
   end
 end

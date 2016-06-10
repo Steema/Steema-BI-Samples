@@ -15,12 +15,13 @@ uses
   System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
 
-  BI.VCL.Visualizer, BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer;
+  BI.VCL.Visualizer, BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer,
+  BI.VCL.Editor.Chart;
 
 type
   TChartVisualizerEditor = class(TForm)
     PageControl1: TPageControl;
-    TabChart: TTabSheet;
+    TabOptions: TTabSheet;
     Label7: TLabel;
     Label10: TLabel;
     BEditChart: TButton;
@@ -47,6 +48,7 @@ type
     UDSubColumns: TUpDown;
     CBSubColumns: TCheckBox;
     CBSameAxisRange: TCheckBox;
+    TabChart: TTabSheet;
     procedure CBAutoStackChange(Sender: TObject);
     procedure CBChartSettingsClick(Sender: TObject);
     procedure CBLegendClick(Sender: TObject);
@@ -63,6 +65,7 @@ type
     procedure ESubColumnsChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure BEditChartClick(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
   private
     { Private declarations }
 
@@ -71,6 +74,7 @@ type
     GroupIndex : Integer;
     VizUI : TBIChartComposerUI;
 
+    IChartEditor : TBIChartEditor;
     VizEditor : TVisualizerEditor;
 
     procedure ChangeRender(const AIndex:Integer);

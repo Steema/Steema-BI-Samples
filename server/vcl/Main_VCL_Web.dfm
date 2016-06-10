@@ -237,10 +237,6 @@ object FormBIWeb: TFormBIWeb
         ParentColor = False
         TabOrder = 1
         ReadOnly = False
-        ExplicitLeft = 128
-        ExplicitTop = 56
-        ExplicitWidth = 320
-        ExplicitHeight = 120
       end
     end
   end

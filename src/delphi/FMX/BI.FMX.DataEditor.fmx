@@ -22,12 +22,21 @@ object DataEditor: TDataEditor
     TabOrder = 0
     TabPosition = Top
     OnChange = TabSourcesChange
+    Sizes = (
+      503s
+      399s
+      503s
+      399s
+      503s
+      399s
+      503s
+      399s)
     object TabFiles: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = False
-      Size.Width = 43.000000000000000000
+      Size.Width = 44.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -37,12 +46,17 @@ object DataEditor: TDataEditor
       ExplicitSize.cy = 24.000000000000000000
       object TabControlFile: TTabControl
         Align = Client
-        Size.Width = 50.000000000000000000
-        Size.Height = 50.000000000000000000
+        Size.Width = 503.000000000000000000
+        Size.Height = 399.000000000000000000
         Size.PlatformDefault = False
         TabIndex = 0
         TabOrder = 0
         TabPosition = Top
+        Sizes = (
+          503s
+          373s
+          503s
+          373s)
         object TabFile: TTabItem
           CustomIcon = <
             item
@@ -163,7 +177,6 @@ object DataEditor: TDataEditor
             OnChangeTracking = EFileMaskChange
           end
           object CBFileType: TComboBox
-            DisableFocusEffect = False
             Items.Strings = (
               'Custom'
               'CSV'
@@ -206,7 +219,7 @@ object DataEditor: TDataEditor
             StyledSettings = [Family, Size, Style]
             Position.X = 16.000000000000000000
             Position.Y = 65.000000000000000000
-            Size.Width = 115.000000000000000000
+            Size.Width = 111.000000000000000000
             Size.Height = 16.000000000000000000
             Size.PlatformDefault = False
             TextSettings.FontColor = claLightcoral
@@ -235,7 +248,7 @@ object DataEditor: TDataEditor
         item
         end>
       IsSelected = False
-      Size.Width = 69.000000000000000000
+      Size.Width = 70.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -245,18 +258,23 @@ object DataEditor: TDataEditor
       ExplicitSize.cy = 24.000000000000000000
       object TabControlDB: TTabControl
         Align = Client
-        Size.Width = 50.000000000000000000
-        Size.Height = 50.000000000000000000
+        Size.Width = 503.000000000000000000
+        Size.Height = 399.000000000000000000
         Size.PlatformDefault = False
         TabIndex = 0
         TabOrder = 3
         TabPosition = Top
+        Sizes = (
+          503s
+          373s
+          503s
+          373s)
         object Connection: TTabItem
           CustomIcon = <
             item
             end>
           IsSelected = True
-          Size.Width = 80.000000000000000000
+          Size.Width = 81.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
@@ -273,7 +291,6 @@ object DataEditor: TDataEditor
             Text = 'Driver:'
           end
           object CBDBDriver: TComboBox
-            DisableFocusEffect = False
             Position.X = 16.000000000000000000
             Position.Y = 32.000000000000000000
             Size.Width = 209.000000000000000000
@@ -429,18 +446,23 @@ object DataEditor: TDataEditor
           ExplicitSize.cy = 24.000000000000000000
           object TabControlDBItems: TTabControl
             Align = Client
-            Size.Width = 50.000000000000000000
-            Size.Height = 50.000000000000000000
+            Size.Width = 503.000000000000000000
+            Size.Height = 373.000000000000000000
             Size.PlatformDefault = False
             TabIndex = 0
             TabOrder = 0
             TabPosition = Top
+            Sizes = (
+              503s
+              347s
+              503s
+              347s)
             object TabItemAllDB: TTabItem
               CustomIcon = <
                 item
                 end>
               IsSelected = True
-              Size.Width = 33.000000000000000000
+              Size.Width = 34.000000000000000000
               Size.Height = 26.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = ''
@@ -516,7 +538,7 @@ object DataEditor: TDataEditor
                 item
                 end>
               IsSelected = False
-              Size.Width = 85.000000000000000000
+              Size.Width = 86.000000000000000000
               Size.Height = 26.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = ''
@@ -532,12 +554,12 @@ object DataEditor: TDataEditor
                 OnChange = MemoSQLChange
                 OnChangeTracking = MemoSQLChange
                 Align = Client
-                Size.Width = 50.000000000000000000
-                Size.Height = 50.000000000000000000
+                Size.Width = 503.000000000000000000
+                Size.Height = 347.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
-                Viewport.Width = 50.000000000000000000
-                Viewport.Height = 50.000000000000000000
+                Viewport.Width = 503.000000000000000000
+                Viewport.Height = 347.000000000000000000
               end
             end
           end
@@ -549,7 +571,7 @@ object DataEditor: TDataEditor
         item
         end>
       IsSelected = False
-      Size.Width = 70.000000000000000000
+      Size.Width = 71.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -571,7 +593,7 @@ object DataEditor: TDataEditor
         item
         end>
       IsSelected = True
-      Size.Width = 57.000000000000000000
+      Size.Width = 58.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -587,12 +609,17 @@ object DataEditor: TDataEditor
         TabIndex = 0
         TabOrder = 0
         TabPosition = PlatformDefault
+        Sizes = (
+          503s
+          183s
+          503s
+          183s)
         object TabHttpServer: TTabItem
           CustomIcon = <
             item
             end>
           IsSelected = True
-          Size.Width = 53.000000000000000000
+          Size.Width = 54.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''

@@ -10,7 +10,7 @@ interface
 
 uses
   BI.Arrays, BI.Data, DUnitX.TestFramework,
-  BI.Data.SQL, BI.DataSource, BI.Persist;
+  BI.Data.SQL, BI.DataSource, BI.Persist, BI.Summary;
 
 type
   [TestFixture]
@@ -27,12 +27,15 @@ type
     procedure SimpleSummary;
     [Test]
     procedure SimpleWhere;
+
+    [Test]
+    procedure ParseAll;
   end;
 
 implementation
 
 uses
-  BI.Tests.SummarySamples;
+  BI.Tests.SummarySamples, BI.Tests.SelectSamples;
 
 { TSQLParser_Test }
 
@@ -98,6 +101,82 @@ end;
 
 procedure TSQLParser_Test.TearDown;
 begin
+end;
+
+procedure TSQLParser_Test.ParseAll;
+
+  procedure TryExecuteSQL(const AData:TDataItem; const SQL:String);
+  var tmp : TDataItem;
+  begin
+    {$IFNDEF FIX}
+    tmp:=TBISQL.From(AData,SQL);
+    try
+    finally
+      tmp.Free;
+    end;
+    {$ENDIF}
+  end;
+
+  // Convert all Select samples to SQL
+  procedure ParseAllSelect;
+  var t : Integer;
+      tmp : TDataSelect;
+      SQL : String;
+  begin
+    for t:=0 to TSelectSamples.Count-1 do
+    begin
+      tmp:=TSelectSamples.CreateSelect(nil,t);
+      try
+        SQL:=TBISQL.From(tmp);
+        Assert.IsNotEmpty(SQL);
+
+        if t<>21 then // <- fix todo: parse nested: "from (select...)"
+        begin
+          // Use different source data depending on the select example
+          if t=22 then
+             TryExecuteSQL(Samples.Movies,SQL)
+          else
+          if t=24 then
+             TryExecuteSQL(Samples.SumData1['Sum of Quantity'],SQL)
+          else
+          if t=27 then
+             TryExecuteSQL(Samples.SumData3['Count of Quantity'],SQL)
+          else
+          if t=28 then
+             TryExecuteSQL(Samples.movies['movies'],SQL)
+          else
+             TryExecuteSQL(Samples.Demo,SQL);
+        end;
+      finally
+        tmp.Free;
+      end;
+    end;
+  end;
+
+  // Convert all Summary samples to SQL
+  procedure ParseAllSummary;
+  var t : Integer;
+      tmp : TSummary;
+      SQL : String;
+  begin
+    for t:=0 to Samples.Count-1 do
+    begin
+      tmp:=Samples.CreateSummary(nil,t);
+      try
+        SQL:=TBISQL.From(tmp);
+        Assert.IsNotEmpty(SQL);
+
+        if not (t in [19]) then // <-- fix todo: "Order Details" not in "from" clause
+           TryExecuteSQL(Samples.Demo,SQL);
+      finally
+        tmp.Free;
+      end;
+    end;
+  end;
+
+begin
+  ParseAllSelect;
+  ParseAllSummary;
 end;
 
 initialization

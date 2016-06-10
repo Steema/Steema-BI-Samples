@@ -44,11 +44,11 @@ var
 implementation
 
 uses
-  BI.Persist, BI.Expression;
+  BI.Persist, BI.Expression, BI.Data.Expressions;
 
 function TSampleSummaries.Count:Integer;
 begin
-  result:=26;
+  result:=27;
 end;
 
 function TSampleSummaries.CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;
@@ -138,14 +138,14 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
        end;
 
    12: begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Orders['ShipVia']);
        end;
@@ -154,10 +154,10 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[1].DateOptions.Part:=TDateTimePart.Quarter;
+         result.By[1].DatePart:=TDateTimePart.Quarter;
 
          result.AddGroupBy(Orders['ShipVia']);
        end;
@@ -166,13 +166,13 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[1].DateOptions.Part:=TDateTimePart.Quarter;
+         result.By[1].DatePart:=TDateTimePart.Quarter;
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[2].DateOptions.Part:=TDateTimePart.ShortMonthName;
+         result.By[2].DatePart:=TDateTimePart.ShortMonthName;
 
          result.AddGroupBy(Orders['ShipVia']);
        end;
@@ -181,13 +181,13 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[1].DateOptions.Part:=TDateTimePart.Quarter;
+         result.By[1].DatePart:=TDateTimePart.Quarter;
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[2].DateOptions.Part:=TDateTimePart.ShortMonthName;
+         result.By[2].DatePart:=TDateTimePart.ShortMonthName;
 
          result.AddGroupBy(Orders['ShipVia']);
          result.AddGroupBy(Categories['CategoryName']);
@@ -197,7 +197,7 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Products['Discontinued']); // <-- boolean
        end;
@@ -206,7 +206,7 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Products['UnitPrice']);
          result.By[1].Histogram.Active:=True;
@@ -216,10 +216,10 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[1].DateOptions.Part:=TDateTimePart.Quarter;
+         result.By[1].DatePart:=TDateTimePart.Quarter;
 
          result.AddGroupBy(Orders['ShipVia']);
          result.AddGroupBy(Shippers['ShipperID']);
@@ -232,7 +232,7 @@ begin
          result.AddMeasure(TDataExpression.FromString(OrderDetails,'Quantity * Products.UnitPrice'),TAggregate.Sum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
        end;
 
    21: begin
@@ -252,7 +252,7 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Maximum);
 
          result.AddGroupBy(Orders['OrderDate']);
-         result.By[0].DateOptions.Part:=TDateTimePart.Year;
+         result.By[0].DatePart:=TDateTimePart.Year;
 
          result.AddGroupBy(Orders['ShipVia']);
        end;
@@ -271,6 +271,14 @@ begin
 
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
          result.AddGroupBy(Products['Discontinued']).Histogram.Active:=True;
+       end;
+
+   26: begin
+         result.AddMeasure(Customers,TAggregate.Count);
+         result.AddGroupBy(Customers['Country']);
+
+         result.By[0].Layout:=TGroupByLayout.Items;
+         result.SortBy.Add(Customers['Country'],False);
        end;
   end;
 end;

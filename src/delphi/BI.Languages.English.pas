@@ -60,6 +60,7 @@ var
   BIMsg_Summary_SwapMeasure:String         = 'Error: Swap measure index out of bounds: %d';
   BIMsg_Summary_DeleteGroupBy:String       = 'Error: Delete groupby index out of bounds: %d';
   BIMsg_Summary_SwapGroupBy:String         = 'Error: Swap groupby index out of bounds: %d';
+  BIMsg_Summary_MeasureName:String         = '%s of %s';
 
   // Arrays:
   BIMsg_DifferentArrayLength:String        = 'Arrays are of different length';
@@ -86,7 +87,7 @@ var
   BIMsg_Export_EmptyData:String            = 'Error: Cannot export empty data';
 
   // DB
-  BIMsg_DB_NoEngineConfigured:String       = 'Error: No Database Engine configured. Use BI.Data.DB FireDAC or SQLExpr units';
+  BIMsg_DB_NoEngineConfigured:String       = 'Error: No Database Engine configured. Use BI.Data.DB.xx (FireDAC,SQLExpr,microOLAP,UniDAC,etc) units';
   BIMsg_DB_SqlExpressWrongConnection:String= 'Error: Connection is not TSQLConnection (SqlExpress engine)';
   BIMsg_ConnectionTestPassed:String        = 'Connection test passed';
   

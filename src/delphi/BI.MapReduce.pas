@@ -79,17 +79,25 @@ type
                              const AAggregate:TAggregate):TDataItem; overload; static;
 
     class function Mean(const AData:TDataItem; const AIndices:TIndices):Double; static;
+
   end;
 
-  TMapReduce<T,V>=class(TMapReduce)
+  TMapReduce<T>=class(TMapReduce)
+  public
+    type
+      TMapProc=reference to function(const Index:TKeyIndex):T;
+
+    class function ForAll(const AData:TDataItem; const AMap:TMapProc):TDataItem; static;
+  end;
+
+  TMapReduce<T,V>=class(TMapReduce<T>)
   public
   type
-    TMapProc=reference to function(const Index:TKeyIndex):T;
     TReduceProc=reference to function(const Key:T; const List:TIndices):V;
 
   private
     class function DoMap(const AFrom,ATo:TNativeInteger;
-                         const AMap: TMapProc;
+                         const AMap: TMapReduce<T>.TMapProc;
                          var AKey:TArray<T>;
                          var AItems:TArray<TIndices>): TDataItem; static;
 
@@ -100,7 +108,7 @@ type
     class function TableFrom(const AKey:TArray<T>; const AValue:TArray<V>):TDataItem; static;
   public
     class function From(const AData:TDataItem;
-                        const AMap:TMapProc;
+                        const AMap:TMapReduce<T>.TMapProc;
                         const AReduce:TReduceProc):TDataItem; overload; static;
   end;
 

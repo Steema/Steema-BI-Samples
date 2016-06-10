@@ -368,6 +368,10 @@ object VisualizerEditor: TVisualizerEditor
     object TabValues: TTabSheet
       Caption = 'Values'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LBValues: TCheckListBox
         Left = 0
         Top = 38
@@ -428,6 +432,10 @@ object VisualizerEditor: TVisualizerEditor
     object TabGrid: TTabSheet
       Caption = 'Grid'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0

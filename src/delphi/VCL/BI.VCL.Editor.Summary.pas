@@ -83,6 +83,14 @@ type
     EHistFormat: TEdit;
     CBDatePart: TComboBox;
     Label10: TLabel;
+    Label11: TLabel;
+    EMeasureName: TEdit;
+    PanelButtons: TPanel;
+    Panel9: TPanel;
+    BOK: TButton;
+    Button2: TButton;
+    Label12: TLabel;
+    EGroupName: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure CBAggregateChange(Sender: TObject);
     procedure CBDatePartChange(Sender: TObject);
@@ -123,6 +131,8 @@ type
     procedure EHistoMaxChange(Sender: TObject);
     procedure CBAutoBinsClick(Sender: TObject);
     procedure EHistFormatChange(Sender: TObject);
+    procedure EMeasureNameChange(Sender: TObject);
+    procedure EGroupNameChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -144,6 +154,8 @@ type
   public
     { Public declarations }
     OnRecalculate : TNotifyEvent;
+
+    class function Edit(const AOwner:TComponent; const ASummary:TSummary):Boolean; static;
 
     procedure Refresh(const ASummary:TSummary);
   end;

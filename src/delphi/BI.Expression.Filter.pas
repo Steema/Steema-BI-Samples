@@ -3,9 +3,12 @@ unit BI.Expression.Filter;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Query, BI.Expression;
+  System.Classes, BI.Data, BI.Expression, BI.Data.CollectionItem,
+  BI.Arrays;
 
 type
+  TFloat=Double;
+
   TFilterItem=class;
 
   TFilterPart=class(TPersistent)
@@ -20,12 +23,12 @@ type
   TNumericValue=class(TFilterPart)
   private
     FEnabled: Boolean;
-    FValue: Extended;
+    FValue: TFloat;
 
     IOperand : TLogicalOperand;
 
     procedure SetEnabled(const Value: Boolean);
-    procedure SetValue(const Value: Extended);
+    procedure SetValue(const Value: TFloat);
   public
     Constructor Create(const AItem:TFilterItem; const AOperand:TLogicalOperand);
 
@@ -34,7 +37,7 @@ type
     function Filter:TLogicalExpression;
   published
     property Enabled:Boolean read FEnabled write SetEnabled default False;
-    property Value:Extended read FValue write SetValue;
+    property Value:TFloat read FValue write SetValue;
   end;
 
   TMonths=class(TFilterPart)
@@ -44,6 +47,8 @@ type
     function Get(const Index: Integer): Boolean;
     procedure Put(const Index: Integer; const Value: Boolean);
     function ZeroOrAll:Boolean;
+  protected
+    procedure SetMonths(const Value:TBooleanArray);
   public
     function Filter:TLogicalExpression;
 
@@ -72,6 +77,8 @@ type
     function Get(const Index: Integer): Boolean;
     procedure Put(const Index: Integer; const Value: Boolean);
     function ZeroOrAll:Boolean;
+  protected
+    procedure SetWeekDays(const Value:TBooleanArray);
   public
     function Filter:TLogicalExpression;
 
@@ -98,11 +105,15 @@ type
     FPeriod: TDateTimeSpan;
     FQuantity : Integer;  // "Style N Period" = "Last 10 Weeks"
 
+    function GetFrom: TDateTime;
+    function GetTo: TDateTime;
+    procedure SetFrom(const Value: TDateTime);
     procedure SetMonths(const Value: TMonths);
-    procedure SetStyle(const Value: TDateTimeFilterStyle);
-    procedure SetWeedays(const Value: TWeekdays);
     procedure SetPeriod(const Value: TDateTimeSpan);
     procedure SetQuantity(const Value: Integer);
+    procedure SetStyle(const Value: TDateTimeFilterStyle);
+    procedure SetTo(const Value: TDateTime);
+    procedure SetWeedays(const Value: TWeekdays);
   public
     Constructor Create(const AItem:TFilterItem);
     Destructor Destroy; override;
@@ -110,6 +121,9 @@ type
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+
+    property FromDate:TDateTime read GetFrom write SetFrom;
+    property ToDate:TDateTime read GetTo write SetTo;
   published
     property Months:TMonths read FMonths write SetMonths;
     property Period:TDateTimeSpan read FPeriod write SetPeriod default TDateTimeSpan.None;
@@ -139,45 +153,103 @@ type
   private
     FBool : TBooleanFilter;
     FDateTime : TDateTimeFilter;
+    FEnabled: Boolean;
+    FExcluded: TStringList;
     FFrom : TNumericValue;
     FIncluded: TStringList;
     FTo : TNumericValue;
 
-    procedure ChangedIncluded(Sender:TObject);
+    procedure DoChanged(Sender:TObject);
     function GetFilter: TLogicalExpression;
     function MainData:TDataItem;
     function NewLogical(const AOperand:TLogicalOperand):TLogicalExpression;
     function NumericFilter: TLogicalExpression;
     procedure SetBool(const Value: TBooleanFilter);
     procedure SetDateTime(const Value: TDateTimeFilter);
+    procedure SetEnabled(const Value: Boolean);
+    procedure SetExcluded(const Value: TStringList);
     procedure SetIncluded(const Value: TStringList);
     procedure SetFrom(const Value: TNumericValue);
     procedure SetTo(const Value: TNumericValue);
+    procedure TryAdd(const AText:String; const A,B:TStrings);
+  protected
+    procedure Changed; override;
   public
     Constructor Create(Collection: TCollection); override;
     Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
 
+    procedure ExcludeText(const AText:String; const Add:Boolean=True);
+    procedure IncludeText(const AText:String; const Add:Boolean=True);
+
     property Filter:TLogicalExpression read GetFilter;
   published
     property BoolFilter:TBooleanFilter read FBool write SetBool;
     property DateTime:TDateTimeFilter read FDateTime write SetDateTime;
+    property Enabled:Boolean read FEnabled write SetEnabled default True;
+    property Excluded:TStringList read FExcluded write SetExcluded;
     property FromValue:TNumericValue read FFrom write SetFrom;
     property Included:TStringList read FIncluded write SetIncluded;
     property ToValue:TNumericValue read FTo write SetTo;
   end;
 
+  TBIFilter=class;
+
   TFilterItems=class(TOwnedCollection)
   private
+    IFilter : TBIFilter;
+
+    procedure DoChanged(Sender:TObject);
     function Get(const Index: Integer): TFilterItem;
     procedure Put(const Index: Integer; const Value: TFilterItem);
   public
     Constructor Create(AOwner: TPersistent);
 
+    function Add(const AData:TDataItem):TFilterItem;
     function Filter:TLogicalExpression;
 
     property Items[const Index:Integer]:TFilterItem read Get write Put; default;
+  end;
+
+  TBIFilter=class(TPersistent)
+  private
+    FEnabled : Boolean;
+    FItems: TFilterItems;
+    FText : String;
+
+    // Temporary during csLoading
+    IFilter : String;
+
+    procedure Changed;
+    function Get(const AIndex: Integer): TFilterItem;
+    function IsItemsStored: Boolean;
+    procedure Put(const AIndex: Integer; const Value: TFilterItem);
+    procedure SetEnabled(const Value: Boolean);
+    procedure SetItems(const Value: TFilterItems);
+    procedure SetText(const Value: String);
+  protected
+    IChanged : TNotifyEvent;
+    ICustom : TExpression;
+    IUpdating : Boolean;
+  public
+    Constructor Create;
+    Destructor Destroy; override;
+
+    procedure Assign(Source:TPersistent); override;
+
+    function Add(const AData:TDataItem):TFilterItem; inline;
+    procedure Clear;
+    function Custom:TLogicalExpression;
+    function Filter:TLogicalExpression;
+
+    function ItemOf(const AData:TDataItem):TFilterItem;
+
+    property Item[const AIndex:Integer]:TFilterItem read Get write Put; default;
+  published
+    property Enabled:Boolean read FEnabled write SetEnabled default True;
+    property Items:TFilterItems read FItems write SetItems stored IsItemsStored;
+    property Text:String read FText write SetText;
   end;
 
 implementation

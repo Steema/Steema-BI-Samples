@@ -1,13 +1,14 @@
 object MainPDF: TMainPDF
   Left = 0
   Top = 0
-  Caption = 'Form19'
+  Caption = 'TeeBI PDF Export Example'
   ClientHeight = 675
   ClientWidth = 1016
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnShow = FormShow
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Top
@@ -111,8 +112,8 @@ object MainPDF: TMainPDF
       ExplicitSize.cy = 26.000000000000000000
       object BIGrid1: TBIGrid
         Align = Client
-        Size.Width = 50.000000000000000000
-        Size.Height = 50.000000000000000000
+        Size.Width = 1016.000000000000000000
+        Size.Height = 600.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
       end

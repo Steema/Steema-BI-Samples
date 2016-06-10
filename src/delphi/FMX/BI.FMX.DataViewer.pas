@@ -27,7 +27,8 @@ uses
   {$ENDIF}
 
   FMX.Dialogs, FMX.StdCtrls, FMX.Layouts, BI.FMX.Grid, FMX.Menus, BI.Data,
-  BI.DataSet, FMX.TreeView, System.Rtti, FMX.Grid, BI.FMX.Grid.Grid, FMX.ListBox;
+  BI.DataSet, FMX.TreeView, System.Rtti, FMX.Grid, BI.FMX.Grid.Grid, FMX.ListBox,
+  BI.FMX.DataControl;
 
 type
   TDataViewer = class(TForm)

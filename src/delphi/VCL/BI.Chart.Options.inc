@@ -10,5 +10,5 @@
   {$DEFINE HASTAGOBJECT}
   {$IF TeeVCLBuildVersionInteger >= 160406}
     {$DEFINE SERIESLABELSRESIZE}
-  {$IFEND}
+  {$ENDIF}
 {$ENDIF}

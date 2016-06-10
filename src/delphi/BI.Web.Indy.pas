@@ -36,6 +36,7 @@ type
     function Get(const AURL:String):String; overload; override;
     class function Parse(const AURL:String):TWebURL; override;
     procedure SetProxy(const AProxy:TWebProxy); override;
+    procedure SetTimeout(const ATimeout:Integer); override;
 
     property Http:TIdHTTP read FHttp;
   end;

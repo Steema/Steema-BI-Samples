@@ -137,7 +137,7 @@ type
     TrayIcon : TnTrayIcon;
     {$ENDIF}
 
-    procedure AddHistory(const AContext:TIdContext;
+    procedure AddHistory(const AContext:TBIWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -184,7 +184,7 @@ uses
 
   BI.FMX.Status,
   BI.Languages.English, BI.Languages.Spanish,
-  FMXTee.Procs, BI.FMX.Editor.Stores;
+  FMXTee.Procs, BI.FMX.Editor.Stores, BI.Web.IndyContext;
 
 procedure AppOnTaskbar(const AMainForm : TForm; const Hide:Boolean);
 {$IFDEF MSWINDOWS}
@@ -497,10 +497,7 @@ end;
 
 procedure TBIWebMain.SetupPublicFolder;
 begin
-  BIWeb.PublicFolder.Enabled:=TBIRegistry.ReadBoolean('BIWeb','PublicEnabled',True);
   CBPublic.IsChecked:=BIWeb.PublicFolder.Enabled;
-
-  BIWeb.PublicFolder.Path:=TBIRegistry.ReadString('BIWeb','PublicFolder','public');
   CBPublic.IsChecked:=BIWeb.PublicFolder.Enabled;
 end;
 
@@ -575,7 +572,7 @@ begin
      end);
 end;
 
-procedure TBIWebMain.AddHistory(const AContext:TIdContext;
+procedure TBIWebMain.AddHistory(const AContext:TBIWebContext;
                                 const Command:String;
                                 const Tag:String;
                                 const Success:Boolean;
@@ -589,7 +586,7 @@ var tmpNow : TDateTime;
 begin
   tmpNow:=Now;
 
-  IP:=AContext.Connection.Socket.Binding.PeerIP;
+  IP:=TBIIndyContext(AContext).PeerIP;
 
   History.Add(tmpNow,IP,Command,Tag,Success,Millisec,Size);
 
@@ -623,15 +620,7 @@ begin
   else
   try
     try
-      if ARequestInfo.Document<>'/' then
-         BIWeb.ProcessFile(ARequestInfo.Document,AContext,AResponseInfo)
-      else
-      if ARequestInfo.CommandType=hcGET then
-         BIWeb.ProcessGet(AContext,AResponseInfo,ARequestInfo)
-      else
-      if ARequestInfo.CommandType=hcPOST then
-         BIWeb.ProcessPost(AContext,AResponseInfo,ARequestInfo);
-
+      TBIIndyContext.Process(BIWeb,AContext,ARequestInfo,AResponseInfo);
     except
       on E:Exception do
       begin

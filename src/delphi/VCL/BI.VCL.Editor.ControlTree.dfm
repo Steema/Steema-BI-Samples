@@ -2,7 +2,7 @@ object BIControlTree: TBIControlTree
   Left = 0
   Top = 0
   Caption = 'Visualizer Tree'
-  ClientHeight = 495
+  ClientHeight = 509
   ClientWidth = 618
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +17,7 @@ object BIControlTree: TBIControlTree
   object Splitter1: TSplitter
     Left = 380
     Top = 0
-    Height = 495
+    Height = 509
     Align = alRight
     ExplicitLeft = 280
     ExplicitTop = 232
@@ -27,22 +27,22 @@ object BIControlTree: TBIControlTree
     Left = 0
     Top = 0
     Width = 380
-    Height = 495
+    Height = 509
     Align = alClient
     Indent = 19
     TabOrder = 0
     OnChange = TreeView1Change
-    ExplicitWidth = 349
+    ExplicitHeight = 495
   end
   object Panel1: TPanel
     Left = 383
     Top = 0
     Width = 235
-    Height = 495
+    Height = 509
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 352
+    ExplicitHeight = 495
     object Label1: TLabel
       Left = 142
       Top = 104

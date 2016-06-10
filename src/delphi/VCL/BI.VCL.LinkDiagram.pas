@@ -9,11 +9,12 @@ unit BI.VCL.LinkDiagram;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, Vcl.ExtCtrls,
   VCLTee.TeeProcs, BI.Data, VCLTee.TeCanvas,
   System.Types, TeeTree, Vcl.StdCtrls, System.IOUtils, BI.Persist, BI.VCL.Grid,
-  Data.DB, BI.DataSource, BI.DataSet, Vcl.ComCtrls, Vcl.Grids, Vcl.DBGrids;
+  Data.DB, BI.DataSource, BI.DataSet, Vcl.ComCtrls, Vcl.Grids, Vcl.DBGrids,
+  BI.VCL.DataControl;
 
 type
   TDataDiagram = class(TForm)

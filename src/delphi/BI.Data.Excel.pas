@@ -19,10 +19,11 @@ type
   EExcelException=class(EBIException);
 
   TBIExcel=class(TBITextSource)
+  private
+    FHeaderCount : Integer;
   protected
     function DoImportFile(const FileName:String):TDataArray; override;
   public
-    HeaderCount : Integer;
     Range     : String;
     WorkSheet : String;
 
@@ -32,6 +33,8 @@ type
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
 
     class function Supports(const Extension: String): Boolean; override;
+
+    property HeaderCount:Integer read FHeaderCount write FHeaderCount default 1;
   end;
 
   TBIExcelEngineClass=class of TBIExcelEngine;

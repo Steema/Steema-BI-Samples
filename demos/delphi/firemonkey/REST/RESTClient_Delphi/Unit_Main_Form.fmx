@@ -10,41 +10,49 @@ object REST_BIWeb: TREST_BIWeb
   OnCreate = FormCreate
   DesignerMasterStyle = 0
   object Grid1: TGrid
-    CanFocus = True
+    Align = Client
     ClipChildren = True
-    Position.X = 16.000000000000000000
-    Position.Y = 72.000000000000000000
-    Size.Width = 753.000000000000000000
-    Size.Height = 529.000000000000000000
+    Size.Width = 785.000000000000000000
+    Size.Height = 577.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 6
-    RowHeight = 21.000000000000000000
     RowCount = 0
-    Viewport.Width = 749.000000000000000000
-    Viewport.Height = 504.000000000000000000
+    RowHeight = 21.000000000000000000
+    Viewport.Width = 781.000000000000000000
+    Viewport.Height = 552.000000000000000000
   end
-  object Label1: TLabel
-    Position.X = 24.000000000000000000
-    Position.Y = 24.000000000000000000
-    Text = 'BIWeb URL:'
-  end
-  object Edit1: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 15
-    Position.X = 96.000000000000000000
-    Position.Y = 21.000000000000000000
-    Size.Width = 497.000000000000000000
-    Size.Height = 22.000000000000000000
+  object Layout1: TLayout
+    Align = Top
+    Size.Width = 785.000000000000000000
+    Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
-    OnChangeTracking = Edit1ChangeTracking
-  end
-  object Button1: TButton
-    Enabled = False
-    Position.X = 608.000000000000000000
-    Position.Y = 22.000000000000000000
-    TabOrder = 16
-    Text = 'Refresh'
-    OnClick = Button1Click
+    TabOrder = 23
+    object Label1: TLabel
+      Position.X = 13.000000000000000000
+      Position.Y = 19.000000000000000000
+      Size.Width = 79.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'BIWeb URL:'
+    end
+    object Edit1: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 15
+      Position.X = 96.000000000000000000
+      Position.Y = 16.000000000000000000
+      Size.Width = 497.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      OnChangeTracking = Edit1ChangeTracking
+    end
+    object Button1: TButton
+      Enabled = False
+      Position.X = 608.000000000000000000
+      Position.Y = 17.000000000000000000
+      TabOrder = 16
+      Text = 'Refresh'
+      OnClick = Button1Click
+    end
   end
   object RESTClient1: TRESTClient
     Accept = 'application/json, text/plain; q=0.9, text/html;q=0.8,'
@@ -53,29 +61,29 @@ object REST_BIWeb: TREST_BIWeb
     Params = <>
     HandleRedirects = True
     RaiseExceptionOn500 = False
-    Left = 200
-    Top = 8
+    Left = 216
+    Top = 232
   end
   object RESTRequest1: TRESTRequest
     Client = RESTClient1
     Params = <>
     Response = RESTResponse1
     SynchronizedEvents = False
-    Left = 288
-    Top = 8
+    Left = 304
+    Top = 232
   end
   object RESTResponse1: TRESTResponse
     ContentType = 'application/json'
-    Left = 376
-    Top = 8
+    Left = 392
+    Top = 232
   end
   object RESTResponseDataSetAdapter1: TRESTResponseDataSetAdapter
     Active = True
     Dataset = FDMemTable1
     FieldDefs = <>
     Response = RESTResponse1
-    Left = 520
-    Top = 8
+    Left = 536
+    Top = 232
   end
   object FDMemTable1: TFDMemTable
     Active = True
@@ -143,20 +151,20 @@ object REST_BIWeb: TREST_BIWeb
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
-    Left = 664
-    Top = 8
+    Left = 680
+    Top = 232
   end
   object BindSourceDB1: TBindSourceDB
     DataSet = FDMemTable1
     ScopeMappings = <>
-    Left = 112
-    Top = 8
+    Left = 128
+    Top = 232
   end
   object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
-    Left = 32
-    Top = 8
+    Left = 48
+    Top = 232
     object LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource
       Category = 'Quick Bindings'
       DataSource = BindSourceDB1

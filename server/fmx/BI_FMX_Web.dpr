@@ -6,7 +6,8 @@ uses
   Main_FMX_Web in 'Main_FMX_Web.pas' {BIWebMain},
   BI.Web.AllData in '..\BI.Web.AllData.pas',
   BI.Web.Common in '..\BI.Web.Common.pas',
-  nFMX.Trayicon.Win in 'TrayIcon\nFMX.Trayicon.Win.pas';
+  nFMX.Trayicon.Win in 'TrayIcon\nFMX.Trayicon.Win.pas',
+  BI.Web.IndyContext in '..\BI.Web.IndyContext.pas';
 
 {$R *.res}
 

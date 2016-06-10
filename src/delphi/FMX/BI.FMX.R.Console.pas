@@ -4,8 +4,30 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
-  FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.ScrollBox, FMX.Memo;
+  FMX.Types, FMX.Controls, FMX.Forms, 
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.Edit, FMX.StdCtrls, FMX.Layouts, 
+
+  {$IF CompilerVersion<=28}
+  {$DEFINE HASFMX21}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX21}
+  FMX.ScrollBox,
+  {$ENDIF}
+
+  FMX.Memo;
+
+// Simple console window to execute R Language statements and print their
+// return values
 
 type
   TBIRConsole = class(TForm)

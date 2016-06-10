@@ -89,6 +89,7 @@ type
                           const AParent:TWinControl;
                           const AEdited: TComponent):TDataSelector; static;
 
+    procedure RefreshTree(const AFilter:TDataManagerFilter);
     procedure Select(const AData:TDataItem);
     function Selected:TDataItem;
 

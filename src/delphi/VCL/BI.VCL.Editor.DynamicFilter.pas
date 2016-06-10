@@ -54,11 +54,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl,
   BI.VCL.Tree, BI.Data, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, BI.Expression,
   BI.VCL.Editor.Expression, Vcl.Buttons, BI.VCL.Editor.DateTimeRange,
-  BI.VCL.Editor.NumericFromTo, BI.VCL.Editor.ListItems;
+  BI.VCL.Editor.NumericFromTo, BI.VCL.Editor.SelectText,
+  BI.Expression.Filter, Vcl.CheckLst;
 
 type
   TDynamicFilterEditor = class(TForm)
-    BITree1: TBITree;
     PanelCustom: TPanel;
     Panel2: TPanel;
     CBCustom: TComboBox;
@@ -69,6 +69,13 @@ type
     ECustom: TEdit;
     SBCustom: TSpeedButton;
     LError: TLabel;
+    PageControl1: TPageControl;
+    TabData: TTabSheet;
+    TabItems: TTabSheet;
+    BITree1: TBITree;
+    CBItems: TCheckListBox;
+    Panel3: TPanel;
+    CBEnabled: TCheckBox;
     PageItem: TPageControl;
     TabDateTime: TTabSheet;
     TabBoolean: TTabSheet;
@@ -76,10 +83,12 @@ type
     CBFalse: TCheckBox;
     TabNumeric: TTabSheet;
     TabText: TTabSheet;
-    PageControlText: TPageControl;
-    TabMultiText: TTabSheet;
-    TabSingleText: TTabSheet;
-    LBSingleText: TListBox;
+    Panel4: TPanel;
+    BAdd: TButton;
+    PageControl2: TPageControl;
+    TabIncluded: TTabSheet;
+    TabExcluded: TTabSheet;
+    Splitter1: TSplitter;
     procedure FormCreate(Sender: TObject);
     procedure ECustomChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -89,49 +98,68 @@ type
     procedure BITree1Change(Sender: TObject);
     procedure CBTrueClick(Sender: TObject);
     procedure CBFalseClick(Sender: TObject);
-    procedure PageControlTextChange(Sender: TObject);
-    procedure LBSingleTextClick(Sender: TObject);
+    procedure CBItemsClick(Sender: TObject);
+    procedure CBItemsClickCheck(Sender: TObject);
+    procedure CBEnabledClick(Sender: TObject);
+    procedure BAddClick(Sender: TObject);
   private
     { Private declarations }
 
     IChecking : Boolean;
 
+    IFilter : TBIFilter;
+
     ICustom : TLogicalExpression;
+
+    IChanging : Boolean;
 
     IData,
     IMainData : TDataItem;
 
     INumericFromTo : TNumericFromTo;
-    ITextItems     : TFormListItems;
+    ITextInclude,
+    ITextExclude   : TSelectTextItems;
     IDateTimeRange : TDateTimeRangeEditor;
 
     FOnChange: TNotifyEvent;
 
+    procedure AddFilter;
+    procedure AddFilterItem(const AItem:TFilterItem);
     procedure AddMapValues(const AParent:TBITreeNode; const AData:TDataItem);
+    function AddNewFilter(const AData:TDataItem):TFilterItem;
+    function CanAddFilter(const AData:TDataItem):Boolean;
     procedure ChangedDateTime(Sender: TObject);
     procedure ChangedNumeric(Sender: TObject);
     procedure ChangedText(Sender: TObject);
+    procedure CheckedText(const Sender: TObject; const AText:String; const IsChecked:Boolean);
+    function Current:TFilterItem;
     function CurrentData:TDataItem;
     procedure DoChanged;
     procedure Expanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
     function HasDummy(const ANode:TBITreeNode):Boolean;
+    procedure RefreshProperties(const AItem:TFilterItem);
     function Resolver(const S:String; IsFunction:Boolean):TExpression;
     procedure TreeChecked(Sender: TObject);
+    function TryAddFilter(const AData:TDataItem):TFilterItem;
     procedure TryChangeExpression(const AExp:TExpression);
   public
     { Public declarations }
 
-    class function Choose(const AData:TDataItem;
+    class function Choose(const AOwner:TComponent;
+                          const AData:TDataItem;
                           const AMain:TDataItem=nil):TLogicalExpression; static;
+
+    class function Edit(const AOwner:TComponent;
+                        const AFilter:TBIFilter):Boolean; static;
 
     class function Embedd(const AOwner:TComponent;
                           const AParent:TWinControl;
+                          const AFilter:TBIFilter;
                           const AData:TDataItem;
                           const AMain:TDataItem=nil):TDynamicFilterEditor; static;
 
-    function Filter:TLogicalExpression;
-
-    procedure Refresh(const AData:TDataItem; const AMain:TDataItem=nil);
+    procedure Refresh(const AData:TDataItem; const AMain:TDataItem=nil); overload;
+    procedure Refresh(const AFilter:TBIFilter; const AData:TDataItem; const AMain:TDataItem=nil); overload;
 
     property OnChange:TNotifyEvent read FOnChange write FOnChange;
   end;

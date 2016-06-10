@@ -31,7 +31,6 @@ object FormSummary: TFormSummary
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 1081
     object CBHideDuplicates: TCheckBox
       Left = 445
       Top = 10
@@ -176,7 +175,8 @@ object FormSummary: TFormSummary
         '22 Measure by Length(Customers CompanyName)'
         '23 Quantity Min and Max, by Year and ShipVia'
         '24 By CompanyName (text histogram)'
-        '25 By Discontinued (boolean histogram)')
+        '25 By Discontinued (boolean histogram)'
+        '26 One GroupBy (columns) SORTED')
       PopupMenu = PopupMenu1
       TabOrder = 0
       OnClick = LBTestClick
@@ -251,14 +251,13 @@ object FormSummary: TFormSummary
     Top = 41
     Width = 876
     Height = 539
-    ActivePage = TabSQL
+    ActivePage = TabGrid
     Align = alClient
     TabOrder = 2
     OnChange = PageControl1Change
-    ExplicitWidth = 781
     object TabGrid: TTabSheet
       Caption = 'Grid'
-      object Splitter2: TSplitter
+      object SplitterChart: TSplitter
         Left = 0
         Top = 508
         Width = 868
@@ -266,35 +265,26 @@ object FormSummary: TFormSummary
         Cursor = crVSplit
         Align = alBottom
         Visible = False
+        ExplicitLeft = 865
         ExplicitTop = 0
-        ExplicitWidth = 505
-      end
-      object SplitterChart: TSplitter
-        Left = 865
-        Top = 0
-        Height = 508
-        Align = alRight
-        Visible = False
-        ExplicitLeft = 384
-        ExplicitTop = 208
-        ExplicitHeight = 100
+        ExplicitWidth = 511
       end
       object BIGrid1: TBIGrid
         Left = 0
         Top = 0
-        Width = 865
+        Width = 868
         Height = 508
         Align = alClient
         UseDockManager = False
         ParentBackground = False
         ParentColor = False
         TabOrder = 0
+        Alternate.Enabled = True
       end
     end
     object TabTree: TTabSheet
       Caption = 'Tree'
       ImageIndex = 1
-      ExplicitWidth = 773
       object Splitter3: TSplitter
         Left = 0
         Top = 275
@@ -313,7 +303,6 @@ object FormSummary: TFormSummary
         Align = alClient
         Indent = 19
         TabOrder = 0
-        ExplicitWidth = 773
       end
       object TreeView2: TTreeView
         Left = 0
@@ -323,7 +312,6 @@ object FormSummary: TFormSummary
         Align = alBottom
         Indent = 19
         TabOrder = 1
-        ExplicitWidth = 773
       end
     end
     object TabVisualizer: TTabSheet
@@ -355,14 +343,22 @@ object FormSummary: TFormSummary
         UseDockManager = False
         ParentBackground = False
         TabOrder = 1
-        Groups = <>
-        Values = <>
+        Groups = <
+          item
+          end
+          item
+          end>
+        Values = <
+          item
+          end
+          item
+          end>
+        Origin = '|Animals|Animals'
       end
     end
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
-      ExplicitWidth = 773
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -370,7 +366,6 @@ object FormSummary: TFormSummary
         Height = 57
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 773
         object LSQLError: TLabel
           Left = 141
           Top = 8
@@ -409,7 +404,6 @@ object FormSummary: TFormSummary
         Align = alTop
         TabOrder = 1
         OnChange = MemoSQLChange
-        ExplicitWidth = 773
       end
       object BIGridSQL: TBIGrid
         Left = 0
@@ -421,23 +415,104 @@ object FormSummary: TFormSummary
         ParentBackground = False
         ParentColor = False
         TabOrder = 2
-        ExplicitWidth = 773
       end
     end
     object TabTotals: TTabSheet
       Caption = 'Totals'
       ImageIndex = 4
+      object Splitter2: TSplitter
+        Left = 0
+        Top = 258
+        Width = 868
+        Height = 3
+        Cursor = crVSplit
+        Align = alBottom
+        ExplicitTop = 0
+        ExplicitWidth = 261
+      end
       object BIGridTotals: TBIGrid
         Left = 0
         Top = 0
         Width = 868
-        Height = 511
+        Height = 258
         Align = alClient
         UseDockManager = False
         ParentBackground = False
         ParentColor = False
         TabOrder = 0
-        ShowItems = True
+        OnDataChange = BIGridTotalsDataChange
+      end
+      object BIChart1: TBIChart
+        Left = 0
+        Top = 261
+        Width = 868
+        Align = alBottom
+        UseDockManager = False
+        Padding.Top = 24
+        ParentBackground = False
+        TabOrder = 1
+        object BITChart1: TBITChart
+          Left = 0
+          Top = 24
+          Width = 868
+          Height = 226
+          BackWall.Brush.Gradient.Direction = gdBottomTop
+          BackWall.Brush.Gradient.EndColor = clWhite
+          BackWall.Brush.Gradient.StartColor = 15395562
+          BackWall.Brush.Gradient.Visible = True
+          BackWall.Transparent = False
+          Foot.Font.Color = clBlue
+          Foot.Font.Name = 'Verdana'
+          Gradient.Direction = gdBottomTop
+          Gradient.EndColor = clWhite
+          Gradient.MidColor = 15395562
+          Gradient.StartColor = 15395562
+          LeftWall.Color = 14745599
+          Legend.Font.Name = 'Verdana'
+          Legend.Shadow.Transparency = 0
+          RightWall.Color = 14745599
+          Title.Font.Name = 'Verdana'
+          BottomAxis.Axis.Color = 4210752
+          BottomAxis.Grid.Color = 11119017
+          BottomAxis.LabelsFormat.Font.Name = 'Verdana'
+          BottomAxis.TicksInner.Color = 11119017
+          BottomAxis.Title.Font.Name = 'Verdana'
+          DepthAxis.Axis.Color = 4210752
+          DepthAxis.Grid.Color = 11119017
+          DepthAxis.LabelsFormat.Font.Name = 'Verdana'
+          DepthAxis.TicksInner.Color = 11119017
+          DepthAxis.Title.Font.Name = 'Verdana'
+          DepthTopAxis.Axis.Color = 4210752
+          DepthTopAxis.Grid.Color = 11119017
+          DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
+          DepthTopAxis.TicksInner.Color = 11119017
+          DepthTopAxis.Title.Font.Name = 'Verdana'
+          LeftAxis.Axis.Color = 4210752
+          LeftAxis.Grid.Color = 11119017
+          LeftAxis.LabelsFormat.Font.Name = 'Verdana'
+          LeftAxis.TicksInner.Color = 11119017
+          LeftAxis.Title.Font.Name = 'Verdana'
+          RightAxis.Axis.Color = 4210752
+          RightAxis.Grid.Color = 11119017
+          RightAxis.LabelsFormat.Font.Name = 'Verdana'
+          RightAxis.TicksInner.Color = 11119017
+          RightAxis.Title.Font.Name = 'Verdana'
+          TopAxis.Axis.Color = 4210752
+          TopAxis.Grid.Color = 11119017
+          TopAxis.LabelsFormat.Font.Name = 'Verdana'
+          TopAxis.TicksInner.Color = 11119017
+          TopAxis.Title.Font.Name = 'Verdana'
+          TabOrder = 0
+          DefaultCanvas = 'TGDIPlusCanvas'
+          ColorPaletteIndex = 9
+          object TMarksTipTool
+            Format.CustomPosition = True
+            Format.Left = 0
+            Format.TextAlignment = taCenter
+            Format.Top = 0
+            Format.Visible = False
+          end
+        end
       end
     end
   end
@@ -448,7 +523,6 @@ object FormSummary: TFormSummary
     Height = 35
     Align = alBottom
     TabOrder = 3
-    ExplicitWidth = 1081
     object Label3: TLabel
       Left = 152
       Top = 11

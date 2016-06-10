@@ -24,7 +24,6 @@ object FormSpeed: TFormSpeed
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 738
     object Label1: TLabel
       Left = 424
       Top = 13
@@ -63,6 +62,5 @@ object FormSpeed: TFormSpeed
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
-    ExplicitWidth = 738
   end
 end

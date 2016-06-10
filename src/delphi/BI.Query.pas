@@ -10,13 +10,16 @@ interface
 
 uses
   System.Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
-  BI.Persist;
+  BI.Persist, BI.Expression.Filter, BI.Data.CollectionItem,
+  BI.Data.Expressions;
 
 {
   TBIQuery is a component capable of executing queries against TDataItem objects.
 
-  BIQuery.Items collection property contains the desired query output.
-  Each Item defines a data item (field or table) and an optional aggregation kind.
+  The BIQuery Dimensions and Measures properties contain the desired output items.
+
+  Each item defines a data item (field or table) and optional parameters like
+  aggregation kind for Measures.
 
   BIQuery automatically determines if the calculation must be done using
   a TSummary class (because there is at least one item with aggregation),
@@ -26,170 +29,207 @@ uses
   can refer to data items from multiple databases or tables without the need to
   specify the links between them (no "join" clauses).
 
-  The BIQuery Filter property can be set as a string (ie: City="London") or
-  as an expression object, and can also refer to any data item even it is not
-  included in the query output.
+  The BIQuery Filter property can be set as a string:
+
+   Filter.Text:= 'City="London"';
+
+  or as an expression object:
+
+   Filter.Custom:= MyExpression;
+
+  and can also refer to any data item, even if it is not included in the
+  query output.
+
+  The BIQuery SortBy property is a collection of TQuerySortItem objects.
+  They define the sort order of the Query output rows and columns.
 }
 
 type
-  TDataCollectionItem=class(TCollectionItem)
-  private
-    FData : TDataItem;
-    FProvider : TComponent;
-
-    FOnChange: TNotifyEvent;
-
-    IOrigin : String;
-
-    procedure AddNotify;
-    function GetData: TDataItem;
-    procedure InternalSetProvider(const Value: TComponent);
-    function LoadOrigin:TDataItem;
-    procedure Notify(const AEvent:TBIEvent);
-    procedure NotifyDataDestroy(const AEvent:TBIEvent);
-    function Origin:String;
-    procedure ReadOrigin(Reader: TReader);
-    procedure RemoveNotify;
-    procedure SetData(const Value: TDataItem);
-    procedure SetDataDirect(const Value: TDataItem);
-    procedure SetProvider(const Value: TComponent);
-    procedure WriteOrigin(Writer: TWriter);
-  protected
-    procedure Changed; virtual;
-    procedure DefineProperties(Filer: TFiler); override;
-    procedure Loaded; virtual;
-    function Owner:TComponent; virtual;
-    procedure ValidateData(const AData:TDataItem); virtual;
-  public
-    Destructor Destroy; override;
-
-    procedure Assign(Source: TPersistent); override;
-  published
-    property Data:TDataItem read GetData write SetData;
-    property Provider:TComponent read FProvider write SetProvider;
-
-    property OnChange:TNotifyEvent read FOnChange write FOnChange;
-  end;
-
   TBIQuery=class;
 
-  TQueryItemStyle=(Automatic,Row,Column,Measure);
-
+  // Base class for Dimensions and Measures
   TQueryItem=class(TDataCollectionItem)
   private
-    FStyle: TQueryItemStyle;
+    FEnabled: Boolean;
 
-    FSelectIndex : Integer;
-    FSummaryItem : TSummaryItem;
-
-    // Only used during csLoading, see Loaded
-    IActive : Boolean;
-    IAggregate : TAggregate;
-    IDatePart : TDateTimePart;
-    IExpression : TExpression;
-
-    function CanChange:Boolean;
-    procedure DoRemove;
-    function GetAggregate: TAggregate;
-    function GetActive: Boolean;
-    function GetDatePart:TDateTimePart;
-    function GetExpression: TExpression;
-    function Query:TBIQuery;
-    function RealData:TDataItem;
-    procedure Recreate;
-    procedure SetStyle(const Value: TQueryItemStyle);
-    procedure SetActive(const Value: Boolean);
-    procedure SetAggregate(const Value: TAggregate);
-    procedure SetDatePart(const Value: TDateTimePart);
-    procedure SetExpression(const Value: TExpression);
-    procedure TryReconnect;
+    procedure DoChanged(Sender:TObject);
+    function GetQuery: TBIQuery;
+    procedure SetEnabled(const Value: Boolean);
   protected
     procedure Changed; override;
-    procedure Loaded; override;
-    procedure ValidateData(const AData:TDataItem); override;
   public
     Constructor Create(Collection: TCollection); override;
 
     procedure Assign(Source:TPersistent); override;
 
-    function GroupBy:TGroupBy;
-    function Measure:TMeasure;
-    function RealStyle:TQueryItemStyle;
-
-    function ToString:String; override;
-
-    property Expression:TExpression read GetExpression write SetExpression;
-  published
-    property Active:Boolean read GetActive write SetActive default True;
-    property Aggregate:TAggregate read GetAggregate write SetAggregate default TAggregate.Count;
-    property DatePart:TDateTimePart read GetDatePart write SetDatePart default TDateTimePart.None;
-    property Style:TQueryItemStyle read FStyle write SetStyle default TQueryItemStyle.Automatic;
-  end;
-
-  TQueryItems=class(TOwnedCollection)
-  private
-    function AddItem(const AData: TDataItem;
-                     const AStyle: TQueryItemStyle):TQueryItem;
-    function Get(const Index: Integer): TQueryItem;
-    function GetQuery: TBIQuery;
-    procedure Put(const Index: Integer; const Value: TQueryItem);
-    procedure SetupItem(const AItem:TQueryItem; const ForceSummary,IsActive:Boolean);
-  protected
-    procedure Notify(Item: TCollectionItem; Action: TCollectionNotification); override;
-  public
-    Constructor Create(AOwner: TPersistent);
-
-    function Add(const AData:TDataItem;
-                 const AStyle:TQueryItemStyle=TQueryItemStyle.Automatic;
-                 const IsActive:Boolean=True): TQueryItem; overload;
-
-    function Add(const AData:TDataItem;
-                 const AMeasure:TAggregate): TQueryItem; overload;
-
-    procedure Exchange(const A,B:TQueryItem);
-    procedure Swap;
-
-    property Items[const Index:Integer]:TQueryItem read Get write Put; default;
     property Query:TBIQuery read GetQuery;
-  end;
-
-  TQueryRemove=class(TPersistent)
-  private
-    IQuery : TBIQuery;
-
-    procedure SetColumns(const Value: Boolean);
-    procedure SetRows(const Value: Boolean);
-    function GetColumns: Boolean;
-    function GetRows: Boolean;
   published
-    property Columns:Boolean read GetColumns write SetColumns default False;
-    property Rows:Boolean read GetRows write SetRows default False;
+    property Enabled:Boolean read FEnabled write SetEnabled default True;
   end;
 
-  (* Pending
-  TQueryFilter=class(TPersistent)
-  private
-    FEnabled : Boolean;
-    FExpression : TLogicalExpression;
-    FText : String;
+  TDimensionStyle=(Automatic,Row,Column);
 
-    // Temporary during csLoading
-    IFilter : String;
+  TQueryDimension=class(TQueryItem)
+  private
+    FGroupBy : TGroupBy;
+    FStyle: TDimensionStyle;
+
+    function GetDatePart:TDateTimePart;
+    function GetExpression: TExpression;
+    function GetHistogram: THistogram;
+
+    procedure SetDatePart(const Value: TDateTimePart);
+    procedure SetExpression(const Value: TExpression);
+    procedure SetHistogram(const Value: THistogram);
+    procedure SetStyle(const Value: TDimensionStyle);
+  protected
+    property GroupBy:TGroupBy read FGroupBy;
+    function Layout:TGroupByLayout;
+    procedure SetData(const Value: TDataItem); override;
   public
-    Constructor Create;
+    Constructor Create(Collection: TCollection); override;
     Destructor Destroy; override;
 
     procedure Assign(Source:TPersistent); override;
 
-    property Expression:TLogicalExpression read FExpression write SetExpression;
+    function RealData:TDataItem;
+    function RealStyle:TDimensionStyle;
+    function ToString:String; override;
+
+    property Expression:TExpression read GetExpression write SetExpression;
   published
-    property Enabled:Boolean read FEnabled write SetEnabled default True;
-    property Text:String read FText write SetText;
+    property DatePart:TDateTimePart read GetDatePart write SetDatePart default TDateTimePart.None;
+    property Histogram:THistogram read GetHistogram write SetHistogram;
+    property Style:TDimensionStyle read FStyle write SetStyle default TDimensionStyle.Automatic;
   end;
-  *)
+
+  TQueryMeasure=class(TQueryItem)
+  private
+    FMeasure : TMeasure;
+
+    function GetAggregate:TAggregate;
+    function GetCalculation: TMeasureCalculation;
+    function GetExpression: TExpression;
+    function GetMissing: TMeasureMissing;
+
+    procedure SetAggregate(const Value: TAggregate);
+    procedure SetCalculation(const Value: TMeasureCalculation);
+    procedure SetExpression(const Value: TExpression);
+    procedure SetMissing(const Value: TMeasureMissing);
+  protected
+    property Measure:TMeasure read FMeasure;
+    procedure SetData(const Value: TDataItem); override;
+  public
+    Constructor Create(Collection: TCollection); override;
+    Destructor Destroy; override;
+
+    procedure Assign(Source:TPersistent); override;
+
+    property Expression:TExpression read GetExpression write SetExpression;
+    function RealData:TDataItem;
+    function ToString:String; override;
+  published
+    property Aggregate:TAggregate read GetAggregate write SetAggregate default TAggregate.Count;
+    property Calculation : TMeasureCalculation read GetCalculation write SetCalculation;
+    property Missing : TMeasureMissing read GetMissing write SetMissing;
+  end;
+
+  // Base class for Dimension and Measure collections
+  TQueryCollection=class(TOwnedCollection)
+  private
+    IUpdating : Boolean;
+
+    procedure DoChanged;
+    function GetQuery: TBIQuery;
+  protected
+    procedure Notify(Item: TCollectionItem; Action: TCollectionNotification); override;
+    procedure Update(Item: TCollectionItem); override;
+  public
+    property Query:TBIQuery read GetQuery;
+  end;
+
+  // Zero or more Dimensions (to select or group-by)
+  TQueryDimensions=class(TQueryCollection)
+  private
+    function AddItem(const AData: TDataItem;
+                     const AStyle: TDimensionStyle):TQueryDimension;
+    function EnabledCount:Integer;
+    function Get(const Index: Integer): TQueryDimension;
+    procedure Put(const Index: Integer; const Value: TQueryDimension);
+    procedure Removed(const AComponent:TComponent);
+  protected
+    function Add(const AGroupBy:TGroupBy):TQueryDimension; overload;
+  public
+    Constructor Create(AOwner: TPersistent);
+
+    function Add(const AData:TDataItem;
+                 const AStyle:TDimensionStyle=TDimensionStyle.Automatic;
+                 const IsActive:Boolean=True): TQueryDimension; overload;
+
+    procedure Exchange(const A,B:TQueryDimension);
+    procedure Swap;
+
+    property Items[const Index:Integer]:TQueryDimension read Get write Put; default;
+  end;
+
+  // Zero or more Aggregations (Sum, Count, Average, Min, Max)
+  TQueryMeasures=class(TQueryCollection)
+  private
+    function Get(const Index: Integer): TQueryMeasure;
+    procedure Put(const Index: Integer; const Value: TQueryMeasure);
+    procedure Removed(const AComponent:TComponent);
+  protected
+    function Add(const AMeasure:TMeasure):TQueryMeasure; overload;
+    function EnabledCount:Integer;
+  public
+    Constructor Create(AOwner: TPersistent);
+
+    function Add(const AData:TDataItem;
+                 const AMeasure:TAggregate;
+                 const IsActive:Boolean=True): TQueryMeasure; overload;
+
+    procedure Exchange(const A,B:TQueryMeasure);
+
+    property Items[const Index:Integer]:TQueryMeasure read Get write Put; default;
+  end;
+
+  TQuerySortItem=class(TQueryItem)
+  private
+    FAscending: Boolean;
+    FIgnoreTextCase: Boolean; // Default is False (ie: case-sensitive text order)
+
+    procedure SetAscending(const Value: Boolean);
+    procedure SetIgnoreTextCase(const Value: Boolean);
+  public
+    Constructor Create(ACollection:TCollection); override;
+
+    procedure Assign(Source:TPersistent); override;
+  published
+    property Ascending:Boolean read FAscending write SetAscending default True;
+    property IgnoreTextCase: Boolean read FIgnoreTextCase write SetIgnoreTextCase default True;
+  end;
+
+  TQuerySort=class(TQueryCollection)
+  private
+    procedure CopyFrom(const ASort:TSortItems);
+    function Get(const Index: Integer): TQuerySortItem;
+    procedure Put(const Index: Integer; const Value: TQuerySortItem);
+    function Sort:TSortItems;
+  public
+    Constructor Create(AOwner: TPersistent);
+
+    function AddSort(const AData:TDataItem;
+                     const Ascending:Boolean=True;
+                     const IgnoreTextCase:Boolean=True):TQuerySortItem;
+
+    function ItemOf(const AData:TDataItem):TQuerySortItem;
+
+    property Items[const Index:Integer]:TQuerySortItem read Get write Put; default;
+  end;
 
   TQueryStyle=(Unknown,Select,Summary);
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
               {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
@@ -197,52 +237,50 @@ type
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
   {$ENDIF}
+  {$ENDIF}
   TBIQuery=class(TBaseDataImporter)
   private
-    FItems: TQueryItems;
-
+    FDimensions: TQueryDimensions;
+    FDistinct : Boolean;
+    FFilter : TBIFilter;
+    FMax : Int64;
+    FMeasures: TQueryMeasures;
     FOnError : TErrorProc;
-    FSelect : TDataSelect;
-    FSummary : TSummary;
-    FRemove: TQueryRemove;
+    FRemoveMissing : TRemoveMissing;
+    FSort : TQuerySort;
+    FStart : Int64;
 
-    // Temporary during csLoading
-    IFilter : String;
-
+    IMain : TDataItem;
     ILoading : Boolean;
     IClearing : Boolean;
 
-    procedure AddItemsSelect(const ASelect:TDataSelect);
-    procedure AddItemsSummary(const ASummary:TSummary);
-    procedure DeleteSelect(const AIndex:Integer);
+    procedure AddDimensions(const ASummary:TSummary);
+    procedure AddMeasures(const ASummary:TSummary);
+    procedure DoChanged(Sender:TObject);
     procedure DoClearData(const AData:TDataItem);
-    procedure DoSetFilter(const Value: String);
-    function GetDistinct: Boolean;
-    function GetFilter: String;
-    function GetMax: Int64;
-    procedure SetItems(const Value: TQueryItems);
-    procedure SetSelect(const Value: TDataSelect);
-    procedure SetSummary(const Value: TSummary);
+    procedure SetDimensions(const Value: TQueryDimensions);
     procedure SetDistinct(const Value: Boolean);
-    procedure SetFilter(const Value: String);
+    procedure SetFilter(const Value: TBIFilter);
     procedure SetMax(const Value: Int64);
-    procedure SetRemove(const Value: TQueryRemove);
-    procedure SetUseFilter(const Value: Boolean);
-    function GetUseFilter: Boolean;
+    procedure SetMeasures(const Value: TQueryMeasures);
+    procedure SetRemoveMissing(const Value: TRemoveMissing);
+    procedure SetStartRow(const Value: Int64);
+    procedure SetSort(const Value: TQuerySort);
+    function IsDimensionsStored: Boolean;
+    function IsMeasuresStored: Boolean;
+    function IsSortStored: Boolean;
   protected
     procedure Changed; override;
+    function CreateProvider:TDataProvider;
     procedure GetItems(const AData: TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure Loaded; override;
 
     procedure Notification(AComponent: TComponent;
                            Operation: TOperation); override;
-
-    procedure SetFilterExpression(const AFilter:TLogicalExpression);
-
-    property Select:TDataSelect read FSelect write SetSelect;
-    property Summary:TSummary read FSummary write SetSummary;
   public
+    Style : TQueryStyle;
+
     Constructor Create(AOwner:TComponent); override;
     Constructor From(const AOwner:TComponent; const ASelect:TDataSelect); overload;
     Constructor From(const AOwner:TComponent; const ASummary:TSummary); overload;
@@ -255,22 +293,21 @@ type
     class function CanBeMeasure(const AData:TDataItem):Boolean; static;
     procedure Clear;
 
-    function IsEmpty:Boolean;
-    function MainData:TDataItem;
-
-    function Style:TQueryStyle;
-
     procedure Parse(const AData:TDataItem; const SQL:String);
+    procedure Refresh;
     function ToString:String; override;
 
+    property Main:TDataItem read IMain;
     property OnError:TErrorProc read FOnError write FOnError;
   published
-    property Distinct:Boolean read GetDistinct write SetDistinct default False;
-    property Filter:String read GetFilter write SetFilter;
-    property Items:TQueryItems read FItems write SetItems;
-    property MaxRows:Int64 read GetMax write SetMax default 0;
-    property RemoveMissing:TQueryRemove read FRemove write SetRemove;
-    property UseFilter:Boolean read GetUseFilter write SetUseFilter default True;
+    property Dimensions:TQueryDimensions read FDimensions write SetDimensions stored IsDimensionsStored;
+    property Distinct:Boolean read FDistinct write SetDistinct default False;
+    property Filter:TBIFilter read FFilter write SetFilter;
+    property MaxRows:Int64 read FMax write SetMax default 0;
+    property Measures:TQueryMeasures read FMeasures write SetMeasures stored IsMeasuresStored;
+    property RemoveMissing:TRemoveMissing read FRemoveMissing write SetRemoveMissing;
+    property SortBy:TQuerySort read FSort write SetSort stored IsSortStored;
+    property StartRow:Int64 read FStart write SetStartRow default 0;
   end;
 
 implementation

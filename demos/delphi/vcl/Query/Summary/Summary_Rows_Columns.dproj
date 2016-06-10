@@ -99,7 +99,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_UnitSearchPath>c:\root\teerecompile\fastmm;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Optimize>true</DCC_Optimize>
-        <DCC_Define>FullDebugMode;$(DCC_Define)</DCC_Define>
+        <DCC_Define>FullDebugMode;_FASTMM;$(DCC_Define)</DCC_Define>
         <DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -107,6 +107,9 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
+        <DCC_Optimize>true</DCC_Optimize>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
     </PropertyGroup>
@@ -132,7 +135,9 @@
         <DCCReference Include="Unit_Summary.pas">
             <Form>FormSummary</Form>
         </DCCReference>
-        <DCCReference Include="..\..\github\tests\BI.Tests.SummarySamples.pas"/>
+        <DCCReference Include="..\..\..\..\..\tests\BI.Tests.SummarySamples.pas">
+            <Form>$R *.res</Form>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -154,22 +159,31 @@
                     <Source Name="MainSource">Summary_Rows_Columns.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\sdacvcl220.bpl">Devart SQL Server Data Access GUI VCL related Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclsdac220.bpl">Devart SQL Server Data Access Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclsdacfmx220.bpl">Devart SQL Server Data Access FMX Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\sdacfmx220.bpl">Devart SQL Server Data Access GUI FMX related Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\DataSetManager220.bpl">Devart DataSet Manager</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k220.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp220.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k220.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp220.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="E:\Program Files (x86)\MicroOLAP DAC for MySQL Trial\Packages\RAD Studio XE8\dcl_MySQLDAC22.bpl">MicroOLAP Direct Access Components for MySQL</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrx23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxDB23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl">File e:\Program Files (x86)\FastReports\LibD23\dclfrxe23.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k230.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp230.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k230.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp230.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="2">
+                <DeployFile LocalName="Win64\Debug\Summary_Rows_Columns.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>Summary_Rows_Columns.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\Summary_Rows_Columns.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Summary_Rows_Columns.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win64\Debug\Summary_Rows_Columns.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win64">
+                        <RemoteName>Summary_Rows_Columns.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

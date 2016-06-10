@@ -43,6 +43,7 @@ type
     BindSourceDB1: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
+    Layout1: TLayout;
     Label1: TLabel;
     Edit1: TEdit;
     Button1: TButton;

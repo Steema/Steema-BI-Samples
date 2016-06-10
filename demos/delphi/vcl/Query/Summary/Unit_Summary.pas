@@ -22,7 +22,7 @@ uses
   {$ELSE}
 
   {$IF TeeMsg_TeeChartPalette='TeeChart'}
-  {$DEFINE sTEEPRO} // <-- TeeChart Lite or Pro ?
+  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
   {$ENDIF}
   {$ENDIF}
 
@@ -31,10 +31,12 @@ uses
   {$ENDIF}
 
   BI.VCL.Chart,
-  BI.VCL.Editor.Summary, BI.VCL.Editor.Grid, Vcl.Grids,
+  BI.VCL.Editor.Summary, BI.VCL.Editor.BIGrid, Vcl.Grids,
   BI.Data.ClientDataset, System.UITypes,
-  BI.VCL.Visualizer, BI.VCL.Editor.Visualizer, Vcl.Menus, BI.Summary.Persist,
-  BI.VCL.Editor.ControlTree, BI.Data.SQL, BI.VCL.GridForm, BI.VCL.DataControl;
+  BI.VCL.Visualizer, BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer.Chart,
+  BI.VCL.Editor.Visualizer, Vcl.Menus, BI.Summary.Persist,
+  BI.VCL.Editor.ControlTree, BI.Data.SQL, BI.VCL.GridForm, BI.VCL.DataControl,
+  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Chart, VCLTee.TeeTools;
 
 type
   TFormSummary = class(TForm)
@@ -49,7 +51,6 @@ type
     Button2: TButton;
     Panel2: TPanel;
     CBStyle: TComboBox;
-    Splitter2: TSplitter;
     TabTree: TTabSheet;
     TreeView1: TTreeView;
     BDiagram: TButton;
@@ -98,6 +99,9 @@ type
     CBMultiCPU: TCheckBox;
     CBAutoExecute: TCheckBox;
     BEditChart: TButton;
+    BITChart1: TBITChart;
+    BIChart1: TBIChart;
+    Splitter2: TSplitter;
     procedure LBTestClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -126,9 +130,9 @@ type
     procedure Button10Click(Sender: TObject);
     procedure CBAlternateClick(Sender: TObject);
     procedure BEditChartClick(Sender: TObject);
+    procedure BIGridTotalsDataChange(Sender: TObject);
   private
     { Private declarations }
-    //Totals : TBIGrid;
 
     Chart : TBIChart;
 
@@ -149,6 +153,7 @@ type
     procedure Recalculate(Sender:TObject);
     procedure RefreshTrees;
     procedure ShowTotals;
+    procedure TotalsHideDuplicates;
     procedure TryFillChart;
   public
     { Public declarations }
@@ -171,7 +176,7 @@ uses
   {$ENDIF}
 
   BI.Data.JSON, BI.Data.XML, BI.Data.CSV, BI.Data.Excel,
-  BI.Languages.English, BI.UI, BI.Summary.Totals;
+  BI.Languages.English, BI.UI, BI.Summary.Totals, BI.Data.Expressions;
 
 procedure AddStyles(const Items:TStrings);
 var s : String;
@@ -399,6 +404,15 @@ begin
   end;
 end;
 
+type
+  TBIGridAccess=class(TBIGrid);
+
+procedure TFormSummary.BIGridTotalsDataChange(Sender: TObject);
+begin
+  TotalsHideDuplicates;
+  BIChart1.Data:=TBIGridAccess(BIGridTotals).SubItem;
+end;
+
 procedure TFormSummary.CBAutoTextColorClick(Sender: TObject);
 begin
   Recalculate(Self);
@@ -410,8 +424,8 @@ begin
   begin
     Chart:=TBIChart.Create(Self);
     Chart.Align:=alBottom;
-    Chart.Width:=(Width-PanelList.Width) div 2;
-    Chart.Parent:=Self;
+    Chart.Height:=TabGrid.Height div 2;
+    Chart.Parent:=TabGrid;
 
     BEditChart.Enabled:=True;
   end;
@@ -602,8 +616,6 @@ begin
 
   TryFillChart;
 
-  // Pending, some way to "reset" Data instead of :=nil
-  Viz.Data:=nil;
   Viz.Data:=Data;
 
   if PageControl1.ActivePage=TabTotals then
@@ -662,13 +674,50 @@ begin
   end;
 end;
 
-procedure TFormSummary.HideDuplicates;
-var t : Integer;
+procedure HideDuplicatesOf(const AGrid:TBIGrid; const Hide:Boolean);
+
+  procedure DoHideGrid(const AData:TDataItem);
+  var t : Integer;
+      tmp : TSummary;
+  begin
+    if (AData<>nil) and (AData.Provider is TSummary) then
+    begin
+      tmp:=TSummary(AData.Provider);
+
+      for t:=0 to High(tmp.By) do
+          if tmp.By[t].DestData<>nil then
+             AGrid.Duplicates(tmp.By[t].DestData, Hide);
+    end;
+  end;
+
+  procedure DoHidePlugin(const AData:TDataItem; const APlugin:TBIGridPlugin);
+  var t : Integer;
+      tmp : TSummary;
+  begin
+    if (AData<>nil) and (AData.Provider is TSummary) then
+    begin
+      tmp:=TSummary(AData.Provider);
+
+      for t:=0 to High(tmp.By) do
+          if tmp.By[t].DestData<>nil then
+             APlugin.Duplicates(tmp.By[t].DestData, Hide);
+    end;
+  end;
+
+var tmp : TDataItem;
 begin
-  if Summary<>nil then
-     for t:=0 to High(Summary.By) do
-         if Summary.By[t].DestData<>nil then
-            BIGrid1.Duplicates(Summary.By[t].DestData, CBHideDuplicates.Checked);
+  tmp:=TBIGridAccess(AGrid).SubItem;
+
+  if tmp=nil then
+     DoHideGrid(AGrid.Data)
+  else
+     DoHidePlugin(tmp,TBIGridAccess(AGrid).SubGrid);
+end;
+
+procedure TFormSummary.HideDuplicates;
+begin
+  HideDuplicatesOf(BIGrid1,CBHideDuplicates.Checked);
+  TotalsHideDuplicates;
 end;
 
 procedure TFormSummary.AddStores;
@@ -720,11 +769,18 @@ begin
   end;
 end;
 
+procedure TFormSummary.TotalsHideDuplicates;
+begin
+  HideDuplicatesOf(BIGridTotals,CBHideDuplicates.Checked);
+end;
+
 procedure TFormSummary.ShowTotals;
 begin
   BIGridTotals.Data.Free; // <-- future pending, avoid the need of destroying it
 
-  BIGridTotals.Data:=TDataItem.Create(TSummaryTotals.CreateSummary(Summary));
+  BIGridTotals.Data:=TDataItem.Create(TSummaryTotals.CreateSummary(Self,Summary));
+
+  TotalsHideDuplicates
 end;
 
 end.

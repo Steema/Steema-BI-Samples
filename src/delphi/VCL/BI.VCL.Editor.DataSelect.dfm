@@ -2,7 +2,7 @@ object DataSelectEditor: TDataSelectEditor
   Left = 373
   Top = 142
   Caption = 'TDataSelect Editor'
-  ClientHeight = 322
+  ClientHeight = 399
   ClientWidth = 326
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,12 +18,14 @@ object DataSelectEditor: TDataSelectEditor
     Left = 0
     Top = 0
     Width = 326
-    Height = 322
+    Height = 358
     ActivePage = TabItems
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 322
     object TabItems: TTabSheet
       Caption = 'Items'
+      ExplicitHeight = 294
       object Panel2: TPanel
         Left = 0
         Top = 41
@@ -74,7 +76,7 @@ object DataSelectEditor: TDataSelectEditor
         Left = 0
         Top = 82
         Width = 318
-        Height = 134
+        Height = 129
         OnClickCheck = LItemsClickCheck
         Align = alClient
         DragMode = dmAutomatic
@@ -83,6 +85,7 @@ object DataSelectEditor: TDataSelectEditor
         OnClick = LItemsClick
         OnDragDrop = LItemsDragDrop
         OnDragOver = LItemsDragOver
+        ExplicitHeight = 134
       end
       object Panel1: TPanel
         Left = 0
@@ -119,12 +122,13 @@ object DataSelectEditor: TDataSelectEditor
       end
       object Panel5: TPanel
         Left = 0
-        Top = 216
+        Top = 211
         Width = 318
-        Height = 78
+        Height = 119
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 3
+        ExplicitTop = 212
         object Label2: TLabel
           Left = 12
           Top = 6
@@ -145,6 +149,14 @@ object DataSelectEditor: TDataSelectEditor
           Font.Style = []
           ParentFont = False
         end
+        object Label3: TLabel
+          Left = 12
+          Top = 74
+          Width = 31
+          Height = 13
+          Caption = '&Name:'
+          FocusControl = EItemName
+        end
         object EItemExpression: TEdit
           Left = 12
           Top = 25
@@ -154,16 +166,26 @@ object DataSelectEditor: TDataSelectEditor
           TabOrder = 0
           OnChange = EItemExpressionChange
         end
+        object EItemName: TEdit
+          Left = 12
+          Top = 93
+          Width = 221
+          Height = 21
+          Enabled = False
+          TabOrder = 1
+          OnChange = EItemNameChange
+        end
       end
     end
     object TabSort: TTabSheet
       Caption = 'Sort By'
       ImageIndex = 1
+      ExplicitHeight = 294
       object LBSort: TCheckListBox
         Left = 0
         Top = 41
         Width = 318
-        Height = 119
+        Height = 155
         OnClickCheck = LBSortClickCheck
         Align = alClient
         ItemHeight = 13
@@ -171,6 +193,7 @@ object DataSelectEditor: TDataSelectEditor
         OnClick = LBSortClick
         OnDragDrop = LBSortDragDrop
         OnDragOver = LBSortDragOver
+        ExplicitHeight = 119
       end
       object Panel3: TPanel
         Left = 0
@@ -220,12 +243,13 @@ object DataSelectEditor: TDataSelectEditor
       end
       object Panel4: TPanel
         Left = 0
-        Top = 160
+        Top = 196
         Width = 318
         Height = 134
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
+        ExplicitTop = 160
         object LSortError: TLabel
           Left = 12
           Top = 112
@@ -282,6 +306,7 @@ object DataSelectEditor: TDataSelectEditor
     object TabFilter: TTabSheet
       Caption = 'Filter'
       ImageIndex = 2
+      ExplicitHeight = 294
       object LFilter: TLabel
         Left = 12
         Top = 56
@@ -306,14 +331,58 @@ object DataSelectEditor: TDataSelectEditor
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
+      ExplicitHeight = 294
       object MemoSQL: TMemo
         Left = 0
         Top = 0
         Width = 318
-        Height = 294
+        Height = 330
         Align = alClient
         ReadOnly = True
         TabOrder = 0
+        ExplicitHeight = 294
+      end
+    end
+  end
+  object PanelButtons: TPanel
+    Left = 0
+    Top = 358
+    Width = 326
+    Height = 41
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 1
+    Visible = False
+    ExplicitTop = 317
+    ExplicitWidth = 309
+    object Panel9: TPanel
+      Left = 141
+      Top = 0
+      Width = 185
+      Height = 41
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitLeft = 124
+      object BOK: TButton
+        Left = 9
+        Top = 6
+        Width = 75
+        Height = 25
+        Caption = 'OK'
+        ModalResult = 1
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 99
+        Top = 6
+        Width = 75
+        Height = 25
+        Cancel = True
+        Caption = 'Cancel'
+        Default = True
+        ModalResult = 2
+        TabOrder = 1
       end
     end
   end
