@@ -3,6 +3,10 @@
 
 ## 10th-June-2016 Beta 13
 
+- Installer
+
+  * Improved detection of TeeChart version (Lite or Pro) for the currently selected IDE, to recompile the TeeBI chart-related packages using the appropiate version
+  
 - BIGrid (VCL only)
 
   * New "Detail" menu item displays a secondary grid with the rows that belong to the selected main grid row
