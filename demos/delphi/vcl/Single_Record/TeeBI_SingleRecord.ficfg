@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FixInsightSettings>
+  <Rules>
+    <Rule101 enabled="true">
+      <Value>50</Value>
+    </Rule101>
+    <Rule102 enabled="true">
+      <Value>7</Value>
+    </Rule102>
+    <Rule103 enabled="true">
+      <Value>7</Value>
+    </Rule103>
+    <Rule104 enabled="true"/>
+    <Rule105 enabled="true"/>
+    <Rule106 enabled="true"/>
+    <Rule107 enabled="false">
+      <private>true</private>
+      <protected>true</protected>
+      <public>false</public>
+      <published>false</published>
+    </Rule107>
+    <Rule108 enabled="true"/>
+    <Rule109 enabled="true"/>
+    <Rule110 enabled="false"/>
+    <Rule501 enabled="true"/>
+    <Rule502 enabled="true"/>
+    <Rule503 enabled="true"/>
+    <Rule504 enabled="true"/>
+    <Rule505 enabled="true"/>
+    <Rule506 enabled="true"/>
+    <Rule507 enabled="true"/>
+    <Rule508 enabled="true"/>
+    <Rule509 enabled="true"/>
+    <Rule510 enabled="true"/>
+    <Rule511 enabled="true"/>
+    <Rule512 enabled="true"/>
+    <Rule513 enabled="true"/>
+    <Rule514 enabled="true"/>
+    <Rule515 enabled="true"/>
+    <Rule517 enabled="true">
+      <fields>true</fields>
+      <methods>true</methods>
+      <properties>true</properties>
+    </Rule517>
+    <Rule519 enabled="true"/>
+    <Rule520 enabled="true"/>
+    <Rule521 enabled="true"/>
+    <Rule522 enabled="true"/>
+    <Rule523 enabled="true"/>
+    <Rule524 enabled="true"/>
+    <Rule525 enabled="true"/>
+    <Rule526 enabled="true"/>
+    <Rule527 enabled="true"/>
+    <Rule528 enabled="true"/>
+    <Rule529 enabled="true"/>
+    <Rule801 enabled="true"/>
+    <Rule802 enabled="true"/>
+  </Rules>
+  <General>
+    <IncludeSearchPath>true</IncludeSearchPath>
+    <IgnoreFileNames/>
+  </General>
+</FixInsightSettings>
