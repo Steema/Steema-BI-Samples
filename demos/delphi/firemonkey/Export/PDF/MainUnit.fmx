@@ -97,12 +97,17 @@ object MainPDF: TMainPDF
     TabIndex = 1
     TabOrder = 1
     TabPosition = PlatformDefault
+    Sizes = (
+      1016s
+      600s
+      1016s
+      600s)
     object TabGrid: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = False
-      Size.Width = 42.000000000000000000
+      Size.Width = 43.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
