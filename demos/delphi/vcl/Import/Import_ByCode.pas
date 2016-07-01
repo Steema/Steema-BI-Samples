@@ -35,6 +35,7 @@ type
     procedure LBFormatClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -66,6 +67,11 @@ uses
 { TByCode }
 
 // Helper method to create a TDataItem from an array of TDataItem
+procedure TByCode.Button4Click(Sender: TObject);
+begin
+  Close;
+end;
+
 function TByCode.CreateData(const AName:String; const AData:TDataArray):TDataItem;
 begin
   result:=TBISource.FromData(AData);

@@ -26,7 +26,6 @@ object BIGridForm: TBIGridForm
       Top = 0
       Width = 411
       Height = 34
-      DataSource = DataSource1
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
       Align = alClient
       TabOrder = 0
@@ -58,17 +57,7 @@ object BIGridForm: TBIGridForm
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
-    DataSource = DataSource1
-  end
-  object DataSource1: TDataSource
-    DataSet = BIDataset1
-    OnDataChange = DataSource1DataChange
-    Left = 224
-    Top = 264
-  end
-  object BIDataset1: TBIDataset
-    RowNumbers = False
-    Left = 304
-    Top = 264
+    OnDataChange = GridDataChange
+    ExplicitTop = 5
   end
 end

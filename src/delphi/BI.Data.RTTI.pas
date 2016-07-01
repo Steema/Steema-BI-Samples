@@ -24,7 +24,7 @@ interface
 
 uses
   System.Classes, System.TypInfo, System.Rtti, System.Generics.Collections,
-  BI.Arrays, BI.Data, BI.Persist;
+  BI.Arrays, BI.Data, BI.Persist, BI.Expression;
 
 type
   TVisibility=set of TMemberVisibility;
@@ -94,6 +94,31 @@ type
     procedure Update(const AIndex:TInteger; const AValue:T);
 
     property Items[const Index:TInteger]:T read Get write Put; default;
+  end;
+
+  TObjectExpression=class(TExpression)
+  private
+    FField: String;
+    FInstance: TObject;
+
+    ICached : Boolean;
+    IValue : TData;
+
+    function Calculate: TValue;
+    class function GetValue(const AInstance:TObject; const AField:String): TValue; static;
+    procedure SetField(const Value: String);
+    procedure SetInstance(const Value: TObject);
+  public
+    class function From(const AObject:TObject; const AField:String):TObjectExpression;
+
+    procedure Assign(const Source:TExpression); override;
+    class function Parse(const AContext:TObject; const S:String):TObjectExpression;
+    procedure Refresh;
+    function ToString:String; override;
+    function Value:TData; override;
+
+    property Instance:TObject read FInstance write SetInstance;
+    property FieldName:String read FField write SetField;
   end;
 
 implementation

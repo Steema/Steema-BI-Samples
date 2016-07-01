@@ -14,6 +14,10 @@ uses
 
 type
   TDBSqlExprEngine=class(TBIDBEngine)
+  private
+    class function DoCreateConnection(const ADriver,AServer,APort,
+                                            ADatabase,AUser,APassword:String;
+                                      const LoginPrompt:Boolean):TCustomConnection;
   public
     const
        DBDriverNames:Array[0..8] of String=('SQLite','MySQL','Oracle','Microsoft SQL Server',
@@ -32,7 +36,8 @@ type
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; override;
     class function GetSchemas(const AConnection:TCustomConnection):TStrings;
     class function GetTable(const AConnection:TCustomConnection; const AName:String):TDataSet; override;
-    class function GetItemNames(const AConnection:TCustomConnection; const IncludeSystem:Boolean):TStrings; override;
+    class function GetItemNames(const AConnection:TCustomConnection;
+                                const IncludeSystem,IncludeViews:Boolean):TStrings; override;
     class procedure GuessForeignKeys(const AName:String; const Table:TDataSet; const AData:TDataItem; const Source:TBISource); override;
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;

@@ -25,8 +25,6 @@ object BIGridEditor: TBIGridEditor
     OnChange = PageControl1Change
     object TabBIGrid: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 28
       object Label1: TLabel
         Left = 16
         Top = 200
@@ -100,6 +98,15 @@ object BIGridEditor: TBIGridEditor
           'Automatic'
           'Yes'
           'No')
+      end
+      object CBColorize: TCheckBox
+        Left = 18
+        Top = 262
+        Width = 137
+        Height = 17
+        Caption = 'Colorize'
+        TabOrder = 5
+        OnClick = CBColorizeClick
       end
     end
     object TabPlugin: TTabSheet

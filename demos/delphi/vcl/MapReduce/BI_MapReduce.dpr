@@ -2,8 +2,7 @@ program BI_MapReduce;
 
 uses
   Vcl.Forms,
-  Unit_Main in 'Unit_Main.pas' {DemoForm},
-  BI.MapReduce in '..\..\..\..\..\Sources\BI.MapReduce.pas';
+  Unit_Main in 'Unit_Main.pas' {DemoForm};
 
 {$R *.res}
 

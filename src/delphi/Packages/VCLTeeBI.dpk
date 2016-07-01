@@ -72,6 +72,11 @@ contains
   BI.VCL.Visualizer in '..\VCL\BI.VCL.Visualizer.pas',
   BI.VCL.Editor.Visualizer in '..\VCL\BI.VCL.Editor.Visualizer.pas' {VisualizerEditor},
   BI.VCL.Dashboard in '..\VCL\BI.VCL.Dashboard.pas',
+  BI.VCL.Editor.Template in '..\VCL\BI.VCL.Editor.Template.pas' {TemplateEditor},
+  BI.VCL.Editor.Template.Data in '..\VCL\BI.VCL.Editor.Template.Data.pas' {DataGallery},
+  BI.VCL.Editor.Template.Panels in '..\VCL\BI.VCL.Editor.Template.Panels.pas' {PanelGallery},
+  BI.VCL.Editor.Template.Layouts in '..\VCL\BI.VCL.Editor.Template.Layouts.pas' {LayoutGallery},
+  BI.VCL.Designer.Template.Layouts in '..\VCL\BI.VCL.Designer.Template.Layouts.pas' {LayoutDesigner},
   BI.VCL.Tree in '..\VCL\BI.VCL.Tree.pas',
   BI.VCL.Tree.TreeView in '..\VCL\BI.VCL.Tree.TreeView.pas';
 

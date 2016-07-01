@@ -11,7 +11,7 @@ interface
 uses
   System.Classes, System.Types,
   {$IFDEF FPC}
-  Graphics,
+  BI.FPC, Graphics,
   {$ELSE}
   System.UITypes,
   {$ENDIF}
@@ -60,7 +60,7 @@ type
     TableClass:String;
 
     class function Color(const AColor:TColor):String; static;
-    class function Combo(const AName:String; const Texts,Values:TStringDynArray): String; static;
+    class function Combo(const AName:String; const Texts,Values:TStringArray): String; static;
     class function Escape(const S:String):String; static;
     class function FinishForm(const AName:String):String; static;
     class function Hidden(const AName:String; const AValue:Integer):String; overload; static;

@@ -54,7 +54,8 @@ interface
 {$ENDIF}
 
 uses
-  BI.Data.DB,
+  System.Classes,
+  BI.Data, BI.Data.DB,
 
   {$IFDEF HASFIREDAC}
   FireDAC.Stan.Intf, FireDAC.Stan.Option,
@@ -117,6 +118,8 @@ uses
 
   {$IFDEF HASFIREDAC_SQLite} // SQLite
   FireDAC.Phys.SQLite,
+  FireDAC.Phys.SQLiteVDataSet,
+
   {$IF CompilerVersion>27}
   FireDAC.Phys.SQLiteDef,
   {$ENDIF}
@@ -148,8 +151,17 @@ uses
 type
   TBIDBFireDACTester=class(TBIDBTester)
   public
-    class function Test(const Driver,Database,Server,Port,User,Password:String;
-                        const Prompt:Boolean):Boolean; override;
+    class procedure Test(const Driver,Database,Server,Port,User,Password:String;
+                        const Prompt:Boolean); override;
   end;
+
+  {$IFDEF HASFIREDAC_SQLite} // SQLite
+  TBILocalSQL=record
+  public
+    class procedure Add(const AOwner:TComponent; const AData:TDataItem; const ALocal:TFDLocalSQL); static;
+    class function From(const ALocal:TFDLocalSQL):TDataItem; overload; static;
+    class function From(const AOwner:TComponent; const AData:TDataItem):TFDLocalSQL; overload; static;
+  end;
+  {$ENDIF}
 
 implementation

@@ -32,11 +32,22 @@ type
 
   TExpression=class;
 
-  TResolveProc={$IFNDEF FPC}reference to{$ENDIF} function(const S:String; IsFunction:Boolean):TExpression;
+  TResolveProc=
+    {$IFDEF FPC}
+    function(const S:String; IsFunction:Boolean):TExpression of object;
+    {$ELSE}
+    reference to function(const S:String; IsFunction:Boolean):TExpression;
+    {$ENDIF}
+
   TErrorProc={$IFNDEF FPC}reference to{$ENDIF} function(const APos:Integer; const AMessage:String):Boolean;
   TExpressionProc=procedure(const Item:TExpression) of object;
 
   TExpression=class abstract
+  {$IFDEF FPC}
+  private
+    function NilFunction(const S:String; IsFunction:Boolean):TExpression;
+  {$ENDIF}
+
   public
     class var
       Null:TData;
@@ -218,6 +229,8 @@ type
                        const ARight:TExpression); overload;
 
     procedure Assign(const Source: TExpression); override;
+    class function Join(const AOld,ANew:TLogicalExpression;
+                        const AOperand:TLogicalOperand=TLogicalOperand.&And):TLogicalExpression; static;
     function Value:TData; override;
     function ToString:String; override;
   end;
@@ -323,8 +336,10 @@ type
       var QuarterFormat:String;
 
     class function AllToText:String; static;
-    class function Max:Integer; static;
     function AsString(const Index:Integer):String;
+    function High:Integer;
+    function Low: Integer;
+    class function Max:Integer; static;
     function ToString:String; overload;
     class function ToString(const Index:Integer):String; overload; inline; static;
   end;
@@ -392,5 +407,22 @@ type
     function ToString:String; override;
   end;
   *)
+
+  // Value := Condition ? Then : Else
+  TIfExpression=class(TExpression)
+  public
+    Condition : TLogicalExpression;
+
+    ThenExpression,
+    ElseExpression : TExpression;
+
+    Constructor Create(const ACondition:TLogicalExpression; const AThen,AElse:TExpression);
+    Destructor Destroy; override;
+
+    procedure Assign(const Source:TExpression); override;
+
+    function ToString:String; override;
+    function Value:TData; override;
+  end;
 
 implementation

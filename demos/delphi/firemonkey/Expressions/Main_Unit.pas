@@ -66,6 +66,8 @@ type
     Layout2: TLayout;
     TreeView1: TTreeView;
     Splitter1: TSplitter;
+    Button1: TButton;
+    Button6: TButton;
     procedure BEvaluateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -78,6 +80,8 @@ type
     procedure BTestAllClick(Sender: TObject);
     procedure BExampleFormulaClick(Sender: TObject);
     procedure Button8Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -102,7 +106,7 @@ var
 implementation
 
 uses
-  BI.Arrays, BI.Data.Expressions,
+  BI.Arrays, BI.Data.Expressions, BI.Data.RTTI,
   BI.FMX.Expression.Tree, BI.Expression.Benchmark;
 
 {$R *.fmx}
@@ -110,6 +114,18 @@ uses
 procedure TFormMain.BEvaluateClick(Sender: TObject);
 begin
   LabelResult.Text:=Expression.Value;
+end;
+
+procedure TFormMain.Button1Click(Sender: TObject);
+begin
+  Expression.Free;
+
+  Expression:=TObjectExpression.From(Button1,'Text');
+
+  Present;
+
+  BEvaluate.Enabled:=True;
+  BEvaluateClick(Self);
 end;
 
 procedure TFormMain.Button2Click(Sender: TObject);
@@ -201,6 +217,27 @@ end;
 procedure TFormMain.Button5Click(Sender: TObject);
 begin
 //  TExpressionEditor.Edit(Self,Expression);
+end;
+
+procedure TFormMain.Button6Click(Sender: TObject);
+begin
+  Expression.Free;
+
+  // " if Edit1.Text = 'S' then 'Spain' else 'Brazil' "
+  Expression:=TIfExpression.Create(
+      TLogicalExpression.Create(
+        TObjectExpression.From(Edit1,'Text'),
+        TLogicalOperand.Equal,
+        TTextExpression.Create('S')
+      ),
+      TTextExpression.Create('Spain'),
+      TTextExpression.Create('Brazil')
+    );
+
+  ShowTree;
+
+  BEvaluate.Enabled:=True;
+  BEvaluateClick(Self);
 end;
 
 // Parse and evaluate S string to verify the expression
@@ -303,8 +340,10 @@ begin
            begin
              // Parse error, unknown identifier
 
-             LabelResult.Text:='Unknown: '+S;
-             result:=nil;
+             result:=TObjectExpression.Parse(Self,S);
+
+             if result=nil then
+                LabelResult.Text:='Unknown: '+S;
            end,
            function(const APos:Integer; const Text:String):Boolean
            begin

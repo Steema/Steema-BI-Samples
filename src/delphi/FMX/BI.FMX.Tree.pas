@@ -34,27 +34,24 @@ type
     public
       Index : TInteger;
 
-      //{$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
-      //Node : Integer;
-
       {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
       Tag : TObject;
     end;
 
-  private
-    IDatas : Array of TNodeData;
-
   protected
+    IData : Array of TNodeData;
+
     FOnDelete : TNotifyEvent;
 
     procedure BeginUpdating; virtual; abstract;
-    procedure Clear; virtual; abstract;
-    procedure ClearData;
+    procedure Clear(const ANode:TBITreeNode=nil); virtual; abstract;
+    procedure ClearData; overload;
+    procedure ClearData(const ANode:TBITreeNode); overload; virtual; abstract;
+    procedure DeleteData(const AData:TNodeData);
     procedure EndUpdating; virtual; abstract;
     function GetAllowDelete: Boolean; virtual; abstract;
     function GetControl:TControl; virtual; abstract;
     function GetCount:Integer; virtual; abstract;
-    function GetData(const ANode:TBITreeNode):TObject; virtual; abstract;
     function GetNode(const AIndex:Integer):TBITreeNode; virtual; abstract;
     function GetOnChange: TNotifyEvent; virtual; abstract;
     function GetOnCheck: TNotifyEvent; virtual; abstract;
@@ -75,6 +72,7 @@ type
     function Children(const ANode:TBITreeNode; const AIndex:Integer):TBITreeNode; virtual; abstract;
     function ChildrenCount(const ANode:TBITreeNode):Integer; virtual; abstract;
 
+    function DataOf(const ANode:TBITreeNode):TObject; virtual; abstract;
     procedure Expand(const AIndex:Integer); overload; virtual; abstract;
 
     procedure Expand(const ANode:TBITreeNode;
@@ -87,6 +85,7 @@ type
     function NextNode(const ANode:TBITreeNode):TBITreeNode; virtual; abstract;
 
     function IsChecked(const ANode:TBITreeNode):Boolean; virtual; abstract;
+    function IsExpanded(const ANode:TBITreeNode):Boolean; virtual; abstract;
 
     function NewNode(const AParent:TBITreeNode; const AText:String;
               const ATag:TObject=nil;
@@ -95,6 +94,7 @@ type
     function ParentOf(const ANode:TBITreeNode):TBITreeNode; virtual; abstract;
 
     procedure SetChecked(const ANode:TBITreeNode; const Value:Boolean); virtual; abstract;
+    procedure SetText(const ANode:TBITreeNode; const Value:String); virtual; abstract;
     function SiblingIndex(const ANode:TBITreeNode):Integer; virtual; abstract;
     function TextOf(const ANode:TBITreeNode):String; virtual; abstract;
 
@@ -112,12 +112,14 @@ type
 
   // Generic Tree control that fills nodes from TDataItem relationships
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
               {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
               {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
+  {$ENDIF}
   {$ENDIF}
   TBITree=class(TBIDataControl)
   public
@@ -136,23 +138,23 @@ type
   private
     FNodes : TBITreeNodes;
     FOnDeleting : TNotifyEvent;
+    FPlugin : TBITreePlugin;
 
+    function GetAllowDelete: Boolean;
     function GetOnChange: TNotifyEvent;
     function GetSelected: TBITreeNode;
+    procedure SetAllowDelete(const Value: Boolean);
     procedure SetOnChange(const Value: TNotifyEvent);
     procedure SetSelected(const Value: TBITreeNode);
-    function GetAllowDelete: Boolean;
-    procedure SetAllowDelete(const Value: Boolean);
+    procedure SetPlugin(const APlugin:TBITreePlugin);
   protected
+    procedure ChangeDragMode;
     procedure DeletedNode(Sender:TObject);
     procedure Loaded; override;
     procedure SetDataDirect(const Value: TDataItem); override;
   public
     class var
       Engine : TBITreePluginClass;
-
-    var
-      Plugin : TBITreePlugin;
 
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
@@ -162,7 +164,9 @@ type
 
     procedure BeginUpdating; // <-- not "BeginUpdate" due to conflict with FMX
 
-    procedure Clear;
+    procedure ChangePlugin(const APluginClass:TBITreePluginClass);
+
+    procedure Clear(const ANode:TBITreeNode=nil);
     function DataOf(const ANode:TBITreeNode):TObject;
 
     procedure EndUpdating;
@@ -178,6 +182,8 @@ type
     procedure FillStore(const AStore:String);
     procedure FillStores;
 
+    function Find(const AText:String):TBITreeNode;
+
     function NodeAt(const X,Y:Integer):TBITreeNode;
 
     function ParentOf(const ANode:TBITreeNode):TBITreeNode;
@@ -188,6 +194,7 @@ type
     procedure SetNodeData(const ANode:TBITreeNode; const AData:TObject);
 
     property Nodes:TBITreeNodes read FNodes;
+    property Plugin:TBITreePlugin read FPlugin write SetPlugin;
     property Selected:TBITreeNode read GetSelected write SetSelected;
   published
     property AllowDelete:Boolean read GetAllowDelete write SetAllowDelete default False;

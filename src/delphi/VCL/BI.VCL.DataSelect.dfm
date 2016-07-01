@@ -27,6 +27,10 @@ object DataSelector: TDataSelector
     OnChange = PageControl1Change
     object TabStore: TTabSheet
       Caption = 'Store'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabComponent: TTabSheet
       Caption = 'Component'
@@ -100,9 +104,9 @@ object DataSelector: TDataSelector
       OnClick = BClearClick
     end
   end
-  object PopupMenu2: TPopupMenu
-    Left = 142
-    Top = 312
+  object ImportMenu: TPopupMenu
+    Left = 118
+    Top = 40
     object Import1: TMenuItem
       Caption = '&Import'
       object Database1: TMenuItem

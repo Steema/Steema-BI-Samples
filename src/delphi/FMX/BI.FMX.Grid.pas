@@ -61,6 +61,7 @@ type
     IPlugin : TBIGridPlugin;
 
     procedure CreateNewDataSet;
+    function GetCurrentRow: Integer;
     procedure SetAlternate(const Value: TAlternateColor);
     procedure SetPlugin(const Value: TBIGridPlugin);
     procedure SetDataSet(const Value: TBIDataSet);
@@ -82,6 +83,7 @@ type
 
     property DataSet:TBIDataSet read IDataSet write SetDataSet;
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
+    property CurrentRow:Integer read GetCurrentRow;
   published
     property Alternate:TAlternateColor read FAlternate write SetAlternate;
   end;
@@ -102,8 +104,8 @@ type
       AlignBottom=TAlignLayout.{$IFDEF HASFMX20}alBottom{$ELSE}Bottom{$ENDIF};
 
     class procedure AddForm(const AForm: TCommonCustomForm; const AParent: TFmxObject); static;
-    class function Ask(const ATitle,ACaption:String; var AValue:String):Boolean; static;
     class function AutoTest:Boolean; static;
+    class function Input(const ATitle,ACaption,ADefault:String; out AValue:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCommonCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AControl:TControl); static;
     class procedure SavePosition(const AForm:TCommonCustomForm; const Key:String); static;

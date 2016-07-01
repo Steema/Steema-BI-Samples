@@ -62,9 +62,6 @@ type
   TIndices=TInt64Array;
 
   TMapReduce=class
-  private
-    class function DataFrom<T>(const AData:TArray<T>):TDataItem; static;
-    class function KindOf<T>:TDataKind; static;
   public
     class var
       Parallel : Boolean;
@@ -83,9 +80,17 @@ type
   end;
 
   TMapReduce<T>=class(TMapReduce)
+  private
+    {$IFDEF FPC}
+    type
+      TArrayOfT=Array of T;
+    {$ENDIF}
+
+    class function DataFrom(const AData:{$IFDEF FPC}TArrayOfT{$ELSE}TArray<T>{$ENDIF}):TDataItem; static;
+    class function KindOf:TDataKind; static;
   public
     type
-      TMapProc=reference to function(const Index:TKeyIndex):T;
+      TMapProc={$IFNDEF FPC}reference to{$ENDIF} function(const Index:TKeyIndex):T;
 
     class function ForAll(const AData:TDataItem; const AMap:TMapProc):TDataItem; static;
   end;
@@ -93,19 +98,28 @@ type
   TMapReduce<T,V>=class(TMapReduce<T>)
   public
   type
-    TReduceProc=reference to function(const Key:T; const List:TIndices):V;
+    TReduceProc={$IFNDEF FPC}reference to{$ENDIF} function(const Key:T; const List:TIndices):V;
 
   private
+    {$IFDEF FPC}
+    type
+      TArrayOfT=Array of T;
+      TArrayOfV=Array of V;
+      TArrayOfIndices=Array of TIndices;
+    {$ENDIF}
+
     class function DoMap(const AFrom,ATo:TNativeInteger;
                          const AMap: TMapReduce<T>.TMapProc;
-                         var AKey:TArray<T>;
-                         var AItems:TArray<TIndices>): TDataItem; static;
+                         var AKey:{$IFDEF FPC}TArrayOfT{$ELSE}TArray<T>{$ENDIF};
+                         var AItems:{$IFDEF FPC}TArrayOfIndices{$ELSE}TArray<TIndices>{$ENDIF}): TDataItem; static;
 
-    class function DoReduce(const AKey:TArray<T>;
+    class function DoReduce(const AKey:{$IFDEF FPC}TArrayOfT{$ELSE}TArray<T>{$ENDIF};
                              const AReduce:TReduceProc;
-                             const AItems:TArray<TIndices>):TArray<V>; static;
+                             const AItems:{$IFDEF FPC}TArrayOfIndices{$ELSE}TArray<TIndices>{$ENDIF}):
+                                {$IFDEF FPC}TArrayOfV{$ELSE}TArray<V>{$ENDIF}; static;
 
-    class function TableFrom(const AKey:TArray<T>; const AValue:TArray<V>):TDataItem; static;
+    class function TableFrom(const AKey:{$IFDEF FPC}TArrayOfT{$ELSE}TArray<T>{$ENDIF};
+                             const AValue:{$IFDEF FPC}TArrayOfV{$ELSE}TArray<V>{$ENDIF}):TDataItem; static;
   public
     class function From(const AData:TDataItem;
                         const AMap:TMapReduce<T>.TMapProc;

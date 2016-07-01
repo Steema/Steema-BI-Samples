@@ -58,7 +58,7 @@ object NumericFromTo: TNumericFromTo
       OnChange = TBFromChange
     end
     object TBTo: TTrackBar
-      Left = 6
+      Left = 0
       Top = 78
       Width = 373
       Height = 30

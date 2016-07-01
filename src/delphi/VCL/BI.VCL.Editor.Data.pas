@@ -120,6 +120,10 @@ type
     ETimeout: TEdit;
     UDTimeout: TUpDown;
     Label23: TLabel;
+    TabDBOptions: TTabSheet;
+    CBParallel: TCheckBox;
+    CBStats: TCheckBox;
+    CBDBViews: TCheckBox;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -167,6 +171,9 @@ type
     procedure RGKindClick(Sender: TObject);
     procedure BOKClick(Sender: TObject);
     procedure ETimeoutChange(Sender: TObject);
+    procedure CBParallelClick(Sender: TObject);
+    procedure CBStatsClick(Sender: TObject);
+    procedure CBDBViewsClick(Sender: TObject);
   private
     { Private declarations }
     FOnChangeWeb : TNotifyEvent;
@@ -178,6 +185,7 @@ type
 
     procedure DatabaseSettings;
     function DBDriverID:String;
+    procedure DoTest;
     procedure EnableTestButton;
     procedure FileSettings;
     function FileTypeExtension(const Index:Integer):String;

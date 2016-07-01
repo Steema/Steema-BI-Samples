@@ -15,7 +15,7 @@ uses
 
   // TeeBI units used in this example
 
-  BI.Data, BI.Persist, BI.Data.Search,
+  BI.Data, BI.Persist, BI.Data.Search, BI.Compare,
   BI.VCL.Grid, BI.VCL.DataManager,
   BI.Dataset, BI.DataSource, BI.Arrays, BI.VCL.DataControl;
 
@@ -66,6 +66,7 @@ type
     OldBack : TColor;
     OldStyle : TFontStyles;
 
+    procedure SearchFinished(const AIndex:TCursorIndex);
     procedure SetLabelFound;
     procedure SetSearch(const AIndex:TCursorIndex);
     procedure SetupHighlight;
@@ -244,17 +245,20 @@ begin
 
   // When a search finishes, show results at BIGrid and count at label.
   // This is necessary for "background thread" searches.
-  Search.OnFinished:=procedure(const AIndex:TCursorIndex)
-  begin
-    TThread.Synchronize(nil,procedure
-    begin
-      SetSearch(AIndex);
-    end);
-  end;
+  Search.OnFinished:=SearchFinished;
 
   DataSource1.DataSet:=BIDataset1;
 
   SetupHighlight;
+end;
+
+// This event is called when Search task finishes
+procedure TFormSearchDemo.SearchFinished(const AIndex:TCursorIndex);
+begin
+  TThread.Synchronize(nil,procedure
+  begin
+    SetSearch(AIndex);
+  end);
 end;
 
 // Prepare grid events for cell highlighting

@@ -44,6 +44,10 @@ object BIQueryEditor: TBIQueryEditor
       OnChange = PageDataChange
       object TabData: TTabSheet
         Caption = 'Data'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
       end
       object TabFilter: TTabSheet
         Caption = 'Filter'
@@ -436,6 +440,10 @@ object BIQueryEditor: TBIQueryEditor
             Visible = False
             object TabItem: TTabSheet
               Caption = 'Options'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Label3: TLabel
                 Left = 9
                 Top = 4
@@ -499,6 +507,10 @@ object BIQueryEditor: TBIQueryEditor
             object TabMeasureOptions: TTabSheet
               Caption = 'Options'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object PageMeasures: TPageControl
                 Left = 0
                 Top = 0
@@ -509,6 +521,10 @@ object BIQueryEditor: TBIQueryEditor
                 TabOrder = 0
                 object TabMeasure: TTabSheet
                   Caption = 'Aggregate'
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object CBAggregate: TComboBox
                     Left = 8
                     Top = 14
@@ -539,6 +555,10 @@ object BIQueryEditor: TBIQueryEditor
                 object TabCalc: TTabSheet
                   Caption = 'Calculation'
                   ImageIndex = 3
+                  ExplicitLeft = 0
+                  ExplicitTop = 0
+                  ExplicitWidth = 0
+                  ExplicitHeight = 0
                   object RGRunning: TRadioGroup
                     Left = 135
                     Top = 3
@@ -583,6 +603,10 @@ object BIQueryEditor: TBIQueryEditor
             object TabItemData: TTabSheet
               Caption = 'Data'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object SpeedButton1: TSpeedButton
                 Left = 231
                 Top = 22
@@ -647,6 +671,10 @@ object BIQueryEditor: TBIQueryEditor
       OnChange = PagePreviewChange
       object TabGrid: TTabSheet
         Caption = 'Grid'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object BIGrid1: TBIGrid
           Left = 0
           Top = 0
@@ -662,10 +690,18 @@ object BIQueryEditor: TBIQueryEditor
       object TabChart: TTabSheet
         Caption = 'Chart'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
       end
       object TabSQL: TTabSheet
         Caption = 'SQL'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object MemoSQL: TMemo
           Left = 0
           Top = 0

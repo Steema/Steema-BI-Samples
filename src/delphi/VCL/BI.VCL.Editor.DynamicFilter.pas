@@ -89,6 +89,10 @@ type
     TabIncluded: TTabSheet;
     TabExcluded: TTabSheet;
     Splitter1: TSplitter;
+    BDelete: TButton;
+    PageNumeric: TPageControl;
+    TabNumericRange: TTabSheet;
+    TabNumericSelected: TTabSheet;
     procedure FormCreate(Sender: TObject);
     procedure ECustomChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -102,6 +106,7 @@ type
     procedure CBItemsClickCheck(Sender: TObject);
     procedure CBEnabledClick(Sender: TObject);
     procedure BAddClick(Sender: TObject);
+    procedure BDeleteClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -116,7 +121,9 @@ type
     IData,
     IMainData : TDataItem;
 
-    INumericFromTo : TNumericFromTo;
+    INumericFromTo,
+    INumericSelected : TNumericFromTo;
+
     ITextInclude,
     ITextExclude   : TSelectTextItems;
     IDateTimeRange : TDateTimeRangeEditor;

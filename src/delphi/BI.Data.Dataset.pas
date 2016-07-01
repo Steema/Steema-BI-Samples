@@ -17,6 +17,7 @@ type
     procedure AddField(const AData:TDataItem; const AField:TField);
     procedure AddFields(const AData:TDataItem; const AFields:TFields);
     function DataFromADT(const AField:TField):TDataItem;
+    procedure DoLoadData(const ADataSet:TDataSet; const AData:TDataItem);
     procedure GuessFields(const ADataSet:TDataSet; const AData:TDataItem);
     procedure LoadData(const ADataSet:TDataSet; const AData:TDataItem);
   public

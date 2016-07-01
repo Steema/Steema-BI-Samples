@@ -23,7 +23,7 @@ uses
   {$ENDIF}
 
   System.Classes, System.SysUtils,
-  BI.Arrays, BI.Streams, BI.Expression;
+  BI.Arrays, BI.Expression;
 
 type
   TDataKind=(dkInt32,
@@ -60,7 +60,7 @@ type
     {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
     IData : TDataItem;
 
-    procedure DestroyStats;
+    procedure DestroyStats; inline;
 
     // Returns True if the data value at Index position is null (missing)
     function GetItem(const Index:TInteger):Boolean; inline;
@@ -88,6 +88,7 @@ type
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
     procedure Exchange(const A,B:Integer);
+    function Exists(const AData:TDataItem):Boolean; inline;
     function Find(const AName:String):TDataItem;
     function IndexOf(const AData:TDataItem):Integer; overload;
     function IndexOf(const AName:String):Integer; overload;
@@ -276,6 +277,9 @@ type
 
     procedure DestroyStats;
 
+    function FindMapRow(const AMap:TDataMap; const ARow:TLoopInteger; out AIndex:TNativeInteger):Boolean; overload;
+    function FindMapRow(const ARow:TLoopInteger; out AIndex:TNativeInteger):Boolean; overload; inline;
+
     function GetItem(const AName:String):TDataItem; inline;
 
     {$IFNDEF FPC}
@@ -394,7 +398,7 @@ type
     procedure CreateMasterIndex;
 
     procedure Delete(const Row:TInteger; const ACount:TInteger=1);
-    function DataToString(const Index:TInteger):String;
+    function DataToString(const Index:TInteger):String; overload;
     function FindInMap(const Index:TInteger; out ABin:TNativeInteger):Boolean;
     procedure Finish;
     function FullName:String;

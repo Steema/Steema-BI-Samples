@@ -230,6 +230,7 @@ type
     procedure SortChanged(Sender:TObject);
     procedure TryAddMasters(const AProc:TAddMasterProc);
     procedure TryShowPreviewGrid;
+    procedure TryShowSQL;
   public
     { Public declarations }
 

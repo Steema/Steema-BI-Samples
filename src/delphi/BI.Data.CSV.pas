@@ -47,10 +47,10 @@ type
 
     t1 : TStopwatch;
 
-    class function BISplitString(const AString:String; const ADelimiter,AQuote:Char):TStringDynArray;
+    class function BISplitString(const AString:String; const ADelimiter,AQuote:Char):TStringArray;
     function Dequoted(const S:String):String;
-    procedure GuessDataKinds(const AData:TDataItem; const Values:TStringDynArray {TArray<String>});
-    function GuessDelimiter(const AText:String):TStringDynArray;
+    procedure GuessDataKinds(const AData:TDataItem; const Values:TStringArray);
+    function GuessDelimiter(const AText:String):TStringArray;
     function GuessHeaders(const AString:String):Boolean;
 
     function FinishRowByRow(const ACount:TInteger):TDataArray;

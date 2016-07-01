@@ -29,12 +29,14 @@ uses
   System.Classes, BI.Data, BI.Store.Component;
 
 type
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64 or pidOSX32
               {$IF CompilerVersion>=25}or pidiOSSimulator or pidiOSDevice{$ENDIF}
               {$IF CompilerVersion>=26}or pidAndroid{$ENDIF}
               {$IF CompilerVersion>=29}or pidiOSDevice64{$ENDIF}
               )]
+  {$ENDIF}
   {$ENDIF}
   TControlImporter=class(TComponentImporter)
   protected

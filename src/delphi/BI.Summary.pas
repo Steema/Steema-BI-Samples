@@ -336,7 +336,7 @@ type
     procedure Assign(const Source:TExpression); override;
     class function FromString(const AItem:TSummaryItem; const AExpression:String):TSummaryExpression; static;
 
-    function GetExpression(const AData:TDataItem):TExpression;
+    function GetExpression(const AData:TDataItem):TLogicalExpression;
     function ToString:String; override;
     function Value:TData; override;
   end;
@@ -362,7 +362,7 @@ type
 
     procedure Clear;
 
-    function GetExpression(const AData:TDataItem):TExpression;
+    function GetExpression(const AData:TDataItem):TLogicalExpression;
     function ToString:String; override;
   end;
 

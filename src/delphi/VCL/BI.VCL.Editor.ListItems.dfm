@@ -35,7 +35,6 @@ object FormListItems: TFormListItems
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    OnResize = Panel1Resize
     object SBUp: TSpeedButton
       Left = 5
       Top = 4

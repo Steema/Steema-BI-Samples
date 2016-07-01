@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.SysUtils,
-  fpHttpClient, BI.Web;
+  fpHttpClient, BI.Web, BI.Persist;
 
 type
   EHttpAbort=class(Exception);
@@ -20,15 +20,17 @@ type
     FHttp : TFPHttpClient; // FPC
 
     //IMaxWork : Int64;
-
-    procedure DoProgress(const ACurrent,ATotal:Int64);
   public
     Constructor Create(const AOwner:TComponent); override;
     Destructor Destroy; override;
 
+    class function FTP(const ADef:TDataDefinition):TBIFtp; override;
+
     procedure Get(const AURL:String; const AStream:TStream); overload; override;
     function Get(const AURL:String):String; overload; override;
+    class function Parse(const AURL:String):TWebURL; override;
     procedure SetProxy(const AProxy:TWebProxy); override;
+    procedure SetTimeout(const ATimeout:Integer); override;
   end;
 
 implementation

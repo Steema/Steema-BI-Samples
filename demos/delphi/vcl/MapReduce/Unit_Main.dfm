@@ -64,6 +64,10 @@ object DemoForm: TDemoForm
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Output'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIGrid1: TBIGrid
         Left = 0
         Top = 0

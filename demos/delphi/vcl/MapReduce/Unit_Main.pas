@@ -137,6 +137,8 @@ begin
   BIGrid2.Data:=Movies;
 
   LabelRows.Caption:=Movies.Count.ToString;
+
+  PageControl1.ActivePage:=TabSheet1;
 end;
 
 procedure TDemoForm.FormDestroy(Sender: TObject);

@@ -119,7 +119,7 @@ type
     property Items:TArray<TNode<T>> read FItems;
   public
   type
-    TNodeProc=reference to procedure(const Item:TNode<T>);
+    TNodeProc={$IFNDEF FPC}reference to{$ENDIF} procedure(const Item:TNode<T>);
 
   var
     Data : T;

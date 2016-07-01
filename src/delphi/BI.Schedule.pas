@@ -12,7 +12,7 @@ uses
   System.Classes;
 
 type
-  TWork=reference to procedure(const Item:TObject);
+  TWork={$IFNDEF FPC}reference to{$ENDIF} procedure(const Item:TObject);
 
   TScheduler=class;
 

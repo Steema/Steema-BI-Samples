@@ -27,6 +27,10 @@ object BIChartEditor: TBIChartEditor
     OnChange = PageControl1Change
     object TabOptions: TTabSheet
       Caption = 'Options'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageMode: TPageControl
         Left = 129
         Top = 0
@@ -595,6 +599,10 @@ object BIChartEditor: TBIChartEditor
         object TabGeo: TTabSheet
           Caption = 'Geographic'
           ImageIndex = 3
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object CBFlags: TCheckBox
             Left = 16
             Top = 134
@@ -751,6 +759,10 @@ object BIChartEditor: TBIChartEditor
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0

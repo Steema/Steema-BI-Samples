@@ -16,14 +16,14 @@ object FormMain: TFormMain
     Size.Width = 393.000000000000000000
     Size.Height = 600.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 11
     TabPosition = PlatformDefault
     object TabTest: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 41.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -196,28 +196,28 @@ object FormMain: TFormMain
       CustomIcon = <
         item
         end>
-      IsSelected = False
-      Size.Width = 69.000000000000000000
+      IsSelected = True
+      Size.Width = 51.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
-      Text = 'Examples'
+      Text = 'Other'
       ExplicitSize.cx = 69.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
       object BExampleFormula: TButton
         Position.X = 24.000000000000000000
-        Position.Y = 39.000000000000000000
+        Position.Y = 22.000000000000000000
         Size.Width = 233.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 19
+        TabOrder = 21
         Text = 'x:= (3*2) + Sqr(4) - 7'
         OnClick = BExampleFormulaClick
       end
       object Button2: TButton
         Position.X = 24.000000000000000000
-        Position.Y = 72.000000000000000000
+        Position.Y = 56.000000000000000000
         Size.Width = 233.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
@@ -227,17 +227,17 @@ object FormMain: TFormMain
       end
       object Button3: TButton
         Position.X = 24.000000000000000000
-        Position.Y = 140.000000000000000000
+        Position.Y = 125.000000000000000000
         Size.Width = 233.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 6
+        TabOrder = 8
         Text = 'Animals Size>7 and Name<>'#39'Ocelot'#39
         OnClick = Button3Click
       end
       object Button4: TButton
         Position.X = 24.000000000000000000
-        Position.Y = 105.000000000000000000
+        Position.Y = 90.000000000000000000
         Size.Width = 233.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
@@ -249,7 +249,7 @@ object FormMain: TFormMain
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         TabOrder = 1
         Position.X = 24.000000000000000000
-        Position.Y = 184.000000000000000000
+        Position.Y = 269.000000000000000000
         Size.Width = 233.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
@@ -258,7 +258,7 @@ object FormMain: TFormMain
       end
       object BEvaluate: TButton
         Position.X = 24.000000000000000000
-        Position.Y = 216.000000000000000000
+        Position.Y = 301.000000000000000000
         Size.Width = 80.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
@@ -269,21 +269,41 @@ object FormMain: TFormMain
       object Button5: TButton
         Enabled = False
         Position.X = 176.000000000000000000
-        Position.Y = 216.000000000000000000
+        Position.Y = 301.000000000000000000
         Size.Width = 80.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 8
+        TabOrder = 10
         Text = '&Edit...'
         OnClick = Button5Click
       end
       object LabelResult: TLabel
         Position.X = 24.000000000000000000
-        Position.Y = 248.000000000000000000
+        Position.Y = 333.000000000000000000
         Size.Width = 233.000000000000000000
         Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
         Text = '?'
+      end
+      object Button1: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 159.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        Text = 'RTTI Expression'
+        OnClick = Button1Click
+      end
+      object Button6: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 194.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 6
+        Text = 'If Expression then A else B'
+        OnClick = Button6Click
       end
     end
   end

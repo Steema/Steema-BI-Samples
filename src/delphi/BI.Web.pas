@@ -51,6 +51,8 @@ type
   private
     class var
       FOnProgress : TBIHttpProgress;
+  protected
+    procedure DoProgress(const ACurrent,ATotal:Int64);
   public
     class var
       Engine : TBIHttpClass;

@@ -12,7 +12,9 @@ uses
   {$IFDEF MSWINDOWS}
   WinAPI.Windows,
   {$ENDIF}
-  {$IFNDEF FPC}
+  {$IFDEF FPC}
+  BI.FPC,
+  {$ELSE}
   Messages, UITypes,
   System.Types, // <-- due to inlining
   {$ENDIF}
@@ -22,8 +24,6 @@ uses
 
 type
   {$IFDEF FPC}
-  TProc<T>=procedure(const Value:T);
-
   TDrawCellEvent=TOnDrawCell;
   {$ENDIF}
 
@@ -37,6 +37,7 @@ type
     public
       Alternate : TMenuItem;
       Button : TSpeedButton;
+      Colorize : TMenuItem;
       Detail : TMenuItem;
       Filters : TMenuItem;
       GroupBy : TMenuItem;
@@ -99,16 +100,20 @@ type
     procedure ApplyFilter(const AllowAllRows:Boolean; const ACol:Integer; const Value:String);
     function BIDataset:TBIDataset;
     function CalcSortWidth:Integer;
+    function CanColorize:Boolean;
     procedure ChangeDataSet(const ADataSet:TDataSet);
     procedure ChangedFilter(const ACol:Integer; const Value:String);
     procedure CheckDataSource;
     procedure CloseGroup(Sender:TObject);
+    function Colorizable:TDataColorizers;
+    procedure ColorizeClick(Sender:TObject);
     procedure DestroyMenu;
     function DetailItems:TDataArray;
     procedure DetailClicked(Sender: TObject);
     procedure DoGroupBy(Sender:TObject);
     procedure DoTitleClick(AColumn:TColumn);
     function GetData:TDataItem;
+    function GetDetail: TDataItem;
     procedure GroupDataChange(Sender: TObject; Field: TField);
     procedure MenuClick(Sender:TObject);
     procedure MenuFiltersClick(Sender: TObject);
@@ -120,6 +125,7 @@ type
     procedure ResetFeatures;
     procedure RowNumbersClick(Sender:TObject);
     procedure SetColumnSort(const Value:Boolean);
+    procedure SetDetail(const AData:TDataItem);
     function TitleWidth(const AColumn:TColumn):Integer;
     function TryColorize(const ARow,ACol:Integer; const AColumn:TColumn; out AIndex:Integer; out APercent:Double):Boolean;
     function TryFontColor(const AIndex:Integer; const ANewColor,ADefault:TColor):TColor;
@@ -174,6 +180,7 @@ type
     function ColumnOf(const AData:TDataItem):TColumn; overload;
     procedure Traverse(const AColumn:TColumn; const AProc:TProc<TColumn>);
 
+    property Detail:TDataItem read GetDetail write SetDetail;
     property MenuButton:TSpeedButton read IMenu.Button;
     property TopRow;
   published

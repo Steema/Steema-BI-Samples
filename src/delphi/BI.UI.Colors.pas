@@ -8,33 +8,15 @@ unit BI.UI.Colors;
 
 interface
 
-{$IFNDEF FPC}
 uses
-  System.UITypes;
-{$ENDIF}
+  {$IFDEF FPC}
+  BI.FPC
+  {$ELSE}
+  System.UITypes
+  {$ENDIF}
+  ;
 
 type
-  {$IFDEF FPC}
-  TColorRec = packed record
-    A, B, G, R: Byte;
-  end;
-
-  TAlphaColor=type Cardinal;
-
-  TAlphaColorRec=packed record
-  public
-    A, B, G, R: Byte;
-
-  const
-    Alpha  = 0;
-    Green  = $8000;
-    Red    = $FF;
-    Yellow = $FFFF;
-  end;
-
-  TAlphaColors=TAlphaColorRec;
-  {$ENDIF}
-
   TColorItem=record
   public
     Color : TAlphaColor;

@@ -28,7 +28,8 @@ type
     class function DriverToName(const ADriver:String):String; override;
     class function GetConnectionName(const AConnection:TCustomConnection):String; override;
     class function GetDriver(const AIndex:Integer):String; override;
-    class function GetItemNames(const AConnection:TCustomConnection; const IncludeSystem:Boolean):TStrings; override;
+    class function GetItemNames(const AConnection:TCustomConnection;
+                                const IncludeSystem,IncludeViews:Boolean):TStrings; override;
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; override;
     class function GetSchemas(const AConnection:TCustomConnection):TStrings;
     class function GetTable(const AConnection:TCustomConnection; const AName:String):TDataSet; override;

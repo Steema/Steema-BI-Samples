@@ -96,8 +96,8 @@ type
 
     procedure PrepareVariables(const AParams:TStrings);
   protected
-    procedure AddItemSeparator(const AIndex:Integer=-1; const AKind:String=''); override;
-    procedure AddListener(const AName:String; const ADataIndex:Integer); override;
+    procedure AddItemSeparator(const AIndex:Integer=-1; const AKind:TPanelKind=TPanelKind.Automatic); override;
+    procedure AddListener(const AName:String; const ASource:TObject); override;
   public
     const
       PureCSS='<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
@@ -112,6 +112,8 @@ type
 
     Constructor Create;
     Destructor Destroy; override;
+
+    procedure Clear; override;
 
     procedure Emit(const ADashboard:TDashboard; const AItem:Integer; const APosition:String); override;
     procedure Init(const ADashboard:TDashboard; const ALayout:String=''; const AParams:TStrings=nil); override;

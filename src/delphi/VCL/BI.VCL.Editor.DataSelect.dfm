@@ -22,10 +22,8 @@ object DataSelectEditor: TDataSelectEditor
     ActivePage = TabItems
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 322
     object TabItems: TTabSheet
       Caption = 'Items'
-      ExplicitHeight = 294
       object Panel2: TPanel
         Left = 0
         Top = 41
@@ -85,7 +83,6 @@ object DataSelectEditor: TDataSelectEditor
         OnClick = LItemsClick
         OnDragDrop = LItemsDragDrop
         OnDragOver = LItemsDragOver
-        ExplicitHeight = 134
       end
       object Panel1: TPanel
         Left = 0
@@ -128,7 +125,6 @@ object DataSelectEditor: TDataSelectEditor
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 3
-        ExplicitTop = 212
         object Label2: TLabel
           Left = 12
           Top = 6
@@ -180,7 +176,6 @@ object DataSelectEditor: TDataSelectEditor
     object TabSort: TTabSheet
       Caption = 'Sort By'
       ImageIndex = 1
-      ExplicitHeight = 294
       object LBSort: TCheckListBox
         Left = 0
         Top = 41
@@ -193,7 +188,6 @@ object DataSelectEditor: TDataSelectEditor
         OnClick = LBSortClick
         OnDragDrop = LBSortDragDrop
         OnDragOver = LBSortDragOver
-        ExplicitHeight = 119
       end
       object Panel3: TPanel
         Left = 0
@@ -249,7 +243,6 @@ object DataSelectEditor: TDataSelectEditor
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitTop = 160
         object LSortError: TLabel
           Left = 12
           Top = 112
@@ -306,7 +299,6 @@ object DataSelectEditor: TDataSelectEditor
     object TabFilter: TTabSheet
       Caption = 'Filter'
       ImageIndex = 2
-      ExplicitHeight = 294
       object LFilter: TLabel
         Left = 12
         Top = 56
@@ -331,7 +323,6 @@ object DataSelectEditor: TDataSelectEditor
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
-      ExplicitHeight = 294
       object MemoSQL: TMemo
         Left = 0
         Top = 0
@@ -340,7 +331,6 @@ object DataSelectEditor: TDataSelectEditor
         Align = alClient
         ReadOnly = True
         TabOrder = 0
-        ExplicitHeight = 294
       end
     end
   end
@@ -353,8 +343,6 @@ object DataSelectEditor: TDataSelectEditor
     BevelOuter = bvNone
     TabOrder = 1
     Visible = False
-    ExplicitTop = 317
-    ExplicitWidth = 309
     object Panel9: TPanel
       Left = 141
       Top = 0
@@ -363,7 +351,6 @@ object DataSelectEditor: TDataSelectEditor
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 124
       object BOK: TButton
         Left = 9
         Top = 6

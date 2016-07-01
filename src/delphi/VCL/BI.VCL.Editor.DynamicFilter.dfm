@@ -125,6 +125,10 @@ object DynamicFilterEditor: TDynamicFilterEditor
     TabOrder = 2
     object TabData: TTabSheet
       Caption = 'Data'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BITree1: TBITree
         Left = 0
         Top = 41
@@ -160,6 +164,10 @@ object DynamicFilterEditor: TDynamicFilterEditor
     object TabItems: TTabSheet
       Caption = 'Items'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
         Top = 264
@@ -180,7 +188,6 @@ object DynamicFilterEditor: TDynamicFilterEditor
         ItemHeight = 13
         TabOrder = 0
         OnClick = CBItemsClick
-        ExplicitHeight = 226
       end
       object Panel3: TPanel
         Left = 0
@@ -192,12 +199,22 @@ object DynamicFilterEditor: TDynamicFilterEditor
         TabOrder = 1
         object CBEnabled: TCheckBox
           Left = 5
-          Top = 8
+          Top = 11
           Width = 97
           Height = 17
           Caption = '&Enabled'
           TabOrder = 0
           OnClick = CBEnabledClick
+        end
+        object BDelete: TButton
+          Left = 120
+          Top = 9
+          Width = 75
+          Height = 25
+          Caption = 'Delete'
+          Enabled = False
+          TabOrder = 1
+          OnClick = BDeleteClick
         end
       end
       object PageItem: TPageControl
@@ -205,16 +222,24 @@ object DynamicFilterEditor: TDynamicFilterEditor
         Top = 267
         Width = 410
         Height = 230
-        ActivePage = TabDateTime
+        ActivePage = TabNumeric
         Align = alBottom
         TabOrder = 2
         Visible = False
         object TabDateTime: TTabSheet
           Caption = 'Date Time'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
         end
         object TabBoolean: TTabSheet
           Caption = 'Boolean'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object CBTrue: TCheckBox
             Left = 16
             Top = 16
@@ -237,10 +262,42 @@ object DynamicFilterEditor: TDynamicFilterEditor
         object TabNumeric: TTabSheet
           Caption = 'Numeric'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
+          object PageNumeric: TPageControl
+            Left = 0
+            Top = 0
+            Width = 402
+            Height = 202
+            ActivePage = TabNumericRange
+            Align = alClient
+            TabOrder = 0
+            object TabNumericRange: TTabSheet
+              Caption = 'Range'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
+            end
+            object TabNumericSelected: TTabSheet
+              Caption = 'Selected'
+              ImageIndex = 1
+              ExplicitLeft = 1
+              ExplicitTop = 30
+              ExplicitWidth = 0
+              ExplicitHeight = 0
+            end
+          end
         end
         object TabText: TTabSheet
           Caption = 'Text'
           ImageIndex = 3
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object PageControl2: TPageControl
             Left = 0
             Top = 0
@@ -251,10 +308,18 @@ object DynamicFilterEditor: TDynamicFilterEditor
             TabOrder = 0
             object TabIncluded: TTabSheet
               Caption = 'Include'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
             end
             object TabExcluded: TTabSheet
               Caption = 'Exclude'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
             end
           end
         end

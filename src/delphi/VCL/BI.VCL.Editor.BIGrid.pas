@@ -20,6 +20,7 @@ type
     TabPlugin: TTabSheet;
     Label1: TLabel;
     CBShowItems: TComboBox;
+    CBColorize: TCheckBox;
     procedure BAltColorClick(Sender: TObject);
     procedure CBAltRowsClick(Sender: TObject);
     procedure CBFilterClick(Sender: TObject);
@@ -28,6 +29,7 @@ type
     procedure PageControl1Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CBShowItemsChange(Sender: TObject);
+    procedure CBColorizeClick(Sender: TObject);
   private
     { Private declarations }
 

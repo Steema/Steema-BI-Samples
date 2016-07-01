@@ -2,7 +2,17 @@ unit BI.Languages.English;
 
 interface
 
+const
+  TeeBI_Version=20160613;
+  TeeBI_VersionString='v1 20160613';
+  TeeBI_VersionMode='(BETA 14)';
+  TeeBI_Description='TeeBI';
+  TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2016 by Steema Software';
+
 var
+  BIMsg_About:String                       = 'About TeeBI...';
+  BIMsg_Edit:String                        = 'Edit...';
+
   // DataItem
   BIMsg_DataItem_ChildNotFound:String      = 'Error: Child data: %s not found';
   BIMsg_CannotAccessData:String            = 'Cannot access data: %s from: %s';
@@ -121,5 +131,12 @@ var
   // Server
   BIMsg_ServerAlreadyRunning:String        = 'BIWeb Server is already running.';
   BIMsg_ServerSureToClose:String           = 'Are you sure to close this server? (There are %d active conections)';
+
+  // Misc
+  BIMsg_Enabled:String                     = 'Enabled';
+
+  // BIVisual Dashboard Template
+  BIMsg_LoadTemplate:String                = 'Load Dashboard Template';
+  BIMsg_UnknownData:String                 = 'Error Unknown Data: %s';
 
 implementation

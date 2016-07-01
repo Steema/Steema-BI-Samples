@@ -19,11 +19,21 @@ unit BI.Persist;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.Types, BI.Data, BI.Arrays, BI.Streams;
+  System.Classes, System.SysUtils,
+  {$IFDEF FPC}
+  BI.FPC,
+  {$ENDIF}
+  BI.Data, BI.Arrays, BI.Streams;
 
 type
   TBIError=function(const Sender:TObject; const Error:String):Boolean of object;
-  TBIErrorProc={$IFNDEF FPC}reference to{$ENDIF} function(const Sender:TObject; const Error:String):Boolean;
+
+  TBIErrorProc=
+    {$IFDEF FPC}
+    function(const Sender:TObject; const Error:String):Boolean of object;
+    {$ELSE}
+    reference to function(const Sender:TObject; const Error:String):Boolean;
+    {$ENDIF}
 
   TBIProgress=procedure(const Sender:TObject; const Percent:Single; var Cancel:Boolean) of object;
 
@@ -53,11 +63,27 @@ type
     Enabled : Boolean;
   end;
 
+  TDataDefinition=class;
+
+  TDatabaseDefinition=class(TPersistent)
+  private
+    IDefinition : TDataDefinition;
+
+    function GetSystem: Boolean;
+    procedure SetSystem(const Value: Boolean);
+    function GetViews: Boolean;
+    procedure SetViews(const Value: Boolean);
+  published
+    property IncludeViews:Boolean read GetViews write SetViews default False;
+    property IncludeSystem:Boolean read GetSystem write SetSystem default False;
+  end;
+
   // Abstract class with all settings necessary to import a given data
   TDataDefinitionKind=(Files,Database,Web,Unknown);
 
   TDataDefinition=class(TBaseDataImporter)
   private
+    FDatabase : TDatabaseDefinition;
     FFileName : String;
 
     FOnError : TBIError;
@@ -65,12 +91,17 @@ type
 
     ILoading : Boolean;
 
+    function GetCalcStats: Boolean;
     function GetKind: TDataDefinitionKind;
+    function GetParallel: Boolean;
     procedure GetRefreshSettings;
     function GetStrings:TStrings;
     function GetValue(const Index: String): String;
+    procedure PrecalculateStats(const AData:TDataArray);
+    procedure SetCalcStats(const AValue: Boolean);
     procedure SetFileName(const Value: String);
     procedure SetKind(const Value: TDataDefinitionKind);
+    procedure SetParallel(const AValue: Boolean);
     procedure SetValue(const Index: String; const Value: String);
     procedure SetStrings(const Value: TStrings);
     procedure TryLoadDetailRelations(const AData:TDataArray);
@@ -92,10 +123,12 @@ type
     var
       Store : String;
 
+    Constructor Create(AOwner:TComponent); override;
+
     Constructor FromFile(const AOwner:TComponent; const AFileName:String);
     Destructor Destroy; override;
 
-    function AsBoolean(const Key:String):Boolean;
+    function AsBoolean(const Key:String; const ADefault:Boolean=True):Boolean;
 
     class procedure CreateFile(const FileName:String; const Kind:TDataDefinitionKind);
 
@@ -115,6 +148,9 @@ type
     function NextRefresh:TDateTime;
     class procedure SetMasters(const AData:TDataItem; const Items:TStrings); static;
 
+    property AsDatabase:TDatabaseDefinition read FDatabase;
+    property CalcStats:Boolean read GetCalcStats write SetCalcStats default False;
+    property Parallel:Boolean read GetParallel write SetParallel default False;
     property Value[const Index:String]:String read GetValue write SetValue; default;
   published
     property Kind:TDataDefinitionKind read GetKind write SetKind default TDataDefinitionKind.Unknown;
@@ -142,7 +178,7 @@ type
   public
     Constructor CreateDefinition(const AStore:String; const ADefinition:TDataDefinition); virtual;
 
-    function AllData:TStringDynArray; virtual; abstract;
+    function AllData:TStringArray; virtual; abstract;
     function GetDefinition(const AName:String):TDataDefinition; virtual; abstract;
     class function Guess(const Kind:TDataDefinitionKind;
                          const Store:String;
@@ -167,7 +203,7 @@ type
     class function NameOrDefault(const AName: String): String;
     class procedure SetDefaultName(const Value: String); static;
   public
-    class function AllData(const AStore:String=''):TStringDynArray; overload; static;
+    class function AllData(const AStore:String=''):TStringArray; overload; static;
 
     class function DefinitionOf(const Name:string):String; overload; static;
     class function DefinitionOf(const AStore,Name: string): String; overload; static;
@@ -222,7 +258,7 @@ type
   public
     class procedure Add(const AName,AOrigin:String); static;
     class procedure AllTo(const Items:TStrings); static;
-    class function All(const APart:Integer=0):TStringDynArray; static;
+    class function All(const APart:Integer=0):TStringArray; static;
     class procedure ChangeName(const AOld,ANew:String); static;
     class procedure ChangePath(const AName,AOrigin:String); static;
     class function Count:Integer; static;
@@ -231,7 +267,7 @@ type
     class function IndexOf(const AName:String):Integer; static;
     class function NewName:String; static;
     class procedure Remove(const AName:String); static;
-    class procedure Save(const S:TStringDynArray); overload; static;
+    class procedure Save(const S:TStringArray); overload; static;
     class procedure Save(const Index:Integer; const AName,AOrigin:String); overload; static;
   end;
 

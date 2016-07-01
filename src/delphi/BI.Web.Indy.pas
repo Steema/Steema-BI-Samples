@@ -22,7 +22,6 @@ type
 
     IMaxWork : Int64;
 
-    procedure DoProgress(const ACurrent,ATotal:Int64);
     procedure WorkBegin(ASender: TObject; AWorkMode: TWorkMode; AWorkCountMax: Int64);
     procedure WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
     procedure Work(ASender: TObject; AWorkMode: TWorkMode; AWorkCount: Int64);

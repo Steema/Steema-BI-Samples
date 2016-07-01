@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  DataWorkflow Editor Dialog                 }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.DataWorkflow;
 
 interface
@@ -78,6 +84,7 @@ type
     function NewShape(const AParent:TBITreeNode; const AProvider:TDataProvider;
                       const AName:String):TBITreeNode; overload;
 
+    function SetErrorLabel(const Sender:TObject; const Error:String):Boolean;
     procedure SetWorkflow(const Value: TBIWorkflow);
     procedure TryRefresh(const ANode:TBITreeNode);
   protected

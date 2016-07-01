@@ -9,7 +9,7 @@ unit BI.Store.Component;
 interface
 
 uses
-  System.Classes, System.Types,
+  System.Classes,
   {$IFNDEF FPC}
   System.Generics.Collections,
   {$ENDIF}
@@ -35,6 +35,7 @@ type
     IDataLink : TDataLink;
     ILoading : Boolean;
 
+    class function IgnoreError(const Sender:TObject; const Error:String):Boolean;
     procedure SetSource(const Value: TComponent);
     class function TryFromStrings(const ASource:TComponent):TDataItem;
   protected
@@ -49,7 +50,6 @@ type
     class var
       Plugins : TList{$IFNDEF FPC}<TComponentImporterClass>{$ENDIF};
 
-    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
     procedure Refresh;

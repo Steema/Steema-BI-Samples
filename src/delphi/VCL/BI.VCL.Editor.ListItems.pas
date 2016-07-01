@@ -28,7 +28,6 @@ type
     procedure SBUpClick(Sender: TObject);
     procedure BAllClick(Sender: TObject);
     procedure BNoneClick(Sender: TObject);
-    procedure Panel1Resize(Sender: TObject);
   private
     { Private declarations }
 

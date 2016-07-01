@@ -80,6 +80,14 @@ procedure FillTree(const ATree:TTreeView; const AExpression:TExpression);
       AddNodes(tmp,TUnaryExpression(AExpression).Expression);
     end
     else
+    if AExpression is TIfExpression then
+    begin
+      tmp:=NewNode(TIfExpression(AExpression).Condition.ToString);
+
+      AddNodes(tmp,TIfExpression(AExpression).ThenExpression);
+      AddNodes(tmp,TIfExpression(AExpression).ElseExpression);
+    end
+    else
        NewNode(AExpression.ToString)
   end;
 

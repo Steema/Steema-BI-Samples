@@ -48,6 +48,8 @@ type
     procedure SetTo(const Value: Extended);
     function TrySetTrack(const S:String; const ATrack:TTrackBar):Boolean;
     function ValueOf(const APosition:Integer):Extended;
+  protected
+    procedure HideTo;
   public
     { Public declarations }
 

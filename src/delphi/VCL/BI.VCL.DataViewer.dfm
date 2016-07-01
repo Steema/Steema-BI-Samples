@@ -87,7 +87,8 @@ object DataViewer: TDataViewer
       OnChange = CBViewChange
       Items.Strings = (
         'Data'
-        'Data Map')
+        'Data Map'
+        'Statistics')
     end
   end
   object PanelItems: TPanel
@@ -124,18 +125,6 @@ object DataViewer: TDataViewer
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        object DataGrid: TBIGrid
-          Left = 0
-          Top = 0
-          Width = 875
-          Height = 356
-          Align = alClient
-          UseDockManager = False
-          ParentBackground = False
-          ParentColor = False
-          TabOrder = 0
-          OnDataChange = DataGridDataChange
-        end
         object PanelNav: TPanel
           Left = 0
           Top = 356
@@ -143,7 +132,7 @@ object DataViewer: TDataViewer
           Height = 30
           Align = alBottom
           BevelOuter = bvNone
-          TabOrder = 1
+          TabOrder = 0
           object Panel2: TPanel
             Left = 0
             Top = 0
@@ -177,6 +166,58 @@ object DataViewer: TDataViewer
               Align = alClient
               TabOrder = 0
             end
+          end
+          object CBRecord: TCheckBox
+            Left = 380
+            Top = 8
+            Width = 97
+            Height = 17
+            Caption = '&Record View'
+            TabOrder = 2
+            OnClick = CBRecordClick
+          end
+        end
+        object Panel5: TPanel
+          Left = 0
+          Top = 0
+          Width = 875
+          Height = 356
+          Align = alClient
+          Caption = 'Panel5'
+          TabOrder = 1
+          object SplitterRecord: TSplitter
+            Left = 551
+            Top = 1
+            Height = 354
+            Align = alRight
+            Visible = False
+            ExplicitLeft = 440
+            ExplicitTop = 128
+            ExplicitHeight = 100
+          end
+          object DataGrid: TBIGrid
+            Left = 1
+            Top = 1
+            Width = 550
+            Height = 354
+            Align = alClient
+            UseDockManager = False
+            ParentBackground = False
+            ParentColor = False
+            TabOrder = 0
+            OnDataChange = DataGridDataChange
+          end
+          object RecordView: TBIGrid
+            Left = 554
+            Top = 1
+            Width = 320
+            Height = 354
+            Align = alRight
+            UseDockManager = False
+            ParentBackground = False
+            ParentColor = False
+            TabOrder = 1
+            Visible = False
           end
         end
       end

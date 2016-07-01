@@ -38,6 +38,7 @@ requires
   designide;
 
 contains
+  TeeBIFMXAbout in 'TeeBIFMXAbout.pas' {AboutBI}, 
   TeeBIFMXRegister in 'TeeBIFMXRegister.pas';
 
 end.

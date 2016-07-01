@@ -192,6 +192,7 @@ object MasterDetailForm: TMasterDetailForm
     Top = 72
   end
   object Detail: TBIDataset
+    AfterOpen = DetailAfterRefresh
     AfterRefresh = DetailAfterRefresh
     Master = Master
     RowNumbers = False

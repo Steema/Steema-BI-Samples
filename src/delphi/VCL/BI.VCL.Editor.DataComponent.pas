@@ -18,7 +18,13 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+
+  {$IFDEF FPC}
+  BI.FPC, FGL,
+  {$ELSE}
   System.Generics.Collections,
+  {$ENDIF}
+
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls, Vcl.Grids, BI.Data, Vcl.Menus;
 
@@ -39,9 +45,7 @@ type
   private
     { Private declarations }
 
-    IComponents : TList<TComponent>;
-
-    //Dummy : TComponent;
+    IComponents : {$IFDEF FPC}TFPGList{$ELSE}TList{$ENDIF}<TComponent>;
 
     FOnFilter : TFilterEvent;
     FOnSelected : TNotifyEvent;

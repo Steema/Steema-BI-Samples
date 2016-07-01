@@ -56,6 +56,9 @@ type
 
     procedure InitBuffer(const BufferSize:Integer);
   public
+    const
+      DefaultBuffer=2048;
+
     Constructor Create(const AStream:TStream);
 
     property Raw:Boolean read IRaw;
@@ -71,11 +74,14 @@ type
   public
     Version : Integer;
 
-    Constructor Create(const AStream:TStream; const BufferSize:Integer);
+    Constructor Create(const AStream:TStream;
+                       const BufferSize:Integer=TBIStreamer.DefaultBuffer);
+
     Destructor Destroy; override;
 
     procedure Read(var Value; Size:Integer);
     function ReadBoolean:Boolean; inline;
+    procedure ReadComponent(const Value:TComponent); inline;
     function ReadDate: TDateTime; inline;
     function ReadDouble: Double; {$IFNDEF FPC}inline;{$ENDIF}
     function ReadFloat: Extended; inline;
@@ -95,14 +101,16 @@ type
     procedure SetPosition(const Value: Int64);
     procedure WriteBuffer;
   public
-    Constructor Create(const AStream:TStream; const BufferSize:Integer;
-                       const Raw:Boolean);
+    Constructor Create(const AStream:TStream;
+                       const BufferSize:Integer=TBIStreamer.DefaultBuffer;
+                       const Raw:Boolean=False);
     Destructor Destroy; override;
 
     procedure FlushBuffer;
 
     procedure Write(const Value; Size:Integer);
     procedure WriteBoolean(const Value: Boolean); inline;
+    procedure WriteComponent(const Value:TComponent); inline;
     procedure WriteDate(const Value: TDateTime); inline;
     procedure WriteDouble(const Value: Double); inline;
     procedure WriteFloat(const Value: Extended); inline;

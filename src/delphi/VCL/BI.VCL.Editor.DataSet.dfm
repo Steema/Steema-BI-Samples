@@ -24,8 +24,6 @@ object BIDataSetEditor: TBIDataSetEditor
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 409
-    ExplicitWidth = 522
     object CBPreview: TCheckBox
       Left = 16
       Top = 12
@@ -43,7 +41,6 @@ object BIDataSetEditor: TBIDataSetEditor
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 337
       object BOK: TButton
         Left = 13
         Top = 8
@@ -86,15 +83,8 @@ object BIDataSetEditor: TBIDataSetEditor
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
-    ExplicitTop = 56
-    ExplicitWidth = 522
-    ExplicitHeight = 347
     object TabOptions: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 514
-      ExplicitHeight = 319
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -103,7 +93,6 @@ object BIDataSetEditor: TBIDataSetEditor
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 514
         object Label1: TLabel
           Left = 3
           Top = 63
@@ -140,19 +129,11 @@ object BIDataSetEditor: TBIDataSetEditor
         ParentBackground = False
         ParentColor = False
         TabOrder = 1
-        ExplicitLeft = 56
-        ExplicitTop = 32
-        ExplicitWidth = 400
-        ExplicitHeight = 250
       end
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 514
-      ExplicitHeight = 319
     end
   end
   object Backup: TBIDataset

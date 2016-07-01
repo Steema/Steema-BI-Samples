@@ -49,6 +49,10 @@ type
     DBNavigator2: TDBNavigator;
     Panel3: TPanel;
     Panel4: TPanel;
+    CBRecord: TCheckBox;
+    Panel5: TPanel;
+    RecordView: TBIGrid;
+    SplitterRecord: TSplitter;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure CBViewDataClick(Sender: TObject);
@@ -62,13 +66,16 @@ type
     procedure ItemsBeforeDelete(DataSet: TDataSet);
     procedure ItemsAfterInsert(DataSet: TDataSet);
     procedure DataGridDataChange(Sender: TObject);
+    procedure CBRecordClick(Sender: TObject);
   private
     { Private declarations }
     FData : TDataItem;
 
     IEditing : Boolean;
 
+    DataStats,
     DataMap : TDataItem;
+
     Tree : TTreeView;
 
     procedure CheckPanelDataAlign;

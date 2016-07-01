@@ -35,7 +35,8 @@ type
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; override;
     class function GetSchemas(const AConnection:TCustomConnection):TStrings;
     class function GetTable(const AConnection:TCustomConnection; const AName:String):TDataSet; override;
-    class function GetItemNames(const AConnection:TCustomConnection; const IncludeSystem:Boolean):TStrings; override;
+    class function GetItemNames(const AConnection:TCustomConnection;
+                                const IncludeSystem,IncludeViews:Boolean):TStrings; override;
     class procedure GuessForeignKeys(const AName:String; const Table:TDataSet; const AData:TDataItem; const Source:TBISource); override;
     class function ImportFile(const Source:TBIDB; const AFileName:String):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;

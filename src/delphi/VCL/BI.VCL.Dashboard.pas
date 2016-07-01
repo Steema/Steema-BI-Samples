@@ -10,7 +10,14 @@ unit BI.VCL.Dashboard;
 interface
 
 uses
-  System.Classes, System.UITypes,
+  System.Classes,
+
+  {$IFDEF FPC}
+  BI.FPC,
+  {$ELSE}
+  System.UITypes,
+  {$ENDIF}
+
   {$IFDEF FMX}
   FMX.Controls, FMX.Layouts, FMX.ExtCtrls, FMX.TabControl,
 
@@ -24,11 +31,11 @@ uses
 
   FMX.StdCtrls, FMX.Types, FMX.Objects,
   {$ELSE}
-  VCL.Controls, VCL.StdCtrls, VCL.ExtCtrls, VCL.Graphics, VCL.ComCtrls,
+  WinApi.Messages, VCL.Controls, VCL.StdCtrls, VCL.ExtCtrls, VCL.Graphics, VCL.ComCtrls,
   VCL.Forms,
   {$ENDIF}
 
-  BI.Data, BI.Expression, BI.Dashboard;
+  BI.Data, BI.Expression, BI.Dashboard, BI.Dashboard.Layouts;
 
 type
   {$IFDEF FMX}
@@ -89,31 +96,23 @@ type
 
       TTargetControls=Array of TTargetControl;
 
-      TTargetControlsHelper=record helper for TTargetControls
-      public
-        function Add(const AName:String; const AControl:TControl; const ALayout:TLayoutItem):Integer;
-        function Count:Integer; inline;
-        function FindControl(const AName:String):TControl; overload;
-        function FindControl(const AItem:TLayoutItem):TControl; overload;
-        function FindLayout(const AControl:TControl):TLayoutItem;
-      end;
-
     //procedure AddControl(const AControl:TControl; const APosition:String; const AItem:TDashboardItem);
     procedure AddToParent(const AControl:TControl; const AParent:TWinControl; const AItem:TDashboardItem);
 
     procedure ButtonsChange(Sender:TObject);
 
     procedure ChangedVariable(const Sender:TChangeListener; const AValue:TExpression);
-    procedure Clear;
 
     procedure ComboChange(Sender:TObject);
     procedure ControlClick(Sender: TObject);
+    function ControlOwner:TComponent;
 
     function CreateLayoutClass(const AClass:TControlClass):TPanel;
     class function CreateSplitter(const AAlign:TAlign; const AParent:TWinControl):TSplitter; static;
 
     procedure EmitDashboard(const AItem:TDashboardItem; const APosition:String);
-    procedure EmitLayout(const ALayout:TLayoutItem; const ShowNames:Boolean=False);
+    procedure EmitLayout(const ALayout:TLayoutItem; const Splitters:Boolean=True;
+                         const ShowNames:Boolean=False);
 
     function GetTarget(const AName:String; const AItem:TDashboardItem): TObject;
 
@@ -133,35 +132,47 @@ type
 
     procedure TrackBarChange(Sender: TObject);
   protected
-    procedure AddListener(const AName:String; const ADataIndex:Integer); override;
+    procedure AddListener(const AName:String; const ASource:TObject); override;
     function CanRefreshData(const AControl:TControl):Boolean; virtual;
 
     function CreateControl(const ALayout:TLayoutItem; const AParent:TWinControl;
                            const APrefix:String;
-                           const ShowNames:Boolean):TWinControl;
+                           const Splitters,ShowNames:Boolean):TWinControl;
 
     function CreatePanel(const ABack:TAlphaColor):TLayoutPanel; overload;
     function CreatePanel:TLayoutPanel; overload; inline;
 
-    function EmitPanel(const AItem:TDashboardItem; const AKind:String; const APosition:String=''):TControl;
-    function EnsurePanelData(const APanel:TBIPanel):TDataItem;
+    function EmitPanel(const AItem:TDashboardItem; const AKind:TPanelKind; const APosition:String=''):TControl;
+    function EnsurePanelData(const APanel:TCustomBIPanel):TDataItem;
     class function GetItemOf(const Sender:TControl):TDashboardItem; static;
-    function NewControl(const AKind:String; const AItem:TDashboardItem):TControl; virtual;
+    function NewControl(const AKind:TPanelKind; const AItem:TDashboardItem):TControl; virtual;
     function ParentRender:TScreenRender;
     procedure PostAddControl(const AControl:TControl; const AItem:TDashboardItem); virtual;
     procedure RadioChange(Sender: TObject); virtual;
   public
     Targets : TTargetControls;
 
+    type
+      TTargetControlsHelper=record helper for TTargetControls
+      public
+        function Add(const AName:String; const AControl:TControl; const ALayout:TLayoutItem):Integer;
+        function Count:Integer; inline;
+        function FindControl(const AName:String):TControl; overload;
+        function FindControl(const AItem:TLayoutItem):TControl; overload;
+        function FindLayout(const AControl:TControl):TLayoutItem;
+      end;
+
+    procedure Clear; override;
     procedure Init(const ADashboard:TDashboard; const ALayout:String=''; const AParams:TStrings=nil); override;
     procedure Finish; override;
 
     procedure Emit(const ADashboard:TDashboard; const AItem:Integer; const APosition:String); override;
-    procedure SetNested(const AItem:TLayoutItem; const AName:String; const ShowNames:Boolean);
+    procedure SetNested(const AItem:TLayoutItem; const AName:String; const Splitters,ShowNames:Boolean);
 
     property Control:TBIVisual read FControl write FControl;
   end;
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion>=23}
   [ComponentPlatformsAttribute(pidWin32 or pidWin64
               {$IFDEF FMX}
@@ -172,20 +183,50 @@ type
               {$ENDIF}
               )]
   {$ENDIF}
+  {$ENDIF}
   TBIVisual=class({$IFDEF FMX}TScrollBox{$ELSE}TScrollingWinControl{$ENDIF})
-  public
-    type
-      TSizeUnits=(Pixels, Percent);
-
   private
-    FTemplate : TBITemplate;
+    FCurrent : TDashboard;
     FRender: TRender;
+    FTemplate : TBITemplate;
     FVariables : TVariables;
 
     ICanResize : Boolean;
+    ICurrent : String; // temporary during loading
+
+    {$IFNDEF FMX}
+    procedure CMShowingChanged(var Message: TMessage); message CM_SHOWINGCHANGED;
+    {$ENDIF}
+
+    procedure DoResize(const AParent:TWinControl);
+    function GetDashboards: TDashboards;
+    function GetDataItems: TVisualDataItems; // GetData already exists in FMX
+    function GetLayouts: TLayouts;
+    function GetPanels: TPanels;
+
+    {$IFDEF FMX}
+    procedure MovedSplitter(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    {$ELSE}
+    procedure MovedSplitter(Sender: TObject);
+    {$ENDIF}
+
+    procedure ReadCurrent(Reader: TReader);
+    procedure SetCurrent(const Value: TDashboard);
+    procedure SetDashboards(const Value: TDashboards);
+    procedure SetDataItems(const Value: TVisualDataItems); // SetData already exists in FMX
+    procedure SetLayouts(const Value: TLayouts);
+    procedure SetPanels(const Value: TPanels);
+    procedure SetRender(const Value: TRender);
+    procedure SetTemplate(const Value: TBITemplate);
+    procedure TryFreeTemplate;
+    procedure TryGenerateCurrent;
+    procedure TryResize;
+    procedure WriteCurrent(Writer: TWriter);
 
     type
       TSizedControl=record
+      private
+        procedure TryRefreshItem;
       public
         // [Weak]
         Control : TControl;
@@ -195,20 +236,23 @@ type
         Height : Single;
 
         WidthUnits,
-        HeightUnits : TSizeUnits;
+        HeightUnits : TUnits;
 
         procedure ReCalc;
         function Resized:Boolean;
-        procedure SetSize(const AWidth,AHeight:String);
+        procedure SetSize(const AWidth:Single;
+                          const AWidthUnits:TUnits;
+                          const AHeight:Single;
+                          const AHeightUnits:TUnits);
       end;
 
       TSizedControls=Array of TSizedControl;
 
       TSizedControlsHelper=record helper for TSizedControls
       public
-        procedure Add(const AControl:TControl; const AWidth,AHeight:String);
+        procedure Add(const AControl:TControl; const AWidth,AHeight:TBICoordinate);
         procedure CheckSize(const AItem:TLayoutItem; const AControl:TControl); overload;
-        procedure CheckSize(const APanel:TBIPanel; const AControl:TControl); overload;
+        procedure CheckSize(const APanel:TCustomBIPanel; const AControl:TControl); overload;
         procedure CheckSize(const AItem:TDashboardItem; const AControl:TControl); overload;
         function FindSplitter(const ASplitter:TSplitter):Integer;
         function IndexOf(const AControl:TControl):Integer;
@@ -219,19 +263,11 @@ type
     var
       ISizedControls : TSizedControls;
 
-    procedure DoResize(const AParent:TWinControl);
-
-    {$IFDEF FMX}
-    procedure MovedSplitter(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    {$ELSE}
-    procedure MovedSplitter(Sender: TObject);
-    {$ENDIF}
-
-    procedure SetRender(const Value: TRender);
-    procedure SetTemplate(const Value: TBITemplate);
-    procedure TryFreeTemplate;
   protected
     procedure Clear;
+    procedure DefineProperties(Filer: TFiler); override;
+    function GetChildOwner: TComponent; override;
+    procedure Loaded; override;
     procedure Resize; override;
   public
     class var
@@ -240,20 +276,16 @@ type
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    // Single Dashboard
-    procedure Generate(const ADashboard:TDashboard; const ALayout:String=''); overload;
+    // Single Dashboard, use first one if ADashboard is nil
+    procedure Generate(const ADashboard:TDashboard=nil; const ALayout:String=''); overload;
 
     // Single Panel
     procedure Generate(const APanel:TBIPanel); overload;
-
-    // Use first Dashboard, if it exists
-    procedure Generate; overload;
 
     procedure ResizeLayout;
 
     property Render:TRender read FRender write SetRender;
     property Template:TBITemplate read FTemplate write SetTemplate;
-
   published
     property Align;
     property Anchors;
@@ -320,6 +352,13 @@ type
     property TabStop;
     {$ENDIF}
     {$ENDIF}
+
+    property Dashboard:TDashboard read FCurrent write SetCurrent stored False;
+
+    property Dashboards : TDashboards read GetDashboards write SetDashboards;
+    property Data : TVisualDataItems read GetDataItems write SetDataItems;
+    property Layouts : TLayouts read GetLayouts write SetLayouts;
+    property Panels : TPanels read GetPanels write SetPanels;
 
     { Events }
 

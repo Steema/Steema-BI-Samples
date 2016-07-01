@@ -35,7 +35,13 @@ type
   TFloat=Double;  // Default float type: 8 bytes
 
   TBooleanArray=Array of Boolean;
+
   TTextArray=Array of String;
+
+  {$IFNDEF FPC}
+  TStringArray=TArray<String>;
+  {$ENDIF}
+
   TDateTimeArray=Array of TDateTime;
 
   TInt32Array=Array of Integer;
@@ -355,8 +361,8 @@ type
     function Map:TBooleanMap;
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     function Stats:TBooleanStats; inline;
     procedure Swap(const A,B:TInteger); inline;
     procedure Zero(const Value:Boolean=False);
@@ -386,8 +392,8 @@ type
     function MaxLength:Integer;
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending:Boolean=True; const IgnoreCase:Boolean=False); overload;
     procedure Sort(const Ascending,IgnoreCase:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending:Boolean=True; const IgnoreCase:Boolean=False); overload; inline;
     function SortedFind(const Value: String; out Exists:Boolean; const IgnoreCase:Boolean): TNativeInteger;
     function Stats:TTextStats; inline;
     procedure Swap(const A,B:TInteger); inline;
@@ -415,8 +421,8 @@ type
     function Minimum:TDateTime;
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     function SortedFind(const Value:TDateTime; out Exists:Boolean):TNativeInteger;
     function Stats:TDateTimeStats;
     function StdDeviation(const Mean:TDateTime):TFloat;
@@ -451,8 +457,8 @@ type
     procedure RemoveValue(const Value:Integer);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending:Boolean=True); overload;
     function SortedFind(const Value: Integer; out Exists:Boolean):TNativeInteger;
     function Stats:TInt32Stats;
     function StdDeviation(const Mean:TFloat):TFloat;
@@ -489,8 +495,8 @@ type
     procedure RemoveValue(const Value:Int64);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending:Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending:Boolean=True); overload;
     function SortedFind(const Value: Int64; out Exists:Boolean):TNativeInteger;
     function Stats:TInt64Stats;
     function StdDeviation(const Mean:TFloat):TFloat;
@@ -525,8 +531,8 @@ type
     procedure Normalize(const Mean:Single);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending: Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending: Boolean=True); overload; inline;
     function SortedFind(const Value: Single; out Exists:Boolean):TNativeInteger;
     function Stats:TSingleStats;
     function StdDeviation(const Mean:Single):Single;
@@ -561,8 +567,8 @@ type
     procedure Normalize(const Mean:Double);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending: Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending: Boolean=True); overload; inline;
     function SortedFind(const Value: Double; out Exists:Boolean):TNativeInteger;
     function Stats:TDoubleStats;
     function StdDeviation(const Mean:Double):Double;
@@ -598,8 +604,8 @@ type
     procedure Normalize(const Mean:Extended);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
-    procedure Sort(const Ascending: Boolean=True); overload; inline;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
+    procedure Sort(const Ascending: Boolean=True); overload; inline;
     function SortedFind(const Value: Extended; out Exists:Boolean):TNativeInteger;
     function Stats:TExtendedStats;
     function StdDeviation(const Mean:Extended):Extended;

@@ -209,7 +209,8 @@ implementation
 uses
   System.SysUtils, System.IOUtils, System.Types,
   BI.Data.SQL, BI.Data.Html, BI.Languages.English,
-  BI.Dashboard, BI.Dashboard.HTML, BI.Data.Expressions;
+  BI.Dashboard, BI.Dashboard.HTML, BI.Dashboard.Loader,
+  BI.Data.Expressions;
 
 Constructor TBIWebCommon.Create;
 begin
@@ -1159,9 +1160,9 @@ end;
 
 function TBIWebCommon.ProcessDashboard(const AContext: TBIWebContext):Boolean;
 
-  function TitleOrName(const APanel:TBIPanel):String;
+  function TitleOrName(const APanel:TCustomBIPanel):String;
   begin
-    result:=APanel['title'];
+    result:=APanel.Title;
 
     if result='' then
        result:=APanel.Name;
@@ -1179,8 +1180,10 @@ function TBIWebCommon.ProcessDashboard(const AContext: TBIWebContext):Boolean;
 
       tmpIndex : Integer;
   begin
-    tmpTemplate:=TBITemplate.FromJSON(AText);
+    tmpTemplate:=TBITemplate.Create(nil);
     try
+      TTemplateLoader.FromJSON(AText,tmpTemplate);
+
       tmpDash:=AContext.Params.Values['dashboard'];
 
       if tmpDash='' then
@@ -1593,7 +1596,7 @@ type
 
 procedure TImportScheduler.AddAll;
 var t,L : Integer;
-    tmp : TStringDynArray;
+    tmp : TStringArray;
     tmpDef : TDataDefinition;
 begin
   tmp:=TStore.AllData(FStore);

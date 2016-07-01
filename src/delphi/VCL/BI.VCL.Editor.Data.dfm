@@ -21,7 +21,7 @@ object DataEditor: TDataEditor
     Top = 0
     Width = 518
     Height = 395
-    ActivePage = TabFiles
+    ActivePage = TabDatabase
     Align = alClient
     TabOrder = 0
     object TabFiles: TTabSheet
@@ -35,7 +35,7 @@ object DataEditor: TDataEditor
         Top = 0
         Width = 510
         Height = 367
-        ActivePage = TabFTP
+        ActivePage = TabFile
         Align = alClient
         TabOrder = 0
         object TabFile: TTabSheet
@@ -312,16 +312,12 @@ object DataEditor: TDataEditor
     object TabDatabase: TTabSheet
       Caption = 'Database'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControlDBItems: TPageControl
         Left = 0
         Top = 0
         Width = 510
         Height = 367
-        ActivePage = TabConnection
+        ActivePage = SQL
         Align = alClient
         TabOrder = 0
         object TabConnection: TTabSheet
@@ -445,9 +441,10 @@ object DataEditor: TDataEditor
             Width = 502
             Height = 54
             Align = alBottom
+            ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 7
             Visible = False
-            WordWrap = False
           end
           object EDBPort: TEdit
             Left = 192
@@ -470,10 +467,6 @@ object DataEditor: TDataEditor
         object SQL: TTabSheet
           Caption = 'Items'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object PageControl3: TPageControl
             Left = 0
             Top = 0
@@ -484,10 +477,6 @@ object DataEditor: TDataEditor
             TabOrder = 0
             object TabItemAllDB: TTabSheet
               Caption = 'All'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object LDBExclude: TLabel
                 Left = 16
                 Top = 96
@@ -509,9 +498,9 @@ object DataEditor: TDataEditor
               object CBAllItems: TCheckBox
                 Left = 16
                 Top = 16
-                Width = 178
+                Width = 101
                 Height = 17
-                Caption = '&All Tables and Views'
+                Caption = '&All Items'
                 Checked = True
                 State = cbChecked
                 TabOrder = 0
@@ -553,6 +542,15 @@ object DataEditor: TDataEditor
                 TabOrder = 4
                 OnClick = CBDBSystemClick
               end
+              object CBDBViews: TCheckBox
+                Left = 200
+                Top = 39
+                Width = 137
+                Height = 17
+                Caption = 'Include &Views'
+                TabOrder = 5
+                OnClick = CBDBViewsClick
+              end
             end
             object TabSQL: TTabSheet
               Caption = 'Custom SQL'
@@ -574,6 +572,32 @@ object DataEditor: TDataEditor
                 OnChange = MemoSQLChange
               end
             end
+          end
+        end
+        object TabDBOptions: TTabSheet
+          Caption = 'Options'
+          ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
+          object CBParallel: TCheckBox
+            Left = 16
+            Top = 16
+            Width = 153
+            Height = 17
+            Caption = 'Use multiple threads'
+            TabOrder = 0
+            OnClick = CBParallelClick
+          end
+          object CBStats: TCheckBox
+            Left = 16
+            Top = 48
+            Width = 153
+            Height = 17
+            Caption = 'Precalculate Statistics'
+            TabOrder = 1
+            OnClick = CBStatsClick
           end
         end
       end
@@ -638,7 +662,7 @@ object DataEditor: TDataEditor
         TabOrder = 1
         object TabHttpServer: TTabSheet
           Caption = 'Server'
-          ExplicitLeft = 8
+          ExplicitLeft = 0
           ExplicitTop = 0
           ExplicitWidth = 0
           ExplicitHeight = 0
@@ -855,9 +879,10 @@ object DataEditor: TDataEditor
         Width = 225
         Height = 161
         Caption = '&Import Style:'
+        ItemIndex = 0
         Items.Strings = (
-          'Database Server'
           'Files, Folders or URL'
+          'Database Server'
           'BI Web Server')
         TabOrder = 0
         Visible = False

@@ -26,7 +26,6 @@ type
       Items : TDataArray; // Multiple
 
       function CreateInvertedIndex(const AIndex:TNativeIntArray):TNativeIntArray;
-      //function Find(const AIndex:TInteger):TInteger;
       procedure Prepare;
     public
       Constructor Create(const AData:TDataItem); overload;
@@ -38,6 +37,8 @@ type
     THopArray=Array of THop;
 
     THopArrayHelper=record helper for THopArray
+    private
+      procedure FreeAll;
     public
       procedure Add(const Hop:THop);
       procedure AddTop(const Hop:THop);
@@ -45,7 +46,7 @@ type
     end;
 
     function InternalFind(const Start,Dest:TDataItem; var Visited:TDataArray):THops.THopArray;
-
+    procedure Invalidate(const AIndex:TInteger);
   public
   var
     Items : THopArray;
@@ -224,6 +225,19 @@ type
   private
     class var
       FResolver : TResolver;
+
+    {$IFDEF FPC}
+    type
+      TDataExpressionClass=class of TDataExpression;
+
+    class var
+      IResolveError : TErrorProc;
+      IData : TDataItem;
+      IClass : TDataExpressionClass;
+
+    function ResolveFunction(const S:String; IsFunction:Boolean):TExpression;
+    class function CallError(const Sender:TObject; const Text:String):Boolean;
+    {$ENDIF}
   protected
     class function Resolve(const AData:TDataItem; const AText:String;
                            const Error:TErrorProc):TExpression; virtual;

@@ -24,7 +24,7 @@ type
     class procedure FinishChart(const AChart:TBITChart; const AItem:TDashboardItem); static;
   protected
     function CanRefreshData(const AControl:TControl):Boolean; override;
-    function NewControl(const AKind:String; const AItem:TDashboardItem):TControl; override;
+    function NewControl(const AKind:TPanelKind; const AItem:TDashboardItem):TControl; override;
 
     {$IFDEF FMX}
     procedure PostAddControl(const AControl:TControl; const AItem:TDashboardItem); override;

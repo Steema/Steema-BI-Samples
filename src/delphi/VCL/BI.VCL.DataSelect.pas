@@ -37,7 +37,7 @@ type
     BOK: TButton;
     BCancel: TButton;
     BClear: TButton;
-    PopupMenu2: TPopupMenu;
+    ImportMenu: TPopupMenu;
     Files1: TMenuItem;
     Database1: TMenuItem;
     Web1: TMenuItem;
@@ -79,6 +79,9 @@ type
 
     class procedure Choose(const AOwner:TComponent;
                            const AEdited:TBIDataControl); overload; static;
+
+    class function Choose(const AOwner:TComponent;
+                           const AEdited:TComponent):TDataItem; overload; static;
 
     class function Choose(const AOwner:TComponent;
                           const AEdited:TComponent;

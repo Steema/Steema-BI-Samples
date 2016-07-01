@@ -15,8 +15,12 @@ uses
 type
   ESQLParser=class(EBIException);
 
-  TGetDataProc={$IFNDEF FPC}reference to{$ENDIF}
-               procedure(const AName:String; out AData:TDataItem);
+  TGetDataProc=
+    {$IFDEF FPC}
+    procedure(const AName:String; out AData:TDataItem) of object;
+    {$ELSE}
+    reference to procedure(const AName:String; out AData:TDataItem);
+    {$ENDIF}
 
   // Converts an SQL string to its equivalent query (TDataSelect) or
   // summary (TSummary) object instance
@@ -30,20 +34,25 @@ type
     ILength,
     IPos : Integer;
 
+    function CallDoError(const Sender:TObject; const Error:String):Boolean;
     class function DataOf(const AParent:TDataItem; const AData:String;
                           out AExp:TExpression):TDataItem; static;
     procedure DoError(const AError:String);
     function EndOfText:Boolean;
     function GetExpression: String;
     function GetExpressions:TTextArray;
+    class function IgnoreError(const Sender:TObject; const Error:String):Boolean;
     function NextIdent:String;
     function Optional(const AText:String):Boolean;
+    function ParseWhere(const AData:TDataItem; const AWhere:String):TBaseLogicalExpression;
+    procedure SkipDelimiters;
   protected
     class function DataFromString(const AData:TDataItem; const S:String):TDataItem; static;
   public
     Constructor Create(const AData:TDataItem; const AText:String);
 
     function Calculate(const ErrorProc:TBIErrorProc=nil):TDataItem;
+    class function DataFrom(const AProvider:TDataProvider): TDataItem; static;
 
     class function FindAggregate(var S:String; out Agg:TAggregate):Boolean; static;
     class function FindGroupByPart(var S:String; out APart:TDateTimePart):Boolean; static;
@@ -89,6 +98,11 @@ type
     class function From(const AData:TDataItem; const SQL:String;
                         const GetData:TGetDataProc=nil;
                         const ErrorProc:TBIErrorProc=nil):TDataItem; overload; static;
+
+    // Parse SQL syntax and return provider
+    class function ProviderFrom(const AData:TDataItem; const SQL:String;
+                        const GetData:TGetDataProc=nil;
+                        const ErrorProc:TBIErrorProc=nil):TDataProvider; overload; static;
 
     // Return SQL from AData Provider:
     class function From(const AData:TDataItem):String; overload; static;

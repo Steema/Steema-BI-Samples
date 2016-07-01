@@ -33,8 +33,9 @@ interface
 }
 
 uses
-  System.Classes, BI.Data, BI.Persist, BI.Query,
-  BI.DataSource, BI.Summary, BI.Store.Component, BI.Data.CollectionItem;
+  System.Classes, BI.Data, BI.Persist, BI.Query, BI.Arrays,
+  BI.DataSource, BI.Summary, //BI.Store.Component,
+  BI.Data.CollectionItem;
 
 type
   TWorkflowAction=class(TBaseDataImporter)
@@ -147,6 +148,8 @@ type
   end;
 
   TDataTranspose=class(TWorkflowAction)
+  private
+    procedure TransposeRow(const ADest:TDataItem; const ARow:TInteger; const AOffset:Integer);
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   end;

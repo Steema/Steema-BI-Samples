@@ -49,6 +49,7 @@ contains
   BI.FMX.DataEditor in '..\FMX\BI.FMX.DataEditor.pas' {DataEditor},
   BI.FMX.DataManager in '..\FMX\BI.FMX.DataManager.pas' {DataManager},
   BI.FMX.Editor.Column in '..\FMX\BI.FMX.Editor.Column.pas' {ColumnEditor},
+  BI.FMX.Editor.Grid in '..\FMX\BI.FMX.Editor.Grid.pas' {BIGridEditor},
   BI.FMX.Status in '..\FMX\BI.FMX.Status.pas' {StoreStatus},
   BI.FMX.Editor.Stores in '..\FMX\BI.FMX.Editor.Stores.pas' {StoreEditor},
   BI.FMX.Visualizer in '..\FMX\BI.FMX.Visualizer.pas',

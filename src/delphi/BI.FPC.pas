@@ -12,6 +12,11 @@ uses
   SysUtils, Classes, Graphics, StreamEx;
 
 type
+  TProc<T>=procedure(const Value:T);
+  TProc<T,V>=procedure(const Value1:T; const Value2:V);
+
+  TObjectProc<T>=procedure({const} Value:T) of object;
+
   TStopWatch=record
   private
     Time : Int64;
@@ -77,13 +82,32 @@ type
 
   TStreamReader=class(StreamEx.TStreamReader)
   public
-    Constructor Create(const AFileName:String);
+    Constructor CreateFile(const AFileName:String);
 
     function EndOfStream:Boolean;
   end;
 
   TAlphaColor=TColor;
-  
+  //TAlphaColor=type Cardinal;
+
+  TColorRec = packed record
+    A, B, G, R: Byte;
+  end;
+
+  TAlphaColorRec=packed record
+  public
+    A, B, G, R: Byte;
+
+  const
+    Alpha  = 0;
+    Green  = $8000;
+    Red    = $FF;
+    Yellow = $FFFF;
+    Null   = $00000000;
+  end;
+
+  TAlphaColors=TAlphaColorRec;
+
 function IsQuoted(const S:String):Boolean;
 function SplitString(const S,Delimiter:String):TStringArray;
 

@@ -14,12 +14,15 @@ interface
 {$ENDIF}
 {$ENDIF}
 
-
 uses
   System.Classes,
 
+  {$IFDEF FPC}
+  // MTProcs, <-- DoParallel
+  {$ELSE}
   {$IFDEF THREADING}
   System.Threading,
+  {$ENDIF}
   {$ENDIF}
 
   BI.Data, BI.Arrays, BI.DataSource;
@@ -28,8 +31,8 @@ uses
 // content as text of one field or all fields.
 
 type
-  TSearchFinished={$IFNDEF FPC}reference to{$ENDIF} procedure(const AIndex:TCursorIndex);
-  TSearchProgress={$IFNDEF FPC}reference to{$ENDIF} procedure(var Stop:Boolean);
+  TSearchFinished=procedure(const AIndex:TCursorIndex) of object;
+  TSearchProgress=procedure(var Stop:Boolean) of object;
 
   TDataSearchPart=(Anywhere, AtStart, AtEnd, Exact);
 
@@ -55,8 +58,18 @@ type
     Task : ITask;
     {$ENDIF}
 
+    function AsDateTime(const AItem:TDataItem; const AIndex:TInteger):String;
+
+    function AsFloat(const Value:Single):String; overload;
+    function AsFloat(const Value:Double):String; overload;
+
+    {$IFNDEF CPUX64}
+    function AsFloat(const Value:Extended):String; overload;
+    {$ENDIF}
+
     function AsString(const AItem:TDataItem; const AIndex:TInteger):String;
     function DoFind(const AText:String):TCursorIndex;
+    procedure Finish(const AIndex:TCursorIndex);
   public
     CaseSensitive : Boolean;  // Default: False (ignore upper or lower case)
 

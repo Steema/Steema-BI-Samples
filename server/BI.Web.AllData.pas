@@ -26,11 +26,11 @@ type
 
     function Find(const AData:String):TDataItem;
 
-    function GetDataOrigins(const AItems: TDataItems): TStringDynArray;
-    function GetData(const AItems:TDataItems):TStringDynArray; overload;
+    function GetDataOrigins(const AItems: TDataItems): TStringArray;
+    function GetData(const AItems:TDataItems):TStringArray; overload;
 
     function GetData:String; overload;
-    function GetDataArray: TStringDynArray;
+    function GetDataArray: TStringArray;
 
     function GetDefinition(const AName:String): String;
 
@@ -115,7 +115,7 @@ var
   end;
 
 var H,t : Integer;
-    Data : TStringDynArray;
+    Data : TStringArray;
 begin
   result:=TDataItem.Create(True);
   result.Name:=FStore;
@@ -140,7 +140,7 @@ begin
       ProcessData(Data[t],t);
 end;
 
-function TAllData.GetDataArray: TStringDynArray;
+function TAllData.GetDataArray: TStringArray;
 begin
   result:=TStore.AllData(FStore);
 end;
@@ -161,7 +161,7 @@ end;
 
 function TAllData.GetData: String;
 var H,t : Integer;
-    Data : TStringDynArray;
+    Data : TStringArray;
 begin
   result:='';
 
@@ -178,7 +178,7 @@ begin
   end;
 end;
 
-function TAllData.GetData(const AItems: TDataItems): TStringDynArray;
+function TAllData.GetData(const AItems: TDataItems): TStringArray;
 var t : Integer;
 begin
   SetLength(result,AItems.Count);
@@ -187,7 +187,7 @@ begin
       result[t]:=AItems[t].Name;
 end;
 
-function TAllData.GetDataOrigins(const AItems: TDataItems): TStringDynArray;
+function TAllData.GetDataOrigins(const AItems: TDataItems): TStringArray;
 var t : Integer;
 begin
   SetLength(result,AItems.Count);

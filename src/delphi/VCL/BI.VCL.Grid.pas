@@ -14,7 +14,7 @@ uses
   System.UITypes,
   {$ENDIF}
   VCL.Controls, VCL.Forms, Data.DB, BI.Data,
-  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus,
+  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus, Vcl.ComCtrls,
   BI.UI, BI.VCL.DataControl, BI.Expression;
 
 type
@@ -104,6 +104,7 @@ type
     FShowItems : TGridShowItems;
 
     procedure ChangedRow(Sender: TObject; Field: TField);
+    function GetCurrentRow: Integer;
     function GetDataSource: TDataSource;
     function GetReadOnly: Boolean;
     function GetTotals:Boolean;
@@ -138,6 +139,7 @@ type
     procedure SetFilter(const AFilter:TLogicalExpression);
 
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
+    property CurrentRow:Integer read GetCurrentRow;
   published
     property Alternate:TAlternateColor read FAlternate write SetAlternate;
     property DataSource:TDataSource read GetDataSource write SetDataSource;
@@ -171,10 +173,12 @@ type
     class procedure AddForm(const AForm: TCustomForm; const AParent: TWinControl); static;
     class function AutoTest:Boolean; static;
     class function EditColor(const AOwner:TComponent; const AColor:TColor; out ANew:TColor):Boolean; static;
+    class function Input(const ATitle,ACaption,ADefault:String; out ANew:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AParent:TControl); static;
     class procedure SavePosition(const AForm:TCustomForm; const Key:String); static;
     class function SelectFolder(var AFolder:String):Boolean; static;
+    class procedure ShowUnique(const ATab:TTabSheet); static;
     class function YesNo(const Message:String):Boolean; static;
   end;
 
