@@ -1,6 +1,75 @@
 # TeeBI Release Notes
 -------------------
 
+## 1st-July-2016 Beta 14
+
+- Expressions
+
+ * New TIfExpression, with Condition, ThenExpression and ElseExpression expression properties. The Condition logical expression is evaluated and the Then or Else values are returned. TIfExpression can be used in any other expressions, and also nested.
+ 
+ * New TObjectExpression, returns the value of any property or field of any TObject. RTTI is used internally to obtain the expression value. 
+ 
+ An example of combining both new expressions by code:
+
+ ```delphi
+ // " if Edit1.Text = 'Euro' then 'Iceland' else 'Wales' "
+ uses BI.Data.RTTI, BI.Expression;
+ Expression:=TIfExpression.Create(
+   TLogicalExpression.Create(
+     TObjectExpression.From(Edit1,'Text'),
+     TLogicalOperand.Equal,
+     TTextExpression.Create('Euro')
+   ),
+   TTextExpression.Create('Iceland'),
+   TTextExpression.Create('Wales')
+ );
+ ```
+
+- Data Providers
+
+  * TSingleRecord class (in new unit "BI.Data.SingleRecord") returns a TDataItem with the current row or record of another TDataItem as a table, with all fields in the current record as rows in the new table. 
+ 
+  A new demo showing how to use TSingleRecord is available at this folder:
+
+  demos\vcl\delphi\single_record
+  
+  * New TBILocalSQL class with methods to import and export a FireDAC "TFDLocalSQL" component from / to a TDataItem
+  
+- FreePascal / Lazarus
+
+ * Fixes to be able to recompile most of TeeBI units with latest FreePascal 3.0 and Lazarus
+
+- BITree
+
+  * New plugin mechanism allows substituting the "real" Tree control used by BITree to display nodes.
+  * New unit "BI.VCL/FMX.Tree.TeeTree" to use TeeTree control as plugin
+  * New unit "BI.VCL.Tree.VirtualTreeView" to use VirtualTreeView control as plugin
+  
+  ```delphi
+  // Use TVirtualTreeView inside BITree:
+  uses BI.VCL.Tree.VirtualTreeView;
+  BITree1.ChangePlugin(TVirtualTreePlugin);
+  ```
+  
+  Changing a BITree plugin can be done at anytime "on-the-fly". All current tree nodes are preserved and re-added to the new underlying control.
+  
+- BIGrid
+
+  * VCL only: new Grid menu items to display a "Detail" grid for all TDataItem tables that are associated to the current Grid data (the master). When a Detail grid is displayed, changing the main grid row refreshes the detail rows in the detail grid
+  
+
+- Miscellaneous
+
+  * TStringDynArray type has been replaced with a custom TStringArray everywhere, for FreePascal compatibility
+  * Dashboards: Big refactoring of all TDashboard related units, not yet finalized
+  * New Apache web server experimental support for BIWeb (project at: "server\apache\vcl" folder)
+  * 40% speed improvement for TInt32Array and TInt64Array Sort method (inlined "swap")
+  * Fixed importing CSV content with " " (space) consecutive delimiters (automatic recognition)
+  * Renamed TBIExport "ToMemTable" function to "From" for better naming (and future features)
+  * New TDataDefinition options and editor to include or not importing Database System tables and Views
+  * Several refactorings to reduce code complexity metrics and increment speed
+  * New AboutBox dialog for TeeBI FireMonkey components, accessible at design-time
+
 ## 10th-June-2016 Beta 13
 
 - Installer
