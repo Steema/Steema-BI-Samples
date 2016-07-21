@@ -68,6 +68,8 @@ type
     Splitter1: TSplitter;
     Button1: TButton;
     Button6: TButton;
+    Layout3: TLayout;
+    LNodeObject: TLabel;
     procedure BEvaluateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -82,6 +84,7 @@ type
     procedure Button8Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure TreeView1Change(Sender: TObject);
   private
     { Private declarations }
 
@@ -91,8 +94,10 @@ type
 
     Animals : TDataItem; // <-- For Dataset example
 
+    function ParseError(const APos:Integer; const Text:String):Boolean;
     procedure ParseExpression(const AExpression:String);
     procedure Present;
+    function Resolve(const S:String; IsFunction:Boolean):TExpression;
     procedure SetNewExpression(const AExpression:String);
     procedure ShowTree;
     procedure TestExpression(const S:String);
@@ -283,6 +288,17 @@ begin
   end;
 end;
 
+procedure TFormMain.TreeView1Change(Sender: TObject);
+var tmp : TTreeViewItem;
+begin
+  tmp:=TreeView1.Selected;
+
+  if (tmp=nil) or (tmp.TagObject=nil) then
+     LNodeObject.Text:=''
+  else
+     LNodeObject.Text:=tmp.TagObject.ClassName;
+end;
+
 // Loop all expressions in ListBox to test parsing and evaluating them
 procedure TFormMain.BTestAllClick(Sender: TObject);
 var t : Integer;
@@ -323,48 +339,42 @@ begin
   Benchmark.DestroyAll;
 end;
 
+// Called when a expression symbol is unknown
+function TFormMain.Resolve(const S:String; IsFunction:Boolean):TExpression;
+begin
+  result:=TObjectExpression.Parse(Self,S);
+
+  if result=nil then
+     LabelResult.Text:='Unknown: '+S;
+end;
+
+// Called when parsing a string expression fails
+function TFormMain.ParseError(const APos:Integer; const Text:String):Boolean;
+begin
+  LabelResult.Text:=Text+' at '+IntToStr(APos);
+  result:=True;
+end;
+
 // Parse S string into Expression variable
 procedure TFormMain.ParseExpression(const AExpression:String);
 var tmp : TExpression;
-    Ok : Boolean;
 begin
   BEvaluate.Enabled:=False;
 
   try
-    Ok:=True;
-
     // Try to parse AExpression string to create a TExpression
 
-    tmp:=TExpression.FromString(AExpression,
-           function(const S:String; IsFunction:Boolean):TExpression
-           begin
-             // Parse error, unknown identifier
-
-             result:=TObjectExpression.Parse(Self,S);
-
-             if result=nil then
-                LabelResult.Text:='Unknown: '+S;
-           end,
-           function(const APos:Integer; const Text:String):Boolean
-           begin
-             // Parse error
-
-             LabelResult.Text:=Text+' at '+IntToStr(APos);
-             Ok:=False;
-
-             result:=True;
-           end);
+    tmp:=TExpression.FromString(AExpression,Resolve,ParseError);
 
     // Replace old expression with new one
     Expression.Free;
     Expression:=tmp;
 
-    if Expression<>nil then
-       ShowTree;
+    ShowTree;
 
     BEvaluate.Enabled:=Expression<>nil;
 
-    if BEvaluate.Enabled and Ok then
+    if BEvaluate.Enabled then
        BEvaluateClick(Self); // Evaluate
   except
 
@@ -383,8 +393,14 @@ end;
 // Fills TreeView1 with the Expression object tree
 procedure TFormMain.ShowTree;
 begin
-  FillTree(TreeView1,Expression);
+  if Expression=nil then
+     TreeView1.Clear
+  else
+     FillTree(TreeView1,Expression);
+
   TreeView1.ExpandAll;
+
+  LNodeObject.Text:='';
 end;
 
 // Converts the Expression to string and fills the treeview

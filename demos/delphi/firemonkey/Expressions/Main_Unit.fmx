@@ -16,14 +16,19 @@ object FormMain: TFormMain
     Size.Width = 393.000000000000000000
     Size.Height = 600.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 11
     TabPosition = PlatformDefault
+    Sizes = (
+      393s
+      574s
+      393s
+      574s)
     object TabTest: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 41.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -144,6 +149,41 @@ object FormMain: TFormMain
           'round(0.50001) -> 1'
           'round(0.4) -> 0'
           'round(0.9) -> 1'
+          'Power(2) -> 100'
+          'Power(10,2) -> 100'
+          'Power(3,3) -> 27'
+          'Power(1+4,1+(1)) -> 25'
+          'IndexOf('#39#39','#39'abc'#39') -> 0'
+          'IndexOf('#39'abc'#39','#39#39') -> 0'
+          'IndexOf('#39'a'#39','#39'abc'#39') -> 1'
+          'IndexOf('#39'b'#39','#39'abc'#39') -> 2'
+          'IndexOf('#39'c'#39','#39'abc'#39') -> 3'
+          'IndexOf('#39'bc'#39','#39'abc'#39') -> 2'
+          'IndexOf('#39'ac'#39','#39'abc'#39') -> 0'
+          'IndexOf('#39'B'#39','#39'abc'#39',true) -> 0'
+          'Insert('#39'abd'#39','#39'c'#39',3) -> abcd'
+          'Remove('#39'abcd'#39',3) -> abd'
+          'Remove('#39'abcd'#39',3,2) -> ab'
+          'Replace('#39'abcd'#39','#39'c'#39','#39'C'#39') -> abCd'
+          'Replace('#39'abBcd'#39','#39'bb'#39','#39'X'#39') -> aXcd'
+          'Replace('#39'abBcd'#39','#39'bb'#39','#39'X'#39',true) -> abBcd'
+          'Count('#39#39','#39#39') -> 0'
+          'Count('#39#39','#39'a'#39') -> 0'
+          'Count('#39'a'#39','#39#39') -> 0'
+          'Count('#39'a'#39','#39'a'#39') -> 1'
+          'Count('#39' X X X '#39','#39'X'#39') -> 3'
+          'Count(Trim('#39' X X X '#39'),'#39'X'#39') -> 3'
+          'Count('#39' X X X '#39','#39'X '#39') -> 3'
+          'Count(Trim('#39' X X X '#39'),'#39'X '#39') -> 2'
+          'Count('#39'Hello World'#39','#39'o'#39') -> 2'
+          'Format('#39'<%.6d>'#39',1234) -> <001234>'
+          'Format('#39'<%s %s>'#39','#39'Hello'#39','#39'World'#39') -> <Hello World>'
+          'Count(Format('#39'%s %s'#39','#39'Hello'#39','#39'World'#39'),'#39'o'#39') -> 2'
+          'SubString('#39'abcd'#39',2,1) -> b'
+          'SubString('#39'abcd'#39',2,2) -> bc'
+          'SubString('#39'abcd'#39',4,10) -> d'
+          'SubString('#39'abcd'#39',5) ->'
+          'SubString('#39'abcd'#39',2) -> bcd'
           '')
         DefaultItemStyles.ItemStyle = ''
         DefaultItemStyles.GroupHeaderStyle = ''
@@ -196,7 +236,7 @@ object FormMain: TFormMain
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 51.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -317,11 +357,26 @@ object FormMain: TFormMain
     object TreeView1: TTreeView
       Align = Client
       Size.Width = 545.000000000000000000
-      Size.Height = 600.000000000000000000
+      Size.Height = 550.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
+      OnChange = TreeView1Change
       Viewport.Width = 541.000000000000000000
-      Viewport.Height = 596.000000000000000000
+      Viewport.Height = 546.000000000000000000
+    end
+    object Layout3: TLayout
+      Align = Top
+      Size.Width = 545.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object LNodeObject: TLabel
+        Position.X = 16.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 504.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+      end
     end
   end
   object Splitter1: TSplitter
