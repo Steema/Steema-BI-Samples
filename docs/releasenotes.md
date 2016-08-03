@@ -69,7 +69,7 @@
    
   * Added ODBC driver support for SqlExpress engine
   
-  * Added support to import <table> cells from html content:
+  * Added support to import html table cells from html content:
   
   ```delphi
   uses BI.Data.HTML;
