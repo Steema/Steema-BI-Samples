@@ -1,6 +1,135 @@
 # TeeBI Release Notes
 -------------------
 
+## 3rd-August-2016 Beta 15
+
+- TBIDataset
+
+ * Fixed master-detail BIDataset relationships when the key consists of multiple fields
+ 
+- Arrays
+
+ * New BI.Arrays.Parallel.pas unit, includes methods to perform multi-cpu sorting of arrays using threads using TTask. For example sorting a 50 million integer array takes aprox 2 seconds instead of 5 on an i7 machine:
+ 
+ ```delphi
+ uses BI.Arrays, BI.Arrays.Parallel;
+ var MyArray : TInt32Array;  MyArray.Resize(50000000); ...fill array...
+   // optional parameters: Ascending (default True), Threads (default 0=auto)
+   MyArray := TParallelArray.Sort(MyArray);
+ ```
+ 
+ * New TSorted(Ascending/Descending)Array methods to "merge" sorted arrays. Return one array from multiple ones, with all elements sorted:
+ 
+ ```delphi
+ uses BI.Arrays, BI.Arrays.Parallel;
+ var A,B,C : TSingleArray; ... A.Sort; B.Sort;
+   C := TSortedAscendingArray.Merge(A,B);
+ ```
+ 
+ * New "Equals" method in BI Arrays, return True when the arrays are identical:
+ 
+  ```delphi
+  uses BI.Arrays;
+  var A,B: TInt64Array; ...
+  if A.Equals(B) then ...
+  ```
+
+ * Speed improvements in QuickSort algorithm, now using an "hybrid" approach using InsertionSort to order small portions (16 items or less).  This gives aprox 20% better speed in most cases.
+ 
+- Examples
+
+  * New example using the Wikipedia api to search topics, retrieve html tables from result pages, and importing them into TDataItem objects to present in grids, charts, make queries, etc
+  
+  * New example of a custom TDataProvider class at BI.Data.Process.pas unit, TProcessList maintains a list of running processes with per-process information (ID, Name, Workingset, etc).  BIGrid1.Provider:=TProcessList.Create(Self)
+  
+
+- TExpression
+
+  * Support for multiple parameters in expression functions, for example: "SubString('Hello',5,3)"
+  
+  * New expression class TTextOperandExpression, with functions: "IndexOf", "Pad", "Split", "Insert", "Remove", "Replace", "Count"  and "SubString"
+  
+  * New TArrayExpression class, includes an Items property (array of TExpression). Can be used for any general purpose. It is also used to keep the list of parameters of an expression function
+  
+  * New TMathExpression "Power" operand, example:  'Power(10,2+3)'  (10 elevated to 5)
+  
+  * New TExpression.AsString function, returns the expression Value as string instead of as variant. This is useful for cases Variants cannot be implicitely converted to string by the RTL, like for example an "array of variant" to string
+  
+  * New BI.Expression.DateTime.pas unit, contains optimized code to extract parts from a TDateTime (Day, Month, Year, etc) that is faster than SysUtils / DateUtils methods.  This unit is used to speed-up queries and summaries involving datetime group-by or expressions. Also available standalone at:  [FastDateTime](https://github.com/davidberneda/FastDateTime)
+  
+- Sample Data 
+
+  * New "TechProducts" sample database. A Microsoft Access *.mdb with lots of linked tables and many rows
+  
+  * Fixed "SampleData\Sqlite_demo" data file to link with the correct "SampleData\Geo" countries database
+  
+- Importing data
+
+  * Improved importing Microsoft Access table relationships (foreign keys), by looking the internal system table "MSysRelationships". This table is hidden by default, so it needs to be made visible using Access "Permissions" dialog
+   
+  * Added ODBC driver support for SqlExpress engine
+  
+  * Added support to import <table> cells from html content:
+  
+  ```delphi
+  uses BI.Data.HTML;
+  BIGrid1.Data := TBIHtml.Import( Memo1.Lines );
+  ```
+
+  * New TDataDefinition component "Links" property, a collection of TDataRelation items to define the "Master" and "Detail" field names that will be linked at import-time after importing all tables. This is design-time equivalent to the optional *.detail file (see for example "SampleData\Sqlite_demo.detail" file)
+   
+  * New TDataLinksEditor dialog to edit the "Links" collection in TDataManager dialog
+  
+- Data Filtering
+
+  * New "Reset" method in TFilterItem class, restores filter properties to their default values
+  
+  * New "Inverted" boolean property in TFilterItem class, to filter the opposite rows (default = False)
+  
+  * New "Text" property in TFilterItem class, contains properties to easily define a filter for text data:
+  
+  ```delphi
+  uses BI.Expression.Filter;
+  var tmp : TTextFilter;
+  tmp := BIQuery1.Filter[0].Text;
+  tmp.Style := TTextFilterStyle.Contains;
+  tmp.Text := 'Hello';
+  tmp.CaseSensitive := False;
+  
+  BIGrid1.Provider := BIQuery1;
+  ```
+  
+  * New TNumericValue "Equal" property (boolean, default = True) to switch between ">" and ">="  (or "<" and "<=")
+  
+  * Fixed TDateTimeFilter code using Style = "This", "Last" or "Next"  (for example: "Last 5 Months", "This Year", etc)
+  
+- Firemonkey
+
+  * BIGrid automatic resizing of columns based on maximum length of cells
+  
+  * BIGrid new "ShowItems" property to automatically display "sub-grids" when the Data property is a multi-table TDataItem. This is equivalent to the already existing VCL BIGrid ShowItems property
+  
+- Other
+
+  * Removed the mandatory dependency on Indy or System.Net units (in TBIDataset and many other units). Thus, the generic ImportURL function in TBIFileSource has been moved to a new TBIURLSource class:
+  
+  ```delphi
+  uses BI.Web;
+  BIGrid1.Data := TBIURLSource.Import( 'http://acme.com/data.csv' );
+  ```
+  
+  * Fixed missing file in beta 14: [TeeBIFMXAbout.fmx](https://raw.githubusercontent.com/Steema/BI/master/src/delphi/Packages/TeeBIFMXAbout.fmx)
+  
+  * Fixed using Unicode string fields in TBIDataset and displaying them on grids. TWideStringField is now used instead of TStringField for text data items
+  
+  * Renamed "TDataManager.EmbedChoose" method to "TDataManager.Embed"
+  
+  * New FMX and VCL "TUICommon.GotoURL" method, opens the default browser with the specified URL parameter
+  
+  * Improved file selector dialog in DataManager, now dynamically showing the accepted file extensions in the file type combobox
+ 
+  * New "IndexOf" function at BIQuery Dimensions and Measures collections
+
 ## 1st-July-2016 Beta 14
 
 - Expressions
@@ -25,6 +154,8 @@
  );
  ```
 
+ * Renamed TTextUnaryExpression to TUnaryTextExpression (for consistency on other "unary" classes)
+ 
 - Data Providers
 
   * TSingleRecord class (in new unit "BI.Data.SingleRecord") returns a TDataItem with the current row or record of another TDataItem as a table, with all fields in the current record as rows in the new table. 
