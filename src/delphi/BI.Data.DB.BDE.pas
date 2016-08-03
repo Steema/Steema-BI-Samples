@@ -26,6 +26,9 @@ type
     class function CreateQuery(const AConnection:TCustomConnection; const SQL:String):TDataSet; override;
     class function DriverNames:TStringDynArray; override;
     class function DriverToName(const ADriver:String):String; override;
+
+    class function FileFilter: TBIFileSource.TFileFilters; override;
+
     class function GetConnectionName(const AConnection:TCustomConnection):String; override;
     class function GetDriver(const AIndex:Integer):String; override;
     class function GetItemNames(const AConnection:TCustomConnection;

@@ -18,6 +18,8 @@ type
     ETo: TEdit;
     CBFrom: TCheckBox;
     CBTo: TCheckBox;
+    CBFromEqual: TComboBox;
+    CBToEqual: TComboBox;
     procedure TBFromChange(Sender: TObject);
     procedure TBToChange(Sender: TObject);
     procedure PanelTracksResize(Sender: TObject);
@@ -26,6 +28,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure CBFromClick(Sender: TObject);
     procedure CBToClick(Sender: TObject);
+    procedure CBFromEqualChange(Sender: TObject);
+    procedure CBToEqualChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -48,6 +52,10 @@ type
     procedure SetTo(const Value: Extended);
     function TrySetTrack(const S:String; const ATrack:TTrackBar):Boolean;
     function ValueOf(const APosition:Integer):Extended;
+    function GetFromEqual: Boolean;
+    function GetToEqual: Boolean;
+    procedure SetFromEqual(const Value: Boolean);
+    procedure SetToEqual(const Value: Boolean);
   protected
     procedure HideTo;
   public
@@ -63,7 +71,10 @@ type
     function EnabledFrom:Boolean;
     function EnabledTo:Boolean;
 
+    property FromEqual:Boolean read GetFromEqual write SetFromEqual;
     property FromValue:Extended read GetFrom write SetFrom;
+
+    property ToEqual:Boolean read GetToEqual write SetToEqual;
     property ToValue:Extended read GetTo write SetTo;
 
     procedure Refresh(const AData:TDataItem); overload;

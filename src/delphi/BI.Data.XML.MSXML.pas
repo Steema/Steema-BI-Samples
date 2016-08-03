@@ -18,7 +18,10 @@ type
     Node : IXmlNode;
 
     IOwner : TComponent;
-  protected
+  public
+    Constructor Create(const AOwner:TComponent); override;
+    Destructor Destroy; override;
+
     function Attribute(const Index:Integer):String; override;
     function AttributeCount:Integer; override;
     function AttributeName(const Index: Integer): String; override;
@@ -33,9 +36,6 @@ type
     procedure Parent; override;
     procedure Root; override;
     function Text:String; override;
-  public
-    Constructor Create(const AOwner:TComponent); override;
-    Destructor Destroy; override;
   end;
 
 implementation

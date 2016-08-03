@@ -11,6 +11,9 @@ interface
 uses
   System.Classes, System.SysUtils, Data.DB, BI.Arrays, BI.Data, BI.DataSource;
 
+// Import any TDataset, TCustomConnection or one or more TField objects
+// into a TDataItem
+
 type
   TBIDataSetSource=class(TBIFileSource)
   private

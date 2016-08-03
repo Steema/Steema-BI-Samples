@@ -150,7 +150,7 @@ type
 
     class function GetCSS(const AName:String):String; static;
 
-    class function GetFilter(const AData:TDataItem; const AFilter:String):TBaseLogicalExpression; static;
+    class function GetFilter(const AData:TDataItem; const AFilter:String):TExpression; static;
 
     class procedure GetWidthHeight(const Params:TStrings; out AWidth,AHeight:Integer); static;
     procedure PrepareCursor(const ACursor:TDataCursor; const AData:TDataItem;
@@ -783,26 +783,12 @@ begin
 //     ProcessData(AContext,Format,Params);
 end;
 
-class function TBIWebCommon.GetFilter(const AData:TDataItem; const AFilter:String):TBaseLogicalExpression;
-var tmp : TExpression;
+class function TBIWebCommon.GetFilter(const AData:TDataItem; const AFilter:String):TExpression;
 begin
   if AFilter='' then
      result:=nil
   else
-  begin
-    tmp:=TDataFilter.FromString(AData,AFilter);
-
-    if tmp=nil then
-       raise EBIException.Create('Bad Filter: '+AFilter)
-    else
-    if tmp is TBaseLogicalExpression then
-       result:=TBaseLogicalExpression(tmp)
-    else
-    begin
-      tmp.Free;
-      raise EBIException.Create('Filter must be a logical expression: '+AFilter)
-    end;
-  end;
+     result:=TDataFilter.FromString(AData,AFilter);
 end;
 
 procedure TBIWebCommon.DoAddHistory(const AContext: TBIWebContext;

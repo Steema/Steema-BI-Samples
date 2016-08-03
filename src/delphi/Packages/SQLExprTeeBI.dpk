@@ -38,6 +38,7 @@ requires
   DBXFirebirdDriver,
   DBXOracleDriver,
   DBXMSSQLDriver,
+  DBXODBCDriver, 
   TeeBI;
 
 contains

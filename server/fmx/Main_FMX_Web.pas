@@ -599,7 +599,7 @@ end;
 
 procedure TBIWebMain.FaviconClick(Sender: TObject);
 begin
-  TeeGotoURL(0,'http://localhost:'+IntToStr(Server.DefaultPort));
+  TUICommon.GotoURL(nil,'http://localhost:'+IntToStr(Server.DefaultPort));
 end;
 
 function TBIWebMain.FaviconStream:TStream;

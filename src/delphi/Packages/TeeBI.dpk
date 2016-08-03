@@ -45,6 +45,7 @@ contains
   BI.Dashboard.Loader in '..\BI.Dashboard.Loader.pas',
   BI.DataSource in '..\BI.DataSource.pas',
   BI.Expression in '..\BI.Expression.pas',
+  BI.Expression.DateTime in '..\BI.Expression.DateTime.pas',
   BI.Expression.Filter in '..\BI.Expression.Filter.pas',
   BI.Tree in '..\BI.Tree.pas',
   BI.Data in '..\BI.Data.pas',

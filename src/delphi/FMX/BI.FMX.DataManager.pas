@@ -41,6 +41,8 @@ uses
   FMX.Edit, FMX.Menus, FMX.Memo, BI.Data;
 
 type
+  TDataManagerEmbedMode=(Choose,Edit);
+
   TDataManager = class(TForm)
     LayoutStore: TLayout;
     LayoutSources: TLayout;
@@ -51,7 +53,7 @@ type
     LSources: TListView;
     LStore: TLabel;
     LayoutButtons: TLayout;
-    Layout7: TLayout;
+    LayoutOkCancel: TLayout;
     BSelect: TButton;
     BCancel: TButton;
     TabControl1: TTabControl;
@@ -155,7 +157,10 @@ type
     class function ChooseData(const AOwner:TComponent; const AStore:String='';
                               const ACurrent:TDataItem=nil):TDataItem; static;
     class procedure Edit(const AOwner:TComponent; const AStore:String=''); static;
-    class function EmbedChoose(const AOwner:TComponent; const AParent:TControl; const AStore:String=''):TDataManager; static;
+    class function Embed(const AOwner:TComponent;
+                         const AParent:TControl;
+                         const AMode:TDataManagerEmbedMode=TDataManagerEmbedMode.Choose;
+                         const AStore:String=''):TDataManager; static;
 
     property OnSelect:TNotifyEvent read FOnSelect write FOnSelect;
   end;

@@ -14,8 +14,6 @@ uses
   BI.Web, BI.Persist;
 
 type
-  EHttpAbort=class(Exception);
-
   TBIIndy=class(TBIHttp)
   private
     FHttp : TIdHttp; // Indy

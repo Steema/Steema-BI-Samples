@@ -115,10 +115,19 @@ object BIWebMain: TBIWebMain
     Size.Height = 320.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 26.000000000000000000
-    TabIndex = 3
+    TabIndex = 2
     TabOrder = 1
     TabPosition = Top
     OnChange = TabControl1Change
+    Sizes = (
+      625s
+      294s
+      625s
+      294s
+      625s
+      294s
+      625s
+      294s)
     object TabConsole: TTabItem
       CustomIcon = <
         item
@@ -136,12 +145,12 @@ object BIWebMain: TBIWebMain
         Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
         DataDetectorTypes = []
         Align = Client
-        Size.Width = 50.000000000000000000
-        Size.Height = 50.000000000000000000
+        Size.Width = 625.000000000000000000
+        Size.Height = 294.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        Viewport.Width = 46.000000000000000000
-        Viewport.Height = 46.000000000000000000
+        Viewport.Width = 621.000000000000000000
+        Viewport.Height = 290.000000000000000000
       end
     end
     object TabHistory: TTabItem
@@ -159,8 +168,8 @@ object BIWebMain: TBIWebMain
       ExplicitSize.cy = 50.000000000000000000
       object Layout2: TLayout
         Align = Bottom
-        Position.Y = 11.000000000000000000
-        Size.Width = 50.000000000000000000
+        Position.Y = 255.000000000000000000
+        Size.Width = 625.000000000000000000
         Size.Height = 39.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
@@ -181,7 +190,7 @@ object BIWebMain: TBIWebMain
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 63.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -331,7 +340,7 @@ object BIWebMain: TBIWebMain
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 73.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False

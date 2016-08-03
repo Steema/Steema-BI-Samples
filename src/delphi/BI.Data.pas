@@ -204,7 +204,7 @@ type
   protected
     FConsumers : TBIConsumers;
 
-    procedure BeginUpdate;
+    procedure BeginUpdate; inline;
     procedure EndUpdate;
     procedure Changed; virtual;
     function Changing:Boolean;

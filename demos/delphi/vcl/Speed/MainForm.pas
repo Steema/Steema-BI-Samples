@@ -21,6 +21,7 @@ type
     BIGrid1: TBIGrid;
     BExport: TButton;
     Label1: TLabel;
+    LTotal: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -54,13 +55,20 @@ begin
 end;
 
 procedure TFormSpeed.Button1Click(Sender: TObject);
+var t1 : TStopwatch;
 begin
   Screen.Cursor:=crHourGlass;
   try
+    Label1.Visible:=False;
+
     // Clear results
     Results.Resize(0);
 
+    t1:=TStopwatch.StartNew;
+
     Test;
+
+    LTotal.Caption:='Total time: '+t1.ElapsedMilliseconds.ToString+' msec';
 
     // Refresh results at Grid
     BIGrid1.RefreshData;

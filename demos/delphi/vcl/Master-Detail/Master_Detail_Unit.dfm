@@ -133,6 +133,13 @@ object MasterDetailForm: TMasterDetailForm
           ExplicitTop = 80
           ExplicitHeight = 100
         end
+        object TMarksTipTool
+          Format.CustomPosition = True
+          Format.Left = 0
+          Format.TextAlignment = taCenter
+          Format.Top = 0
+          Format.Visible = False
+        end
       end
     end
   end

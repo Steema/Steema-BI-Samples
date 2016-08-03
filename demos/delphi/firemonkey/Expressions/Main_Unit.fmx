@@ -44,152 +44,11 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 8
         DisableFocusEffect = True
-        Items.Strings = (
-          '0           -> 0'
-          '1           -> 1'
-          'True        -> True'
-          'False       -> False'
-          '-1          -> -1'
-          '+1          -> 1'
-          '-1E20       -> -1E20'
-          '-2E3        -> -2000'
-          '-5.1e-3     -> -0.0051'
-          '2e10        -> 20000000000'
-          '1.234       -> 1.234'
-          '"abc"       -> abc'
-          #39'ab"c'#39'      -> ab"c'
-          '"a"         -> a'
-          '"x" + "y"   -> xy'
-          #39'zzzz'#39'      -> zzzz'
-          '1234        -> 1234'
-          '-1234       -> -1234'
-          '123.456e4   -> 1234560'
-          '1+1         -> 2'
-          '1.2 + 3.4   -> 4.6'
-          '1.2+3.4     -> 4.6'
-          '-3-2        -> -5'
-          '-3+ -1      -> -4'
-          '2*2         -> 4'
-          '6/3         -> 2'
-          '5/2         -> 2.5'
-          '(123)       -> 123'
-          '(1+1)*2     -> 4'
-          '(2*3)-(2-1) -> 5'
-          '5^3         -> 125'
-          '2 = 2       -> True'
-          '3 = 5       -> False'
-          '3 > 2       -> True'
-          '-1>=-2      -> True'
-          '12.6<=12.6  -> True'
-          '12.6<12.6   -> False'
-          '12.6<>12.7  -> True'
-          '"xx"<>"yy"  -> True'
-          '"xx"<>"xx"  -> False'
-          '5<10        -> True'
-          '"a" + "bc"  -> abc'
-          '7 >= 9      -> False'
-          '6 <=2       -> False'
-          '(1<3) and (4>2) -> True'
-          'True and True -> True'
-          'True or false -> True'
-          'true and not false -> True'
-          'false or not false -> True'
-          'not true   -> False'
-          'not FALSE  -> True'
-          #39'x'#39' in []  -> False'
-          #39'x'#39' in ["123"] -> False'
-          #39'x'#39' in [ '#39'x'#39' ] -> True'
-          #39'x'#39' in ["x"] -> True'
-          #39'x'#39' in ['#39#39','#39'a'#39','#39'x'#39'] -> True'
-          #39'x'#39' in ['#39'y'#39','#39'z'#39','#39'w'#39'] -> False'
-          'not (23 in [14,15,23,65]) -> False'
-          'not ('#39'a'#39'='#39'b'#39') -> True'
-          'not (23 in [14.2]) -> True'
-          '1 in [1,2,3] -> True'
-          '1 in [4] -> False'
-          'PI    -> 3.14159265358979'
-          'cos(pi) -> -1'
-          'Sin(0.52359878) -> 0.500000003811985'
-          'sqr(5) -> 25'
-          'Exp( 10 ) -> 22026.4657948067'
-          'Ln( 6.8 ) -> 2.76553474636298'
-          'log( 10000) -> 4'
-          '(5*4) + sqr(3) - sqrt(36) -> 23'
-          'Date('#39'5/6/2015'#39') -> 5/6/2015'
-          'Millennium('#39'11/7/2016'#39') -> 3'
-          'Century('#39'11/7/2016'#39') -> 21'
-          'Year('#39'11/7/2016'#39') -> 2016'
-          'Month('#39'11/7/2016'#39') -> 11'
-          'Day('#39'11/7/2016'#39') -> 7'
-          'Now ->'
-          'Time("10:23:45") -> 10:23:45'
-          'Hour("10:23:45") -> 10'
-          'Minute("10:23:45") -> 23'
-          'Second("10:23:45") -> 45'
-          '"ABC" contains "B" -> True'
-          '"" contains "" -> False'
-          '"ABC" contains '#39'X'#39' -> False'
-          #39'Hello World'#39' contains '#39'W'#39' -> True'
-          #39'Hello World'#39' starts '#39'He'#39' -> True'
-          #39'Hello World'#39' starts '#39'Wo'#39' -> False'
-          #39'Hello World'#39' ends '#39'ld'#39' -> True'
-          #39'Hello World'#39' ends '#39'Wo'#39' -> False'
-          'Lower("AbC") -> abc'
-          'Upper("aBC") -> ABC'
-          'Lower("A" + "B") -> ab'
-          'Length("Hello World") -> 11'
-          'Trim(" XYZ ") -> XYZ'
-          'Lower(Trim(" aBC    ")) -> abc'
-          'IsEmpty("") -> True'
-          'IsEmpty(Upper("abc")) -> False'
-          'trunc(1.2) -> 1'
-          'trunc(1.9) -> 1'
-          'trunc(-2.2) -> -2'
-          'round(0.5) -> 0'
-          'round(0.50001) -> 1'
-          'round(0.4) -> 0'
-          'round(0.9) -> 1'
-          'Power(2) -> 100'
-          'Power(10,2) -> 100'
-          'Power(3,3) -> 27'
-          'Power(1+4,1+(1)) -> 25'
-          'IndexOf('#39#39','#39'abc'#39') -> 0'
-          'IndexOf('#39'abc'#39','#39#39') -> 0'
-          'IndexOf('#39'a'#39','#39'abc'#39') -> 1'
-          'IndexOf('#39'b'#39','#39'abc'#39') -> 2'
-          'IndexOf('#39'c'#39','#39'abc'#39') -> 3'
-          'IndexOf('#39'bc'#39','#39'abc'#39') -> 2'
-          'IndexOf('#39'ac'#39','#39'abc'#39') -> 0'
-          'IndexOf('#39'B'#39','#39'abc'#39',true) -> 0'
-          'Insert('#39'abd'#39','#39'c'#39',3) -> abcd'
-          'Remove('#39'abcd'#39',3) -> abd'
-          'Remove('#39'abcd'#39',3,2) -> ab'
-          'Replace('#39'abcd'#39','#39'c'#39','#39'C'#39') -> abCd'
-          'Replace('#39'abBcd'#39','#39'bb'#39','#39'X'#39') -> aXcd'
-          'Replace('#39'abBcd'#39','#39'bb'#39','#39'X'#39',true) -> abBcd'
-          'Count('#39#39','#39#39') -> 0'
-          'Count('#39#39','#39'a'#39') -> 0'
-          'Count('#39'a'#39','#39#39') -> 0'
-          'Count('#39'a'#39','#39'a'#39') -> 1'
-          'Count('#39' X X X '#39','#39'X'#39') -> 3'
-          'Count(Trim('#39' X X X '#39'),'#39'X'#39') -> 3'
-          'Count('#39' X X X '#39','#39'X '#39') -> 3'
-          'Count(Trim('#39' X X X '#39'),'#39'X '#39') -> 2'
-          'Count('#39'Hello World'#39','#39'o'#39') -> 2'
-          'Format('#39'<%.6d>'#39',1234) -> <001234>'
-          'Format('#39'<%s %s>'#39','#39'Hello'#39','#39'World'#39') -> <Hello World>'
-          'Count(Format('#39'%s %s'#39','#39'Hello'#39','#39'World'#39'),'#39'o'#39') -> 2'
-          'SubString('#39'abcd'#39',2,1) -> b'
-          'SubString('#39'abcd'#39',2,2) -> bc'
-          'SubString('#39'abcd'#39',4,10) -> d'
-          'SubString('#39'abcd'#39',5) ->'
-          'SubString('#39'abcd'#39',2) -> bcd'
-          '')
         DefaultItemStyles.ItemStyle = ''
         DefaultItemStyles.GroupHeaderStyle = ''
         DefaultItemStyles.GroupFooterStyle = ''
         OnChange = ListBox1Change
-        Viewport.Width = 373.000000000000000000
+        Viewport.Width = 389.000000000000000000
         Viewport.Height = 416.000000000000000000
       end
       object Memo1: TMemo
@@ -213,7 +72,7 @@ object FormMain: TFormMain
         object BTestAll: TButton
           Position.X = 16.000000000000000000
           Position.Y = 8.000000000000000000
-          Size.Width = 80.000000000000000000
+          Size.Width = 65.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 9
@@ -221,7 +80,7 @@ object FormMain: TFormMain
           OnClick = BTestAllClick
         end
         object Button8: TButton
-          Position.X = 152.000000000000000000
+          Position.X = 104.000000000000000000
           Position.Y = 8.000000000000000000
           Size.Width = 80.000000000000000000
           Size.Height = 22.000000000000000000
@@ -229,6 +88,28 @@ object FormMain: TFormMain
           TabOrder = 15
           Text = 'Benchmark'
           OnClick = Button8Click
+        end
+        object CBMultiCPU: TCheckBox
+          Position.X = 296.000000000000000000
+          Position.Y = 10.000000000000000000
+          Size.Width = 88.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 16
+          Text = 'Multi-CPU'
+        end
+        object CBBench: TComboBox
+          Items.Strings = (
+            'Evaluate'
+            'Parse'
+            'Both')
+          ItemIndex = 0
+          Position.X = 200.000000000000000000
+          Position.Y = 8.000000000000000000
+          Size.Width = 81.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 17
         end
       end
     end

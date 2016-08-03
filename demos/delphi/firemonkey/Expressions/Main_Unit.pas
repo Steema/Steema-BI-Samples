@@ -18,7 +18,7 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, 
+  FMX.Types, FMX.Controls, FMX.Forms,
 
   {$IF CompilerVersion<=27}
   {$DEFINE HASFMX20}
@@ -70,6 +70,8 @@ type
     Button6: TButton;
     Layout3: TLayout;
     LNodeObject: TLabel;
+    CBMultiCPU: TCheckBox;
+    CBBench: TComboBox;
     procedure BEvaluateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -112,13 +114,13 @@ implementation
 
 uses
   BI.Arrays, BI.Data.Expressions, BI.Data.RTTI,
-  BI.FMX.Expression.Tree, BI.Expression.Benchmark;
+  BI.FMX.Expression.Tree, BI.Expression.Benchmark, BI.Expressions.Samples;
 
 {$R *.fmx}
 
 procedure TFormMain.BEvaluateClick(Sender: TObject);
 begin
-  LabelResult.Text:=Expression.Value;
+  LabelResult.Text:=Expression.AsString;
 end;
 
 procedure TFormMain.Button1Click(Sender: TObject);
@@ -271,7 +273,7 @@ begin
            Memo1.Lines.Add('Cannot evaluate expression: '+S)
         else
         begin
-          Value:=tmpResult;
+          Value:=Expression.AsString;
 
           if Right<>Value then
              Memo1.Lines.Add('Test error: '+S+' -> '+Right+' --> '+Value);
@@ -325,12 +327,20 @@ end;
 
 procedure TFormMain.Button8Click(Sender: TObject);
 var Benchmark : TBenchmark;
+    tmp : TBenchMode;
 begin
-  // Create the expressions
-  Benchmark.Initialize(ListBox1.Items);
+  case CBBench.ItemIndex of
+    0: tmp:=TBenchMode.Evaluate;
+    1: tmp:=TBenchMode.Parse;
+  else
+     tmp:=TBenchMode.Both;
+  end;
 
-  // Evaluate all expressions
-  Benchmark.EvaluateAll;
+  // Create the expressions
+  Benchmark.Initialize(ListBox1.Items, CBMultiCPU.IsChecked, tmp);
+
+  // Test all
+  Benchmark.TestAll;
 
   // Display results
   Benchmark.ShowResults(Memo1.Lines);
@@ -422,6 +432,8 @@ begin
   Expression:=TArithmeticExpression.Create(TFloatExpression.Create(1),TArithmeticOperand.Add,TFloatExpression.Create(2));
 
   Present;
+
+  ListBox1.Items.Text:=TSampleExpressions.Text;
 end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);

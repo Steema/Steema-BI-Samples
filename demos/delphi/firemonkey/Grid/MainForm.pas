@@ -67,7 +67,7 @@ end;
 
 procedure TGridDemoForm.FormShow(Sender: TObject);
 begin
-  IManager:=TDataManager.EmbedChoose(Self,TabData,'BISamples');
+  IManager:=TDataManager.Embed(Self,TabData,TDataManagerEmbedMode.Choose,'BISamples');
   IManager.OnSelect:=SelectedData;
 
   TabControl1Resize(Self);

@@ -29,10 +29,6 @@ type
   TDateTimeRangeEditor = class(TForm)
     PageControl1: TPageControl;
     TabRange: TTabSheet;
-    TabSheet3: TTabSheet;
-    PanelMonths: TPanel;
-    PanelWeeks: TPanel;
-    Splitter1: TSplitter;
     PageRange: TPageControl;
     TabCombo: TTabSheet;
     Label1: TLabel;
@@ -63,7 +59,6 @@ type
     procedure CBPeriod2Change(Sender: TObject);
     procedure CalendarFromClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure CBDayChange(Sender: TObject);
     procedure CBDayToChange(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
@@ -81,11 +76,7 @@ type
     IFromTo,
     ISelected : TNumericFromTo;
 
-    IMonths,
-    IWeeks : TFormListItems;
-
     procedure ChangedFromTo(Sender: TObject);
-    procedure ChangedIncluded(Sender: TObject);
     procedure ChangedSelected(Sender: TObject);
     function DateFrom(const AYear,AMonth,ADay:TComboBox):TDateTime;
     procedure DoAddDays(const AYear,AMonth,ADay:TComboBox; First:Boolean);
@@ -99,14 +90,12 @@ type
 
     Data : TDataItem;
 
-    //function Filter:TLogicalExpression;
+    class procedure AddMonths(const AItems:TStrings; const AMin,AMax:Word); static;
 
     function FromDate:TDateTime;
     function ToDate:TDateTime;
 
-    function Months:TBooleanArray;
     function Part:TSelectedPart;
-    function WeekDays:TBooleanArray;
 
     procedure Refresh(const AData:TDataItem);
 

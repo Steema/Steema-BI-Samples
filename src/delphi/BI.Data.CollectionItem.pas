@@ -29,7 +29,7 @@ type
     IOrigin : String;
     IUpdating : Integer;
 
-    procedure BeginUpdate;
+    procedure BeginUpdate; inline;
     procedure Changed; virtual;
     procedure DefineProperties(Filer: TFiler); override;
     procedure EndUpdate;

@@ -12,7 +12,6 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
@@ -31,7 +30,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
         Top = 0
         Width = 441
         Height = 232
-        ActivePage = TabCalendar
+        ActivePage = TabCombo
         Align = alClient
         TabOrder = 0
         OnChange = PageRangeChange
@@ -124,6 +123,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
               'Custom'
               'Today'
               'Yesterday'
+              'Tomorrow'
               'This'
               'Last'
               'Next')
@@ -168,7 +168,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
             Top = 20
             Width = 170
             Height = 143
-            Date = 42509.702132650460000000
+            Date = 42571.699485810180000000
             ShowToday = False
             ShowTodayCircle = False
             TabOrder = 0
@@ -179,7 +179,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
             Top = 20
             Width = 169
             Height = 143
-            Date = 42509.702132650460000000
+            Date = 42571.699485810180000000
             ShowToday = False
             ShowTodayCircle = False
             TabOrder = 1
@@ -220,36 +220,6 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
           TabOrder = 0
           OnChange = CBPartChange
         end
-      end
-    end
-    object TabSheet3: TTabSheet
-      Caption = 'Included'
-      ImageIndex = 2
-      object Splitter1: TSplitter
-        Left = 153
-        Top = 0
-        Height = 232
-        ExplicitLeft = 216
-        ExplicitTop = 64
-        ExplicitHeight = 100
-      end
-      object PanelMonths: TPanel
-        Left = 0
-        Top = 0
-        Width = 153
-        Height = 232
-        Align = alLeft
-        BevelOuter = bvNone
-        TabOrder = 0
-      end
-      object PanelWeeks: TPanel
-        Left = 156
-        Top = 0
-        Width = 285
-        Height = 232
-        Align = alClient
-        BevelOuter = bvNone
-        TabOrder = 1
       end
     end
   end

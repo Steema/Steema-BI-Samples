@@ -32,6 +32,12 @@ object FormSpeed: TFormSpeed
       Caption = 'Results copied to clipboard'
       Visible = False
     end
+    object LTotal: TLabel
+      Left = 111
+      Top = 13
+      Width = 3
+      Height = 13
+    end
     object Button1: TButton
       Left = 24
       Top = 9

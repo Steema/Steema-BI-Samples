@@ -12,9 +12,10 @@ uses
   {$IFNDEF FPC}
   Winapi.Windows, Winapi.Messages,
   {$ENDIF}
-  System.SysUtils,
-  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.ComCtrls, BI.Persist, Vcl.StdCtrls, Vcl.ExtCtrls;
+  System.SysUtils, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
+  Vcl.StdCtrls, Vcl.ExtCtrls,
+  BI.Persist, BI.DataSource;
 
 type
   TDataEditor = class(TForm)
@@ -183,6 +184,13 @@ type
 
     IStore : String;
 
+    procedure AddFilter(const ADialog:TOpenDialog;
+                        const AFilters:TBIFileSource.TFileFilters;
+                        var AFilter:String;
+                        var All:String);
+
+    procedure CheckFileFilter(const ADialog:TOpenDialog);
+    procedure CheckDBFileFilter(const ADialog:TOpenDialog);
     procedure DatabaseSettings;
     function DBDriverID:String;
     procedure DoTest;
@@ -190,6 +198,7 @@ type
     procedure FileSettings;
     function FileTypeExtension(const Index:Integer):String;
     procedure FillDBDrivers;
+    procedure FinishAddFilter(const ADialog:TOpenDialog; const AFilter,All:String);
 
     procedure RefreshSettings;
     procedure ResetWebTest;

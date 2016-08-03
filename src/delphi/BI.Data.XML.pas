@@ -9,18 +9,22 @@ unit BI.Data.XML;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.DataSource;
+  System.Classes,
+  BI.Arrays, BI.Data, BI.DataSource;
 
 type
   EBIXML=class(EBIException);
 
   TXmlEngine=class abstract
-  protected
+  public
+    Constructor Create(const AOwner:TComponent); virtual; abstract;
+
     function Attribute(const Index:Integer):String; virtual; abstract;
     function AttributeCount:Integer; virtual; abstract;
     function AttributeName(const Index: Integer):String; virtual; abstract;
     function Count:Integer; virtual; abstract;
     procedure FromString(const Text:String); virtual; abstract;
+    function GetAttribute(const AName:String):String;
     function HasParent:Boolean; virtual; abstract;
     function HasText:Boolean; virtual; abstract;
     function IsValid:Boolean; virtual; abstract;
@@ -30,28 +34,28 @@ type
     procedure Parent; virtual; abstract;
     procedure Root; virtual; abstract;
     function Text:String; virtual; abstract;
-  public
-    Constructor Create(const AOwner:TComponent); virtual; abstract;
   end;
 
   TBIXML=class(TBITextSource)
   private
     FExclude : TTextArray;
 
-    XML : TXmlEngine;
-
     procedure DoAppend(const Data:TDataItem; const XML:TXmlEngine; const CallProgress:Boolean);
+  protected
+    XML : TXmlEngine;
   public
     Constructor CreateEngine(const AEngine:TXmlEngine);
     Destructor Destroy; override;
 
     class function ExportFormat:TBIExport; override;
 
+    class function FileFilter: TBIFileSource.TFileFilters; override;
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
     function Import(const Strings:TStrings):TDataArray; overload; override;
 
     function ImportText(const Text:String): TDataItem;
 
+    function Parse(const Text:String): Boolean;
     class function Supports(const Extension:String):Boolean; override;
 
     property ExcludeNodes:TTextArray read FExclude;

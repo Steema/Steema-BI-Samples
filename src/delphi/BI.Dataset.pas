@@ -260,6 +260,8 @@ type
     {$IFDEF D20}
     procedure SetFieldProps(Field: TField; FieldDef: TFieldDef); override;
     {$ENDIF}
+
+    property Link:TMasterDataLink read ILink;
   public
     PercentFormat : String;
     FloatFormat : String;

@@ -21,20 +21,20 @@ object DataSelector: TDataSelector
     Top = 0
     Width = 426
     Height = 457
-    ActivePage = TabComponent
+    ActivePage = TabStore
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
     object TabStore: TTabSheet
       Caption = 'Store'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabComponent: TTabSheet
       Caption = 'Component'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0

@@ -34,6 +34,10 @@ object GridDemoForm: TGridDemoForm
     TabOrder = 0
     object TabOptions: TTabSheet
       Caption = 'Grid Options'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'

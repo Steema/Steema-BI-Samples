@@ -9,9 +9,12 @@ unit BI.Web;
 interface
 
 uses
-  System.Classes, System.Types, BI.Arrays, BI.Data, BI.Persist;
+  System.Classes, System.Types, System.SysUtils,
+  BI.Arrays, BI.Data, BI.Persist, BI.DataSource;
 
 type
+  EHttpAbort=class(Exception);
+
   TBIHttpProgress=procedure(Sender:TObject; const ACurrent,ATotal:Int64; var Abort:Boolean) of object;
 
   TBIHttpClass=class of TBIHttp;
@@ -181,6 +184,18 @@ type
 
     Constructor CreateWeb(const ABIWeb:TBIWebClient);
     Destructor Destroy; override;
+  end;
+
+  TBIURLSource=class(TBIFileSource)
+  protected
+    function DoImportFile(const FileName:String):TDataArray; override;
+    function ImportURLFile(const FileName:String):TDataArray;
+  public
+    class function FileFilter:TBIFileSource.TFileFilters; override;
+    class function From(const AURL:String):TDataItem; static;
+    function Import(const URL:String):TDataArray;
+    class function IsURL(const FileName:String):Boolean; static;
+    class function Supports(const Extension:String):Boolean; override;
   end;
 
 implementation

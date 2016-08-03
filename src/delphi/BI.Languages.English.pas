@@ -3,9 +3,9 @@ unit BI.Languages.English;
 interface
 
 const
-  TeeBI_Version=20160613;
-  TeeBI_VersionString='v1 20160613';
-  TeeBI_VersionMode='(BETA 14)';
+  TeeBI_Version=20160713;
+  TeeBI_VersionString='v1 20160713';
+  TeeBI_VersionMode='(BETA 15)';
   TeeBI_Description='TeeBI';
   TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2016 by Steema Software';
 

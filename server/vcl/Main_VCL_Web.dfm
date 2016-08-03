@@ -2,7 +2,7 @@ object FormBIWeb: TFormBIWeb
   Left = 0
   Top = 0
   Caption = 'TeeBI Web Server'
-  ClientHeight = 335
+  ClientHeight = 347
   ClientWidth = 591
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,27 +19,29 @@ object FormBIWeb: TFormBIWeb
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 316
+    Top = 328
     Width = 591
     Height = 19
     Panels = <>
+    ExplicitTop = 316
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 51
     Width = 591
-    Height = 265
-    ActivePage = TabScheduler
+    Height = 277
+    ActivePage = TabSettings
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
+    ExplicitHeight = 265
     object TabConsole: TTabSheet
       Caption = 'Console'
       object ErrorLog: TMemo
         Left = 0
         Top = 0
         Width = 583
-        Height = 237
+        Height = 249
         Align = alClient
         BevelOuter = bvNone
         BorderStyle = bsNone
@@ -74,7 +76,7 @@ object FormBIWeb: TFormBIWeb
         Left = 0
         Top = 34
         Width = 583
-        Height = 203
+        Height = 215
         Cursor = crHandPoint
         Align = alClient
         UseDockManager = False
@@ -86,6 +88,7 @@ object FormBIWeb: TFormBIWeb
     object TabSettings: TTabSheet
       Caption = 'Settings'
       ImageIndex = 2
+      ExplicitHeight = 237
       object Label1: TLabel
         Left = 12
         Top = 44
@@ -204,10 +207,20 @@ object FormBIWeb: TFormBIWeb
         TabOrder = 4
         OnClick = Button2Click
       end
+      object Button3: TButton
+        Left = 12
+        Top = 214
+        Width = 75
+        Height = 25
+        Caption = '&Home...'
+        TabOrder = 5
+        OnClick = Button3Click
+      end
     end
     object TabScheduler: TTabSheet
       Caption = 'Scheduler'
       ImageIndex = 3
+      ExplicitHeight = 237
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -230,13 +243,14 @@ object FormBIWeb: TFormBIWeb
         Left = 0
         Top = 31
         Width = 583
-        Height = 206
+        Height = 218
         Align = alClient
         UseDockManager = False
         ParentBackground = False
         ParentColor = False
         TabOrder = 1
         ReadOnly = False
+        ExplicitHeight = 206
       end
     end
   end

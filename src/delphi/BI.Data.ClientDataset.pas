@@ -10,7 +10,8 @@ interface
 
 uses
   System.Classes, System.SysUtils, Data.DB, DBClient,
-  BI.Data.Dataset, BI.Data, BI.Summary, BI.Persist, BI.Expression;
+  BI.Data.Dataset, BI.Data, BI.Summary, BI.Persist, BI.Expression,
+  BI.DataSource;
 
 type
   TBIClientDataset=class(TBIDatasetSource)
@@ -22,6 +23,8 @@ type
   protected
     function DoImportFile(const FileName:String):TDataArray; override;
   public
+    class function FileFilter:TBIFileSource.TFileFilters; override;
+
     class procedure FillData(const DataSet:TClientDataSet; const AData:TDataItem); overload; static;
     class procedure FillData(const DataSet: TClientDataSet; const AData: TDataArray); overload; static;
     class procedure FillData(const DataSet:TClientDataSet; const AData:TDataItem; const Filter:TExpression=nil); overload; static;

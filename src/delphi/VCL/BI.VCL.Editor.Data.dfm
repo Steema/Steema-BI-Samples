@@ -26,10 +26,6 @@ object DataEditor: TDataEditor
     TabOrder = 0
     object TabFiles: TTabSheet
       Caption = 'Files'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControlFile: TPageControl
         Left = 0
         Top = 0
@@ -40,10 +36,6 @@ object DataEditor: TDataEditor
         TabOrder = 0
         object TabFile: TTabSheet
           Caption = 'Single File'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label2: TLabel
             Left = 16
             Top = 16
@@ -87,10 +79,6 @@ object DataEditor: TDataEditor
         object TabFolder: TTabSheet
           Caption = 'Folder'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label3: TLabel
             Left = 16
             Top = 16
@@ -204,10 +192,6 @@ object DataEditor: TDataEditor
         object TabFTP: TTabSheet
           Caption = 'FTP'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label18: TLabel
             Left = 20
             Top = 16
@@ -317,15 +301,11 @@ object DataEditor: TDataEditor
         Top = 0
         Width = 510
         Height = 367
-        ActivePage = SQL
+        ActivePage = TabConnection
         Align = alClient
         TabOrder = 0
         object TabConnection: TTabSheet
           Caption = 'Connection'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label7: TLabel
             Left = 16
             Top = 8
@@ -555,10 +535,6 @@ object DataEditor: TDataEditor
             object TabSQL: TTabSheet
               Caption = 'Custom SQL'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object MemoSQL: TMemo
                 Left = 0
                 Top = 0
@@ -577,10 +553,6 @@ object DataEditor: TDataEditor
         object TabDBOptions: TTabSheet
           Caption = 'Options'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object CBParallel: TCheckBox
             Left = 16
             Top = 16
@@ -605,10 +577,6 @@ object DataEditor: TDataEditor
     object TabWeb: TTabSheet
       Caption = 'BI Web'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LayoutWebData: TPanel
         Left = 0
         Top = 257
@@ -662,10 +630,6 @@ object DataEditor: TDataEditor
         TabOrder = 1
         object TabHttpServer: TTabSheet
           Caption = 'Server'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label4: TLabel
             Left = 12
             Top = 8
@@ -776,10 +740,6 @@ object DataEditor: TDataEditor
         object TabHttpProxy: TTabSheet
           Caption = 'Proxy'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label13: TLabel
             Left = 12
             Top = 16
@@ -862,10 +822,6 @@ object DataEditor: TDataEditor
     object TabUnknown: TTabSheet
       Caption = 'Style'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LabelUnknown: TLabel
         Left = 24
         Top = 24
@@ -931,11 +887,7 @@ object DataEditor: TDataEditor
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = '.txt'
-    Filter = 
-      'ClientDataSet files|*.cds|CSV files|*.csv|Text files|*.txt|JSON ' +
-      'files|*.json|XML files|*.xml|Microsoft Excel files|*.xls;*.xlsx|' +
-      'All files|*.cds;*.csv;*.txt;*.json;*.xml;*.xls;*.xlsx'
-    FilterIndex = 7
+    FilterIndex = 0
     Options = [ofReadOnly, ofHideReadOnly, ofFileMustExist, ofEnableSizing]
     Title = 'Select file to import'
     Left = 352

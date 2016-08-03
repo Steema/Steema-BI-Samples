@@ -83,10 +83,11 @@ type
 
     FColorizers : TDataColorizers;
 
+    procedure AutoSizeWidth(const AColumn:TColumn; const ACanvas:TCanvas);
     function CalcSortWidth:Single;
 
     function FieldOf(const AColumn:TColumn):TField;
-    
+
     {$IF CompilerVersion>25}
     procedure ClickedHeader(Column:TColumn);
 
@@ -132,8 +133,11 @@ type
     procedure AutoWidth; override;
     procedure ChangedAlternate(Sender:TObject); override;
     function GetDataSource: TDataSource; override;
+    function GetReadOnly:Boolean; override;
     function GetTotals:Boolean; override;
     procedure SetDataSource(const Value: TDataSource); override;
+    procedure SetReadOnly(const Value:Boolean); override;
+    procedure SetOnRowChanged(const AEvent:TNotifyEvent); override;
     procedure SetTotals(const Value:Boolean); override;
   public
     Constructor Create(const AOwner:TComponent); override;

@@ -41,6 +41,7 @@ type
     UDExcelHeader: TUpDown;
     TabJSON: TTabSheet;
     RGJSONStyle: TRadioGroup;
+    RGJSONFormat: TRadioGroup;
     procedure CBDelimiterChange(Sender: TObject);
     procedure ECustomDelimiterChange(Sender: TObject);
     procedure CBQuoteChange(Sender: TObject);
@@ -50,9 +51,17 @@ type
     procedure EZipPasswordChange(Sender: TObject);
     procedure EExcelHeaderChange(Sender: TObject);
     procedure RGJSONStyleClick(Sender: TObject);
+    procedure RGJSONFormatClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+
+    IChanging : Boolean;
+
     IData : TDataDefinition;
+
+    function CanChange(const AControl:TWinControl=nil):Boolean;
 
     procedure RefreshCSV;
     procedure RefreshExcel;

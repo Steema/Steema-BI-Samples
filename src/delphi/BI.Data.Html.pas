@@ -15,13 +15,18 @@ uses
   {$ELSE}
   System.UITypes,
   {$ENDIF}
-  Data.DB, BI.Data, BI.DataSource, BI.Arrays, BI.UI;
+  Data.DB, BI.Data, BI.DataSource, BI.Arrays, BI.UI, BI.Data.XML;
 
 type
   TBIHTML=class(TBITextSource)
+  private
+    class function GetTable(const Xml:TXmlEngine):TDataItem; static;
+    class function GetTables(const Xml:TXmlEngine):TDataArray; static;
+    class function TryFindID(const Xml:TXmlEngine):String; static;
   public
     class function ExportFormat:TBIExport; override;
 
+    class function FileFilter: TBIFileSource.TFileFilters; override;
     function Import(const Strings:TStrings):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;
   end;

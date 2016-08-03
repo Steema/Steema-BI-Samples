@@ -93,12 +93,14 @@ type
     KeepData : Boolean;
   protected
     procedure Notify(const AEvent:TBIEvent);
+    class function ValueOf(const AData:TDataItem; const AIndex:TInteger):TData; static;
   public
     Constructor Create(const AData:TDataItem; const FreeData:Boolean=False; const AMain:TDataItem=nil);
     Destructor Destroy; override;
 
     procedure Assign(const Source:TExpression); override;
-    function IsLogical:Boolean;
+    function Kind:TDataKind;
+    function IsLogical:Boolean; inline;
     class procedure LookupFill(const ASource,ADest:TDataItem); static;
     class function NewLookup(const AName:String; const ADetail:TDataItem; const AMaster:TDataItem):TDataItem;
     function ToString:String; override;
@@ -111,14 +113,17 @@ type
   TColumnExpression=class(TUnaryExpression)
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); virtual; abstract;
-    function KindOf:TDataKind; virtual; abstract;
+    function Kind:TDataKind; virtual; abstract;
     class function TryParse(const S:String):TColumnExpression; virtual; abstract;
   end;
 
   TIsNullData=class(TColumnExpression)
+  private
+    FDataExpression : TDataItemExpression;
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
-    function KindOf:TDataKind; override;
+    function Kind:TDataKind; override;
+    procedure SetExpression(const Value:TExpression); override;
     class function TryParse(const S:String):TColumnExpression; override;
   public
     function Value:TData; override;
@@ -254,8 +259,8 @@ type
                               const Error:TErrorProc=nil): TExpression; static;
 
     class function VerifyLogical(const AExpression:TExpression;
-                                      const AText: String;
-                                      const Error:TErrorProc): TExpression; static;
+                                 const AText: String;
+                                 const Error:TErrorProc): TExpression; static;
   end;
 
   TDataItemSort=record
@@ -285,7 +290,7 @@ type
   TColumnFunction=class(TColumnExpression)
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
-    function KindOf:TDataKind; override;
+    function Kind:TDataKind; override;
     class function TryParse(const S:String):TColumnExpression; override;
   public
     Operand : TColumnOperand;
@@ -297,7 +302,7 @@ type
   TMovingAverageColumn=class(TColumnExpression)
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
-    function KindOf:TDataKind; override;
+    function Kind:TDataKind; override;
     class function TryParse(const S:String):TColumnExpression; override;
   public
     Period : Integer;

@@ -11,6 +11,8 @@ object DataFormatEditor: TDataFormatEditor
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object PageFormat: TPageControl
@@ -18,7 +20,7 @@ object DataFormatEditor: TDataFormatEditor
     Top = 0
     Width = 398
     Height = 325
-    ActivePage = TabJSON
+    ActivePage = TabCSV
     Align = alClient
     TabOrder = 0
     object TabCSV: TTabSheet
@@ -150,6 +152,10 @@ object DataFormatEditor: TDataFormatEditor
     object TabZip: TTabSheet
       Caption = 'Zip'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label6: TLabel
         Left = 16
         Top = 21
@@ -171,6 +177,10 @@ object DataFormatEditor: TDataFormatEditor
     object TabExcel: TTabSheet
       Caption = 'Excel'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label7: TLabel
         Left = 10
         Top = 16
@@ -214,6 +224,19 @@ object DataFormatEditor: TDataFormatEditor
           'Hierarchical')
         TabOrder = 0
         OnClick = RGJSONStyleClick
+      end
+      object RGJSONFormat: TRadioGroup
+        Left = 16
+        Top = 144
+        Width = 185
+        Height = 105
+        Caption = 'File Format:'
+        ItemIndex = 0
+        Items.Strings = (
+          'Default JSON'
+          'Array of JSON lines')
+        TabOrder = 1
+        OnClick = RGJSONFormatClick
       end
     end
   end

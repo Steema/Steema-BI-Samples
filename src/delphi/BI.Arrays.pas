@@ -236,9 +236,14 @@ type
   {$ENDIF}
 
   {$IFDEF GENERICSTATS}
-  TInt32Stats=class(TDataStats<Integer>);
+  TInt32Stats=class(TDataStats<Integer>)
+  private
+    procedure CalcStats(const Data:TInt32Array);
+  end;
   {$ELSE}
   TInt32Stats=class(TDataStats)
+  private
+    procedure CalcStats(const Data:TInt32Array);
   public
     Min : Integer;
     Max : Integer;
@@ -248,9 +253,14 @@ type
   {$ENDIF}
 
   {$IFDEF GENERICSTATS}
-  TInt64Stats=class(TDataStats<Int64>);
+  TInt64Stats=class(TDataStats<Int64>)
+  private
+    procedure CalcStats(const Data:TInt64Array);
+  end;
   {$ELSE}
   TInt64Stats=class(TDataStats)
+  private
+    procedure CalcStats(const Data:TInt64Array);
   public
     Min : Int64;
     Max : Int64;
@@ -356,6 +366,7 @@ type
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function Equals(const Value:TBooleanArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Boolean);
     function Map:TBooleanMap;
@@ -384,6 +395,7 @@ type
     function Count:TInteger; inline;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function Equals(const Value:TTextArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:String):TInteger; overload; inline;
     function IndexOf(const Value:String; const CaseSensitive:Boolean):TInteger; overload;
@@ -433,8 +445,12 @@ type
 
   TInt32ArrayHelper=record helper for TInt32Array
   private
+    const
+      SortThreshold=16;
+
     function Distribution(const Mean,StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
+    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Integer):TInteger; overload; inline;
     procedure Append(const Value:TInt32Array); overload;
@@ -446,6 +462,7 @@ type
     function CoVariance(const Y: TInt32Array; const XMean,YMean: TFloat):TFloat;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function Equals(const Value:TInt32Array):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:Integer):TInteger;
     function IndexOfMax:TInteger;
@@ -457,8 +474,9 @@ type
     procedure RemoveValue(const Value:Integer);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
+    procedure Sort(const FromIndex,ToIndex:TInteger; const Ascending:Boolean=True); overload;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
-    procedure Sort(const Ascending:Boolean=True); overload;
+    procedure Sort(const Ascending:Boolean=True); overload; inline;
     function SortedFind(const Value: Integer; out Exists:Boolean):TNativeInteger;
     function Stats:TInt32Stats;
     function StdDeviation(const Mean:TFloat):TFloat;
@@ -471,8 +489,12 @@ type
 
   TInt64ArrayHelper=record helper for TInt64Array
   private
+    const
+      SortThreshold=16;
+
     function Distribution(const Mean,StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
+    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Int64):TInteger; overload; inline;
     procedure Append(const Value:TInt64Array); overload;
@@ -484,6 +506,7 @@ type
     function CoVariance(const Y: TInt64Array; const XMean,YMean: TFloat):TFloat;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function Equals(const Value:TInt64Array):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:Int64):TInteger;
     function IndexOfMax:TInteger;
@@ -495,6 +518,7 @@ type
     procedure RemoveValue(const Value:Int64);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
+    procedure Sort(const FromIndex,ToIndex:TInteger; const Ascending:Boolean=True); overload;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     procedure Sort(const Ascending:Boolean=True); overload;
     function SortedFind(const Value: Int64; out Exists:Boolean):TNativeInteger;
@@ -509,8 +533,12 @@ type
 
   TSingleArrayHelper=record helper for TSingleArray
   private
+    const
+      SortThreshold=16;
+
     function Distribution(const Mean,StdDeviation:Single; const Exponent:Integer):Single;
     function GuessOrder:TDataOrder;
+    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Single):TInteger; overload; inline;
     procedure Append(const Value:TSingleArray); overload;
@@ -522,6 +550,7 @@ type
     function CoVariance(const Y: TSingleArray; const XMean,YMean: Single):Single;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function Equals(const Value:TSingleArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Single);
     function Map(out Median,Mode:Single):TSingleMap; overload;
@@ -531,6 +560,7 @@ type
     procedure Normalize(const Mean:Single);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
+    procedure Sort(const FromIndex,ToIndex:TInteger; const Ascending:Boolean=True); overload;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     procedure Sort(const Ascending: Boolean=True); overload; inline;
     function SortedFind(const Value: Single; out Exists:Boolean):TNativeInteger;
@@ -545,8 +575,12 @@ type
 
   TDoubleArrayHelper=record helper for TDoubleArray
   private
+    const
+      SortThreshold=16;
+
     function Distribution(const Mean,StdDeviation:Double; const Exponent:Integer):Double;
     function GuessOrder:TDataOrder;
+    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Double):TInteger; overload; inline;
     procedure Append(const Value:TDoubleArray); overload;
@@ -558,6 +592,7 @@ type
     function CoVariance(const Y: TDoubleArray; const XMean,YMean: Double):Double;
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
+    function Equals(const Value:TDoubleArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
     procedure Insert(const Index:TInteger; const Value:Double);
     function Map(out Median,Mode:Double):TDoubleMap; overload;
@@ -567,6 +602,7 @@ type
     procedure Normalize(const Mean:Double);
     procedure Resize(const Count:TInteger); inline;
     procedure Reverse; inline;
+    procedure Sort(const FromIndex,ToIndex:TInteger; const Ascending:Boolean=True); overload;
     procedure Sort(const Ascending:Boolean; const Swap:TSwapProc); overload;
     procedure Sort(const Ascending: Boolean=True); overload; inline;
     function SortedFind(const Value: Double; out Exists:Boolean):TNativeInteger;

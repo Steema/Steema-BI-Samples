@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, BI.Data, BI.Expression, BI.Data.CollectionItem,
-  BI.Arrays;
+  BI.Arrays, BI.Data.Expressions;
 
 type
   TFloat=Double;
@@ -35,14 +35,18 @@ type
 
     procedure SetEnabled(const Value: Boolean);
     procedure SetValue(const Value: TFloat);
+    function GetEqual: Boolean;
+    procedure SetEqual(const Value: Boolean);
   public
     Constructor Create(const AItem:TFilterItem; const AOperand:TLogicalOperand);
 
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+    procedure Reset;
   published
     property Enabled:Boolean read FEnabled write SetEnabled default False;
+    property Equal:Boolean read GetEqual write SetEqual default True;
     property Value:TFloat read FValue write SetValue;
   end;
 
@@ -59,6 +63,7 @@ type
     function Filter:TLogicalExpression;
 
     procedure Assign(Source:TPersistent); override;
+    procedure Reset;
 
     property Month[const Index:Integer]:Boolean read Get write Put; default;
   published
@@ -89,6 +94,7 @@ type
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+    procedure Reset;
 
     property Weekday[const Index:Integer]:Boolean read Get write Put; default;
   published
@@ -108,6 +114,8 @@ type
     FPart : TDateTimePart;
     FValue : Integer;
 
+    function EqualPart:TLogicalExpression;
+
     procedure SetDateTime(const Value: TDateTime);
     procedure SetEnabled(const Value: Boolean);
     procedure SetPart(const Value: TDateTimePart);
@@ -116,6 +124,7 @@ type
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+    procedure Reset;
   published
     property DateTime:TDateTime read FDateTime write SetDateTime;
     property Enabled:Boolean read FEnabled write SetEnabled default False;
@@ -151,6 +160,7 @@ type
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+    procedure Reset;
 
     property FromDate:TDateTime read GetFrom write SetFrom;
     property ToDate:TDateTime read GetTo write SetTo;
@@ -175,6 +185,8 @@ type
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+
+    procedure Reset;
   published
     property IncludeTrue:Boolean read GetTrue write SetTrue default False;
     property IncludeFalse:Boolean read GetFalse write SetFalse default False;
@@ -198,10 +210,33 @@ type
     procedure Assign(Source:TPersistent); override;
 
     function Filter:TLogicalExpression;
+    procedure Reset;
   published
     property FromValue:TNumericValue read FFrom write SetFrom;
     property Selected:TNumericValue read FSelected write SetSelected;
     property ToValue:TNumericValue read FTo write SetTo;
+  end;
+
+  TTextFilterStyle=(Contains,IsEqual,Starts,Ends,IsEmpty);
+
+  TTextFilter=class(TFilterPart)
+  private
+    FStyle : TTextFilterStyle;
+    FText : String;
+    FCase: Boolean;
+
+    procedure SetStyle(const Value:TTextFilterStyle);
+    procedure SetText(const Value:String);
+    procedure SetCase(const Value: Boolean);
+  public
+    procedure Assign(Source:TPersistent); override;
+
+    function Filter:TExpression;
+    procedure Reset;
+  published
+    property CaseSensitive:Boolean read FCase write SetCase default False;
+    property Style:TTextFilterStyle read FStyle write SetStyle default TTextFilterStyle.Contains;
+    property Text:String read FText write SetText;
   end;
 
   TFilterItem=class(TDataCollectionItem)
@@ -212,10 +247,12 @@ type
     FExcluded: TStringList;
     FExpression : TLogicalExpression;
     FIncluded: TStringList;
+    FInverted: Boolean;
     FNumeric : TNumericFilter;
+    FText : TTextFilter;
 
     procedure DoChanged(Sender:TObject);
-    function GetFilter: TLogicalExpression;
+    function GetFilter: TExpression;
     function MainData:TDataItem;
     function NewLogical(const AOperand:TLogicalOperand):TLogicalExpression;
     procedure SetBool(const Value: TBooleanFilter);
@@ -223,10 +260,13 @@ type
     procedure SetEnabled(const Value: Boolean);
     procedure SetExcluded(const Value: TStringList);
     procedure SetIncluded(const Value: TStringList);
+    procedure SetInverted(const Value: Boolean);
     procedure SetNumeric(const Value: TNumericFilter);
+    procedure SetText(const Value: TTextFilter);
     procedure TryAdd(const AText:String; const A,B:TStrings);
   protected
     procedure Changed; override;
+    function DataExpression:TDataItemExpression;
   public
     Constructor Create(Collection: TCollection); override;
     Destructor Destroy; override;
@@ -236,15 +276,19 @@ type
     procedure ExcludeText(const AText:String; const Add:Boolean=True);
     procedure IncludeText(const AText:String; const Add:Boolean=True);
 
+    procedure Reset;
+
     property Expression:TLogicalExpression read FExpression write FExpression;
-    property Filter:TLogicalExpression read GetFilter;
+    property Filter:TExpression read GetFilter;
   published
     property BoolFilter:TBooleanFilter read FBool write SetBool;
     property DateTime:TDateTimeFilter read FDateTime write SetDateTime;
     property Enabled:Boolean read FEnabled write SetEnabled default True;
     property Excluded:TStringList read FExcluded write SetExcluded;
     property Included:TStringList read FIncluded write SetIncluded;
+    property Inverted:Boolean read FInverted write SetInverted default False;
     property Numeric:TNumericFilter read FNumeric write SetNumeric;
+    property Text:TTextFilter read FText write SetText;
   end;
 
   TBIFilter=class;
@@ -260,7 +304,7 @@ type
     Constructor Create(AOwner: TPersistent);
 
     function Add(const AData:TDataItem):TFilterItem;
-    function Filter:TLogicalExpression;
+    function Filter:TExpression;
 
     property Items[const Index:Integer]:TFilterItem read Get write Put; default;
   end;
@@ -293,7 +337,7 @@ type
 
     procedure Clear;
     function Custom:TLogicalExpression;
-    function Filter:TLogicalExpression;
+    function Filter:TExpression;
 
     function ItemOf(const AData:TDataItem):TFilterItem;
 

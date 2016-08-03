@@ -52,11 +52,10 @@ type
     class var
       Null:TData;
 
-    Constructor Create; overload; virtual;
-
     procedure Assign(const Source:TExpression); virtual; abstract;
+    function AsString:String; virtual;
 
-    class function Clone(const AExpression:TExpression):TExpression; static;
+    class function Clone(const AExpression:TExpression):TExpression; overload; static;
 
     class function Evaluate(const S:String):TData; static;
     class function FromString(const S:String):TExpression; overload; static;
@@ -117,6 +116,7 @@ type
     function ToString:String; override;
 
     class function Date:TDateTimeExpression; static;
+    class function DateSpan(const ADelta:TDateTime):TDateTimeExpression; static;
     class function Now:TDateTimeExpression; static;
     class function Time:TDateTimeExpression; static;
 
@@ -136,9 +136,20 @@ type
 
   TExpressions=Array of TExpression;
 
+  TExpressionsHelper=record helper for TExpressions
+  public
+    procedure Add(const AExpression:TExpression); overload;
+    procedure Add(const AExpressions:Array of TExpression); overload;
+    function Count:Integer; inline;
+  end;
+
   TArrayExpression=class(TExpression)
+  private
+    function Get(const Index: Integer): TExpression; inline;
+    procedure Put(const Index: Integer; const Value: TExpression); inline;
   public
     Items : TExpressions;
+    IsParams : Boolean;
 
     Constructor Create(const AValues:Array of TExpression); overload;
     Constructor Create(const AValues:Array of TData); overload;
@@ -147,10 +158,13 @@ type
     procedure Add(const AValue:TExpression);
     procedure Assign(const Source:TExpression); override;
     procedure Clear;
+    function Count:Integer; inline;
 
-    function Value:TData; override;
     function ToString:String; override;
     procedure Traverse(const AProc:TExpressionProc); override;
+    function Value:TData; override;
+
+    property Item[const Index:Integer]:TExpression read Get write Put; default;
   end;
 
   TOperandExpression=class abstract (TExpression)
@@ -169,6 +183,11 @@ type
   TArithmeticOperand=(Add,Subtract,Multiply,Divide,&Mod,Power);
 
   TArithmeticOperandHelper=record helper for TArithmeticOperand
+  private
+    const
+      Texts : Array[TArithmeticOperand] of String=(
+                '+','-','*','/','mod','^'
+                );
   public
     class function FromString(const S:String; out Operand:TArithmeticOperand):Boolean; static;
     function ToString:String;
@@ -193,18 +212,20 @@ type
     function ToString:String; override;
   end;
 
-  TBaseLogicalExpression=class(TOperandExpression)
-  end;
-
   TLogicalOperand=(Equal,NotEqual,Greater,Lower,GreaterOrEqual,LowerOrEqual,&And,&Or,&In);
 
   TLogicalOperandHelper=record helper for TLogicalOperand
+  private
+    const
+      Texts : Array[TLogicalOperand] of String=(
+                '=','<>','>','<','>=','<=','and','or','in'
+                );
   public
     class function FromString(const S:String; out Operand:TLogicalOperand):Boolean; static;
     function ToString:String;
   end;
 
-  TLogicalExpression=class(TBaseLogicalExpression)
+  TLogicalExpression=class(TOperandExpression)
   private
     function CalcAnd:Boolean; inline;
     function CalcOr:Boolean; inline;
@@ -221,11 +242,15 @@ type
 
     var
       Funcs:Array[TLogicalOperand] of TBooleanFunc;
+
+    procedure Init;
   public
     Operand : TLogicalOperand;
 
-    Constructor Create; override;
-    Constructor Create(const ALeft:TExpression; const AOperand:TLogicalOperand;
+    Constructor Create; overload;
+
+    Constructor Create(const ALeft:TExpression;
+                       const AOperand:TLogicalOperand;
                        const ARight:TExpression); overload;
 
     procedure Assign(const Source: TExpression); override;
@@ -236,14 +261,18 @@ type
   end;
 
   TUnaryExpression=class abstract(TExpression)
+  private
+    FExpression: TExpression;
+  protected
+    procedure SetExpression(const Value:TExpression); virtual;
   public
-    Expression : TExpression;
-
     Constructor Create(const AExpression:TExpression);
     Destructor Destroy; override;
 
     procedure Assign(const Source:TExpression); override;
     procedure Traverse(const AProc:TExpressionProc); override;
+
+    property Expression : TExpression read FExpression write SetExpression;
   end;
 
   TUnaryNotExpression=class(TUnaryExpression)
@@ -252,13 +281,22 @@ type
     function ToString:String; override;
   end;
 
-  TUnaryDateTimeExpression=class(TUnaryExpression);
+  TParameterExpression=class(TUnaryExpression)
+  public
+    function ToString:String; override;
+  end;
+
+  TUnaryDateTimeExpression=class(TParameterExpression);
 
   TDateExpression=class(TUnaryDateTimeExpression)
   public
     class function FromData(const Value:TData):TDateTime; static;
     function ToString:String; override;
     function Value:TData; override;
+
+    class function Today:TDateExpression; static;
+    class function Tomorrow:TDateExpression; static;
+    class function Yesterday:TDateExpression; static;
   end;
 
   TTimeExpression=class(TUnaryDateTimeExpression)
@@ -268,15 +306,25 @@ type
     function Value:TData; override;
   end;
 
-  TMathOperand=(Sin,Cos,Tan,Sqr,Sqrt,Log,Ln,Exp,Round,Trunc);
+  TMathOperand=(Sin,Cos,Tan,Sqr,Sqrt,Log,Ln,Exp,Round,Trunc,Power);
 
   TMathOperandHelper=record helper for TMathOperand
+  private
+    const
+      Texts : Array[TMathOperand] of String=(
+                'Sin','Cos','Tan','Sqr','Sqrt','Log','Ln','Exp',
+                'Round','Trunc','Power'
+              );
   public
     class function FromString(const S:String; out Operand:TMathOperand):Boolean; static;
     function ToString:String;
   end;
 
-  TMathExpression=class(TUnaryExpression)
+  TMathExpression=class(TParameterExpression)
+  private
+    FParams : TArrayExpression;
+  protected
+    procedure SetExpression(const Value:TExpression); override;
   public
     Operand : TMathOperand;
 
@@ -331,6 +379,35 @@ type
                  Millennium);
 
   TDateTimePartHelper=record helper for TDateTimePart
+  private
+    const
+      Texts : Array[TDateTimePart] of String=(
+               'None',
+               //Nanosecond,
+               //Microsecond,
+               'Millisecond',
+               'Hundred of second',
+               'Tenth of second',
+               'Second',
+               'Minute',
+               'Quarter-Hour',
+               'Hour',
+               'Day',
+               'Day of Year',
+               'Week',
+               'Weekday',
+               'Weekday short',
+               'Weekday long',
+               'Month',
+               'Month short',
+               'Month long',
+               'Quarter',
+               'Year',
+               'Decade',
+               'Decade of Year',
+               'Century',
+               'Millennium'
+             );
   public
     class
       var QuarterFormat:String;
@@ -344,7 +421,7 @@ type
     class function ToString(const Index:Integer):String; overload; inline; static;
   end;
 
-  TDateTimePartExpression=class(TUnaryExpression)
+  TDateTimePartExpression=class(TParameterExpression)
   private
     function AsInteger(const AValue:TDateTime):Integer;
   public
@@ -360,12 +437,21 @@ type
   TTextUnaryOperand=(Lower,Upper,IsEmpty,Length,Trim);
 
   TTextUnaryOperandHelper=record helper for TTextUnaryOperand
+  private
+    const
+      Texts : Array[TTextUnaryOperand] of String=(
+              'Lower',
+              'Upper',
+              'IsEmpty',
+              'Length',
+              'Trim'
+              );
   public
     class function FromString(const S:String; out Operand:TTextUnaryOperand):Boolean; static;
     function ToString:String;
   end;
 
-  TTextUnaryExpression=class(TUnaryExpression)
+  TUnaryTextExpression=class(TParameterExpression)
   public
     Operand : TTextUnaryOperand;
 
@@ -377,12 +463,25 @@ type
   TTextLogicalOperand=(Starts,Ends,Contains);
 
   TTextLogicalOperandHelper=record helper for TTextLogicalOperand
+  private
+    const
+      Texts : Array[TTextLogicalOperand] of String=(
+               'Starts',
+               'Ends',
+               'Contains'
+              );
   public
     class function FromString(const S:String; out Operand:TTextLogicalOperand):Boolean; static;
     function ToString:String;
   end;
 
-  TTextLogicalExpression=class(TBaseLogicalExpression)
+  TTextLogicalExpression=class(TOperandExpression)
+  private
+    FCase : Boolean;
+
+    function DoContains(const A,B:String):Boolean;
+    function EndsWith(const A,B:String):Boolean;
+    function StartsWith(const A,B:String):Boolean;
   public
     Operand : TTextLogicalOperand;
 
@@ -391,22 +490,45 @@ type
     procedure Assign(const Source:TExpression); override;
     function Value:TData; override;
     function ToString:String; override;
+
+    property CaseSensitive:Boolean read FCase write FCase default False;
   end;
 
-  (*
-  // Pending: Supoprt for multiple parameters in expression calls:  Foo(a,b,c...)
-  TTextOperand=(IndexOf,Pad,Split,Insert,Remove,Replace,CountChars,Format,SubString);
+  TTextOperand=(IndexOf,Pad,Split,Insert,Remove,Replace,Count,SubString);
 
-  TTextOperandExpression=class(TExpression)
+  TTextOperandHelper=record helper for TTextOperand
+  private
+    const
+      Texts : Array[TTextOperand] of String=(
+               'IndexOf',
+               'Pad',
+               'Split',
+               'Insert',
+               'Remove',
+               'Replace',
+               'Count',
+               'SubString'
+              );
+
+    function ParameterCount:Integer;
+  public
+    class function FromString(const S:String; out Operand:TTextOperand):Boolean; static;
+    function ToString:String;
+  end;
+
+  TTextOperandExpression=class(TParameterExpression)
+  private
+    class function Split(const S,Delimiter:String):TData;
+    function ValueFrom(const Params:TArrayExpression):TData;
   public
     Operand : TTextOperand;
 
-    Constructor Create(const AOperand:TTextOperand);
+    procedure Assign(const Source:TExpression); override;
+    function AsString:String; override;
 
     function Value:TData; override;
     function ToString:String; override;
   end;
-  *)
 
   // Value := Condition ? Then : Else
   TIfExpression=class(TExpression)

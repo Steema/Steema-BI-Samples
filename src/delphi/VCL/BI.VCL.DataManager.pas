@@ -14,7 +14,8 @@ uses
   {$ENDIF}
   System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.Data, BI.Persist, BI.DataSource, BI.UI, Vcl.Menus, BI.VCL.Editor.Data;
+  BI.Data, BI.Persist, BI.DataSource, BI.UI, Vcl.Menus, BI.VCL.Editor.Data,
+  Vcl.Buttons, BI.VCL.DataControl, BI.VCL.Grid, BI.VCL.Editor.Data.Links;
 
 type
   TDataManagerFilter=class abstract
@@ -23,6 +24,8 @@ type
     function Valid(const AName:String):Boolean; overload; virtual; abstract;
     function Valid(const AData:TDataItem):Boolean; overload; virtual; abstract;
   end;
+
+  TDataManagerEmbedMode=(Choose,Edit);
 
   TDataManager = class(TForm)
     PanelButtons: TPanel;
@@ -61,6 +64,7 @@ type
     BRename: TButton;
     PanelManage: TPanel;
     BManageStores: TButton;
+    TabLinks: TTabSheet;
     procedure TreeChange(Sender: TObject; Node: TTreeNode);
     procedure TreeExpanding(Sender: TObject; Node: TTreeNode;
       var AllowExpansion: Boolean);
@@ -89,6 +93,8 @@ type
     { Private declarations }
 
     IEditor : TDataEditor;
+
+    IDataLinks : TDataLinksEditor;
 
     IStore : String;
     IFilterTree : TDataManagerFilter;
@@ -120,6 +126,7 @@ type
     procedure SelectStore;
     procedure SetLastImport;
     procedure ShowDataInfo(SelectAtEditor:Boolean);
+    procedure ShowDataLinks;
     procedure TryAdd(const Kind:TDataDefinitionKind);
 
     constructor CreateStore(const AOwner: TComponent; const AStore: String='');
@@ -137,10 +144,12 @@ type
     function CurrentStore:String;
 
     class procedure Edit(const AOwner:TComponent; const AStore:String=''); static;
-    class function EmbedChoose(const AOwner:TComponent;
-                               const AParent:TWinControl;
-                               const AStore:String='';
-                               const ACurrent:TDataItem=nil):TDataManager; static;
+
+    class function Embed(const AOwner:TComponent;
+                         const AParent:TWinControl;
+                         const AMode:TDataManagerEmbedMode=TDataManagerEmbedMode.Choose;
+                         const AStore:String='';
+                         const ACurrent:TDataItem=nil):TDataManager; static;
 
     function SelectedData:TDataItem;
     function SelectedDefinition:TDataDefinition;

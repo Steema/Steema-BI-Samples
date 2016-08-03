@@ -70,7 +70,7 @@ object NumericFromTo: TNumericFromTo
       OnChange = TBToChange
     end
     object EFrom: TEdit
-      Left = 69
+      Left = 84
       Top = 4
       Width = 121
       Height = 21
@@ -78,7 +78,7 @@ object NumericFromTo: TNumericFromTo
       OnChange = EFromChange
     end
     object ETo: TEdit
-      Left = 69
+      Left = 84
       Top = 56
       Width = 121
       Height = 21
@@ -88,20 +88,46 @@ object NumericFromTo: TNumericFromTo
     object CBFrom: TCheckBox
       Left = 11
       Top = 6
-      Width = 56
+      Width = 17
       Height = 17
-      Caption = 'From:'
       TabOrder = 4
       OnClick = CBFromClick
     end
     object CBTo: TCheckBox
       Left = 11
       Top = 58
-      Width = 56
+      Width = 17
       Height = 17
-      Caption = 'To:'
       TabOrder = 5
       OnClick = CBToClick
+    end
+    object CBFromEqual: TComboBox
+      Left = 34
+      Top = 4
+      Width = 41
+      Height = 21
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 6
+      Text = '>='
+      OnChange = CBFromEqualChange
+      Items.Strings = (
+        '>='
+        '>')
+    end
+    object CBToEqual: TComboBox
+      Left = 34
+      Top = 56
+      Width = 41
+      Height = 21
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 7
+      Text = '<='
+      OnChange = CBToEqualChange
+      Items.Strings = (
+        '<='
+        '<')
     end
   end
 end

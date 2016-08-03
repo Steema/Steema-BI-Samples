@@ -16,67 +16,6 @@ object DynamicFilterEditor: TDynamicFilterEditor
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
-  object PanelCustom: TPanel
-    Left = 0
-    Top = 0
-    Width = 418
-    Height = 57
-    Align = alTop
-    BevelOuter = bvNone
-    TabOrder = 0
-    OnResize = PanelCustomResize
-    object SBCustom: TSpeedButton
-      Left = 386
-      Top = 8
-      Width = 23
-      Height = 22
-      Caption = '...'
-      OnClick = SBCustomClick
-    end
-    object LError: TLabel
-      Left = 95
-      Top = 38
-      Width = 3
-      Height = 13
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-    end
-    object Panel2: TPanel
-      Left = 0
-      Top = 0
-      Width = 89
-      Height = 57
-      Align = alLeft
-      BevelOuter = bvNone
-      TabOrder = 0
-      object CBCustom: TComboBox
-        Left = 8
-        Top = 9
-        Width = 65
-        Height = 21
-        Style = csDropDownList
-        ItemIndex = 0
-        TabOrder = 0
-        Text = 'and'
-        OnChange = CBCustomChange
-        Items.Strings = (
-          'and'
-          'or')
-      end
-    end
-    object ECustom: TEdit
-      Left = 95
-      Top = 9
-      Width = 282
-      Height = 21
-      TabOrder = 1
-      OnChange = ECustomChange
-    end
-  end
   object PanelButtons: TPanel
     Left = 0
     Top = 582
@@ -84,7 +23,7 @@ object DynamicFilterEditor: TDynamicFilterEditor
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
     object Panel1: TPanel
       Left = 233
       Top = 0
@@ -117,23 +56,19 @@ object DynamicFilterEditor: TDynamicFilterEditor
   end
   object PageControl1: TPageControl
     Left = 0
-    Top = 57
+    Top = 0
     Width = 418
-    Height = 525
+    Height = 582
     ActivePage = TabItems
     Align = alClient
-    TabOrder = 2
+    TabOrder = 1
     object TabData: TTabSheet
       Caption = 'Data'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object BITree1: TBITree
         Left = 0
         Top = 41
         Width = 410
-        Height = 456
+        Height = 513
         Align = alClient
         UseDockManager = False
         ParentBackground = False
@@ -164,13 +99,9 @@ object DynamicFilterEditor: TDynamicFilterEditor
     object TabItems: TTabSheet
       Caption = 'Items'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 264
+        Top = 301
         Width = 410
         Height = 3
         Cursor = crVSplit
@@ -182,12 +113,13 @@ object DynamicFilterEditor: TDynamicFilterEditor
         Left = 0
         Top = 41
         Width = 410
-        Height = 223
+        Height = 260
         OnClickCheck = CBItemsClickCheck
         Align = alClient
         ItemHeight = 13
         TabOrder = 0
         OnClick = CBItemsClick
+        ExplicitHeight = 280
       end
       object Panel3: TPanel
         Left = 0
@@ -217,111 +149,78 @@ object DynamicFilterEditor: TDynamicFilterEditor
           OnClick = BDeleteClick
         end
       end
-      object PageItem: TPageControl
+      object PanelItem: TPanel
         Left = 0
-        Top = 267
+        Top = 304
         Width = 410
-        Height = 230
-        ActivePage = TabNumeric
+        Height = 250
         Align = alBottom
+        BevelOuter = bvNone
         TabOrder = 2
-        Visible = False
-        object TabDateTime: TTabSheet
-          Caption = 'Date Time'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
+      end
+    end
+    object TabCustom: TTabSheet
+      Caption = 'Custom'
+      ImageIndex = 2
+      object PanelCustom: TPanel
+        Left = 0
+        Top = 0
+        Width = 410
+        Height = 554
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        OnResize = PanelCustomResize
+        object SBCustom: TSpeedButton
+          Left = 386
+          Top = 8
+          Width = 23
+          Height = 22
+          Caption = '...'
+          OnClick = SBCustomClick
         end
-        object TabBoolean: TTabSheet
-          Caption = 'Boolean'
-          ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-          object CBTrue: TCheckBox
-            Left = 16
-            Top = 16
-            Width = 97
-            Height = 17
-            Caption = 'True'
-            TabOrder = 0
-            OnClick = CBTrueClick
-          end
-          object CBFalse: TCheckBox
-            Left = 16
-            Top = 39
-            Width = 97
-            Height = 17
-            Caption = 'False'
-            TabOrder = 1
-            OnClick = CBFalseClick
-          end
+        object LError: TLabel
+          Left = 95
+          Top = 38
+          Width = 3
+          Height = 13
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clMaroon
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
         end
-        object TabNumeric: TTabSheet
-          Caption = 'Numeric'
-          ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-          object PageNumeric: TPageControl
-            Left = 0
-            Top = 0
-            Width = 402
-            Height = 202
-            ActivePage = TabNumericRange
-            Align = alClient
+        object Panel2: TPanel
+          Left = 0
+          Top = 0
+          Width = 89
+          Height = 554
+          Align = alLeft
+          BevelOuter = bvNone
+          TabOrder = 0
+          object CBCustom: TComboBox
+            Left = 8
+            Top = 9
+            Width = 65
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
             TabOrder = 0
-            object TabNumericRange: TTabSheet
-              Caption = 'Range'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
-            end
-            object TabNumericSelected: TTabSheet
-              Caption = 'Selected'
-              ImageIndex = 1
-              ExplicitLeft = 1
-              ExplicitTop = 30
-              ExplicitWidth = 0
-              ExplicitHeight = 0
-            end
+            Text = 'and'
+            OnChange = CBCustomChange
+            Items.Strings = (
+              'and'
+              'or')
           end
         end
-        object TabText: TTabSheet
-          Caption = 'Text'
-          ImageIndex = 3
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-          object PageControl2: TPageControl
-            Left = 0
-            Top = 0
-            Width = 402
-            Height = 202
-            ActivePage = TabIncluded
-            Align = alClient
-            TabOrder = 0
-            object TabIncluded: TTabSheet
-              Caption = 'Include'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
-            end
-            object TabExcluded: TTabSheet
-              Caption = 'Exclude'
-              ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
-            end
-          end
+        object ECustom: TEdit
+          Left = 95
+          Top = 9
+          Width = 282
+          Height = 21
+          TabOrder = 1
+          OnChange = ECustomChange
         end
       end
     end

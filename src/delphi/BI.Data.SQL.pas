@@ -39,12 +39,13 @@ type
                           out AExp:TExpression):TDataItem; static;
     procedure DoError(const AError:String);
     function EndOfText:Boolean;
+    function ErrorProc(const APos:Integer; const AMessage:String):Boolean;
     function GetExpression: String;
     function GetExpressions:TTextArray;
     class function IgnoreError(const Sender:TObject; const Error:String):Boolean;
     function NextIdent:String;
     function Optional(const AText:String):Boolean;
-    function ParseWhere(const AData:TDataItem; const AWhere:String):TBaseLogicalExpression;
+    function ParseWhere(const AData:TDataItem; const AWhere:String):TExpression;
     procedure SkipDelimiters;
   protected
     class function DataFromString(const AData:TDataItem; const S:String):TDataItem; static;

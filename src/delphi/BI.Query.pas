@@ -167,6 +167,7 @@ type
                  const IsActive:Boolean=True): TQueryDimension; overload;
 
     procedure Exchange(const A,B:TQueryDimension);
+    function IndexOf(const ADimension:TQueryDimension):Integer;
     procedure Swap;
 
     property Items[const Index:Integer]:TQueryDimension read Get write Put; default;
@@ -189,6 +190,7 @@ type
                  const IsActive:Boolean=True): TQueryMeasure; overload;
 
     procedure Exchange(const A,B:TQueryMeasure);
+    function IndexOf(const AMeasure:TQueryMeasure):Integer;
 
     property Items[const Index:Integer]:TQueryMeasure read Get write Put; default;
   end;

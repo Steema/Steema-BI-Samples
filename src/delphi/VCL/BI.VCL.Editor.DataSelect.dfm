@@ -24,6 +24,10 @@ object DataSelectEditor: TDataSelectEditor
     TabOrder = 0
     object TabItems: TTabSheet
       Caption = 'Items'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel2: TPanel
         Left = 0
         Top = 41
@@ -176,6 +180,10 @@ object DataSelectEditor: TDataSelectEditor
     object TabSort: TTabSheet
       Caption = 'Sort By'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LBSort: TCheckListBox
         Left = 0
         Top = 41
@@ -299,6 +307,10 @@ object DataSelectEditor: TDataSelectEditor
     object TabFilter: TTabSheet
       Caption = 'Filter'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LFilter: TLabel
         Left = 12
         Top = 56
@@ -323,6 +335,10 @@ object DataSelectEditor: TDataSelectEditor
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object MemoSQL: TMemo
         Left = 0
         Top = 0

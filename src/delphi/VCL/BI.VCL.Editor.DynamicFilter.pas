@@ -53,22 +53,16 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl,
   BI.VCL.Tree, BI.Data, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, BI.Expression,
-  BI.VCL.Editor.Expression, Vcl.Buttons, BI.VCL.Editor.DateTimeRange,
-  BI.VCL.Editor.NumericFromTo, BI.VCL.Editor.SelectText,
-  BI.Expression.Filter, Vcl.CheckLst;
+  BI.VCL.Editor.Expression, Vcl.Buttons,
+  BI.Expression.Filter, Vcl.CheckLst, BI.Data.CollectionItem,
+  BI.VCL.Editor.Filter.Item;
 
 type
   TDynamicFilterEditor = class(TForm)
-    PanelCustom: TPanel;
-    Panel2: TPanel;
-    CBCustom: TComboBox;
     PanelButtons: TPanel;
     Panel1: TPanel;
     Button1: TButton;
     Button2: TButton;
-    ECustom: TEdit;
-    SBCustom: TSpeedButton;
-    LError: TLabel;
     PageControl1: TPageControl;
     TabData: TTabSheet;
     TabItems: TTabSheet;
@@ -76,23 +70,18 @@ type
     CBItems: TCheckListBox;
     Panel3: TPanel;
     CBEnabled: TCheckBox;
-    PageItem: TPageControl;
-    TabDateTime: TTabSheet;
-    TabBoolean: TTabSheet;
-    CBTrue: TCheckBox;
-    CBFalse: TCheckBox;
-    TabNumeric: TTabSheet;
-    TabText: TTabSheet;
     Panel4: TPanel;
     BAdd: TButton;
-    PageControl2: TPageControl;
-    TabIncluded: TTabSheet;
-    TabExcluded: TTabSheet;
     Splitter1: TSplitter;
     BDelete: TButton;
-    PageNumeric: TPageControl;
-    TabNumericRange: TTabSheet;
-    TabNumericSelected: TTabSheet;
+    TabCustom: TTabSheet;
+    PanelCustom: TPanel;
+    SBCustom: TSpeedButton;
+    LError: TLabel;
+    Panel2: TPanel;
+    CBCustom: TComboBox;
+    ECustom: TEdit;
+    PanelItem: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure ECustomChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -100,8 +89,6 @@ type
     procedure SBCustomClick(Sender: TObject);
     procedure PanelCustomResize(Sender: TObject);
     procedure BITree1Change(Sender: TObject);
-    procedure CBTrueClick(Sender: TObject);
-    procedure CBFalseClick(Sender: TObject);
     procedure CBItemsClick(Sender: TObject);
     procedure CBItemsClickCheck(Sender: TObject);
     procedure CBEnabledClick(Sender: TObject);
@@ -116,17 +103,10 @@ type
 
     ICustom : TLogicalExpression;
 
-    IChanging : Boolean;
-
     IData,
     IMainData : TDataItem;
 
-    INumericFromTo,
-    INumericSelected : TNumericFromTo;
-
-    ITextInclude,
-    ITextExclude   : TSelectTextItems;
-    IDateTimeRange : TDateTimeRangeEditor;
+    IEditor : TFilterItemEditor;
 
     FOnChange: TNotifyEvent;
 
@@ -135,10 +115,7 @@ type
     procedure AddMapValues(const AParent:TBITreeNode; const AData:TDataItem);
     function AddNewFilter(const AData:TDataItem):TFilterItem;
     function CanAddFilter(const AData:TDataItem):Boolean;
-    procedure ChangedDateTime(Sender: TObject);
-    procedure ChangedNumeric(Sender: TObject);
-    procedure ChangedText(Sender: TObject);
-    procedure CheckedText(const Sender: TObject; const AText:String; const IsChecked:Boolean);
+    procedure ChangedFilter(Sender: TObject);
     function Current:TFilterItem;
     function CurrentData:TDataItem;
     procedure DoChanged;
@@ -154,10 +131,12 @@ type
 
     class function Choose(const AOwner:TComponent;
                           const AData:TDataItem;
-                          const AMain:TDataItem=nil):TLogicalExpression; static;
+                          const AMain:TDataItem=nil):TExpression; static;
 
     class function Edit(const AOwner:TComponent;
-                        const AFilter:TBIFilter):Boolean; static;
+                        const AFilter:TBIFilter;
+                        const AData:TDataItem=nil;
+                        const AMain:TDataItem=nil):Boolean; static;
 
     class function Embedd(const AOwner:TComponent;
                           const AParent:TWinControl;

@@ -32,6 +32,4 @@ type
     class procedure Show(const AOwner:TComponent);
   end;
 
-procedure TeeBIGotoURL(const Handle:HWND; const URL:String);
-
 implementation

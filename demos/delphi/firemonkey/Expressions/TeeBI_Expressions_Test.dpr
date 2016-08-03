@@ -5,7 +5,8 @@ uses
   FMX.Forms,
   Main_Unit in 'Main_Unit.pas' {FormMain},
   BI.FMX.Expression.Tree in 'BI.FMX.Expression.Tree.pas',
-  BI.Expression.Benchmark in 'BI.Expression.Benchmark.pas';
+  BI.Expression.Benchmark in 'BI.Expression.Benchmark.pas',
+  BI.Expressions.Samples in '..\..\..\..\tests\BI.Expressions.Samples.pas';
 
 {$R *.res}
 

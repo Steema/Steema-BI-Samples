@@ -281,7 +281,7 @@ type
     procedure DoFillParent;
     procedure FillDest(const ADest:TDataItem); // 2D
     procedure FillGroupBy(const AData:TDataItem; const Repeated,MaxSteps:TInteger); // 1D
-    function GetDatePart: TDateTimePart;
+    function GetDatePart: TDateTimePart; inline;
 
     procedure Prepare(const AHops:TDataHops; const AData:TDataItem);
     procedure SetDatePart(const Value: TDateTimePart);
@@ -336,7 +336,7 @@ type
     procedure Assign(const Source:TExpression); override;
     class function FromString(const AItem:TSummaryItem; const AExpression:String):TSummaryExpression; static;
 
-    function GetExpression(const AData:TDataItem):TLogicalExpression;
+    function GetExpression(const AData:TDataItem):TExpression;
     function ToString:String; override;
     function Value:TData; override;
   end;
@@ -362,7 +362,7 @@ type
 
     procedure Clear;
 
-    function GetExpression(const AData:TDataItem):TLogicalExpression;
+    function GetExpression(const AData:TDataItem):TExpression;
     function ToString:String; override;
   end;
 
@@ -453,7 +453,7 @@ type
   TRowFunction=class(TColumnExpression)
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
-    function KindOf:TDataKind; override;
+    function Kind:TDataKind; override;
     class function TryParse(const S:String):TColumnExpression; override;
   public
     Operand : TAggregate;

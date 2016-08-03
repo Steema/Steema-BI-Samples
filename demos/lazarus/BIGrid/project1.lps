@@ -4,14 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Win32 Debug"/>
-    <Units Count="27">
+    <Units Count="30">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="-1"/>
         <CursorPos Y="19"/>
         <UsageCount Value="21"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
@@ -20,8 +19,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <TopLine Value="26"/>
-        <CursorPos X="3" Y="50"/>
+        <CursorPos X="3" Y="9"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -112,9 +110,10 @@
       </Unit13>
       <Unit14>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_VCL_Grid_DBGrid.pas"/>
-        <EditorIndex Value="9"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="596"/>
-        <CursorPos Y="610"/>
+        <CursorPos X="15" Y="609"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit14>
@@ -128,224 +127,234 @@
       </Unit15>
       <Unit16>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_VCL_DataSelect.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="333"/>
         <CursorPos Y="348"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit16>
       <Unit17>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_VCL_DataManager.pas"/>
         <ComponentName Value="DataManager"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="947"/>
         <CursorPos Y="962"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1156"/>
         <CursorPos Y="1166"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1266"/>
         <CursorPos Y="1278"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit19>
       <Unit20>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Arrays.pas"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="4019"/>
         <CursorPos Y="4033"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data_Expressions.pas"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1330"/>
         <CursorPos Y="1332"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit21>
       <Unit22>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="2018"/>
         <CursorPos X="15" Y="2032"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit22>
       <Unit23>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="644"/>
-        <CursorPos X="3" Y="650"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="916"/>
+        <CursorPos Y="946"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit23>
       <Unit24>
         <Filename Value="E:\lazarus12_64\fpc\3.0.0\source\packages\fcl-db\src\base\dataset.inc"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1111"/>
         <CursorPos Y="1125"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit24>
       <Unit25>
         <Filename Value="E:\lazarus12_64\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1570"/>
         <CursorPos X="22" Y="1583"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit25>
       <Unit26>
         <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\bufdataset.pas"/>
         <UnitName Value="BufDataset"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1269"/>
         <CursorPos X="8" Y="1293"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit26>
+      <Unit27>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\db.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="1596"/>
+        <CursorPos X="15" Y="1617"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="853"/>
+        <CursorPos X="2" Y="864"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\dataset.inc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="664"/>
+        <CursorPos X="3" Y="672"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit29>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\bufdataset.pas"/>
-        <Caret Line="464" Column="10" TopLine="452"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
       </Position1>
       <Position2>
-        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\bufdataset.pas"/>
-        <Caret Line="1271" Column="8" TopLine="1248"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="936" TopLine="914"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
-        <Caret Line="1278" TopLine="1266"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="937" TopLine="914"/>
       </Position3>
       <Position4>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data_Expressions.pas"/>
-        <Caret Line="357" Column="3" TopLine="353"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="939" TopLine="914"/>
       </Position4>
       <Position5>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data_Expressions.pas"/>
-        <Caret Line="1332" TopLine="1330"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="942" TopLine="914"/>
       </Position5>
       <Position6>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <Caret Line="975" TopLine="954"/>
+        <Caret Line="947" Column="5" TopLine="914"/>
       </Position6>
       <Position7>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <Caret Line="546" TopLine="532"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\db.pas"/>
       </Position7>
       <Position8>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_VCL_Grid_DBGrid.pas"/>
-        <Caret Line="610" TopLine="596"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\db.pas"/>
+        <Caret Line="344" Column="21" TopLine="312"/>
       </Position8>
       <Position9>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
-        <Caret Line="1278" TopLine="1266"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="599" Column="3" TopLine="584"/>
       </Position9>
       <Position10>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2031" TopLine="2017"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1064" Column="26" TopLine="1032"/>
       </Position10>
       <Position11>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <Caret Line="550" TopLine="532"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1073" Column="26" TopLine="1041"/>
       </Position11>
       <Position12>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2031" TopLine="2017"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1079" Column="26" TopLine="1047"/>
       </Position12>
       <Position13>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2033" TopLine="2017"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1085" Column="26" TopLine="1053"/>
       </Position13>
       <Position14>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2034" TopLine="2017"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1091" Column="26" TopLine="1059"/>
       </Position14>
       <Position15>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2042" TopLine="2018"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1097" Column="26" TopLine="1065"/>
       </Position15>
       <Position16>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2031" TopLine="2018"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1104" Column="26" TopLine="1072"/>
       </Position16>
       <Position17>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data.pas"/>
-        <Caret Line="1168" TopLine="1154"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1116" Column="26" TopLine="1084"/>
       </Position17>
       <Position18>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data.pas"/>
-        <Caret Line="1171" TopLine="1154"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1122" Column="26" TopLine="1090"/>
       </Position18>
       <Position19>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data.pas"/>
-        <Caret Line="1185" TopLine="1172"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1128" Column="27" TopLine="1096"/>
       </Position19>
       <Position20>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2031" TopLine="2018"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="1243" TopLine="1217"/>
       </Position20>
       <Position21>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data.pas"/>
-        <Caret Line="1171" TopLine="1156"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\fields.inc"/>
+        <Caret Line="864" Column="2" TopLine="853"/>
       </Position21>
       <Position22>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
-        <Caret Line="1278" TopLine="1266"/>
+        <Filename Value="E:\lazarus_Nightly\fpc\packages\fcl-db\src\base\dataset.inc"/>
+        <Caret Line="675" Column="3" TopLine="664"/>
       </Position22>
       <Position23>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Data.pas"/>
-        <Caret Line="1171" TopLine="1156"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="925" Column="25" TopLine="914"/>
       </Position23>
       <Position24>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
-        <Caret Line="1278" TopLine="1266"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="1448" Column="33" TopLine="1416"/>
       </Position24>
       <Position25>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2031" TopLine="2018"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="1453" Column="36" TopLine="1421"/>
       </Position25>
       <Position26>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <Caret Line="752" Column="59" TopLine="733"/>
+        <Caret Line="925" Column="25" TopLine="905"/>
       </Position26>
       <Position27>
         <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <Caret Line="650" Column="3" TopLine="644"/>
+        <Caret Line="1416" TopLine="1416"/>
       </Position27>
       <Position28>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
-        <Caret Line="1278" TopLine="1266"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="1448" Column="33" TopLine="1416"/>
       </Position28>
       <Position29>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_DataSource.pas"/>
-        <Caret Line="2031" TopLine="2018"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="1453" Column="36" TopLine="1421"/>
       </Position29>
       <Position30>
-        <Filename Value="..\..\..\..\Sources\Lazarus\BI_VCL_Grid_DBGrid.pas"/>
-        <Caret Line="610" TopLine="596"/>
+        <Filename Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
+        <Caret Line="936" Column="12" TopLine="916"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="3">
+    <BreakPoints Count="1">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
@@ -353,20 +362,6 @@
         <Source Value="..\..\..\..\Sources\Lazarus\BI_Summary.pas"/>
         <Line Value="1278"/>
       </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\Sources\Lazarus\BI_Dataset.pas"/>
-        <Line Value="977"/>
-      </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\..\Sources\Lazarus\BI_VCL_Grid_DBGrid.pas"/>
-        <Line Value="610"/>
-      </Item3>
     </BreakPoints>
     <Watches Count="2">
       <Item1>

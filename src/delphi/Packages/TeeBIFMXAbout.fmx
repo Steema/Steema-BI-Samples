@@ -5810,7 +5810,7 @@ object AboutBI: TAboutBI
       AutoSize = True
       Position.X = 11.000000000000000000
       Position.Y = 28.000000000000000000
-      Size.Width = 57.000000000000000000
+      Size.Width = 53.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -5820,7 +5820,7 @@ object AboutBI: TAboutBI
       AutoSize = True
       Position.X = 65.000000000000000000
       Position.Y = 8.000000000000000000
-      Size.Width = 25.000000000000000000
+      Size.Width = 22.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False

@@ -30,6 +30,7 @@ type
     Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;
 
     class function ExportFormat:TBIExport; override;
+    class function FileFilter: TBIFileSource.TFileFilters; override;
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
 
     class function Supports(const Extension: String): Boolean; override;

@@ -106,6 +106,7 @@ type
     procedure ChangedRow(Sender: TObject; Field: TField);
     function GetCurrentRow: Integer;
     function GetDataSource: TDataSource;
+    function GetFilter: TExpression;
     function GetReadOnly: Boolean;
     function GetTotals:Boolean;
     function HasSubItem: Boolean;
@@ -113,7 +114,9 @@ type
     function PluginControl:TWinControl;
 
     procedure SetAlternate(const Value: TAlternateColor);
+    procedure SetCurrentRow(const Value: Integer);
     procedure SetDataSource(const Value: TDataSource);
+    procedure SetFilter(const AFilter:TExpression);
     procedure SetGridFilters(const Value: TGridFilters);
     procedure SetPlugin(const Value: TBIGridPlugin);
     procedure SetReadOnly(const Value: Boolean);
@@ -136,10 +139,9 @@ type
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean);
     procedure Invalidate; override;
 
-    procedure SetFilter(const AFilter:TLogicalExpression);
-
+    property CurrentRow:Integer read GetCurrentRow write SetCurrentRow;
+    property Filter:TExpression read GetFilter write SetFilter;
     property Plugin:TBIGridPlugin read IPlugin write SetPlugin;
-    property CurrentRow:Integer read GetCurrentRow;
   published
     property Alternate:TAlternateColor read FAlternate write SetAlternate;
     property DataSource:TDataSource read GetDataSource write SetDataSource;
@@ -173,6 +175,7 @@ type
     class procedure AddForm(const AForm: TCustomForm; const AParent: TWinControl); static;
     class function AutoTest:Boolean; static;
     class function EditColor(const AOwner:TComponent; const AColor:TColor; out ANew:TColor):Boolean; static;
+    class procedure GotoURL(const AOwner:TWinControl; const AURL:String); static;
     class function Input(const ATitle,ACaption,ADefault:String; out ANew:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AParent:TControl); static;

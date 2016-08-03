@@ -112,13 +112,18 @@ type
     procedure Assign(Source:TPersistent); override;
     procedure Clear;
     function Count:TInteger;
-    function CreateFilter(const AMaster,ADetail:TDataItem; out MasterCol:TExpression):TLogicalExpression;
+
+    class function CreateFilter(const AMasters,ADetails:TDataArray;
+                                const AIndex:TInteger;
+                                out Expressions:TExpressions):TLogicalExpression; static;
 
     function DataItems:TDataArray;
 
     procedure Delete(const APosition:TInteger);
 
-    class function DetailIndex(const Cols,AMaster,ADetail:TDataItem; const AIndex:TInteger):TCursorIndex; static;
+    class function DetailIndex(const AData:TDataItem;
+                               const AMasters,ADetails:TDataArray;
+                               const AIndex:TInteger):TCursorIndex; static;
 
     procedure GuessItems(const S:String);
 
@@ -132,15 +137,19 @@ type
 
     procedure Loop(const AProc:TCursorLoopObject); overload;
 
-    class function MasterDetailIndex(const Cols:TDataItem; const AMaster:TDataItem; const AIndex:TInteger):TCursorIndex;
+    class function MasterDetailIndex(const AData:TDataItem;
+                                     const AMasters:TDataArray;
+                                     const AIndex:TInteger):TCursorIndex;
 
     class function PackIndex(const AIndex:TCursorIndex):TCursorIndex; static;
 
     function Position(const APosition:TInteger):TInteger;
     procedure PrepareIndex(const AIndex:TCursorIndex=nil; const AllRows:Boolean=True);
     procedure SetItems(const AItems:TDataArray);
-    procedure SetMasterExpression(const Master:TDataItem; const MasterCol:TExpression; const AIndex:TInteger);
 
+    class procedure SetMasterExpression(const Master:TDataItem;
+                                        const MasterCol:TExpression;
+                                        const AIndex:TInteger); static;
   published
     property Filter:TExpression read FFilter write SetFilter;
     property Start:TInteger read FStart write FStart;
@@ -232,32 +241,43 @@ type
     function DoImportStream(const AExtension:String; const AStream:TStream):TDataArray; virtual;
     function FindImporterClass(const AFileName:String):TBIFileSourceClass;
     function ImportOneFile(const AFile:String):TDataArray;
-    function ImportURLFile(const FileName:String):TDataArray;
     function ImportZip(const FileName:String):TDataArray;
     procedure TaskImport(Sender:TObject);
   public
+    type
+      TFileFilter=record
+      public
+        Description,
+        Extensions : String;
+      end;
+
+      TFileFilters=Array of TFileFilter;
+
+      TFileFiltersHelper=record helper for TFileFilters
+      public
+        procedure Add(const ADescription,AExtensions:String);
+      end;
+
     class function DataFromFiles(const AFiles:TStringDynArray; const Local:Boolean): TDataItem; static;
 
     class function ExportFormat:TBIExport; virtual;
 
+    class function FileFilter:TFileFilters; virtual;
+
     class function FromFile(const AFileName:String):TDataItem; overload;
     class function FromStrings(const AStrings:TStrings):TDataItem;
     class function FromText(const AText:String):TDataItem;
-    class function FromURL(const AURL:String):TDataItem;
 
     class function GetFileSize(const FileName:String):Int64; static;
     class function GuessFromContent(const S:TStrings):TBIFileSourceClass; static;
 
     class function IncludedFiles(const AStore:String; const ADef:TDataDefinition):TStringDynArray; static;
 
-    class function IsURL(const FileName:String):Boolean; static;
-
     function Import(const Folder,IncludePattern,ExcludePattern:String; Recursive:Boolean):TDataArray; overload;
-    function Import(const Strings:TStrings):TDataArray; overload; virtual; abstract;
+    function Import(const Strings:TStrings):TDataArray; overload; virtual;
 
     function ImportFile(const FileName:String):TDataArray; overload; virtual;
     function ImportStream(const AFileName: String; const AStream:TStream): TDataArray;
-    function ImportURL(const URL:String):TDataArray;
 
     class function Supports(const Extension:String):Boolean; virtual;
   end;
@@ -280,6 +300,8 @@ type
     // Windows = 1,  Mobile = 0
     class var FirstStringChar : Integer;
 
+    class procedure ChangeBoolToInt(const Col:TDataItem; const ARow:TInteger);
+    class procedure ChangeToBoolean(const Col:TDataItem; const AValue:Boolean);
     class procedure ChangeToText(const Col:TDataItem; const Index,Total:TInteger); static;
     function DoImportFile(const FileName:String):TDataArray; override;
     function GuessKind(const Value:String):TDataKind;

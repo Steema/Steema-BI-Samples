@@ -195,24 +195,16 @@ object DataManager: TDataManager
     Top = 41
     Width = 320
     Height = 386
-    ActivePage = TabData
+    ActivePage = TabLinks
     Align = alClient
     TabOrder = 3
     OnChange = PageControl1Change
     object TabSettings: TTabSheet
       Caption = 'Settings'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 44
@@ -291,6 +283,10 @@ object DataManager: TDataManager
         TabOrder = 6
         Visible = False
       end
+    end
+    object TabLinks: TTabSheet
+      Caption = 'Links'
+      ImageIndex = 2
     end
   end
   object PopupMenu1: TPopupMenu

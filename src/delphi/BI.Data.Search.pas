@@ -63,7 +63,7 @@ type
     function AsFloat(const Value:Single):String; overload;
     function AsFloat(const Value:Double):String; overload;
 
-    {$IFNDEF CPUX64}
+    {$IFDEF CPUX86}
     function AsFloat(const Value:Extended):String; overload;
     {$ENDIF}
 

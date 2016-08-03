@@ -78,6 +78,25 @@ type
     property IncludeSystem:Boolean read GetSystem write SetSystem default False;
   end;
 
+  TDataRelation=class(TCollectionItem)
+  private
+    FMaster,
+    FDetail : String;
+  public
+  published
+    property Detail:String read FDetail write FDetail;
+    property Master:String read FMaster write FMaster;
+  end;
+
+  TDataRelations=class(TOwnedCollection)
+  private
+    function Get(const Index: Integer): TDataRelation;
+    procedure Put(const Index: Integer; const Value: TDataRelation);
+  public
+    function Add(const AMaster,ADetail:String):TDataRelation;
+    property Item[const Index:Integer]:TDataRelation read Get write Put; default;
+  end;
+
   // Abstract class with all settings necessary to import a given data
   TDataDefinitionKind=(Files,Database,Web,Unknown);
 
@@ -85,6 +104,7 @@ type
   private
     FDatabase : TDatabaseDefinition;
     FFileName : String;
+    FLinks    : TDataRelations;
 
     FOnError : TBIError;
     FOnImporting : TBIProgress;
@@ -105,6 +125,8 @@ type
     procedure SetValue(const Index: String; const Value: String);
     procedure SetStrings(const Value: TStrings);
     procedure TryLoadDetailRelations(const AData:TDataArray);
+    function GetLinks: TDataRelations;
+    procedure SetLinks(const Value: TDataRelations);
   protected
     FStrings : TStrings;
 
@@ -116,6 +138,7 @@ type
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
     procedure LoadFromString(const AText:String);
     procedure Save;
+    procedure TryLoadDetails;
   public
     const
       Extension='.def';
@@ -131,6 +154,7 @@ type
     function AsBoolean(const Key:String; const ADefault:Boolean=True):Boolean;
 
     class procedure CreateFile(const FileName:String; const Kind:TDataDefinitionKind);
+    function Description: String;
 
     class function KindToString(const AKind:TDataDefinitionKind):String;
     function Import(const AStore:String):TDataArray;
@@ -142,11 +166,11 @@ type
 
     class procedure Merge(const AData: TDataItem; const AItems:TDataArray); static;
     function MultiLineText(const ATag:String):String;
-
-    function Description: String;
-
     function NextRefresh:TDateTime;
-    class procedure SetMasters(const AData:TDataItem; const Items:TStrings); static;
+    procedure SaveLinks;
+    class procedure SetMasters(const AData:TDataItem;
+                               const AStore:String;
+                               const Items:TDataRelations); static;
 
     property AsDatabase:TDatabaseDefinition read FDatabase;
     property CalcStats:Boolean read GetCalcStats write SetCalcStats default False;
@@ -155,6 +179,7 @@ type
   published
     property Kind:TDataDefinitionKind read GetKind write SetKind default TDataDefinitionKind.Unknown;
     property FileName:String read FFileName write SetFileName;
+    property Links:TDataRelations read GetLinks write SetLinks;
     property Strings:TStrings read GetStrings write SetStrings;
 
     property OnError:TBIError read FOnError write FOnError;
@@ -263,7 +288,7 @@ type
     class procedure ChangePath(const AName,AOrigin:String); static;
     class function Count:Integer; static;
     class function Exists(const AName:String):Boolean; static;
-    class function GlobalCache:TDataItem; static;
+    class function GlobalCache:TDataItem; static; // cannot be inlined
     class function IndexOf(const AName:String):Integer; static;
     class function NewName:String; static;
     class procedure Remove(const AName:String); static;

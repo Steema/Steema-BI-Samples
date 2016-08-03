@@ -98,7 +98,7 @@ begin
   BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Customers'];
 
   // Embedd a Data Manager dialog at left panel
-  TDataManager.EmbedChoose(Self,Panel1,'BISamples',BIGrid1.Data).OnSelect:=SelectedData;
+  TDataManager.Embed(Self,Panel1,TDataManagerEmbedMode.Choose,'BISamples',BIGrid1.Data).OnSelect:=SelectedData;
 
   // Set Navigator control source
   DBNavigator1.DataSource:=BIGrid1.DataSource;

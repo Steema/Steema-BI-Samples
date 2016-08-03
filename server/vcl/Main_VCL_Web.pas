@@ -65,6 +65,7 @@ type
     CBScheduler: TCheckBox;
     TimerScheduler: TTimer;
     BIGrid1: TBIGrid;
+    Button3: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ServerConnect(AContext: TIdContext);
     procedure ServerDisconnect(AContext: TIdContext);
@@ -94,6 +95,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure CBSchedulerClick(Sender: TObject);
     procedure TimerSchedulerTimer(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
     Data : TAllData;
@@ -364,6 +366,11 @@ end;
 procedure TFormBIWeb.Button2Click(Sender: TObject);
 begin
   CheckForUpdates;
+end;
+
+procedure TFormBIWeb.Button3Click(Sender: TObject);
+begin
+  TUICommon.GotoURL(Self,'http://localhost:'+IntToStr(Server.DefaultPort));
 end;
 
 procedure TFormBIWeb.CBActiveClick(Sender: TObject);

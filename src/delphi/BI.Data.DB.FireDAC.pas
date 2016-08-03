@@ -10,10 +10,12 @@ interface
 
 uses
   System.Classes, System.Types, Data.DB, BI.Data, BI.Data.DB, BI.DataSource,
-  BI.Persist;
+  BI.Persist, FireDAC.Comp.Client;
 
 type
   TDBFireDACEngine=class(TBIDBEngine)
+  private
+    class procedure SetQueryParameters(const Query:TFDQuery); static;
   public
     class function CloneConnection(const AConn:TCustomConnection): TCustomConnection; override;
     class function CreateConnection(const Definition:TDataDefinition):TCustomConnection; override;
@@ -21,6 +23,7 @@ type
     class function CreateQuery(const AConnection:TCustomConnection; const SQL:String):TDataSet; override;
     class function DriverNames:TStringDynArray; override;
     class function DriverToName(const ADriver:String):String; override;
+    class function FileFilter: TBIFileSource.TFileFilters; override;
     class function GetConnectionName(const AConnection:TCustomConnection):String; override;
     class function GetDriver(const AIndex:Integer):String; override;
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; override;
