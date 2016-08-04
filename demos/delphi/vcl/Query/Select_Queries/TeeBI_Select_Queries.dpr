@@ -13,7 +13,8 @@ uses
   Vcl.Forms,
   Unit24 in 'Unit24.pas' {Form24},
   BI.Tests.SelectSamples in '..\..\..\..\..\tests\BI.Tests.SelectSamples.pas',
-  BI.Tests.SummarySamples in '..\..\..\..\..\tests\BI.Tests.SummarySamples.pas';
+  BI.Tests.SummarySamples in '..\..\..\..\..\tests\BI.Tests.SummarySamples.pas',
+  BI.Queries.Benchmark in 'BI.Queries.Benchmark.pas';
 
 {$R *.res}
 

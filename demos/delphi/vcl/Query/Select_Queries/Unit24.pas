@@ -69,7 +69,6 @@ type
     IGridEditor : TBIGridEditor;
 
     procedure ChangedEditor(Sender: TObject);
-    function DoBenchmark(const AIndex:Integer; out AIterations:Integer; out Rows:Int64):Int64;
     function DoVerifySQL:Boolean;
     procedure Recalculate(const AQuery:TDataProvider);
     procedure VerifySQL;
@@ -85,14 +84,14 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Persist, BI.VCL.DataManager, System.Diagnostics, BI.Compare,
+  BI.Persist, BI.VCL.DataManager, BI.Compare, System.Diagnostics,
   BI.VCL.DataViewer, BI.Data.SQL, BI.VCL.Editor.DataSelect, BI.Expression,
   BI.Summary,
 
   BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer.Chart,
 
   BI.VCL.GridForm, BI.Tests.SummarySamples, BI.Tests.SelectSamples,
-  BI.Query, BI.VCL.Editor.Query;
+  BI.Query, BI.VCL.Editor.Query, BI.Queries.Benchmark;
 
 // Compare existing data output with the results of parsing SQL text.
 // If they are different, show Data Viewer dialog with the differences.
@@ -197,50 +196,9 @@ end;
 
 procedure TForm24.Button4Click(Sender: TObject);
 var D : TDataItem;
-    t : Integer;
-    tmpIterations : Integer;
-    tmpPerSecond : Single;
-
-    Rows,
-    tmpElapsed : Int64;
 begin
-  D:=TDataItem.Create(True);
+  D:=TQueryBenchmark.BenchmarkAll(ListBox1.Items);
   try
-    D.Items.Add('#',TDataKind.dkInt32);
-    D.Items.Add('Test',TDataKind.dkText);
-    D.Items.Add('Iterations',TDataKind.dkInt32);
-    D.Items.Add('Msec',TDataKind.dkInt64);
-    D.Items.Add('Iter/Second',TDataKind.dkSingle);
-    D.Items.Add('Rows',TDataKind.dkInt64);
-
-    D.Resize(ListBox1.Count);
-
-    for t:=0 to ListBox1.Count-1 do
-    begin
-      ListBox1.ItemIndex:=t;
-
-      D.Item[0].Int32Data[t]:=t;
-      D.Item[1].TextData[t]:=ListBox1.Items[t];
-
-      if t<>21 then  // <-- 21 fails because the second time Average is calculated, it is an AsTable result !
-      begin
-        tmpElapsed:=DoBenchmark(t,tmpIterations,Rows);
-
-        D.Item[3].Int64Data[t]:=tmpElapsed;
-        D.Item[2].Int32Data[t]:=tmpIterations;
-
-        if tmpElapsed=0 then
-           tmpPerSecond:=0
-        else
-           tmpPerSecond:=1000*tmpIterations/tmpElapsed;
-
-        D.Item[4].SingleData[t]:=tmpPerSecond;
-        D.Item[5].Int64Data[t]:=Rows;
-      end;
-    end;
-
-    D.Name:='Total: '+D.Item[3].Int64Data.Sum.ToString+' msec';
-
     TBIGridForm.Present(Self,D);
   finally
     D.Free;
@@ -248,158 +206,10 @@ begin
 end;
 
 procedure TForm24.Button7Click(Sender: TObject);
-var Data : Array of TDataItem;
-    Query : Array of TDataSelect;
-    tmpMax : Integer;
-
-  procedure FreeDatas;
-  var t : Integer;
-  begin
-    for t:=0 to tmpMax-1 do
-    begin
-      Data[t].Free;
-      Query[t].Free;
-    end;
-  end;
-
-const
-  MaxLoop=1000;
-
-  procedure BenchQuery(N:Integer);
-  var Query : TDataSelect;
-      Data : TDataItem;
-      Loop : Integer;
-  begin
-    for Loop:=1 to MaxLoop do
-    begin
-      Query:=TSelectSamples.CreateSelect(Self,N);
-      Data:=Query.Calculate;
-
-      Data.Free;
-      Query.Free;
-    end;
-  end;
-
-var Loop,
-    t : Integer;
-    t1 : TStopWatch;
+var tmp : Int64;
 begin
-  t1:=TStopwatch.StartNew;
-
-  tmpMax:=23;//ListBox1.Count;
-
-  SetLength(Data,tmpMax);
-  SetLength(Query,tmpMax);
-
-  if CBMultiCPU.Checked then
-  begin
-    if CBLoopThread.Checked then
-       TParallel.&For(0,tmpMax-1, procedure(N:Integer)
-       var Query : TDataSelect;
-           Data : TDataItem;
-           Loop : Integer;
-       begin
-         for Loop:=1 to MaxLoop do
-         begin
-           Query:=TSelectSamples.CreateSelect(Self,N);
-           Data:=Query.Calculate;
-
-           Data.Free;
-           Query.Free;
-         end;
-       end)
-    else
-    begin
-      for Loop:=1 to MaxLoop do
-      begin
-        TParallel.&For(0,tmpMax-1,procedure(N:Integer)
-        begin
-          Query[N]:=TSelectSamples.CreateSelect(Self,N);
-          Data[N]:=Query[N].Calculate;
-        end);
-
-        FreeDatas;
-      end;
-    end;
-  end
-  else
-  begin
-    if CBLoopThread.Checked then
-       for t:=0 to tmpMax-1 do
-           BenchQuery(t)
-    else
-    begin
-      for Loop:=1 to MaxLoop do
-      begin
-        for t:=0 to tmpMax-1 do
-        begin
-          Query[t]:=TSelectSamples.CreateSelect(Self,t);
-          Data[t]:=Query[t].Calculate;
-        end;
-
-        FreeDatas;
-      end;
-    end;
-  end;
-
-  Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
-end;
-
-function TForm24.DoBenchmark(const AIndex:Integer; out AIterations:Integer; out Rows:Int64):Int64;
-
-  function GetIterations:Integer;
-  begin
-    if AIndex=25 then
-       result:=100  // slow distinct ProductID, Discount
-    else
-    if AIndex=22 then
-       result:=100  // slow "movies"
-    else
-    if AIndex=19 then
-       result:=1000  // slow "Year"
-    else
-       result:=10000;
-  end;
-
-var t1 : TStopWatch;
-    tmp : TDataSelect;
-    Item : TDataItem;
-    t : Integer;
-begin
-  t1:=TStopwatch.StartNew;
-
-  tmp:=TSelectSamples.CreateSelect(Self,AIndex);
-  try
-    Item:=nil;
-    try
-      AIterations:=GetIterations;
-
-      for t:=1 to AIterations do
-      begin
-        if Item=nil then
-           Item:=tmp.Calculate
-        else
-        begin
-          // Query is calculated "on top" of existing results instead of
-          // recreating the results again, for a more stressed benchmark.
-
-          Item.Resize(0);
-          tmp.Calculate(Item);
-        end;
-      end;
-
-      if Item=nil then
-         Rows:=0
-      else
-         Rows:=Item.Count;
-    finally
-      Item.Free;
-    end;
-  finally
-    tmp.Free;
-  end;
-
-  result:=t1.ElapsedMilliseconds;
+  tmp:=TQueryBenchmark.MultiCPU(CBMultiCPU.Checked,CBLoopThread.Checked);
+  Caption:='Time: '+tmp.ToString+' msec';
 end;
 
 // Execute current selected Query a number of time to benchmark its speed
@@ -410,7 +220,7 @@ var tmp : Int64;
 begin
   if ListBox1.ItemIndex<>-1 then
   begin
-    tmp:=DoBenchmark(ListBox1.ItemIndex,Num,Rows);
+    tmp:=TQueryBenchmark.Benchmark(ListBox1.ItemIndex,Num,Rows);
     Caption:='Num: '+Num.ToString+' Time: '+tmp.ToString+' msec Rows: '+Rows.ToString;
   end;
 end;
