@@ -43,12 +43,15 @@ uses
   System.Diagnostics, BI.Data, BI.Compression;
 
 function Same(const A,B:TStream):Boolean;
+var tmp : Int64;
 begin
-  result:=A.Size=B.Size;
+  tmp:=A.Size;
+
+  result:=tmp=B.Size;
 
   if result then
      if (A is TMemoryStream) and (B is TMemoryStream) then
-        result:=CompareMem(TMemoryStream(A).Memory,TMemoryStream(B).Memory,A.Size);
+        result:=CompareMem(TMemoryStream(A).Memory,TMemoryStream(B).Memory,tmp);
 end;
 
 const
@@ -56,7 +59,7 @@ const
 
 procedure TForm35.Button1Click(Sender: TObject);
 const
-  BenchTimes=1000;
+  BenchTimes=10;
 
   procedure TestNormal;
   var tmp : TStream;
