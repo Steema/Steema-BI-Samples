@@ -26,10 +26,6 @@ object FormDataRank: TFormDataRank
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
-    ExplicitLeft = 40
-    ExplicitTop = 72
-    ExplicitWidth = 505
-    ExplicitHeight = 481
   end
   object Panel1: TPanel
     Left = 0
@@ -38,9 +34,6 @@ object FormDataRank: TFormDataRank
     Height = 41
     Align = alTop
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 185
     object CreateRank: TButton
       Left = 24
       Top = 9
