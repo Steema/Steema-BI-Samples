@@ -38,10 +38,6 @@ object FormRichView: TFormRichView
     RVFOptions = [rvfoSavePicturesBody, rvfoSaveControlsBody, rvfoSaveBinary, rvfoSaveTextStyles, rvfoSaveParaStyles, rvfoSaveDocProperties, rvfoLoadDocProperties, rvfoSaveDocObjects, rvfoLoadDocObjects]
     Style = RVStyle1
     WordWrap = False
-    ExplicitLeft = 32
-    ExplicitTop = 32
-    ExplicitWidth = 457
-    ExplicitHeight = 441
   end
   object BIGrid1: TBIGrid
     Left = 590
@@ -53,9 +49,6 @@ object FormRichView: TFormRichView
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
-    ExplicitLeft = 536
-    ExplicitTop = 32
-    ExplicitHeight = 441
     Origin = '|SQLite_Demo|Products'
   end
   object Panel1: TPanel
@@ -66,9 +59,6 @@ object FormRichView: TFormRichView
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 424
-    ExplicitTop = 256
-    ExplicitWidth = 185
     object Label1: TLabel
       Left = 16
       Top = 14
@@ -79,7 +69,7 @@ object FormRichView: TFormRichView
     object ComboMode: TComboBox
       Left = 52
       Top = 11
-      Width = 125
+      Width = 173
       Height = 21
       Style = csDropDownList
       ItemIndex = 0
@@ -89,7 +79,8 @@ object FormRichView: TFormRichView
       Items.Strings = (
         'Table'
         'Single Field'
-        'Several Fields')
+        'Several Fields'
+        'Data Cursor (selected rows)')
     end
   end
   object RVStyle1: TRVStyle
