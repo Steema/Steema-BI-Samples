@@ -17,15 +17,12 @@ object Form35: TForm35
     TabIndex = 0
     TabOrder = 0
     TabPosition = PlatformDefault
-    Sizes = (
-      929s
-      529s)
     object TabItem1: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = True
-      Size.Width = 45.000000000000000000
+      Size.Width = 44.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -39,6 +36,7 @@ object Form35: TForm35
         Size.Height = 529.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
+        ReadOnly = False
       end
     end
   end
