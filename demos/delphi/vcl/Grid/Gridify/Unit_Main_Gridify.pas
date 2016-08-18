@@ -132,6 +132,8 @@ begin
     5: tmp:=TGridify.From(BIGrid1.Data,'Rank','Year','Person');
     6: tmp:=TGridify.From(BIGrid1.Data,'Rank','Person','Year');
     7: tmp:=TGridify.From(BIGrid1.Data,'Color','Rank','Person');
+  else
+    tmp:=nil;
   end;
 
   BIGrid2.Data:=tmp;

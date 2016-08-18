@@ -33,7 +33,6 @@ object FromGridify: TFromGridify
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
-    ExplicitLeft = 0
   end
   object BIGrid2: TBIGrid
     Left = 484
@@ -45,8 +44,6 @@ object FromGridify: TFromGridify
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
-    ExplicitLeft = 320
-    ExplicitWidth = 581
   end
   object LBTest: TListBox
     Left = 0
