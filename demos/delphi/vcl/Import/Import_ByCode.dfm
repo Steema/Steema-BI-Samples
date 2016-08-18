@@ -76,6 +76,7 @@ object ByCode: TByCode
         'JSON'
         'XML'
         'Database'
+        'HTML'
         'Excel')
       TabOrder = 0
       OnClick = LBFormatClick
@@ -217,6 +218,52 @@ object ByCode: TByCode
             TitleFont.Height = -11
             TitleFont.Name = 'Tahoma'
             TitleFont.Style = []
+          end
+        end
+        object TabHTML: TTabSheet
+          Caption = 'HTML'
+          ImageIndex = 4
+          object MemoHTML: TMemo
+            Left = 0
+            Top = 0
+            Width = 596
+            Height = 468
+            Align = alClient
+            Lines.Strings = (
+              '<html>'
+              '<body>'
+              ''
+              '<table>'
+              #9'<tr>'
+              #9#9'<th>Continent</th>'
+              #9#9'<th>Population</th>'
+              #9'</tr>'
+              #9'<tr>'
+              #9#9'<td>Asia</td>'
+              #9#9'<td>4298723000</td>'
+              #9'</tr>'
+              #9'<tr>'
+              #9#9'<td>Africa</td>'
+              #9#9'<td>1110635000</td>'
+              #9'</tr>'
+              #9'<tr>'
+              #9#9'<td>Americas</td>'
+              #9#9'<td>972005000</td>'
+              #9'</tr>'
+              #9'<tr>'
+              #9#9'<td>Europe</td>'
+              #9#9'<td>742452000</td>'
+              #9'</tr>'
+              #9'<tr>'
+              #9#9'<td>Oceania</td>'
+              #9#9'<td>38304000</td>'
+              #9'</tr>'
+              '</table>'
+              ''
+              '</body>'
+              '</html>')
+            TabOrder = 0
+            WordWrap = False
           end
         end
       end

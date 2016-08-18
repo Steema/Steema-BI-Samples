@@ -34,6 +34,7 @@ type
     TabSheet1: TTabSheet;
     TabStructure: TTabSheet;
     BIGrid1: TBIGrid;
+    LabelPath: TLabel;
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure BNextClick(Sender: TObject);
@@ -144,7 +145,12 @@ end;
 
 procedure TImportDemoForm.SamplesChange(Sender: TObject; Node: TTreeNode);
 begin
-  BNext.Enabled:=(Node<>nil) and (Node.Parent<>nil) and (Node.Parent.Parent<>nil);
+  if Node=nil then
+     LabelPath.Caption:=''
+  else
+     LabelPath.Caption:=PathOf(Node);
+
+  BNext.Enabled:=LabelPath.Caption<>'';
 end;
 
 procedure TImportDemoForm.SamplesDblClick(Sender: TObject);

@@ -32,6 +32,8 @@ type
     DBGrid1: TDBGrid;
     ClientDataSet1: TClientDataSet;
     DataSource1: TDataSource;
+    TabHTML: TTabSheet;
+    MemoHTML: TMemo;
     procedure LBFormatClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -47,6 +49,7 @@ type
     procedure ImportCSV;
     procedure ImportDatabase;
     procedure ImportExcel;
+    procedure ImportHTML;
     procedure ImportJSON;
     procedure ImportXML;
   public
@@ -61,7 +64,7 @@ implementation
 
 uses
   BI.Data.CSV, BI.Data.JSON, BI.Data.XML, BI.Data.Excel, BI.Data.DB,
-  BI.DataSource,
+  BI.DataSource, BI.Data.HTML,
   FindSampleData;
 
 { TByCode }
@@ -195,7 +198,7 @@ end;
 procedure TByCode.ImportXML;
 var XML : TBIXML;
 begin
-  XML:=TBIXML.Create; // <-- CreatEngine to pass a different XML DOM library
+  XML:=TBIXML.Create; // <-- CreateEngine to pass a different XML DOM library
   try
     XML.ExcludePattern:='name';
 
@@ -205,6 +208,17 @@ begin
     BIGrid1.Data:=XML.ImportText(MemoXML.Text);
   finally
     XML.Free;
+  end;
+end;
+
+procedure TByCode.ImportHTML;
+var HTML : TBIHTML;
+begin
+  HTML:=TBIHTML.Create;
+  try
+    BIGrid1.Data:=HTML.FromText(MemoHTML.Text);
+  finally
+    HTML.Free;
   end;
 end;
 
@@ -234,6 +248,11 @@ begin
       3: begin
            PageExamples.ActivePage:=TabDatabase;
            ImportDatabase;
+         end;
+
+      4: begin
+           PageExamples.ActivePage:=TabHTML;
+           ImportHTML;
          end;
     else
       ImportExcel;

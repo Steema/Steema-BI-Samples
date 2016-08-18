@@ -23,6 +23,12 @@ object ImportDemoForm: TImportDemoForm
     Height = 41
     Align = alBottom
     TabOrder = 0
+    object LabelPath: TLabel
+      Left = 235
+      Top = 14
+      Width = 3
+      Height = 13
+    end
     object BNext: TButton
       Left = 136
       Top = 9
@@ -112,10 +118,6 @@ object ImportDemoForm: TImportDemoForm
       OnChange = PageControl1Change
       object TabSheet1: TTabSheet
         Caption = 'Data'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object BIGrid1: TBIGrid
           Left = 0
           Top = 0
@@ -126,16 +128,11 @@ object ImportDemoForm: TImportDemoForm
           ParentBackground = False
           ParentColor = False
           TabOrder = 0
-          ExplicitTop = -3
         end
       end
       object TabStructure: TTabSheet
         Caption = 'Structure'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
     end
   end
