@@ -48,7 +48,7 @@ uses
 
 function TSampleSummaries.Count:Integer;
 begin
-  result:=27;
+  result:=29;
 end;
 
 function TSampleSummaries.CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;
@@ -280,10 +280,20 @@ begin
          result.By[0].Layout:=TGroupByLayout.Items;
          result.SortBy.Add(Customers['Country'],False);
        end;
+
+   27: begin
+         result.AddMeasure(OrderDetails['Quantity'],TAggregate.First);
+         result.AddGroupBy(Products['ProductName']);
+       end;
+
+   28: begin
+         result.AddMeasure(OrderDetails['Quantity'],TAggregate.Last);
+         result.AddGroupBy(Products['ProductName']);
+       end;
   end;
 end;
 
-destructor TSampleSummaries.Destroy;
+Destructor TSampleSummaries.Destroy;
 begin
   SumData3.Free;
   SumData2.Free;
