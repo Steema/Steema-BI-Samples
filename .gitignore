@@ -30,3 +30,4 @@ __history
 *.nmt
 demos/lazarus/BIGrid/lib/
 *.nlt
+demos/delphi/vcl/Query/Select_Queries/Win32/Debug/TeeBI_Select_Queries_MemoryManager_EventLog.txt
