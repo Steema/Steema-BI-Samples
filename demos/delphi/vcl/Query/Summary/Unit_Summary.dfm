@@ -176,7 +176,9 @@ object FormSummary: TFormSummary
         '23 Quantity Min and Max, by Year and ShipVia'
         '24 By CompanyName (text histogram)'
         '25 By Discontinued (boolean histogram)'
-        '26 One GroupBy (columns) SORTED')
+        '26 One GroupBy (columns) SORTED'
+        '27 First Order Quantity by Product'
+        '28 Last Order Quantity by Product')
       PopupMenu = PopupMenu1
       TabOrder = 0
       OnClick = LBTestClick
@@ -243,10 +245,6 @@ object FormSummary: TFormSummary
       object TabVizEditor: TTabSheet
         Caption = 'Visualizer'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
     end
   end
@@ -289,10 +287,6 @@ object FormSummary: TFormSummary
     object TabTree: TTabSheet
       Caption = 'Tree'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 275
@@ -325,10 +319,6 @@ object FormSummary: TFormSummary
     object TabVisualizer: TTabSheet
       Caption = 'Visualizer'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -371,10 +361,6 @@ object FormSummary: TFormSummary
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -436,10 +422,6 @@ object FormSummary: TFormSummary
     object TabTotals: TTabSheet
       Caption = 'Totals'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 258
@@ -525,6 +507,13 @@ object FormSummary: TFormSummary
           TabOrder = 0
           DefaultCanvas = 'TGDIPlusCanvas'
           ColorPaletteIndex = 9
+          object TMarksTipTool
+            Format.CustomPosition = True
+            Format.Left = 0
+            Format.TextAlignment = taCenter
+            Format.Top = 0
+            Format.Visible = False
+          end
         end
       end
     end
