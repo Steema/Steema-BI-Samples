@@ -14,14 +14,14 @@ object FormSpeed: TFormSpeed
   object Layout1: TLayout
     Align = Top
     Size.Width = 796.000000000000000000
-    Size.Height = 66.000000000000000000
+    Size.Height = 41.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object BRun: TButton
       Position.X = 16.000000000000000000
       Position.Y = 9.000000000000000000
-      Size.Width = 123.000000000000000000
-      Size.Height = 44.000000000000000000
+      Size.Width = 105.000000000000000000
+      Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       Text = 'Begin Test'
@@ -29,8 +29,8 @@ object FormSpeed: TFormSpeed
     end
     object LTotal: TLabel
       AutoSize = True
-      Position.X = 114.000000000000000000
-      Position.Y = 18.000000000000000000
+      Position.X = 132.000000000000000000
+      Position.Y = 14.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -39,7 +39,7 @@ object FormSpeed: TFormSpeed
   object BIGrid1: TBIGrid
     Align = Client
     Size.Width = 796.000000000000000000
-    Size.Height = 345.000000000000000000
+    Size.Height = 370.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
   end

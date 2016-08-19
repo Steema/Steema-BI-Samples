@@ -124,10 +124,6 @@ begin
       end;
     end);
 
-  {$IFDEF ANDROID}
-  Exit;
-  {$ENDIF}
-
   // Create a sample table
   Persons:=TDataItem.Create(True);
         Persons.Items.Add('ID',TDataKind.dkInt32);
