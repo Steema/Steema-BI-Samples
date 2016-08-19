@@ -2,7 +2,8 @@ program TeeBI_Speed;
 
 uses
   Vcl.Forms,
-  MainForm in 'MainForm.pas' {FormSpeed};
+  MainForm in 'MainForm.pas' {FormSpeed},
+  BI.Tests.Speed in '..\..\..\..\tests\BI.Tests.Speed.pas';
 
 {$R *.res}
 
