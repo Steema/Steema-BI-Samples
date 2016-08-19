@@ -78,6 +78,8 @@ begin
 
   FDLocalSQL1.Active:=True;
 
+  FDQuery1.ObjectView:=False;
+
   t1:=TStopwatch.StartNew;
 
   // Query 10 times

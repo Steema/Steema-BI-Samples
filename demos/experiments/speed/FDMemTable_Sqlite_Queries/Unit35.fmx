@@ -31,7 +31,7 @@ object LocalSQLvsBI: TLocalSQLvsBI
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     LocalSQL = FDLocalSQL1
-    Left = 96
+    Left = 48
     Top = 40
     object PersonsID: TIntegerField
       FieldName = 'ID'
