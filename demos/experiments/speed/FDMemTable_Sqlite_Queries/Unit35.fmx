@@ -1,0 +1,74 @@
+object LocalSQLvsBI: TLocalSQLvsBI
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI vs FireDAC LocalSQL'
+  ClientHeight = 480
+  ClientWidth = 640
+  Position = OwnerFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Memo1: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 16.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Width = 601.000000000000000000
+    Size.Height = 441.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Viewport.Width = 597.000000000000000000
+    Viewport.Height = 437.000000000000000000
+  end
+  object Persons: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    LocalSQL = FDLocalSQL1
+    Left = 96
+    Top = 40
+    object PersonsID: TIntegerField
+      FieldName = 'ID'
+    end
+    object PersonsName: TWideStringField
+      FieldName = 'Name'
+      Size = 100
+    end
+    object PersonsSalary: TSingleField
+      FieldName = 'Salary'
+    end
+  end
+  object FDLocalSQL1: TFDLocalSQL
+    Connection = FDConnection1
+    DataSets = <>
+    Left = 48
+    Top = 120
+  end
+  object FDQuery1: TFDQuery
+    LocalSQL = FDLocalSQL1
+    Connection = FDConnection1
+    SQL.Strings = (
+      'select * from Persons where Name='#39'Alex'#39)
+    Left = 56
+    Top = 184
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 48
+    Top = 248
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'DriverID=SQLite')
+    Connected = True
+    LoginPrompt = False
+    Left = 48
+    Top = 312
+  end
+end
