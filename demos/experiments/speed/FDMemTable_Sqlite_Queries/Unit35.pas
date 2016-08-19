@@ -76,9 +76,9 @@ begin
     Persons.EnableControls;
   end;
 
-  FDLocalSQL1.Active:=True;
+  FDLocalSQL1.UseTransactions:=False;
 
-  FDQuery1.ObjectView:=False;
+  FDLocalSQL1.Active:=True;
 
   t1:=TStopwatch.StartNew;
 
