@@ -23,9 +23,20 @@ object FormBIWebTests: TFormBIWebTests
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 256
-    ExplicitTop = 232
-    ExplicitWidth = 185
+    ExplicitTop = -6
+    object Label1: TLabel
+      Left = 304
+      Top = 14
+      Width = 26
+      Height = 13
+      Caption = 'Host:'
+    end
+    object LTime: TLabel
+      Left = 664
+      Top = 14
+      Width = 3
+      Height = 13
+    end
     object BRun: TButton
       Left = 24
       Top = 9
@@ -37,7 +48,7 @@ object FormBIWebTests: TFormBIWebTests
     end
     object Button1: TButton
       Left = 144
-      Top = 10
+      Top = 9
       Width = 137
       Height = 25
       Caption = 'Generate HTML page...'
@@ -45,8 +56,8 @@ object FormBIWebTests: TFormBIWebTests
       OnClick = Button1Click
     end
     object CBHost: TComboBox
-      Left = 464
-      Top = 8
+      Left = 351
+      Top = 11
       Width = 145
       Height = 21
       TabOrder = 2

@@ -10,6 +10,8 @@ type
   public
     Description,
     URL : String;
+
+    ReturnsData : Boolean;
   end;
 
   TBIWebTests=record
@@ -33,7 +35,7 @@ uses
 
 class procedure TBIWebTests.Init;
 
-  procedure Add(const ADescription:String; const AURL:String='');
+  procedure Add(const ADescription:String; const AURL:String=''; const ReturnsData:Boolean=True);
   var L : Integer;
   begin
     L:=Length(Tests);
@@ -41,6 +43,7 @@ class procedure TBIWebTests.Init;
 
     Tests[L].Description:=ADescription;
     Tests[L].URL:=AURL;
+    Tests[L].ReturnsData:=ReturnsData;
   end;
 
 begin
@@ -53,7 +56,7 @@ begin
 
   Add('Data Access');
 
-  Add('SQLite Import Definition','def=SQLite_demo&format=.htm');
+  Add('SQLite Import Definition','def=SQLite_demo&format=.htm',False);
   Add('SQLite Data Items','data=SQLite_demo&format=.htm');
   Add('SQLite Data Info','data=SQLite_demo&info=1&format=.htm');
 
@@ -79,7 +82,7 @@ begin
 
   Add('Products sorted by UnitsInStock+UnitsOnOrder','data=SQLite_demo|Products&format=.htm&sortexp=UnitsInStock%2BUnitsOnOrder');
 
-  Add('Sort Restaurants by subcolumn "address.building"','data=|restaurants|restaurants&format=.htm&sort=address.building&start=1300');
+  Add('Sort Restaurants by subcolumn "address.building"','data=|restaurants|mongo_restaurants&format=.htm&sort=address.building&start=1300');
 
   Add('Queries');
 
@@ -178,10 +181,13 @@ begin
 
   for tmp in Tests do
   begin
-    tmpData:=GetData(tmp.URL,tmpHost);
-    try
-    finally
-      tmpData.Free;
+    if tmp.ReturnsData then
+    begin
+      tmpData:=GetData(tmp.URL,tmpHost);
+      try
+      finally
+        tmpData.Free;
+      end;
     end;
   end;
 end;

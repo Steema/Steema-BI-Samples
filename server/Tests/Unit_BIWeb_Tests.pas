@@ -19,6 +19,8 @@ type
     Panel2: TPanel;
     EURL: TEdit;
     BOpenURL: TButton;
+    Label1: TLabel;
+    LTime: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure BRunClick(Sender: TObject);
@@ -39,7 +41,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Web.Tests, System.Diagnostics;
+  BI.Data, BI.Web.Tests, System.Diagnostics;
 
 procedure TFormBIWebTests.BRunClick(Sender: TObject);
 var t1 : TStopwatch;
@@ -47,7 +49,7 @@ begin
   t1:=TStopwatch.StartNew;
   TBIWebTests.Run(CBHost.Text);
 
-  Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
+  LTime.Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
 end;
 
 procedure TFormBIWebTests.Button1Click(Sender: TObject);
@@ -77,6 +79,8 @@ end;
 
 procedure TFormBIWebTests.LBTestClick(Sender: TObject);
 var tmp : TBIWebTest;
+    t1 : TStopWatch;
+    tmpData : TDataItem;
 begin
   if LBTest.ItemIndex<>-1 then
   begin
@@ -84,7 +88,17 @@ begin
 
     EURL.Text:=TBIWebTests.URL(tmp,CBHost.Text);
 
-    BIGrid1.Data:=TBIWebTests.GetData(tmp.URL,CBHost.Text);
+    if tmp.ReturnsData then
+    begin
+      t1:=TStopwatch.StartNew;
+      tmpData:=TBIWebTests.GetData(tmp.URL,CBHost.Text);
+
+      LTime.Caption:=t1.ElapsedMilliseconds.ToString;
+    end
+    else
+      tmpData:=nil;
+
+    BIGrid1.Data:=tmpData;
 
     BOpenURL.Enabled:=EURL.Text<>'';
   end;
