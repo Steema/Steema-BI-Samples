@@ -10,6 +10,19 @@ uses
   BI.Expression.Filter, BI.Data, BI.VCL.DataControl, BI.VCL.Grid,
   BI.VCL.Editor.DynamicFilter, BI.VCL.Editor.Filter.Item, BI.Expression;
 
+(*
+   This example shows the different ways to "filter" data by code,
+   using the TFilterItem class and its editor dialog TFilterItemEditor.
+
+   Four TFilterItem objects are used, for each different data kind:
+
+   Boolean
+   DateTime
+   Numeric
+   Text
+
+*)
+
 type
   TForm35 = class(TForm)
     BIGrid1: TBIGrid;
@@ -31,6 +44,9 @@ type
     Label1: TLabel;
     EFilter: TEdit;
     LRows: TLabel;
+    Splitter2: TSplitter;
+    TabBoolean: TTabSheet;
+    LBBooleanExamples: TListBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LBDateExamplesClick(Sender: TObject);
@@ -40,11 +56,13 @@ type
     procedure LBTextExamplesClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure LBBooleanExamplesClick(Sender: TObject);
   private
     { Private declarations }
 
     IEditor : TFilterItemEditor;
 
+    BooleanFilter,
     DateFilter,
     NumberFilter,
     TextFilter : TFilterItem;
@@ -55,6 +73,7 @@ type
     function CurrentFilter:TFilterItem;
     procedure RefreshGrid;
 
+    procedure SetBooleanExample(const AFilter:TFilterItem);
     procedure SetDateExample(const AFilter:TFilterItem);
     procedure SetNumberExample(const AFilter:TFilterItem);
     procedure SetTextExample(const AFilter:TFilterItem);
@@ -79,21 +98,30 @@ const
 
 var t: Integer;
 
+    tmpBool,
     tmpDate,
     tmpText,
     tmpNum : TDataItem;
 begin
   result:=TDataItem.Create(True);
 
+  // Create fields
+  tmpBool:=result.Items.Add('Boolean',TDataKind.dkBoolean);
   tmpDate:=result.Items.Add('Date',TDataKind.dkDateTime);
   tmpNum:=result.Items.Add('Number',TDataKind.dkDouble);
   tmpText:=result.Items.Add('Text',TDataKind.dkText);
 
+  // Resize
   result.Resize(Num);
+
+  // Fill rows with random data
 
   for t:=0 to Num-1 do
   begin
+    tmpBool.BooleanData[t]:=Random(100)<50;
+
     tmpDate.DateTimeData[t]:=Date+t-1000;
+
     tmpNum.DoubleData[t]:= -1000 + Random(2000);
 
     if Random(100)<3 then
@@ -102,7 +130,7 @@ begin
        tmpText.TextData[t]:= SampleText[Random(Length(SampleText))];
   end;
 
-  // Set fixed numbers, just to filter them later:
+  // Set fixed numbers, just an example to filter specific values later:
 
   tmpNum.DoubleData[100]:=1234;
   tmpNum.DoubleData[1000]:=1234;
@@ -113,6 +141,7 @@ begin
   TDynamicFilterEditor.Edit(Self,Filter,BIGrid1.Data);
 end;
 
+// Enable or disable our filter
 procedure TForm35.CBEnabledClick(Sender: TObject);
 begin
   CurrentFilter.Enabled:=CBEnabled.Checked;
@@ -123,12 +152,16 @@ procedure TForm35.FormCreate(Sender: TObject);
 begin
   BIGrid1.Data:=SampleData;
 
+  // Create our custom filter object
   Filter:=TBIFilter.Create;
 
+  // Add filter items for each different field of our sample data
+  BooleanFilter:=Filter.Add(BIGrid1.Data['Boolean']);
   DateFilter:=Filter.Add(BIGrid1.Data['Date']);
   NumberFilter:=Filter.Add(BIGrid1.Data['Number']);
   TextFilter:=Filter.Add(BIGrid1.Data['Text']);
 
+  // Create a TFilterItem editor dialog and embedd it here
   IEditor:=TFilterItemEditor.Embedd(Self,PanelEditor,CurrentFilter);
   IEditor.OnChange:=ChangedFilter;
 
@@ -142,10 +175,12 @@ end;
 
 procedure TForm35.FormDestroy(Sender: TObject);
 begin
+  // Destroy sample data and our custom filter object
   BIGrid1.Data.Free;
   Filter.Free;
 end;
 
+// Invert the current filter
 procedure TForm35.CBInvertedClick(Sender: TObject);
 begin
   CurrentFilter.Inverted:=CBInverted.Checked;
@@ -186,6 +221,20 @@ begin
          tmp.FromValue.Value:= -300;
          tmp.ToValue.Value:= 300;
        end;
+  end;
+end;
+
+procedure TForm35.SetBooleanExample(const AFilter:TFilterItem);
+var tmp : TBooleanFilter;
+begin
+  AFilter.Reset;
+
+  tmp:=AFilter.BoolFilter;
+
+  case LBBooleanExamples.ItemIndex of
+    0: begin tmp.IncludeTrue:=True; tmp.IncludeFalse:=True; end;
+    1: begin tmp.IncludeTrue:=True; tmp.IncludeFalse:=False; end;
+    2: begin tmp.IncludeTrue:=False; tmp.IncludeFalse:=True; end;
   end;
 end;
 
@@ -321,6 +370,7 @@ begin
   end;
 end;
 
+// Apply the new filter to BIGrid and refresh it
 procedure TForm35.RefreshGrid;
 var tmp : TExpression;
 begin
@@ -342,9 +392,17 @@ begin
   ShowRowCount;
 end;
 
+// Show the current number of filtered rows
 procedure TForm35.ShowRowCount;
 begin
   LRows.Caption:='Rows: '+IntToStr(BIGrid1.DataSource.DataSet.RecordCount);
+end;
+
+procedure TForm35.LBBooleanExamplesClick(Sender: TObject);
+begin
+  SetBooleanExample(BooleanFilter);
+  IEditor.Refresh(BooleanFilter);
+  RefreshGrid;
 end;
 
 procedure TForm35.LBDateExamplesClick(Sender: TObject);
@@ -370,6 +428,9 @@ end;
 
 function TForm35.CurrentFilter:TFilterItem;
 begin
+  if PageControl1.ActivePage=TabBoolean then
+     result:=BooleanFilter
+  else
   if PageControl1.ActivePage=TabDate then
      result:=DateFilter
   else
@@ -379,6 +440,7 @@ begin
      result:=TextFilter;
 end;
 
+// Change the editor dialog for our currently selected filter item
 procedure TForm35.PageControl1Change(Sender: TObject);
 begin
   IEditor.Refresh(CurrentFilter);
