@@ -887,7 +887,7 @@ begin
     Max:=Params.Values['max'];
 
     if Max='' then
-       ACursor.Max:=100
+       ACursor.Max:=0
     else
        ACursor.Max:=StrToInt(Max);
 
@@ -902,13 +902,22 @@ procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
                                    const Params:TStrings);
 
   function CursorToBothStream(const ACursor:TDataCursor):TStream;
+  var tmp : TDataItem;
   begin
     if ACursor.Data=nil then
        result:=nil
     else
     begin
       result:=TMemoryStream.Create;
-      TDataItemPersistence.Save(ACursor.Data,result); // <-- info+data
+
+      tmp:=ACursor.ToData;
+      try
+        TDataItemPersistence.Save(tmp,result); // <-- info+data
+      finally
+        if tmp<>ACursor.Data then
+           tmp.Free;
+      end;
+
       result:=CheckZip(result,Params);
     end;
   end;

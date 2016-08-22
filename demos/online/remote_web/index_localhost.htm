@@ -1,0 +1,47 @@
+<html>
+<body>
+<h2>TeeBI Remote Web Server Tests</h2>
+<p>
+<b>Home</b></br></br>
+<a href='http://localhost:15015?history=1&format=.htm'>History</a></br></br>
+<a href='http://localhost:15015?history=1&format=.json'>History (JSON)</a></br></br>
+<a href='http://localhost:15015?history=1&format=.xml'>History (XML)</a></br></br>
+<a href='http://localhost:15015?history=1&format=.csv'>History (CSV)</a></br></br>
+<b>Data Access</b></br></br>
+<a href='http://localhost:15015?def=SQLite_demo&format=.htm'>SQLite Import Definition</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo&format=.htm'>SQLite Data Items</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo&info=1&format=.htm'>SQLite Data Info</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm'>SQLite Products Data</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&css=no'>SQLite Products with no CSS style</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products|QuantityPerUnit&format=.htm'>SQLite just Products QuantityPerUnit data</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&max=5&format=.htm'>SQLite first 5 Products</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&start=-5&format=.htm'>SQLite last 5 Products</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&items=ProductName,CategoryID'>Products items only: ProductName and CategoryID</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&filter=SupplierID=11'>Products filter: SupplierID = 11</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&items=ProductName,UnitsInStock,UnitsOnOrder,UnitsInStock%2BUnitsOnOrder'>Products with extra expression column: (UnitsInStock+UnitsOnOrder)</a></br></br>
+<b>Sorting</b></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&sort=UnitsInStock'>Products sorted by UnitsInStock (ascending)</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&sort=UnitsInStock:descending'>Products sorted by UnitsInStock (descending)</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&sortexp=UnitsInStock%2BUnitsOnOrder'>Products sorted by UnitsInStock+UnitsOnOrder</a></br></br>
+<a href='http://localhost:15015?data=|restaurants|restaurants&format=.htm&sort=address.building&start=1300'>Sort Restaurants by subcolumn "address.building"</a></br></br>
+<b>Queries</b></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Orders&format=.htm&query=OrderID,OrderDate'>Orders OrderID and OrderDate</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Orders&format=.htm&query=EmployeeID,ShipCountry&sort=EmployeeID'>Orders EmployeeID and ShipCountry</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Orders&format=.htm&query=EmployeeID,ShipCountry&sort=EmployeeID&distinct=true'>Orders DISTINCT EmployeeID and ShipCountry</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo&format=.htm&sql=select * from Customers'>SQL select * from Customers</a></br></br>
+<b>Summaries</b></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Orders&format=.htm&summary=count(OrderID);ShortMonth(OrderDate)'>Count of Orders by ShortMonth(OrderDate)</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|Products&format=.htm&summary=sum(UnitsInStock);'>Sum of Products UnitsInStock</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.htm&summary=average(UnitPrice),sum(Quantity)'>Average of "Order Details" UnitPrice and sum of Quantity</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.htm&summary=sum(Quantity);Categories.CategoryName'>Sum of "Order Details" Quantity by Categories CategoryName</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.htm&summary=sum(Quantity);Categories.CategoryName&having={Sum of Quantity}>5000'>Sum of "Order Details" having Quantity&gt;5000 by Categories CategoryName</a></br></br>
+<b>Charts</b></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.html5&summary=sum(Quantity);Shippers.ShipperID'>Chart (HTML5 Live Javascript) of Sum of "Order Details" Quantity by Shippers ShipperID</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.html5&summary=sum(Quantity);Shippers.ShipperID&width=300&height=200&fontzoom=60'>HTML5 Height=200,Width=300,FontZoom=60</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.png&summary=sum(Quantity);Shippers.ShipperID'>Chart (png) of Sum of "Order Details" Quantity by Shippers ShipperID</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.jpg&summary=sum(Quantity);Shippers.ShipperID'>Chart (jpg) of Sum of "Order Details" Quantity by Shippers ShipperID</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.png&view3d=false&theme=flat&width=1280&height=720&amp;summary=sum(Quantity);Shippers.ShipperID'>Chart 2D and "Flat" theme 1280x720</a></br></br>
+<a href='http://localhost:15015?data=SQLite_demo|"Order Details"&format=.htm&summary=sum(Quantity);Shippers.CompanyName,Quarter(Orders.OrderDate),Year(Orders.OrderDate)'>Chart of Sum of "Order Details" Quantity by Shippers ShipperID, Quarter and Year of Orders.OrderDate</a></br></br>
+</p>
+</body>
+</html>

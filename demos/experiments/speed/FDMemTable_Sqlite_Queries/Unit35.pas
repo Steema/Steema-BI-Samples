@@ -54,6 +54,10 @@ procedure TLocalSQLvsBI.TestFireDAC;
 var t : Integer;
     t1 : TStopwatch;
 begin
+  // Testing fix for Mac OSX (no difference)
+  // https://quality.embarcadero.com/browse/RSP-11827
+  // FDConnection1.ResourceOptions.SilentMode:=True;
+
   Persons.Open;
 
   Persons.DisableControls;
