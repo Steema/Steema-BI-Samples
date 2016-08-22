@@ -43,6 +43,10 @@ type
 implementation
 
 uses
+  {$IFDEF USESynLZ}
+  BI.Compression, BI.Compression.SynZip,
+  {$ENDIF}
+
   System.SysUtils, System.IOUtils, BI.Persist, BI.Summary;
 
 { TAllData }
@@ -291,4 +295,10 @@ begin
   result:=TStore.DataToStream(FStore,AData,Zip);
 end;
 
+{$IFDEF USESynLZ}
+initialization
+  TCompression.Plugin:=TSynLZCompression;
+finalization
+  TCompression.Plugin:=TSystemCompression;
+{$ENDIF}
 end.
