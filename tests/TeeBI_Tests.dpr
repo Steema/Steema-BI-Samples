@@ -33,12 +33,13 @@ uses
   DUnitTestRunner,
   GUITestRunner,
   {$ENDIF }
-  BI.Tests.Queries in 'BI.Tests.Queries.pas',
-  BI.Tests.TDataItem in 'BI.Tests.TDataItem.pas',
+
   BI.Tests.Expressions in 'BI.Tests.Expressions.pas',
+  BI.Tests.TDataItem in 'BI.Tests.TDataItem.pas',
   BI.Tests.Exporting in 'BI.Tests.Exporting.pas',
   BI.Tests.Importing in 'BI.Tests.Importing.pas',
   BI.Tests.WebServer in 'BI.Tests.WebServer.pas',
+  BI.Tests.Queries in 'BI.Tests.Queries.pas',
   BI.Tests.SQLParser in 'BI.Tests.SQLParser.pas',
   BI.Expressions.Samples in 'BI.Expressions.Samples.pas';
 

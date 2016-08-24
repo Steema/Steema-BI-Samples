@@ -128,7 +128,6 @@ end;
 
 procedure TQuery_Test.TearDown;
 begin
-
 end;
 
 initialization
