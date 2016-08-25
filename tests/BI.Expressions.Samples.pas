@@ -77,14 +77,21 @@ const
 '1 in [1,2,3] -> True'+CRLF+
 '1 in [4] -> False'+CRLF+
 'PI    -> 3.14159265358979'+CRLF+
+'abs(3) -> 3'+CRLF+
+'abs(1.3) -> 1.3'+CRLF+
+'abs(-3) -> 3'+CRLF+
+'abs(-1.3) -> 1.3'+CRLF+
 'cos(pi) -> -1'+CRLF+
 'Sin(0.52359878) -> 0.500000003811985'+CRLF+
+'sign(0) -> 0'+CRLF+
+'sign(-3) -> -1'+CRLF+
+'sign(3) -> 1'+CRLF+
 'sqr(5) -> 25'+CRLF+
 'Exp( 10 ) -> 22026.4657948067'+CRLF+
 'Ln( 6.8 ) -> 2.76553474636298'+CRLF+
 'log( 10000) -> 4'+CRLF+
 '(5*4) + sqr(3) - sqrt(36) -> 23'+CRLF+
-'Date(''5/5/2015'') -> 5/5/2015'+CRLF+   // <-- Warning, Variant To Date swaps month and day
+'Date("5/5/2015") -> 5/5/2015'+CRLF+   // <-- Warning, Variant To Date swaps month and day
 'Millennium(''11/7/2016'') -> 3'+CRLF+
 'Century(''11/7/2016'') -> 21'+CRLF+
 'Year("11/7/2016") -> 2016'+CRLF+

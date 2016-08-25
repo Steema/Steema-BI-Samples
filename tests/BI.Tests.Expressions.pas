@@ -49,7 +49,7 @@ procedure TExpressions_Test.All;
 
     if i>0 then
     begin
-      Left:=Copy(S,1,i-1);
+      Left:=Trim(Copy(S,1,i-1));
       Right:=Trim(Copy(S,i+2,Length(S)));
 
       result:=True;
@@ -81,9 +81,8 @@ begin
       tmpResult:=E.Value;
       Assert.IsNotNull(tmpResult,Test(t)+' evaluates to null');
 
-      // Special case for Date, converting from Variant is not using the regional
-      // setting
-      if t=70 then
+      // Special case for Date, converting from Variant is not using the regional setting
+      if Left='Date("5/5/2015")' then
          Value:=DateToStr(tmpResult)
       else
          Value:=E.AsString; // <-- already solves the "Split" function issue (returns OLE array)
