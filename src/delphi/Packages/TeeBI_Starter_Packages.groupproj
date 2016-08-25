@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{1968454F-6883-42C9-B50A-25C1C636CECD}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="TeeBI.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="VCLTeeBI.dproj">
+            <Dependencies>TeeBI.dproj</Dependencies>
+        </Projects>
+        <Projects Include="FMXTeeBI.dproj">
+            <Dependencies>TeeBI.dproj</Dependencies>
+        </Projects>
+        <Projects Include="DclTeeBI.dproj">
+            <Dependencies>VCLTeeBI.dproj;TeeBI.dproj</Dependencies>
+        </Projects>
+        <Projects Include="DclFmxTeeBI.dproj">
+            <Dependencies>TeeBI.dproj;FMXTeeBI.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TeeBI">
+        <MSBuild Projects="TeeBI.dproj"/>
+    </Target>
+    <Target Name="TeeBI:Clean">
+        <MSBuild Projects="TeeBI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TeeBI:Make">
+        <MSBuild Projects="TeeBI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="VCLTeeBI" DependsOnTargets="TeeBI">
+        <MSBuild Projects="VCLTeeBI.dproj"/>
+    </Target>
+    <Target Name="VCLTeeBI:Clean" DependsOnTargets="TeeBI:Clean">
+        <MSBuild Projects="VCLTeeBI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="VCLTeeBI:Make" DependsOnTargets="TeeBI:Make">
+        <MSBuild Projects="VCLTeeBI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FMXTeeBI" DependsOnTargets="TeeBI">
+        <MSBuild Projects="FMXTeeBI.dproj"/>
+    </Target>
+    <Target Name="FMXTeeBI:Clean" DependsOnTargets="TeeBI:Clean">
+        <MSBuild Projects="FMXTeeBI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FMXTeeBI:Make" DependsOnTargets="TeeBI:Make">
+        <MSBuild Projects="FMXTeeBI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DclTeeBI" DependsOnTargets="VCLTeeBI;TeeBI">
+        <MSBuild Projects="DclTeeBI.dproj"/>
+    </Target>
+    <Target Name="DclTeeBI:Clean" DependsOnTargets="VCLTeeBI:Clean;TeeBI:Clean">
+        <MSBuild Projects="DclTeeBI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DclTeeBI:Make" DependsOnTargets="VCLTeeBI:Make;TeeBI:Make">
+        <MSBuild Projects="DclTeeBI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DclFmxTeeBI" DependsOnTargets="TeeBI;FMXTeeBI">
+        <MSBuild Projects="DclFmxTeeBI.dproj"/>
+    </Target>
+    <Target Name="DclFmxTeeBI:Clean" DependsOnTargets="TeeBI:Clean;FMXTeeBI:Clean">
+        <MSBuild Projects="DclFmxTeeBI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DclFmxTeeBI:Make" DependsOnTargets="TeeBI:Make;FMXTeeBI:Make">
+        <MSBuild Projects="DclFmxTeeBI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TeeBI;VCLTeeBI;FMXTeeBI;DclTeeBI;DclFmxTeeBI"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TeeBI:Clean;VCLTeeBI:Clean;FMXTeeBI:Clean;DclTeeBI:Clean;DclFmxTeeBI:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TeeBI:Make;VCLTeeBI:Make;FMXTeeBI:Make;DclTeeBI:Make;DclFmxTeeBI:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
