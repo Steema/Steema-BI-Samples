@@ -42,6 +42,7 @@ type
     procedure BindTo(const ADataSet:TDataSet); virtual; abstract;
     procedure Colorize(const AItems:TDataColorizers); virtual; abstract;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); virtual; abstract;
+    function GetControl:TControl; virtual; abstract;
     function GetObject:TObject; virtual; abstract;
 
     property DataSource:TDataSource read GetDataSource write SetDataSource;
@@ -71,12 +72,13 @@ type
     IDataSetRight : TBIDataset;
     IPluginRight : TBIGridPlugin;
 
-    procedure RowChanged(Sender: TObject);
+    procedure ControlDblClick(Sender: TObject);
     function GetCurrentRow: Integer;
     function GetReadOnly: Boolean;
     function HasSubItem: Boolean;
     procedure HideShowItems;
     function PluginControl:TControl;
+    procedure RowChanged(Sender: TObject);
 
     procedure SetAlternate(const Value: TAlternateColor);
     procedure SetPlugin(const Value: TBIGridPlugin);
@@ -86,12 +88,12 @@ type
     procedure TryShowItems;
   protected
     procedure SetDataDirect(const Value: TDataItem); override;
+    procedure UpdatedDataValues; override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    procedure BindTo(const AData: TDataItem); //overload;
-    //procedure BindTo(const AData: TDataArray); overload;
+    procedure BindTo(const AData: TDataItem);
 
     procedure Colorize; overload;
     procedure Colorize(const AItems:TDataColorizers); overload;
@@ -111,7 +113,7 @@ type
     property OnDataChange:TNotifyEvent read FOnDataChange write FOnDataChange;
   end;
 
-  {$IF CompilerVersion<26} // Cannot use FireMonkeyVersion<21 (or 21_0)
+  {$IF CompilerVersion<27} // Cannot use FireMonkeyVersion<21 (or 21_0)
   {$DEFINE HASFMX20}
   {$ENDIF}
 

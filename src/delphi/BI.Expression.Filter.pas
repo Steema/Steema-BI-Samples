@@ -144,14 +144,19 @@ type
     FWeekdays : TWeekdays;
 
     function GetFrom: TDateTime;
+    function GetFromEqual: Boolean;
     function GetTo: TDateTime;
+    function GetToEqual: Boolean;
+
     procedure SetFrom(const Value: TDateTime);
+    procedure SetFromEqual(const Value: Boolean);
     procedure SetMonths(const Value: TMonths);
     procedure SetPeriod(const Value: TDateTimeSpan);
     procedure SetQuantity(const Value: Integer);
     procedure SetSelected(const Value: TDateTimeSelected);
     procedure SetStyle(const Value: TDateTimeFilterStyle);
     procedure SetTo(const Value: TDateTime);
+    procedure SetToEqual(const Value: Boolean);
     procedure SetWeedays(const Value: TWeekdays);
   public
     Constructor Create(const AItem:TFilterItem);
@@ -163,7 +168,11 @@ type
     procedure Reset;
 
     property FromDate:TDateTime read GetFrom write SetFrom;
+    property FromEqual:Boolean read GetFromEqual write SetFromEqual default True;
+
     property ToDate:TDateTime read GetTo write SetTo;
+    property ToEqual:Boolean read GetToEqual write SetToEqual default True;
+
   published
     property Months:TMonths read FMonths write SetMonths;
     property Period:TDateTimeSpan read FPeriod write SetPeriod default TDateTimeSpan.None;
@@ -177,8 +186,8 @@ type
   private
     IValue : Array[Boolean] of Boolean;
 
-    function GetFalse: Boolean;
-    function GetTrue: Boolean;
+    function GetFalse: Boolean; inline;
+    function GetTrue: Boolean; inline;
     procedure SetFalse(const Value: Boolean);
     procedure SetTrue(const Value: Boolean);
   public
@@ -264,6 +273,7 @@ type
     procedure SetNumeric(const Value: TNumericFilter);
     procedure SetText(const Value: TTextFilter);
     procedure TryAdd(const AText:String; const A,B:TStrings);
+    function GetKind: TDataKind;
   protected
     procedure Changed; override;
     function DataExpression:TDataItemExpression;
@@ -280,6 +290,7 @@ type
 
     property Expression:TLogicalExpression read FExpression write FExpression;
     property Filter:TExpression read GetFilter;
+    property Kind:TDataKind read GetKind;
   published
     property BoolFilter:TBooleanFilter read FBool write SetBool;
     property DateTime:TDateTimeFilter read FDateTime write SetDateTime;
@@ -337,6 +348,7 @@ type
 
     procedure Clear;
     function Custom:TLogicalExpression;
+    procedure Delete(const AIndex:Integer);
     function Filter:TExpression;
 
     function ItemOf(const AData:TDataItem):TFilterItem;

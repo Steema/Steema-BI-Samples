@@ -13,7 +13,7 @@ uses
   FMX.Types,
 
   {$IF CompilerVersion<=27}
-  {$DEFINE FMX2}
+  {$DEFINE HASFMX20}
   {$ENDIF}
 
   FMX.Controls, FMX.Forms,
@@ -22,7 +22,7 @@ uses
   FMX.Graphics,
   {$ENDIF}
 
-  {$IFNDEF FMX2}
+  {$IFNDEF HASFMX20}
   FMX.Controls.Presentation,
   {$ENDIF}
 

@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  TFilterItem DateTime editor dialog         }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.Filter.DateTime;
 
 interface
@@ -7,6 +13,19 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls,
   BI.Arrays, BI.Expression.Filter, BI.VCL.Editor.DateTimeRange,
   BI.VCL.Editor.ListItems;
+
+(*
+   Select a datetime "range" using multiple options.
+
+   1) Predefined ranges:
+
+       "This month", "Last year" etc etc
+
+   2) Custom from/to range
+
+   3) Optional: include/exclude specific months and weekdays
+
+*)
 
 type
   TDateTimeFilterEditor = class(TForm)

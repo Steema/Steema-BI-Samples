@@ -34,11 +34,13 @@ interface
 
 uses
   System.Classes,
-  {$IFNDEF FPC}
+  {$IFDEF FPC}
+  BI.FPC,
+  {$ELSE}
   System.Zip,
   {$ENDIF}
 
-  BI.Arrays;
+  BI.Arrays.Strings;
 
 type
   TCompressionError=function(const Text:String):Boolean of object;

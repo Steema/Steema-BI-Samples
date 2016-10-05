@@ -51,6 +51,7 @@ object FormXYTest: TFormXYTest
       Height = 289
       Align = alTop
       UseDockManager = False
+      Padding.Top = 24
       ParentBackground = False
       TabOrder = 0
       object BITChart1: TBITChart
@@ -108,6 +109,14 @@ object FormXYTest: TFormXYTest
         TabOrder = 0
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 9
+        object TMarksTipTool
+          Format.CustomPosition = True
+          Format.Left = 0
+          Format.TextAlignment = taCenter
+          Format.Top = 0
+          Format.Visible = False
+          Style = smsLabelValue
+        end
       end
     end
     object Chart1: TChart

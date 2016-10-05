@@ -23,6 +23,8 @@ type
     Value : Single;
   end;
 
+  TColorItems=Array of TColorItem;
+
   // Given a Palette of colors and linear position of each color (from 0 to 1),
   // the FromValue function returns the interpolated RGBA Color that corresponds
   // to AValue (from 0 to 1).
@@ -34,7 +36,7 @@ type
   public
     // Interpolated : Boolean;
     Inverted : Boolean;
-    Palette : Array of TColorItem;
+    Palette : TColorItems;
 
     // Add a new Color to palette
     procedure Add(const AValue:Single; const AColor:TAlphaColor);

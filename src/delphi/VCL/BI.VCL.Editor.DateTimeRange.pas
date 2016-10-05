@@ -1,6 +1,25 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  DateTime range editor dialog               }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.DateTimeRange;
 
 interface
+
+(*
+   Select a custom from/to DateTime range by different ways:
+
+   1) Comboboxes (day, month, year)
+
+   2) Calendar controls
+
+   3) Trackbar from/to
+
+   4) A specific DateTime part (day, week, etc)
+
+*)
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
@@ -51,6 +70,8 @@ type
     Panel1: TPanel;
     Label5: TLabel;
     CBPart: TComboBox;
+    CBFromEqual: TComboBox;
+    CBToEqual: TComboBox;
     procedure CBYearChange(Sender: TObject);
     procedure CBMonthChange(Sender: TObject);
     procedure CBYearToChange(Sender: TObject);
@@ -64,6 +85,7 @@ type
     procedure PageControl1Change(Sender: TObject);
     procedure PageRangeChange(Sender: TObject);
     procedure CBPartChange(Sender: TObject);
+    procedure CBFromEqualChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -82,7 +104,7 @@ type
     procedure DoAddDays(const AYear,AMonth,ADay:TComboBox; First:Boolean);
     procedure DoAddMonths(const AYear,AMonth:TComboBox; First:Boolean);
     procedure Modified;
-    procedure SelectCombos(const AFrom,ATo:TDateTime);
+    procedure SelectCombos(const AFrom,ATo:TDateTime; const AFromEqual,AToEqual:Boolean);
     function SelectedPart:TDateTimePart;
     procedure SetCustom;
   public
@@ -92,14 +114,17 @@ type
 
     class procedure AddMonths(const AItems:TStrings; const AMin,AMax:Word); static;
 
+    function FromEqual:Boolean;
     function FromDate:TDateTime;
+
+    function ToEqual:Boolean;
     function ToDate:TDateTime;
 
     function Part:TSelectedPart;
 
     procedure Refresh(const AData:TDataItem);
 
-    procedure SelectRange(const AFrom,ATo:TDateTime); overload;
+    procedure SelectRange(const AFrom,ATo:TDateTime; const AFromEqual,AToEqual:Boolean); overload;
     procedure SelectRange(const AData:TDataItem); overload;
 
     property OnChanged:TNotifyEvent read FOnChanged write FOnChanged;

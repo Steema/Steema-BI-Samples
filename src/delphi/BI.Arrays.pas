@@ -14,6 +14,8 @@ unit BI.Arrays;
 {$ENDIF}
 {$ENDIF}
 
+{$POINTERMATH ON}
+
 interface
 
 uses
@@ -37,10 +39,6 @@ type
   TBooleanArray=Array of Boolean;
 
   TTextArray=Array of String;
-
-  {$IFNDEF FPC}
-  TStringArray=TArray<String>;
-  {$ENDIF}
 
   TDateTimeArray=Array of TDateTime;
 
@@ -359,7 +357,7 @@ type
   public
     function Append(const Value:Boolean):TInteger; overload; inline;
     procedure Append(const Value:TBooleanArray); overload;
-    function Compare(const A,B:TInteger):SmallInt; inline;
+    function Compare(const A,B:TInteger):ShortInt; inline;
     function Copy(const AIndex,ACount:TInteger):TBooleanArray; overload; inline;
     function Copy:TBooleanArray; overload; inline;
     function Copy(const Missing:TBooleanArray):TBooleanArray; overload;
@@ -450,7 +448,6 @@ type
 
     function Distribution(const Mean,StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
-    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Integer):TInteger; overload; inline;
     procedure Append(const Value:TInt32Array); overload;
@@ -494,7 +491,6 @@ type
 
     function Distribution(const Mean,StdDeviation:TFloat; const Exponent:Integer):TFloat;
     function GuessOrder:TDataOrder;
-    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Int64):TInteger; overload; inline;
     procedure Append(const Value:TInt64Array); overload;
@@ -538,7 +534,6 @@ type
 
     function Distribution(const Mean,StdDeviation:Single; const Exponent:Integer):Single;
     function GuessOrder:TDataOrder;
-    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Single):TInteger; overload; inline;
     procedure Append(const Value:TSingleArray); overload;
@@ -580,7 +575,6 @@ type
 
     function Distribution(const Mean,StdDeviation:Double; const Exponent:Integer):Double;
     function GuessOrder:TDataOrder;
-    procedure InsertSort(const L,R:TInteger; const Ascending:Boolean);
   public
     function Append(const Value:Double):TInteger; overload; inline;
     procedure Append(const Value:TDoubleArray); overload;

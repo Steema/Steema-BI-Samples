@@ -20,7 +20,7 @@ object DataFormatEditor: TDataFormatEditor
     Top = 0
     Width = 398
     Height = 325
-    ActivePage = TabCSV
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object TabCSV: TTabSheet
@@ -152,10 +152,6 @@ object DataFormatEditor: TDataFormatEditor
     object TabZip: TTabSheet
       Caption = 'Zip'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label6: TLabel
         Left = 16
         Top = 21
@@ -177,10 +173,6 @@ object DataFormatEditor: TDataFormatEditor
     object TabExcel: TTabSheet
       Caption = 'Excel'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label7: TLabel
         Left = 10
         Top = 16
@@ -237,6 +229,36 @@ object DataFormatEditor: TDataFormatEditor
           'Array of JSON lines')
         TabOrder = 1
         OnClick = RGJSONFormatClick
+      end
+    end
+    object TabXML: TTabSheet
+      Caption = 'XML'
+      ImageIndex = 4
+      object RGXMLStyle: TRadioGroup
+        Left = 16
+        Top = 16
+        Width = 185
+        Height = 105
+        Caption = '&Import Style:'
+        ItemIndex = 0
+        Items.Strings = (
+          'Flat Table'
+          'Hierarchical')
+        TabOrder = 0
+        OnClick = RGXMLStyleClick
+      end
+    end
+    object TabSheet1: TTabSheet
+      Caption = 'Database'
+      ImageIndex = 5
+      object CBIncludeViews: TCheckBox
+        Left = 16
+        Top = 16
+        Width = 161
+        Height = 17
+        Caption = '&Include Views'
+        TabOrder = 0
+        OnClick = CBIncludeViewsClick
       end
     end
   end

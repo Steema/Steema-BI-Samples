@@ -23,7 +23,7 @@ type
   protected
     function DoImportFile(const FileName:String):TDataArray; override;
   public
-    class function FileFilter:TBIFileSource.TFileFilters; override;
+    class function FileFilter:TFileFilters; override;
 
     class procedure FillData(const DataSet:TClientDataSet; const AData:TDataItem); overload; static;
     class procedure FillData(const DataSet: TClientDataSet; const AData: TDataArray); overload; static;
@@ -31,6 +31,16 @@ type
 
     function Import(const Folder:String; Recursive:Boolean):TDataArray; overload;
     class function Supports(const Extension:String):Boolean; override;
+  end;
+
+  TClientDatasetExport=class(TBIExport)
+  public
+    Format : TDataPacketFormat;
+
+    Constructor Create; override;
+
+    class function FileFilter: TFileFilters; override;
+    procedure SaveToFile(const AFileName:String); override;
   end;
 
 implementation

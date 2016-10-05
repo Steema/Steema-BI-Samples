@@ -7,13 +7,14 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
 
   {$IF CompilerVersion<=27}
-  {$DEFINE FMX2}
+  {$DEFINE HASFMX20}
   {$ENDIF}
 
-  {$IF COMPILERVERSION>25}
+  {$IF CompilerVersion>25}
   FMX.Graphics,
   {$ENDIF}
-  {$IFNDEF FMX2}
+
+  {$IFNDEF HASFMX20}
   FMX.Controls.Presentation,
   {$ENDIF}
 

@@ -178,7 +178,8 @@ object FormSummary: TFormSummary
         '25 By Discontinued (boolean histogram)'
         '26 One GroupBy (columns) SORTED'
         '27 First Order Quantity by Product'
-        '28 Last Order Quantity by Product')
+        '28 Last Order Quantity by Product'
+        '29 By CategoryName, CategoryID (redundant)')
       PopupMenu = PopupMenu1
       TabOrder = 0
       OnClick = LBTestClick
@@ -245,6 +246,10 @@ object FormSummary: TFormSummary
       object TabVizEditor: TTabSheet
         Caption = 'Visualizer'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
       end
     end
   end
@@ -253,12 +258,16 @@ object FormSummary: TFormSummary
     Top = 41
     Width = 876
     Height = 539
-    ActivePage = TabGrid
+    ActivePage = TabSQL
     Align = alClient
     TabOrder = 2
     OnChange = PageControl1Change
     object TabGrid: TTabSheet
       Caption = 'Grid'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object SplitterChart: TSplitter
         Left = 0
         Top = 508
@@ -287,6 +296,10 @@ object FormSummary: TFormSummary
     object TabTree: TTabSheet
       Caption = 'Tree'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 275
@@ -319,6 +332,10 @@ object FormSummary: TFormSummary
     object TabVisualizer: TTabSheet
       Caption = 'Visualizer'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -397,6 +414,15 @@ object FormSummary: TFormSummary
           Caption = 'Auto Execute when SQL changes'
           TabOrder = 1
         end
+        object Button3: TButton
+          Left = 246
+          Top = 5
+          Width = 75
+          Height = 25
+          Caption = 'View Hops...'
+          TabOrder = 2
+          OnClick = Button3Click
+        end
       end
       object MemoSQL: TMemo
         Left = 0
@@ -422,6 +448,10 @@ object FormSummary: TFormSummary
     object TabTotals: TTabSheet
       Caption = 'Totals'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 258
@@ -513,6 +543,7 @@ object FormSummary: TFormSummary
             Format.TextAlignment = taCenter
             Format.Top = 0
             Format.Visible = False
+            Style = smsLabelValue
           end
         end
       end

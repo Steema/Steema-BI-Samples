@@ -6,7 +6,7 @@ interface
 uses
   System.Classes,
   {$IFDEF FMX}
-  FMX.Layouts,
+  FMX.Controls, FMX.Layouts,
   {$ELSE}
   Vcl.Controls, Vcl.Graphics,
   {$ENDIF}
@@ -28,7 +28,6 @@ type
 
     IOrigin : String;
 
-    procedure AddNotify;
     procedure DoSetProvider(const Value: TComponent);
     function GetDataItem:TDataItem;
     function GetProvider:TComponent;
@@ -38,15 +37,19 @@ type
     procedure NotifyDataDestroy(const AEvent:TBIEvent);
     function Origin:String;
     procedure ReadOrigin(Reader: TReader);
-    procedure RemoveNotify;
     procedure SetDataItem(const Value: TDataItem); // <-- do not rename to SetData (FMX conflict)
     procedure SetProvider(const Value: TComponent);
     procedure WriteOrigin(Writer: TWriter);
   protected
+    procedure AddNotify;
+    function ControlOfClass(const AClass:TClass): TControl;
+
     procedure DefineProperties(Filer: TFiler); override;
     procedure Loaded; override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    procedure RemoveNotify;
     procedure SetDataDirect(const Value: TDataItem); virtual;
+    procedure UpdatedDataValues; virtual;
 
     {$IFNDEF FMX}
     property DockManager;

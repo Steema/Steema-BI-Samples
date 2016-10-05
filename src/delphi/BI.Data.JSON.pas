@@ -35,7 +35,7 @@ type
 
   TBIJSONFormat=(&Normal, &Array);
 
-  TBIJSON=class(TBITextSource)
+  TBIJSON=class(TBIHierarchicalSource)
   private
     JSON : TJSONEngine;
 
@@ -45,16 +45,13 @@ type
     procedure DoAppend(const Index:TInteger; const Data:TDataItem);
   public
     Format : TBIJSONFormat;
-    Hierarchical : Boolean; // <-- Default is False (try to return a flat table)
 
     Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;
 
     Constructor CreateEngine(const AEngine:TJSONEngine);
     Destructor Destroy; override;
 
-    class function ExportFormat:TBIExport; override;
-
-    class function FileFilter:TBIFileSource.TFileFilters; override;
+    class function FileFilter:TFileFilters; override;
 
     class function FromFile(const AFileName:String; const AFormat:TBIJSONFormat):TDataItem; overload;
 
@@ -67,9 +64,7 @@ type
     class function Supports(const Extension:String):Boolean; override;
   end;
 
-  TBIJSONEmit=(Plain, Headers);
-
-  TBIJSONExport=class(TBIExport)
+  TBIJSONExport=class(TBITextExport)
   private
     const
       Tab=#9;
@@ -85,7 +80,11 @@ type
   protected
     procedure DoEmit(const AItems: TStrings); override;
   public
-    Emit : TBIJSONEmit;
+    Header : Boolean;
+
+    class function AsString(const AData: TDataItem; const Header:Boolean): String; overload; static;
+    class function FileFilter: TFileFilters; override;
+    class function Supports(const Extension:String):Boolean; override;
   end;
 
 implementation

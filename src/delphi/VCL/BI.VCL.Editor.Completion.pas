@@ -18,7 +18,9 @@ type
   private
     ICompletion : TExpressionCompletion;
   protected
+    {$IFNDEF FPC}
     procedure CreateParams(var Params: TCreateParams); override;
+    {$ENDIF}
     procedure Resize; override;
   end;
 

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
   VCLTee.Series, BI.VCL.Grid, Vcl.ExtCtrls, VCLTee.TeeProcs,
-  VCLTee.Chart, BI.VCL.Chart, BI.VCL.DataControl;
+  VCLTee.Chart, BI.VCL.Chart, BI.VCL.Chart.Plugin, BI.VCL.DataControl;
 
 type
   TFormXYTest = class(TForm)

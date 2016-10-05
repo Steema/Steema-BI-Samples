@@ -9,7 +9,8 @@ unit BI.Data.SqlDB;
 interface
 
 uses
-  Classes, Types, DB, BI_Data, BI_Persist, BI_DataSource, BI_Data_DB, SqlDB;
+  Classes, Types, DB, BI.Data, BI.Persist, BI.DataSource, BI.Data.DB,
+  SqlDB;
 
 type
   { TDBSqlDBEngine }
@@ -30,7 +31,7 @@ type
     class function CreateQuery(const AConnection:TCustomConnection; const SQL:String):TDataSet; override;
     class function DriverNames:TStringDynArray; override;
     class function DriverToName(const ADriver:String):String; override;
-    class function FileFilter: TBIFileSource.TFileFilters; override;
+    class function FileFilter: TFileFilters; override;
     class function GetConnectionName(const AConnection:TCustomConnection):String; override;
     class function GetDriver(const AIndex:Integer):String; override;
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; override;

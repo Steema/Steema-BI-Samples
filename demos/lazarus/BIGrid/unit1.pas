@@ -37,7 +37,10 @@ uses
 { TForm1 }
 
 procedure TForm1.FormCreate(Sender: TObject);
+var v:Variant;
+  o:TObject;
 begin
+  o:=v;
   Grid:=TBIGrid.Create(Self);
   Grid.Align:=alClient;
   Grid.Parent:=Self;

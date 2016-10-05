@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.Types, System.SysUtils,
-  BI.Arrays, BI.Data, BI.Persist, BI.DataSource;
+  BI.Arrays, BI.Data, BI.Persist, BI.DataSource, BI.Compression;
 
 type
   EHttpAbort=class(Exception);
@@ -85,6 +85,7 @@ type
     FHttp : TBIHttp;
 
     function GetHttp: TBIHttp;
+    procedure TryErrorAsString(const AStream:TStream);
   protected
     function DoFromURL(const AURL:String): TDataItem;
     function GetDataStream(const Data:String; const Children:Boolean; const Compress:TWebCompression): TStream;
@@ -137,7 +138,7 @@ type
 
     class function Query(const AStore,AData,ASQL:String):TDataItem; static;
 
-    class function UnZip(const AStream:TStream):TStream; static;
+    class function UnZip(const AStream:TStream):TStream; static; inline;
     function URL:String;
 
     property Http:TBIHttp read GetHttp;
@@ -191,10 +192,9 @@ type
     function DoImportFile(const FileName:String):TDataArray; override;
     function ImportURLFile(const FileName:String):TDataArray;
   public
-    class function FileFilter:TBIFileSource.TFileFilters; override;
+    class function FileFilter:TFileFilters; override;
     class function From(const AURL:String):TDataItem; static;
     function Import(const URL:String):TDataArray;
-    class function IsURL(const FileName:String):Boolean; static;
     class function Supports(const Extension:String):Boolean; override;
   end;
 

@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  TFilterItem editor dialog                  }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.Filter.Item;
 
 interface
@@ -7,6 +13,14 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
   BI.Expression.Filter, BI.VCL.Editor.Filter.DateTime,
   BI.VCL.Editor.NumericFromTo, BI.VCL.Editor.SelectText;
+
+(*
+  This dialog is used embedded by TDynamicFilterEditor dialog.
+
+  It can also be used standalone.
+
+  TFilterItem class is used by TBIQuery to configure the "where ..." expressions.
+*)
 
 type
   TFilterItemEditor = class(TForm)

@@ -67,18 +67,20 @@ type
 
   TLayouts=class(TOwnedCollection)
   private
+    class var
+       FPredefined : TLayouts;
+
     function Get(const AIndex: Integer): TLayoutItem;
     procedure Put(const AIndex: Integer; const Value: TLayoutItem);
   public
-    class var
-       Predefined : TLayouts;
-
     Destructor Destroy; override;
 
     procedure AddTo(const AItems: TStrings);
     function Best(const ACount:Integer):String;
     function Find(const AName:String):TLayoutItem;
     function IndexOf(const AItem:TLayoutItem):Integer;
+
+    class function Predefined:TLayouts; static;
 
     property Item[const AIndex:Integer]:TLayoutItem read Get write Put; default;
   end;

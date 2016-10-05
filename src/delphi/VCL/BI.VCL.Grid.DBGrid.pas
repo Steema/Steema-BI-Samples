@@ -19,10 +19,21 @@ uses
   System.Types, // <-- due to inlining
   {$ENDIF}
   Classes, SysUtils,
-  Controls, Grids, DBGrids, Graphics, DB, Buttons, Menus, StdCtrls, ExtCtrls,
+  VCL.Controls, VCL.Grids, VCL.DBGrids, VCL.Graphics, Data.DB,
+  VCL.Buttons, VCL.Menus, VCL.StdCtrls, VCL.ExtCtrls,
   BI.VCL.Grid, BI.Data, BI.UI, BI.DataSet, BI.DataSource;
 
 type
+  TBIDBGrid=class;
+
+  TGridPanel=class(TPanel)
+  private
+    ICloseButton : TSpeedButton;
+    IGrid : TBIDBGrid;
+  public
+    procedure Reset; virtual;
+  end;
+
   {$IFDEF FPC}
   TDrawCellEvent=TOnDrawCell;
   {$ENDIF}
@@ -40,6 +51,7 @@ type
       Colorize : TMenuItem;
       Detail : TMenuItem;
       Filters : TMenuItem;
+      ExportData : TMenuItem;
       GroupBy : TMenuItem;
       Search : TMenuItem;
       Sort : TMenuItem;
@@ -78,8 +90,8 @@ type
     FLastFontStyle : TFontStyles;
 
     IAlternate : TAlternateColor;
-    IAssociated : TWinControl;
-    IHighLight : TPanel;
+    IAssociated : TGridPanel;
+    IHighLight : TGridPanel;
 
     IMenu : TGridMenu;
 
@@ -90,6 +102,7 @@ type
 
     IWasDragging : Boolean;
 
+    procedure AddButton(const AParent:TGridPanel; const AEvent:TNotifyEvent);
     procedure AddDetailMenu;
     procedure AddGroupByMenu;
     class function AddMenuButton(const AParent:TWinControl; const ACaption:String;
@@ -104,6 +117,8 @@ type
     procedure ChangeDataSet(const ADataSet:TDataSet);
     procedure ChangedFilter(const ACol:Integer; const Value:String);
     procedure CheckDataSource;
+    procedure CheckFilterGrid;
+    procedure CheckSearchControls;
     procedure CloseGroup(Sender:TObject);
     function Colorizable:TDataColorizers;
     procedure ColorizeClick(Sender:TObject);
@@ -112,9 +127,12 @@ type
     procedure DetailClicked(Sender: TObject);
     procedure DoGroupBy(Sender:TObject);
     procedure DoTitleClick(AColumn:TColumn);
+    procedure ExportDataClick(Sender:TObject);
     function GetData:TDataItem;
     function GetDetail: TDataItem;
     procedure GroupDataChange(Sender: TObject; Field: TField);
+    function HasFilterGrid:Boolean;
+    function HasSearchPanel:Boolean;
     procedure MenuClick(Sender:TObject);
     procedure MenuFiltersClick(Sender: TObject);
     procedure MenuPopup(Sender:TObject);
@@ -169,6 +187,7 @@ type
     procedure SetParent(AParent: TWinControl); override;
     procedure TopLeftChanged; override;
     function TotalWidth:Integer;
+    procedure TryClearFilter;
     procedure TryCloseGroup;
   public
     ScrollTrack : Boolean;

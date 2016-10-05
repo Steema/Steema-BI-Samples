@@ -15,7 +15,8 @@ uses
   {$ELSE}
   System.Diagnostics,
   {$ENDIF}
-  System.SysUtils, BI.Data, BI.DataSource, BI.Arrays, BI.Persist;
+  System.SysUtils, BI.Data, BI.DataSource, BI.Arrays, BI.Arrays.Strings,
+  BI.Persist;
 
 type
   EBICSV=class(EBIException);
@@ -70,9 +71,7 @@ type
 
     Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;
 
-    class function ExportFormat:TBIExport; override;
-
-    class function FileFilter:TBIFileSource.TFileFilters; override;
+    class function FileFilter:TFileFilters; override;
 
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
     function Import(const Strings:TStrings):TDataArray; override;
@@ -82,7 +81,7 @@ type
     class function Supports(const Extension:String):Boolean; override;
   end;
 
-  TBICSVExport=class(TBIExport)
+  TBICSVExport=class(TBITextExport)
   private
     {$IFDEF FPC}
     IItems : TStrings;
@@ -96,9 +95,14 @@ type
     procedure DoEmit(const AItems: TStrings); override;
   public
     Delimiter : Char;
+    Header : Boolean;
     Quote : Char;
 
     Constructor Create; override;
+
+    class function Supports(const Extension:String):Boolean; override;
+
+    class function FileFilter:TFileFilters; override;
   end;
 
 implementation

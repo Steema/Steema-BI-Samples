@@ -1,6 +1,6 @@
 object BIChartEditor: TBIChartEditor
-  Left = 0
-  Top = 0
+  Left = 210
+  Top = 198
   ActiveControl = BOK
   Caption = 'BIChart Editor'
   ClientHeight = 397
@@ -27,25 +27,17 @@ object BIChartEditor: TBIChartEditor
     OnChange = PageControl1Change
     object TabOptions: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageMode: TPageControl
         Left = 129
         Top = 0
         Width = 354
         Height = 332
-        ActivePage = TabGeo
+        ActivePage = Tab2D
         Align = alClient
         TabOrder = 0
         object Tab2D: TTabSheet
           Caption = '2D'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel3: TPanel
             Left = 0
             Top = 0
@@ -201,10 +193,6 @@ object BIChartEditor: TBIChartEditor
         object Tab3D: TTabSheet
           Caption = '3D'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel3D: TPanel
             Left = 3
             Top = 163
@@ -489,10 +477,6 @@ object BIChartEditor: TBIChartEditor
         object TabFinancial: TTabSheet
           Caption = 'Financial'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label7: TLabel
             Left = 10
             Top = 40
@@ -599,18 +583,68 @@ object BIChartEditor: TBIChartEditor
         object TabGeo: TTabSheet
           Caption = 'Geographic'
           ImageIndex = 3
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object CBFlags: TCheckBox
-            Left = 16
+            Left = 14
             Top = 134
             Width = 137
             Height = 17
             Caption = 'Flags'
             TabOrder = 0
             OnClick = CBFlagsClick
+          end
+          object CBStates: TCheckBox
+            Left = 14
+            Top = 157
+            Width = 137
+            Height = 17
+            Caption = 'States'
+            TabOrder = 1
+            OnClick = CBStatesClick
+          end
+          object GroupBox3: TGroupBox
+            Left = 14
+            Top = 16
+            Width = 185
+            Height = 89
+            Caption = 'Map:'
+            TabOrder = 2
+            object CBAutoMap: TCheckBox
+              Left = 16
+              Top = 24
+              Width = 166
+              Height = 17
+              Caption = 'Automatic'
+              TabOrder = 0
+              OnClick = CBAutoMapClick
+            end
+            object CBMap: TComboBox
+              Left = 16
+              Top = 47
+              Width = 145
+              Height = 21
+              Style = csDropDownList
+              Enabled = False
+              TabOrder = 1
+              OnChange = CBMapChange
+            end
+          end
+          object CBCities: TCheckBox
+            Left = 14
+            Top = 181
+            Width = 137
+            Height = 17
+            Caption = '&Cities'
+            TabOrder = 3
+            OnClick = CBCitiesClick
+          end
+          object CBMap3D: TCheckBox
+            Left = 14
+            Top = 204
+            Width = 97
+            Height = 17
+            Caption = '3D'
+            TabOrder = 4
+            OnClick = CBMap3DClick
           end
         end
       end
@@ -693,16 +727,12 @@ object BIChartEditor: TBIChartEditor
     object TabView: TTabSheet
       Caption = 'View'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object RGView: TRadioGroup
         Left = 11
         Top = 16
         Width = 134
         Height = 137
-        Caption = '&Dimensions:'
+        Caption = '&Render:'
         ItemIndex = 0
         Items.Strings = (
           'Automatic'
@@ -751,18 +781,10 @@ object BIChartEditor: TBIChartEditor
     object TabChart: TTabSheet
       Caption = 'Chart'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0

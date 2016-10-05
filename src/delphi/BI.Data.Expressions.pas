@@ -12,9 +12,13 @@ uses
   BI.Arrays, BI.Data, BI.Expression;
 
 type
+  // Represents a route (a list of "jumps") to enable lookups from a detail
+  // table to a master table (ie: Orders->Products->Categories)
   THops=class
   private
+
   type
+    // Represents a single jump or step in the route
     THop=class
     private
       IData : TDataItem; // Cached
@@ -26,33 +30,43 @@ type
       Items : TDataArray; // Multiple
 
       function CreateInvertedIndex(const AIndex:TNativeIntArray):TNativeIntArray;
+      function IsEqual(const Value:THop):Boolean;
       procedure Prepare;
     public
-      Constructor Create(const AData:TDataItem); overload;
-      Constructor Create(const AData:TDataArray); overload;
+      Constructor Create(const AData:TDataItem); overload; // single field relationship
+      Constructor Create(const AData:TDataArray); overload; // multiple field relationship
 
       function ToString:String; override;
     end;
 
+    // List of simple hops (jumps)
     THopArray=Array of THop;
 
     THopArrayHelper=record helper for THopArray
     private
+      function Begins(const AItems:THopArray):Boolean;
       procedure FreeAll;
     public
       procedure Add(const Hop:THop);
       procedure AddTop(const Hop:THop);
+      function Count:Integer; inline;
+      procedure Delete(const AIndex:Integer);
       function Find(const Index:TInteger):TInteger;
     end;
 
     function InternalFind(const Start,Dest:TDataItem; var Visited:TDataArray):THops.THopArray;
     procedure Invalidate(const AIndex:TInteger);
+
   public
   var
     Items : THopArray;
+
+    //[Weak]
+    Parent : THops;
+
     RealSource : TDataItem;
-    Valid : Boolean;
     SourceIndex : TInteger;
+    Valid : Boolean;
 
     Destructor Destroy; override;
 
@@ -60,12 +74,14 @@ type
     procedure Init(const ADetail,AMaster:TDataItem);
   end;
 
+  // List of hops (routes) from a Main table to an array of Data masters
   TDataHops=class
   private
     IChangeMain : Boolean;
 
     function IsDetail(const ADetail,AMaster:TDataItem):Boolean;
     procedure TraverseExpression(const Item:TExpression);
+    procedure TryReduce(const AIndex:Integer);
   public
     Data : TDataArray;
     Main : TDataItem;
@@ -80,6 +96,7 @@ type
     function Valid:Boolean;
   end;
 
+  // Simple Expression that refers to a Data TDataItem and position (row)
   TDataItemExpression=class(TExpression)
   private
     {$IFDEF AUTOREFCOUNT}[weak]{$ENDIF}
@@ -110,6 +127,20 @@ type
     property Hops:THops read FHops;
   end;
 
+  // Expression to return True or False for a given Data Missing value.
+  // Equivalent to sql "isnull"
+  TIsNullData=class(TParameterExpression)
+  private
+    FData : TDataItemExpression;
+  protected
+    function ResultClass:TExpressionClass; override;
+    procedure SetExpression(const Value:TExpression); override;
+  public
+    class function FromString(const S:String):TParameterExpression; override;
+    function Value:TData; override;
+  end;
+
+  // Abstract class to define a data column with values calculated using an Expression
   TColumnExpression=class(TUnaryExpression)
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); virtual; abstract;
@@ -117,20 +148,10 @@ type
     class function TryParse(const S:String):TColumnExpression; virtual; abstract;
   end;
 
-  TIsNullData=class(TColumnExpression)
-  private
-    FDataExpression : TDataItemExpression;
-  protected
-    procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
-    function Kind:TDataKind; override;
-    procedure SetExpression(const Value:TExpression); override;
-    class function TryParse(const S:String):TColumnExpression; override;
-  public
-    function Value:TData; override;
-  end;
-
   TColumnExpressionClass=class of TColumnExpression;
 
+  // List of "registered" column expression classes so they can be used
+  // inside other expressions
   TDataFunctions=record
   private
     class function IndexOf(const AClass:TColumnExpressionClass):Integer; static;
@@ -144,6 +165,7 @@ type
     class procedure UnRegister(const AClass:TColumnExpressionClass); static;
   end;
 
+  // A special TDataItem that is filled with values obtained calling an Expression
   TExpressionColumn=class(TDataItem)
   private
     procedure LoadData(const Item:TExpression);
@@ -157,8 +179,6 @@ type
 
     Constructor Create(const AExpression:TExpression); overload;
     Constructor Create(const AData:TDataItem; const AExpression:String); overload;
-
-    Destructor Destroy; override;
 
     procedure Fill(const AParent:TDataItem=nil);
 
@@ -178,6 +198,7 @@ type
     property Expression:TExpression read FExpression write SetExpression;
   end;
 
+  // List of sorting specifiers (for multiple order-by)
   TSortItemArray=Array of TSortItem;
 
   TSortItemArrayHelper=record helper for TSortItemArray
@@ -185,6 +206,7 @@ type
     function NotInOrder(const A,B:TInteger):Boolean;
   end;
 
+  // Helper methods to order a TDataItem using multiple sorting criteria
   TSortItems=record
   private
     class procedure CheckExpression(const AItem:TSortItem; const AParent:TDataItem); static;
@@ -220,6 +242,9 @@ type
     function ToString: String;
   end;
 
+  // Helper class to enable using data names in expressions.
+  // The expression parser calls "Resolver" when attempting to recognize
+  // undefined string variables
   TDataExpression=class
   public
     type
@@ -253,6 +278,8 @@ type
     class property Resolver:TResolver read FResolver write FResolver;
   end;
 
+  // Helper methods to parse an expression string to be used as a "filter"
+  // (equivalent to sql "where" clause)
   TDataFilter=record
   public
     class function FromString(const AData:TDataItem; const AExpression: String;
@@ -263,6 +290,7 @@ type
                                  const Error:TErrorProc): TExpression; static;
   end;
 
+  // Small method to sort AData
   TDataItemSort=record
   public
     class procedure By(const AData: TDataItem;

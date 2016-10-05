@@ -47,6 +47,12 @@ type
     function Optional(const AText:String):Boolean;
     function ParseWhere(const AData:TDataItem; const AWhere:String):TExpression;
     procedure SkipDelimiters;
+
+    {$IFDEF FPC}
+    function SkipError(const APos:Integer; const AMessage:String):Boolean;
+    {$ELSE}
+    class function SkipError(const APos:Integer; const AMessage:String):Boolean; static;
+    {$ENDIF}
   protected
     class function DataFromString(const AData:TDataItem; const S:String):TDataItem; static;
   public

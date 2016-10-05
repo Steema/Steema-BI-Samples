@@ -19,16 +19,11 @@ object SummaryEditor: TSummaryEditor
     Top = 0
     Width = 309
     Height = 368
-    ActivePage = TabDimensions
+    ActivePage = TabMeasures
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 366
     object TabMeasures: TTabSheet
       Caption = 'Measures'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 338
       object PanelGroups: TPanel
         Left = 0
         Top = 0
@@ -36,7 +31,6 @@ object SummaryEditor: TSummaryEditor
         Height = 340
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 338
         object LMeasures: TCheckListBox
           Left = 1
           Top = 42
@@ -102,17 +96,12 @@ object SummaryEditor: TSummaryEditor
           Top = 138
           Width = 299
           Height = 201
-          ActivePage = TabMeasureInfo
+          ActivePage = TabMeasure
           Align = alBottom
           TabOrder = 0
           OnResize = PageMeasuresResize
-          ExplicitTop = 136
           object TabMeasure: TTabSheet
             Caption = 'Aggregate'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 148
             object CBAggregate: TComboBox
               Left = 8
               Top = 9
@@ -128,7 +117,9 @@ object SummaryEditor: TSummaryEditor
                 'Sum'
                 'Average'
                 'Minimum'
-                'Maximum')
+                'Maximum'
+                'First'
+                'Last')
             end
             object CBMissingAsZero: TCheckBox
               Left = 8
@@ -143,10 +134,6 @@ object SummaryEditor: TSummaryEditor
           object TabCalc: TTabSheet
             Caption = 'Calculation'
             ImageIndex = 3
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 148
             object RGRunning: TRadioGroup
               Left = 135
               Top = 3
@@ -189,10 +176,6 @@ object SummaryEditor: TSummaryEditor
           object TabMeasureInfo: TTabSheet
             Caption = 'Data'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 148
             object Label4: TLabel
               Left = 9
               Top = 82
@@ -255,10 +238,6 @@ object SummaryEditor: TSummaryEditor
     object TabDimensions: TTabSheet
       Caption = 'Groups'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 338
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -324,16 +303,12 @@ object SummaryEditor: TSummaryEditor
         Top = 140
         Width = 301
         Height = 200
-        ActivePage = TabGroupData
+        ActivePage = TabGroup
         Align = alBottom
         TabOrder = 2
         OnResize = PageGroupsResize
         object TabGroup: TTabSheet
           Caption = 'Layout'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 165
           object RGLayout: TRadioGroup
             Left = 8
             Top = 11
@@ -351,10 +326,6 @@ object SummaryEditor: TSummaryEditor
         object TabHistogram: TTabSheet
           Caption = 'Histogram'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 165
           object Label1: TLabel
             Left = 8
             Top = 76
@@ -470,10 +441,6 @@ object SummaryEditor: TSummaryEditor
         object TabGroupData: TTabSheet
           Caption = 'Data'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 165
           object Label3: TLabel
             Left = 8
             Top = 12
@@ -539,10 +506,6 @@ object SummaryEditor: TSummaryEditor
     object TabSheet2: TTabSheet
       Caption = 'Options'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 338
       object GroupBox1: TGroupBox
         Left = 19
         Top = 17
@@ -573,10 +536,6 @@ object SummaryEditor: TSummaryEditor
     object TabFilter: TTabSheet
       Caption = 'Filter'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 338
       object LFilter: TLabel
         Left = 12
         Top = 64
@@ -644,7 +603,6 @@ object SummaryEditor: TSummaryEditor
     BevelOuter = bvNone
     TabOrder = 1
     Visible = False
-    ExplicitTop = 369
     object Panel9: TPanel
       Left = 124
       Top = 0
@@ -653,8 +611,6 @@ object SummaryEditor: TSummaryEditor
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 718
-      ExplicitTop = 1
       object BOK: TButton
         Left = 9
         Top = 6

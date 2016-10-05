@@ -32,7 +32,7 @@ type
     class function CreateQuery(const AConnection:TCustomConnection; const SQL:String):TDataSet; virtual; abstract;
     class function DriverNames:TStringDynArray; virtual; abstract;
     class function DriverToName(const ADriver:String):String; virtual; abstract;
-    class function FileFilter:TBIFileSource.TFileFilters; virtual; abstract;
+    class function FileFilter:TFileFilters; virtual; abstract;
     class function GetConnectionName(const AConnection:TCustomConnection):String; virtual; abstract;
     class function GetDriver(const AIndex:Integer):String; virtual; abstract;
     class function GetKeyFieldNames(const AConnection:TCustomConnection; const ATable:String):TStrings; virtual; abstract;
@@ -63,18 +63,20 @@ type
   public
     Constructor CreateEngine(const AEngine:TBIDBEngine);
 
-    class function FileFilter: TBIFileSource.TFileFilters; override;
+    class function FileFilter: TFileFilters; override;
     function Import(const Connection:TCustomConnection):TDataArray; overload;
 
     class function IncludedItems(const ADef:TDataDefinition): TDataItem;
     class function Import(const Connection:TCustomConnection; const MultiThread:Boolean):TDataArray; overload;
     class function Supports(const Extension:String):Boolean; override;
+
     class property Engine:TBIDBEngine read GetEngine write SetEngine;
   end;
 
   TBIDBExport=class
   public
-    class function From(const AOwner:TComponent; const Data:TDataItem):TDataSet; static;
+    class procedure Add(const ADataSet:TDataSet; const AData:TDataItem); static;
+    class function From(const AOwner:TComponent; const AData:TDataItem):TDataSet; static;
   end;
 
 implementation

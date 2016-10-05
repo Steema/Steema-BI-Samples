@@ -95,6 +95,11 @@ object StoreEditor: TStoreEditor
     TabIndex = 0
     TabOrder = 3
     TabPosition = PlatformDefault
+    Sizes = (
+      440s
+      354s
+      440s
+      354s)
     object TabFolder: TTabItem
       CustomIcon = <
         item
@@ -142,7 +147,7 @@ object StoreEditor: TStoreEditor
         StyledSettings = [Family, Size, Style]
         Position.X = 16.000000000000000000
         Position.Y = 70.000000000000000000
-        Size.Width = 115.000000000000000000
+        Size.Width = 111.000000000000000000
         Size.Height = 16.000000000000000000
         Size.PlatformDefault = False
         TextSettings.FontColor = claLightcoral
@@ -156,7 +161,7 @@ object StoreEditor: TStoreEditor
         item
         end>
       IsSelected = False
-      Size.Width = 44.000000000000000000
+      Size.Width = 45.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''

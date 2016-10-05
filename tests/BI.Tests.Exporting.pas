@@ -79,7 +79,7 @@ const
 procedure TExporting_Test.JSON;
 var S : String;
 begin
-  S:=TBIJSONExport.AsString(Data);
+  S:=TBIJSONExport.AsString(Data,False);
   Assert.AreEqual(S,
 
 '['+CRLF+Tab+'{'+CRLF+Tab+Tab+'"Name": "Tomato",'+CRLF+Tab+Tab+

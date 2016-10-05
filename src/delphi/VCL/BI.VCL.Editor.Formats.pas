@@ -42,6 +42,10 @@ type
     TabJSON: TTabSheet;
     RGJSONStyle: TRadioGroup;
     RGJSONFormat: TRadioGroup;
+    TabXML: TTabSheet;
+    RGXMLStyle: TRadioGroup;
+    TabSheet1: TTabSheet;
+    CBIncludeViews: TCheckBox;
     procedure CBDelimiterChange(Sender: TObject);
     procedure ECustomDelimiterChange(Sender: TObject);
     procedure CBQuoteChange(Sender: TObject);
@@ -54,6 +58,8 @@ type
     procedure RGJSONFormatClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure RGXMLStyleClick(Sender: TObject);
+    procedure CBIncludeViewsClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -64,8 +70,10 @@ type
     function CanChange(const AControl:TWinControl=nil):Boolean;
 
     procedure RefreshCSV;
+    procedure RefreshDatabase;
     procedure RefreshExcel;
     procedure RefreshJSON;
+    procedure RefreshXML;
     procedure RefreshZip;
   public
     { Public declarations }

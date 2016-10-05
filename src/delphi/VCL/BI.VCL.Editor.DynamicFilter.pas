@@ -101,7 +101,7 @@ type
 
     IFilter : TBIFilter;
 
-    ICustom : TLogicalExpression;
+    ICustom : TExpression;
 
     IData,
     IMainData : TDataItem;
@@ -121,6 +121,7 @@ type
     procedure DoChanged;
     procedure Expanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
     function HasDummy(const ANode:TBITreeNode):Boolean;
+    function ParseError(const APos:Integer; const AMessage:String):Boolean;
     procedure RefreshProperties(const AItem:TFilterItem);
     function Resolver(const S:String; IsFunction:Boolean):TExpression;
     procedure TreeChecked(Sender: TObject);

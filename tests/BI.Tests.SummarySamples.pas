@@ -48,7 +48,7 @@ uses
 
 function TSampleSummaries.Count:Integer;
 begin
-  result:=29;
+  result:=30;
 end;
 
 function TSampleSummaries.CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;
@@ -290,6 +290,15 @@ begin
          result.AddMeasure(OrderDetails['Quantity'],TAggregate.Last);
          result.AddGroupBy(Products['ProductName']);
        end;
+
+   29: begin
+         // Test of redundant group-by (so they should not be treated as normal groupby)
+         result.AddMeasure(OrderDetails['Quantity'],TAggregate.Sum);
+
+         result.AddGroupBy(Categories['CategoryName']);
+         result.AddGroupBy(Categories['CategoryID']);
+       end;
+
   end;
 end;
 

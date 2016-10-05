@@ -195,16 +195,24 @@ object DataManager: TDataManager
     Top = 41
     Width = 320
     Height = 386
-    ActivePage = TabLinks
+    ActivePage = TabSettings
     Align = alClient
     TabOrder = 3
     OnChange = PageControl1Change
     object TabSettings: TTabSheet
       Caption = 'Settings'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 44
@@ -287,13 +295,17 @@ object DataManager: TDataManager
     object TabLinks: TTabSheet
       Caption = 'Links'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object PopupMenu1: TPopupMenu
     Left = 96
     Top = 256
     object Files1: TMenuItem
-      Caption = '&Files'
+      Caption = '&Files or folders'
       OnClick = Files1Click
     end
     object DatabaseServer1: TMenuItem
@@ -303,6 +315,10 @@ object DataManager: TDataManager
     object BIWeb1: TMenuItem
       Caption = '&BI Web'
       OnClick = BIWeb1Click
+    end
+    object Custommanual1: TMenuItem
+      Caption = '&Custom (manual)'
+      OnClick = Custommanual1Click
     end
   end
   object DataMenu: TPopupMenu

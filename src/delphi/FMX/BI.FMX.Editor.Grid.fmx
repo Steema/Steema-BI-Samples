@@ -16,6 +16,11 @@ object BIGridEditor: TBIGridEditor
     TabIndex = 0
     TabOrder = 0
     TabPosition = PlatformDefault
+    Sizes = (
+      640s
+      454s
+      640s
+      454s)
     object TabOptions: TTabItem
       CustomIcon = <
         item
@@ -72,7 +77,7 @@ object BIGridEditor: TBIGridEditor
         item
         end>
       IsSelected = False
-      Size.Width = 53.000000000000000000
+      Size.Width = 54.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''

@@ -11,6 +11,7 @@ interface
 uses
   System.Classes, System.Diagnostics, System.SyncObjs,
   BI.Web.AllData, BI.Data, BI.DataSource, BI.Expression, BI.Arrays,
+  BI.Arrays.Strings,
   BI.Summary, BI.Persist, BI.Data.Info,
 
   {$IFDEF FMX}
@@ -210,7 +211,7 @@ uses
   System.SysUtils, System.IOUtils, System.Types,
   BI.Data.SQL, BI.Data.Html, BI.Languages.English,
   BI.Dashboard, BI.Dashboard.HTML, BI.Dashboard.Loader,
-  BI.Data.Expressions;
+  BI.Data.Expressions, BI.UI;
 
 Constructor TBIWebCommon.Create;
 begin
@@ -293,94 +294,107 @@ begin
   result.Width:=AWidth;
   result.Height:=AHeight;
 
+  // Pending: change size internally at TBIChart
+  result.Chart.Width:=AWidth;
+  result.Chart.Height:=AHeight;
+
   result.Fill(ACursor,nil);
   result.Chart.View3D:=Get3D;
 end;
+
+{$IFDEF FMX}
+function ChartToImage(const AChart:TChart; const AFormat:String):TStream;
+var tmpB : TBitmap;
+    tmpSurface : TBitmapSurface;
+begin
+  tmpB:=AChart.TeeCreateBitmap(TAlphaColors.Null,AChart.GetRectangle);
+  try
+    tmpSurface:=TBitmapSurface.Create;
+    try
+      tmpSurface.Assign(tmpB);
+
+      result:=TMemoryStream.Create;
+
+      //XE6: AV if png is used for first time (jpg is ok, then png is ok too)
+      //possible workaround: if not TBitmapCodecManager.CodecExists()...
+
+      TBitmapCodecManager.SaveToStream(result, tmpSurface, AFormat, nil {SaveParams});
+    finally
+      tmpSurface.Free;
+    end;
+  finally
+    tmpB.Free;
+  end;
+end;
+
+{$ELSE}
+
+function ChartToImage(const AChart:TChart; const AFormat:String):TStream;
+var tmp : TTeeExportFormat;
+begin
+  {$IFDEF TEEPRO}
+  if SameText(AFormat,'.JPG') or SameText(AFormat,'.JPEG') then
+     tmp:=TJPEGExportFormat.Create
+  else
+     tmp:=TPNGExportFormat.Create;
+  {$ELSE}
+     tmp:=TBMPExportFormat.Create;
+  {$ENDIF}
+
+  try
+    tmp.Panel:=AChart;
+    // Format.CheckSize(AWidth, AHeight);
+
+    result:=TMemoryStream.Create;
+    tmp.SaveToStream(result); // ,Options
+  finally
+    tmp.Free;
+  end;
+end;
+{$ENDIF}
 
 class function TBIWebCommon.ChartToStream(var ACursor:TDataCursor;
                                     const Params:TStrings;
                                     const AFormat:String;
                                     const AWidth,AHeight:Integer):TStream;
 
-var C : TBIChart;
-    {$IFDEF FMX}
-    tmpB : TBitmap;
-    tmpSurface : TBitmapSurface;
-    {$ELSE}
-    Format : TTeeExportFormat;
-    {$ENDIF}
+var tmp : TBIChart;
 begin
-  C:=ChartFromCursor(ACursor,Params,AWidth,AHeight);
+  tmp:=ChartFromCursor(ACursor,Params,AWidth,AHeight);
   try
-    {$IFDEF FMX}
-    tmpB:=C.Chart.TeeCreateBitmap(TAlphaColors.Null,C.Chart.GetRectangle);
-    try
-      tmpSurface:=TBitmapSurface.Create;
-      try
-        tmpSurface.Assign(tmpB);
-
-        result:=TMemoryStream.Create;
-
-        //XE6: AV if png is used for first time (jpg is ok, then png is ok too)
-        //possible workaround: if not TBitmapCodecManager.CodecExists()...
-
-        TBitmapCodecManager.SaveToStream(result, tmpSurface, AFormat, nil {SaveParams});
-        result.Position:=0;
-      finally
-        tmpSurface.Free;
-      end;
-    finally
-      tmpB.Free;
-    end;
-    {$ELSE}
-    {$IFDEF TEEPRO}
-    if SameText(AFormat,'.JPG') or SameText(AFormat,'.JPEG') then
-       Format:=TJPEGExportFormat.Create
-    else
-       Format:=TPNGExportFormat.Create;
-    {$ELSE}
-       Format:=TBMPExportFormat.Create;
-    {$ENDIF}
-
-    try
-      Format.Panel:=C.Chart;
-      // Format.CheckSize(AWidth, AHeight);
-
-      result:=TMemoryStream.Create;
-      Format.SaveToStream(result); // ,Options
-      result.Position:=0;
-    finally
-      Format.Free;
-    end;
-    {$ENDIF}
+    result:=ChartToImage(tmp.Chart,AFormat);
+    result.Position:=0;
   finally
-    C.Free;
+    tmp.Free;
   end;
 end;
 
 class function TBIWebCommon.CursorToText(var ACursor:TDataCursor; const AFormat:String;
                           const GetText:TExportGetText=nil;
                           const ATotals:TDataItem=nil):String;
-var Format : TBIFileSourceClass;
+var tmpClass : TBIExportClass;
     tmp : TBIExport;
 begin
   result:='';
 
-  Format:=TBIFileImporters.GuessExtension(AFormat);
+  tmpClass:=TBIExporters.GuessExtension(AFormat);
 
-  if Format<>nil then
+  if tmpClass<>nil then
   begin
-    tmp:=Format.ExportFormat;
-
-    if tmp<>nil then
+    tmp:=tmpClass.Create;
     try
-      tmp.OnGetText:=GetText;
-      tmp.Cursor:=ACursor;
+      if tmp.BinaryOnly then
+         result:='' // cannot return as string
+      else
+      begin
+        tmp.OnGetText:=GetText;
+        tmp.Cursor:=ACursor;
 
-      tmp.Totals:=ATotals;  // grand totals
+        tmp.Totals:=ATotals;  // grand totals
 
-      // tmp.Layout:=ALayout; // record or table?
-      result:=tmp.AsString;
+        // tmp.Layout:=ALayout; // record or table?
+        result:=tmp.AsString;
+      end;
     finally
       tmp.Free;
     end;
@@ -408,8 +422,8 @@ end;
 class function TBIWebCommon.GetCSS(const AName:String):String;
 begin
   if (AName='') or SameText(AName,'pure') then
-     result:=THTMLRender.PureCSS+TBIHTMLExport.CRLF+
-             '<meta name="viewport" content="width=device-width, initial-scale=1">'+TBIHTMLExport.CRLF
+     result:=THTMLRender.PureCSS+TCommonUI.CRLF+
+             '<meta name="viewport" content="width=device-width, initial-scale=1">'+TCommonUI.CRLF
   else
      result:='';
 end;
@@ -544,6 +558,9 @@ procedure TBIWebCommon.ReturnCursor(const AContext: TBIWebContext;
     begin
       tmp:=Params.Names[t];
 
+      if tmp='' then
+         tmp:=Params[t];
+
       if not SameText(tmp,Skip) then
       begin
         if result<>'' then
@@ -592,8 +609,9 @@ procedure TBIWebCommon.ReturnCursor(const AContext: TBIWebContext;
       result:=TBIHtmlHelper.Escape(result);
     end;
 
-  var tmp : TBIFileSourceClass;
+  var tmp : TBIExportClass;
       tmpS : String;
+      tmpFilters : TFileFilters;
   begin
     result:='<style>.dropdown { position: relative; display: inline-block; z-index: 9999; }'+
       '.dropdown .dropdown-menu { position: absolute; top: 100%; display: none; margin: 0; list-style: none; width: 120%; padding: 0; }'+
@@ -604,21 +622,15 @@ procedure TBIWebCommon.ReturnCursor(const AContext: TBIWebContext;
       '.dropdown a:hover { background: #BBBBBB; }</style>'+
       '<div class="dropdown"><button>'+BIMsg_Export+'</button><ul class="dropdown-menu">';
 
-      for tmp in TBIFileImporters.Importers do
+      for tmp in TBIExporters.Items do
       begin
-        tmpS:=tmp.ClassName;
+        tmpFilters:=tmp.FileFilter;
 
-        if Copy(tmpS,1,3)='TBI' then
-           Delete(tmpS,1,3);
-
-        if SameText(tmpS,'JSON') or
-           SameText(tmpS,'CSV') or
-           SameText(tmpS,'HTML') or
-           {$IFDEF TEEPRO}
-           SameText(tmpS,'PDF') or
-           {$ENDIF}
-           SameText(tmpS,'XML') then
-             result:=result+'<li><a href="#" onclick="location.href='''+MakeURL(tmpS)+''';">'+tmpS+'</a></li>';
+        if tmpFilters<>nil then
+        begin
+          tmpS:=tmpFilters[0].FirstExtension;
+          result:=result+'<li><a href="#" onclick="location.href='''+MakeURL(tmpS)+''';">'+UpperCase(tmpS)+'</a></li>';
+        end;
       end;
 
       result:=result+'</ul></div>';
@@ -887,7 +899,7 @@ begin
     Max:=Params.Values['max'];
 
     if Max='' then
-       ACursor.Max:=0
+       ACursor.Max:=100
     else
        ACursor.Max:=StrToInt(Max);
 
@@ -902,22 +914,13 @@ procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
                                    const Params:TStrings);
 
   function CursorToBothStream(const ACursor:TDataCursor):TStream;
-  var tmp : TDataItem;
   begin
     if ACursor.Data=nil then
        result:=nil
     else
     begin
       result:=TMemoryStream.Create;
-
-      tmp:=ACursor.ToData;
-      try
-        TDataItemPersistence.Save(tmp,result); // <-- info+data
-      finally
-        if tmp<>ACursor.Data then
-           tmp.Free;
-      end;
-
+      TDataItemPersistence.Save(ACursor.Data,result); // <-- info+data
       result:=CheckZip(result,Params);
     end;
   end;
@@ -935,171 +938,175 @@ procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
 
   procedure SetContentType;
   begin
-    if SameText(Format,'.JSON') then
-       AContext.ContentType:='application/json'
+    if Format<>'' then
+       if AContext.ContentType='' then
+       begin
+         if SameText(Format,'.HTM') or SameText(Format,'.HTML') or SameText(Format,'.HTML5')  then
+            AContext.ContentType:='text/html'
+         else
+         if SameText(Format,'.CSV') then
+            AContext.ContentType:='text/plain'
+         else
+            AContext.ContentType:='application/'+LowerCase(Copy(Format,2,Length(Format)));
+       end;
+  end;
+
+  procedure ReturnNormal(const AData:TDataItem; const ACommand,ATag:String; const FreeData:Boolean=True);
+  var Cursor : TDataCursor;
+  begin
+    Cursor:=TDataCursor.Create(nil);
+    try
+      PrepareCursor(Cursor,AData,Params);
+
+      if Cursor.Data<>nil then
+      try
+        if Format='' then
+           AContext.ResponseStream:=CursorToBothStream(Cursor)
+        else
+           ReturnCursor(AContext,Params,Cursor,Format);
+      finally
+        if FreeData then
+           Cursor.Data.Free;
+      end;
+
+      DoAddHistory(AContext,ACommand,ATag,Cursor.Data<>nil);
+    finally
+      Cursor.Free;
+    end;
+  end;
+
+  procedure ReturnHistory;
+  begin
+    ReturnNormal(Logs.History,'history','',False);
+  end;
+
+  procedure ReturnSummary(const AData,ASummary:String);
+  begin
+    ReturnNormal(SummaryOf(ASummary,AData,
+                      Params.Values['having'],
+                      Params.Values['summaryfilter']),'summary',ASummary);
+  end;
+
+  procedure ReturnQuery(const AData,AQuery:String);
+  begin
+    ReturnNormal(QueryOf(AQuery,AData,Params.Values['filter'],
+                                      Params.Values['distinct']),'query',AQuery);
+  end;
+
+  procedure ReturnSQL(const AData,ASQL:String);
+  begin
+    ReturnNormal(TBISQL.From(Data.Find(AData),ASQL),'sql',ASQL);
+  end;
+
+  function DoReturnData(const AData:TDataItem):String;
+  var tmpZip : Boolean;
+      Cursor : TDataCursor;
+  begin
+    result:='data';
+    tmpZip:=Params.Values['zip']<>'';
+
+    Cursor:=TDataCursor.Create(nil);
+    try
+      if Params.Values['info']<>'' then
+      begin
+        PrepareCursor(Cursor,TDataInfo.Create(AData),Params);
+        result:='info';
+      end
+      else
+        PrepareCursor(Cursor,AData,Params);
+
+      if Format='' then
+      begin
+        if Params.Values['both']<>'' then
+           result:='both';
+
+        if (result='info') or (result='both') then
+           AContext.ResponseStream:=CursorToBothStream(Cursor)
+        else
+        begin
+          if Params.Values['meta']<>'' then
+          begin
+            result:='meta';
+            AContext.ResponseStream:=Data.MetaStream(Cursor.Data,tmpZip);
+          end
+          else
+            AContext.ResponseStream:=Data.DataStream(Cursor,tmpZip);
+        end;
+      end
+      else
+        ReturnCursor(AContext,Params,Cursor,Format,'',DataLink);
+    finally
+      Cursor.Free;
+    end;
+  end;
+
+  procedure ReturnAllData;
+  begin
+    if (Params.IndexOf('data')<>-1) or (Params.IndexOf('data=')<>-1) then
+    begin
+      AContext.ContentText:=Data.GetData;
+      DoAddHistory(AContext,'data');
+    end
     else
-    if SameText(Format,'.CSV') then
-       AContext.ContentType:='text/plain'
+    begin
+      AContext.ContentText:=GetDocument;
+      DoAddHistory(AContext,'UI','/');
+    end;
+  end;
+
+  procedure ReturnData(const AData:String);
+  var tmp : TDataItem;
+      tmpCommand : String;
+  begin
+    tmp:=Data.Find(AData);
+
+    if tmp=nil then
+       tmpCommand:='data'
     else
-    if SameText(Format,'.XML') then
-       AContext.ContentType:='application/xml'
-    {$IFDEF TEEPRO}
-    else
-    if SameText(Format,'.PDF') then
-       AContext.ContentType:='application/pdf';
-    {$ENDIF}
+       tmpCommand:=DoReturnData(tmp);
+
+    DoAddHistory(AContext,tmpCommand,AData,tmp<>nil);
   end;
 
 var tmpS,
     Summary,
     Query,
-    SQL,
-    tmpCommand : String;
-
-    tmpZip : Boolean;
-    Cursor : TDataCursor;
-    tmpData : TDataItem;
+    SQL : String;
 begin
-  Cursor:=TDataCursor.Create(nil);
-  try
-    if Params.Values['history']<>'' then
-    begin
-      PrepareCursor(Cursor,Logs.History,Params);
+  if Params.Values['history']<>'' then
+     ReturnHistory
+  else
+  begin
+    tmpS:=Params.Values['data'];
 
-      if Format='' then
-         AContext.ResponseStream:=CursorToBothStream(Cursor)
-      else
-         ReturnCursor(AContext,Params,Cursor,Format);
-
-      DoAddHistory(AContext,'history','',True);
-    end
+    if tmpS='' then
+       ReturnAllData
     else
     begin
-      tmpS:=Params.Values['data'];
+      Summary:=Params.Values['summary'];
 
-      if tmpS='' then
-      begin
-        AContext.ContentText:=GetDocument;
-        DoAddHistory(AContext,'UI','/');
-      end
+      if Summary<>'' then
+         ReturnSummary(tmpS,Summary)
       else
       begin
-        Summary:=Params.Values['summary'];
+        Query:=Params.Values['query'];
 
-        if Summary<>'' then
-        begin
-          PrepareCursor(Cursor,
-                SummaryOf(Summary,tmpS,
-                            Params.Values['having'],
-                            Params.Values['summaryfilter']),
-                            Params);
-
-          if Cursor.Data<>nil then
-          try
-            if Format='' then
-               AContext.ResponseStream:=CursorToBothStream(Cursor)
-            else
-               ReturnCursor(AContext,Params,Cursor,Format);
-          finally
-            Cursor.Data.Free;
-          end;
-
-          DoAddHistory(AContext,'summary',Summary,Cursor.Data<>nil);
-        end
+        if Query<>'' then
+           ReturnQuery(tmpS,Query)
         else
         begin
-          Query:=Params.Values['query'];
+          SQL:=Trim(Params.Values['sql']);
 
-          if Query<>'' then
-          begin
-            PrepareCursor(Cursor,
-                QueryOf(Query,tmpS,Params.Values['filter'],
-                                   Params.Values['distinct']),
-                                   Params);
-
-            if Cursor.Data<>nil then
-            try
-              if Format='' then
-                 AContext.ResponseStream:=CursorToBothStream(Cursor)
-              else
-                 ReturnCursor(AContext,Params,Cursor,Format);
-            finally
-              Cursor.Data.Free;
-            end;
-
-            DoAddHistory(AContext,'query',Query,Cursor.Data<>nil);
-          end
+          if SQL<>'' then
+             ReturnSQL(tmpS,SQL)
           else
-          begin
-            SQL:=Trim(Params.Values['sql']);
-
-            if SQL<>'' then
-            begin
-              PrepareCursor(Cursor,TBISQL.From(Data.Find(tmpS),SQL),Params);
-
-              if Cursor.Data<>nil then
-              try
-                if Format='' then
-                   AContext.ResponseStream:=CursorToBothStream(Cursor)
-                else
-                   ReturnCursor(AContext,Params,Cursor,Format);
-              finally
-                Cursor.Data.Free;
-              end;
-
-              DoAddHistory(AContext,'sql',SQL,Cursor.Data<>nil);
-            end
-            else
-            begin
-              tmpZip:=Params.Values['zip']<>'';
-
-              tmpData:=Data.Find(tmpS);
-
-              tmpCommand:='data';
-
-              if tmpData<>nil then
-              begin
-                if Params.Values['info']<>'' then
-                begin
-                  PrepareCursor(Cursor,TDataInfo.Create(tmpData),Params);
-                  tmpCommand:='info';
-                end
-                else
-                  PrepareCursor(Cursor,tmpData,Params);
-
-                if Format='' then
-                begin
-                  if Params.Values['both']<>'' then
-                     tmpCommand:='both';
-
-                  if (tmpCommand='info') or (tmpCommand='both') then
-                     AContext.ResponseStream:=CursorToBothStream(Cursor)
-                  else
-                  begin
-                    if Params.Values['meta']<>'' then
-                    begin
-                      tmpCommand:='meta';
-                      AContext.ResponseStream:=Data.MetaStream(Cursor.Data.Name,tmpZip);
-                    end
-                    else
-                      AContext.ResponseStream:=Data.DataStream(Cursor,tmpZip);
-                  end;
-                end
-                else
-                  ReturnCursor(AContext,Params,Cursor,Format,'',DataLink);
-              end;
-
-              DoAddHistory(AContext,tmpCommand,tmpS,tmpData<>nil);
-            end;
-          end;
+             ReturnData(tmpS);
         end;
       end;
     end;
-
-    SetContentType;
-  finally
-    Cursor.Free;
   end;
+
+  SetContentType;
 end;
 
 class function TBIWebCommon.CheckZip(const AStream:TStream; const Params:TStrings):TStream;
@@ -1191,7 +1198,7 @@ function TBIWebCommon.ProcessDashboard(const AContext: TBIWebContext):Boolean;
 
           tmpText:=tmpText+TBIHtmlHelper.Link(TitleOrName(tmpTemplate.Dashboards[t]),
                    tmpURL)+
-                   TBIHtmlHelper.Return+TBIHTMLExport.CRLF;
+                   TBIHtmlHelper.Return+TCommonUI.CRLF;
         end;
 
         AContext.ContentText:=tmpText;
@@ -1264,56 +1271,23 @@ begin
 end;
 
 procedure TBIWebCommon.ProcessGet(const AContext: TBIWebContext);
-var Def,
-    Format : String;
-    Cursor : TDataCursor;
+var Def : String;
     Params : TStrings;
 begin
   T1:=TStopwatch.StartNew;
 
   Params:=AContext.Params;
 
-  Format:=Params.Values['format'];
+  Def:=Params.Values['def'];
 
-  if Params.IndexOf('data')<>-1 then
+  if Def<>'' then
   begin
-    if Format='' then
-    begin
-      AContext.ContentText:=Data.GetData;
-      DoAddHistory(AContext,'data');
-    end
-    else
-    begin
-      Cursor:=TDataCursor.Create(nil);
-      try
-        PrepareCursor(Cursor,Data.AllData,Params);
-
-        if Cursor.Data<>nil then
-        try
-          ReturnCursor(AContext,Params,Cursor,Format,'',DataLink);
-        finally
-          Cursor.Data.Free;
-        end;
-      finally
-        Cursor.Free;
-      end;
-
-      DoAddHistory(AContext,'datainfo');
-    end;
+    AContext.ContentText:=Data.GetDefinition(Def);
+    DoAddHistory(AContext,'definition',Def);
   end
   else
-  begin
-    Def:=Params.Values['def'];
-
-    if Def<>'' then
-    begin
-      AContext.ContentText:=Data.GetDefinition(Def);
-      DoAddHistory(AContext,'definition',Def);
-    end
-    else
-    if not ProcessDashboard(AContext) then
-       ProcessData(AContext,Format,Params);
-  end;
+  if not ProcessDashboard(AContext) then
+     ProcessData(AContext,Params.Values['format'],Params);
 end;
 
 procedure TBIWebCommon.ProcessFile(const ADocument:String; const AContext: TBIWebContext);

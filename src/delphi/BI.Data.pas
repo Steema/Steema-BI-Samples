@@ -74,6 +74,7 @@ type
     function All:Boolean;
     procedure Init(const ACount:TInteger);
     function MissingCount:TInteger;
+    procedure Swap(const A,B:TInteger);
 
     property Item[const Index:TInteger]:Boolean read GetItem write SetItem; default;
   end;
@@ -84,9 +85,11 @@ type
 
   TDataArrayHelper=record helper for TDataArray
   public
-    procedure Add(const AData:TDataItem);
+    procedure Add(const AData:TDataItem); overload;
+    procedure Add(const AData:TDataArray); overload;
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
+    function Equal(const Value:TDataArray):Boolean;
     procedure Exchange(const A,B:Integer);
     function Exists(const AData:TDataItem):Boolean; inline;
     function Find(const AName:String):TDataItem;
@@ -117,6 +120,7 @@ type
 
     procedure AddDirect(const AData:TDataItem);
     procedure DestroyAll;
+    procedure DoChanged;
     function GetEmptyName:String;
   public
     Constructor Create(const AParent:TDataItem);
@@ -128,6 +132,7 @@ type
     procedure Clear;
     function Count:Integer; inline;
     procedure Delete(const AData:TDataItem);
+    procedure Exchange(const A,B:Integer);
     function Exists(const AName:String):Boolean; inline;
 
     function Find(const AName: String): TDataItem; inline;
@@ -141,6 +146,7 @@ type
     function Select(const Indices:Array of Integer):TDataArray; overload;
     function Select(const Start,Finish:Integer):TDataArray; overload;
     procedure SortByName(const Ascending:Boolean=True; const IgnoreCase:Boolean=True);
+    function UniqueName(const APrefix:String):String;
 
     property AsArray:TDataArray read FItems;
     property Item[const Index:Integer]:TDataItem read GetItem; default;
@@ -180,7 +186,7 @@ type
 
   // Event Observers (Consumers)
 
-  TBIEvent=(Changed,Destroyed);
+  TBIEvent=(Changed,Destroyed,ChangedValues);
   TBIConsumer=procedure(const AEvent:TBIEvent) of object;
 
   TBIConsumers=record
@@ -234,16 +240,16 @@ type
   type
     TMasterDetail=record
     private
+      // Used only during link loading:
+      FOrigin : String;
+
+      procedure SetOrigin(const Value: String);
     public
       Data : TDataItem;
 
       Index : TNativeIntArray;    // For self-detail relationship
-      BitIndex : TNativeIntArray; // For multiple item search
 
-      Multiplier : TInt32Array;  // Contains length of each BitIndex arrays (for speed)
-
-      // Used only during link loading:
-      Origin : String;
+      IsSelfDetail : Boolean;  // True when Origin='..', meaning our Master is our Parent (self-detail)
 
       // Add a new entry in Index, accumulating the ACount parameter
       procedure AppendIndex(const ACount:Integer);
@@ -254,8 +260,7 @@ type
       // Returns the array of detail Indexes for given master AIndex position
       function GetIndex(const AMaster:TDataItem; const AIndex:TInteger):TNativeIntArray;
 
-      // Returns True when Origin='..', meaning our Master is our Parent (self-detail)
-      function IsSelfDetail:Boolean;
+      property Origin:String read FOrigin write SetOrigin;
     end;
 
   var
@@ -275,6 +280,9 @@ type
     // Temporary. Anti re-entrancy, see usage
     IGettingItems : Boolean;
 
+    // Temporary. To avoid broadcasting when removing children items, see usage
+    IDestroying : Boolean;
+
     procedure DestroyStats;
 
     function FindMapRow(const AMap:TDataMap; const ARow:TLoopInteger; out AIndex:TNativeInteger):Boolean; overload;
@@ -291,6 +299,7 @@ type
     function GetStats:TDataStats;
     function GetMaster: TDataItem;
     procedure Notify(const AEvent:TBIEvent);
+    procedure RemoveItem(const AItem:TDataItem);
     procedure SetMaster(const Value: TDataItem);
     procedure SetProvider(const Value: TDataProvider);
   protected
@@ -383,6 +392,7 @@ type
     Constructor Create(const AData:TDataArray); overload;
     Constructor Create(const AProvider:TDataProvider); overload;
     Constructor Create(const AKind: TDataKind); overload;
+    Constructor Create(const AKind: TDataKind; const AName:String); overload;
 
     class function LoadFromFile(const AFileName:String):TDataItem; inline;
 
@@ -391,10 +401,10 @@ type
     procedure Clear;
     procedure ClearData(const Recursive:Boolean=False);
 
-    function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):SmallInt;
+    function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):ShortInt;
     procedure CopyFrom(const DestIndex:TInteger; const Source:TDataItem; const SourceIndex:TInteger);
 
-    procedure CreateIndexMulti(const Items:TDataArray);
+    class function CreateIndexMulti(const Items:TDataArray):TNativeIntArray; static;
     procedure CreateMasterIndex;
 
     procedure Delete(const Row:TInteger; const ACount:TInteger=1);

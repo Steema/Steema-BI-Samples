@@ -33,6 +33,7 @@ type
     FSource : TComponent;
 
     IDataLink : TDataLink;
+    IDataSource : TDataSource;
     ILoading : Boolean;
 
     class function IgnoreError(const Sender:TObject; const Error:String):Boolean;

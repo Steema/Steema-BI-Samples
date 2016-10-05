@@ -64,6 +64,10 @@ object DynamicFilterEditor: TDynamicFilterEditor
     TabOrder = 1
     object TabData: TTabSheet
       Caption = 'Data'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BITree1: TBITree
         Left = 0
         Top = 41
@@ -99,6 +103,10 @@ object DynamicFilterEditor: TDynamicFilterEditor
     object TabItems: TTabSheet
       Caption = 'Items'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
         Top = 301
@@ -119,7 +127,6 @@ object DynamicFilterEditor: TDynamicFilterEditor
         ItemHeight = 13
         TabOrder = 0
         OnClick = CBItemsClick
-        ExplicitHeight = 280
       end
       object Panel3: TPanel
         Left = 0
@@ -162,6 +169,10 @@ object DynamicFilterEditor: TDynamicFilterEditor
     object TabCustom: TTabSheet
       Caption = 'Custom'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PanelCustom: TPanel
         Left = 0
         Top = 0

@@ -14,7 +14,7 @@ uses
   FMX.Graphics,
 
   {$IF CompilerVersion<=28}
-  {$DEFINE HASFMX20}
+  {$DEFINE HASFMX21}
   {$ENDIF}
 
   {$IFNDEF HASFMX21}
@@ -26,7 +26,7 @@ uses
 
   FMX.Dialogs, FMX.StdCtrls, FMX.Layouts,
   FMX.Edit, FMX.TabControl, FMX.ListBox, BI.Persist, FMX.Menus,
-  BI.FMX.DataEditor;
+  BI.FMX.Editor.Data;
 
 type
   TStoreEditor = class(TForm)

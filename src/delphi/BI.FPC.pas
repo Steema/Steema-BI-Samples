@@ -9,7 +9,7 @@ unit BI.FPC;
 interface
 
 uses
-  SysUtils, Classes, Graphics, StreamEx;
+  SysUtils, Classes, Graphics, StreamEx, BI.Arrays.Strings;
 
 type
   TProc<T>=procedure(const Value:T);
@@ -46,8 +46,6 @@ type
     class function Move(const AFileName,ANew:String):Boolean; static;
     class function Size(const AFileName:String):Int64; static;
   end;
-
-  TStringArray=Array of String;
 
   TDirectory=record
   public
@@ -109,6 +107,5 @@ type
   TAlphaColors=TAlphaColorRec;
 
 function IsQuoted(const S:String):Boolean;
-function SplitString(const S,Delimiter:String):TStringArray;
 
 implementation

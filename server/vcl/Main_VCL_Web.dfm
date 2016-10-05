@@ -23,6 +23,7 @@ object FormBIWeb: TFormBIWeb
     Width = 591
     Height = 19
     Panels = <>
+    ExplicitTop = 316
   end
   object PageControl1: TPageControl
     Left = 0
@@ -33,12 +34,9 @@ object FormBIWeb: TFormBIWeb
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
+    ExplicitHeight = 265
     object TabConsole: TTabSheet
       Caption = 'Console'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ErrorLog: TMemo
         Left = 0
         Top = 0
@@ -54,10 +52,6 @@ object FormBIWeb: TFormBIWeb
     object TabSheet2: TTabSheet
       Caption = 'History'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -94,6 +88,7 @@ object FormBIWeb: TFormBIWeb
     object TabSettings: TTabSheet
       Caption = 'Settings'
       ImageIndex = 2
+      ExplicitHeight = 237
       object Label1: TLabel
         Left = 12
         Top = 44
@@ -225,9 +220,6 @@ object FormBIWeb: TFormBIWeb
     object TabScheduler: TTabSheet
       Caption = 'Scheduler'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
       ExplicitHeight = 237
       object Panel3: TPanel
         Left = 0

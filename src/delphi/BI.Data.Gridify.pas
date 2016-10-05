@@ -51,7 +51,7 @@ interface
 *)
 
 uses
-  BI.Data, BI.Arrays;
+  BI.Data, BI.Arrays.Strings;
 
 type
   TGridify=record

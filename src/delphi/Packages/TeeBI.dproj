@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{8A1A003D-7144-4021-A5EE-AB1F58DF11A1}</ProjectGuid>
         <MainSource>TeeBI.dpk</MainSource>
-        <ProjectVersion>18.0</ProjectVersion>
+        <ProjectVersion>18.1</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
@@ -143,30 +143,49 @@
         <DCCReference Include="xmlrtl.dcp"/>
         <DCCReference Include="..\BI.Arrays.pas"/>
         <DCCReference Include="..\BI.Compare.pas"/>
+        <DCCReference Include="..\BI.Compression.pas"/>
+        <DCCReference Include="..\BI.Dashboard.pas"/>
+        <DCCReference Include="..\BI.Dashboard.Layouts.pas"/>
+        <DCCReference Include="..\BI.Dashboard.Loader.pas"/>
         <DCCReference Include="..\BI.DataSource.pas"/>
         <DCCReference Include="..\BI.Expression.pas"/>
+        <DCCReference Include="..\BI.Expression.DateTime.pas"/>
+        <DCCReference Include="..\BI.Expression.Filter.pas"/>
         <DCCReference Include="..\BI.Tree.pas"/>
         <DCCReference Include="..\BI.Data.pas"/>
         <DCCReference Include="..\BI.Persist.pas"/>
         <DCCReference Include="..\BI.Schedule.pas"/>
         <DCCReference Include="..\BI.Summary.pas"/>
+        <DCCReference Include="..\BI.Summary.Totals.pas"/>
         <DCCReference Include="..\BI.Streams.pas"/>
         <DCCReference Include="..\BI.Web.pas"/>
         <DCCReference Include="..\BI.Dataset.pas"/>
+        <DCCReference Include="..\BI.Data.Search.pas"/>
         <DCCReference Include="..\BI.UI.pas"/>
+        <DCCReference Include="..\BI.UI.Colors.pas"/>
+        <DCCReference Include="..\BI.Data.CollectionItem.pas"/>
         <DCCReference Include="..\BI.Data.DB.pas"/>
         <DCCReference Include="..\BI.Data.CSV.pas"/>
         <DCCReference Include="..\BI.Data.Dataset.pas"/>
+        <DCCReference Include="..\BI.Data.Info.pas"/>
         <DCCReference Include="..\BI.Data.Html.pas"/>
         <DCCReference Include="..\BI.Data.JSON.pas"/>
         <DCCReference Include="..\BI.Data.Excel.pas"/>
+        <DCCReference Include="..\BI.Data.Rtti.pas"/>
+        <DCCReference Include="..\BI.Data.SingleRecord.pas"/>
+        <DCCReference Include="..\BI.Data.SQL.pas"/>
         <DCCReference Include="..\BI.Data.XML.pas"/>
         <DCCReference Include="..\BI.Data.JSON.Standard.pas"/>
         <DCCReference Include="..\BI.Data.XML.MSXML.pas"/>
         <DCCReference Include="..\BI.Data.Expressions.pas"/>
+        <DCCReference Include="..\BI.MapReduce.pas"/>
+        <DCCReference Include="..\BI.Query.pas"/>
         <DCCReference Include="..\BI.Web.Indy.pas"/>
         <DCCReference Include="..\BI.Web.Net.pas"/>
         <DCCReference Include="..\BI.Languages.English.pas"/>
+        <DCCReference Include="..\BI.Store.Component.pas"/>
+        <DCCReference Include="..\BI.Data.Workflow.pas"/>
+        <DCCReference Include="..\Algorithms\BI.Algorithm.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -192,7 +211,7 @@
                     <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\DclTeeBI.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\DclTeeBI.bpl not found</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
-            <Deployment Version="2">
+            <Deployment Version="3">
                 <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule">
                     <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
@@ -208,6 +227,11 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
+                    <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\TeeBI.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TeeBI.bpl</RemoteName>
@@ -220,7 +244,16 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -266,16 +299,19 @@
                     </Platform>
                 </DeployClass>
                 <DeployClass Required="true" Name="ProjectOutput">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                    </Platform>
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
                     </Platform>
-                    <Platform Name="OSX32">
+                    <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
                     </Platform>
-                    <Platform Name="iOSDevice32">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Linux64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Android">
@@ -306,12 +342,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="AndroidLibnativeX86File">
-                    <Platform Name="Android">
-                        <RemoteDir>library\lib\x86</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="AndroidLibnativeX86File"/>
                 <DeployClass Name="ProjectiOSDeviceDebug">
                     <Platform Name="iOSDevice64">
                         <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
@@ -536,21 +567,13 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSDevice" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>

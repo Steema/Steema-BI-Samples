@@ -38,10 +38,11 @@ requires
   FMXTeeUI;
 
 contains
+  BI.FMX.Chart in '..\FMX\BI.FMX.Chart.pas',
+  BI.FMX.Chart.Plugin in '..\FMX\BI.FMX.Chart.Plugin.pas',
   BI.FMX.Dashboard.Chart in '..\FMX\BI.FMX.Dashboard.Chart.pas',
   BI.FMX.Visualizer.Chart in '..\FMX\BI.FMX.Visualizer.Chart.pas',
   BI.FMX.Editor.Visualizer.Chart in '..\FMX\BI.FMX.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
-  BI.FMX.Chart in '..\FMX\BI.FMX.Chart.pas',
   BI.FMX.ChartFunctions in '..\FMX\BI.FMX.ChartFunctions.pas';
 
 end.

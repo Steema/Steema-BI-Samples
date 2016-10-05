@@ -13,9 +13,19 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
-  FMX.TreeView, FMX.Controls.Presentation, FMX.StdCtrls, FMX.ListBox, FMX.Colors,
-  FMX.Objects, FMX.Edit, FMX.EditBox, FMX.SpinBox, FMX.ComboEdit,
+  FMX.Types, FMX.Controls, FMX.Forms,
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Graphics, FMX.Controls.Presentation, FMX.EditBox,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.Layouts,
+  FMX.TreeView, FMX.StdCtrls, FMX.ListBox, FMX.Colors,
+  FMX.Objects, FMX.Edit, FMX.SpinBox, FMX.ComboEdit,
   FMX.ComboTrackBar;
 
 type

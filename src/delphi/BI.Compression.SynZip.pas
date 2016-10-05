@@ -38,7 +38,7 @@ interface
 *)
 
 uses
-  System.Classes, BI.Arrays, BI.Compression;
+  System.Classes, BI.Arrays.Strings, BI.Compression;
 
 type
   TSynZipCompression=class(TCompressionPlugin)

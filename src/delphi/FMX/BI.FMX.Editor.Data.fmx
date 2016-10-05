@@ -18,11 +18,13 @@ object DataEditor: TDataEditor
     Size.Width = 503.000000000000000000
     Size.Height = 425.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 0
     TabPosition = Top
     OnChange = TabSourcesChange
     Sizes = (
+      503s
+      399s
       503s
       399s
       503s
@@ -35,7 +37,7 @@ object DataEditor: TDataEditor
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 44.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -592,7 +594,7 @@ object DataEditor: TDataEditor
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 58.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -831,6 +833,20 @@ object DataEditor: TDataEditor
           OnClick = CBWebDataClick
         end
       end
+    end
+    object TabManual: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 60.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Manual'
+      ExplicitSize.cx = 60.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
     end
   end
   object OpenFile: TOpenDialog

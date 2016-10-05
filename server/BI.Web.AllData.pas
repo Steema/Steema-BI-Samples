@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.Types, Data.DB,
-  BI.Arrays, BI.Data, BI.DataSource;
+  BI.Arrays, BI.Arrays.Strings, BI.Data, BI.DataSource;
 
 const
   CRLF=#13#10;
@@ -35,7 +35,7 @@ type
     function GetDefinition(const AName:String): String;
 
     function DataStream(const ACursor:TDataCursor; const Zip:Boolean=False):TStream; overload;
-    function MetaStream(const AData:String; const Zip:Boolean=False):TStream; overload;
+    function MetaStream(const AData:TDataItem; const Zip:Boolean=False):TStream; overload;
 
     property Store:String read FStore;
   end;
@@ -43,10 +43,6 @@ type
 implementation
 
 uses
-  {$IFDEF USESynLZ}
-  BI.Compression, BI.Compression.SynZip,
-  {$ENDIF}
-
   System.SysUtils, System.IOUtils, BI.Persist, BI.Summary;
 
 { TAllData }
@@ -61,6 +57,22 @@ begin
      FStore:=AStore;
 end;
 
+function GetFileSizeAndDate(const AFile1,AFile2:String; out ADate:TDateTime; out ASize:Int64):Boolean;
+begin
+  if TFile.Exists(AFile1) then
+  begin
+    ADate:=TFile.GetLastWriteTime(AFile1);
+    ASize:=TBIFileSource.GetFileSize(AFile1);
+
+    if TFile.Exists(AFile2) then
+       Inc(ASize,TBIFileSource.GetFileSize(AFile2));
+
+    result:=True;
+  end
+  else
+    result:=False;
+end;
+
 function TAllData.AllData: TDataItem;
 var
   tmpRemote: Boolean;
@@ -71,29 +83,28 @@ var
   var tmp,
       tmpPath : String;
 
+      tmpDate : TDateTime;
       tmpSize : Int64;
 
       Data : TDataItem;
   begin
     tmp:=TPath.GetFileNameWithoutExtension(AName);
 
+    // Data Name
     result.Items[0].TextData[AIndex]:=tmp;
 
     if tmpRemote then
        tmpSizeItem.Missing[AIndex]:=True
     else
     begin
+      // Data Last DateTime modified, and Data Size
       tmpPath:=TStore.FullPath(FStore,tmp);
 
-      if TFile.Exists(tmpPath+TPersistence.Extension) then
+      if GetFileSizeAndDate(tmpPath+TPersistence.Extension,
+                            tmpPath+TDataPersistence.Extension,
+                            tmpDate,tmpSize) then
       begin
-        result.Items[5].DateTimeData[AIndex]:=TFile.GetLastWriteTime(tmpPath+TPersistence.Extension);
-
-        tmpSize:=TBIFileSource.GetFileSize(tmpPath+TPersistence.Extension);
-
-        if TFile.Exists(tmpPath+TDataPersistence.Extension) then
-           Inc(tmpSize,TBIFileSource.GetFileSize(tmpPath+TDataPersistence.Extension));
-
+        result.Items[5].DateTimeData[AIndex]:=tmpDate;
         tmpSizeItem.Int64Data[AIndex]:=tmpSize;
       end
       else
@@ -103,6 +114,7 @@ var
     if tmpSizeItem.Missing[AIndex] then
        result.Items[5].Missing[AIndex]:=True;
 
+    // Load Data structure info
     Data:=TStore.Load(FStore,tmp,function(const Sender:TObject; const Text:String):Boolean
       begin
         tmpStatus.TextData[AIndex]:=Text;
@@ -111,14 +123,16 @@ var
 
     if Data<>nil then
     begin
+      // Data metrics
       result.Items[1].Int32Data[AIndex]:=Data.Items.Count;
       result.Items[2].Int32Data[AIndex]:=Data.TotalColumns;
       result.Items[3].Int64Data[AIndex]:=Data.TotalRows;
+
       tmpStatus.TextData[AIndex]:='OK';
     end;
   end;
 
-var H,t : Integer;
+var t : Integer;
     Data : TStringArray;
 begin
   result:=TDataItem.Create(True);
@@ -134,13 +148,11 @@ begin
 
   Data:=GetDataArray;
 
-  H:=High(Data);
-
-  result.Resize(H+1);
+  result.Resize(Data.Count);
 
   tmpRemote:=TStore.IsRemote(FStore);
 
-  for t:=Low(Data) to H do
+  for t:=0 to High(Data) do
       ProcessData(Data[t],t);
 end;
 
@@ -290,15 +302,9 @@ begin
   result:=TStore.OriginToData(nil,FStore,AData);
 end;
 
-function TAllData.MetaStream(const AData: String; const Zip:Boolean=False): TStream;
+function TAllData.MetaStream(const AData: TDataItem; const Zip:Boolean=False): TStream;
 begin
-  result:=TStore.DataToStream(FStore,AData,Zip);
+  result:=TStore.DataToStream(AData,Zip);
 end;
 
-{$IFDEF USESynLZ}
-initialization
-  TCompression.Plugin:=TSynLZCompression;
-finalization
-  TCompression.Plugin:=TSystemCompression;
-{$ENDIF}
 end.

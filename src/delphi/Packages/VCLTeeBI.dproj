@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{0500C8B9-1600-4CDA-A040-0071181CD947}</ProjectGuid>
         <MainSource>VCLTeeBI.dpk</MainSource>
-        <ProjectVersion>18.0</ProjectVersion>
+        <ProjectVersion>18.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
@@ -136,37 +136,45 @@
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="dbrtl.dcp"/>
         <DCCReference Include="vcldb.dcp"/>
-        <DCCReference Include="IndySystem.dcp"/>
-        <DCCReference Include="IndyProtocols.dcp"/>
-        <DCCReference Include="IndyCore.dcp"/>
         <DCCReference Include="TeeBI.dcp"/>
+        <DCCReference Include="FireDACTeeBI.dcp"/>
         <DCCReference Include="vclx.dcp"/>
         <DCCReference Include="vclimg.dcp"/>
-        <DCCReference Include="FireDACTeeBI.dcp"/>
+        <DCCReference Include="..\VCL\BI.VCL.Component.pas"/>
         <DCCReference Include="..\VCL\BI.VCL.DataManager.pas">
             <Form>DataManager</Form>
         </DCCReference>
-        <DCCReference Include="..\VCL\BI.VCL.FilterEditor.pas">
-            <Form>DataFilterEditor</Form>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Expression.pas">
+            <Form>ExpressionEditor</Form>
         </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.DataControl.pas"/>
         <DCCReference Include="..\VCL\BI.VCL.Grid.pas"/>
         <DCCReference Include="..\VCL\BI.VCL.GridForm.pas">
             <Form>BIGridForm</Form>
         </DCCReference>
-        <DCCReference Include="..\VCL\BI.VCL.Datas.pas">
-            <Form>FormDatas</Form>
+        <DCCReference Include="..\VCL\BI.VCL.DataSelect.pas">
+            <Form>DataSelector</Form>
         </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.DataViewer.pas">
             <Form>DataViewer</Form>
         </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.DataTree.pas"/>
+        <DCCReference Include="..\VCL\BI.VCL.DataWorkflow.pas">
+            <Form>BIWorkflowEditor</Form>
+        </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.Editor.Grid.pas">
-            <Form>BIGridEditor</Form>
+            <Form>BIDBGridEditor</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.BIGrid.pas">
+            <Form>BIGridEditor</Form>
         </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.Editor.Summary.pas">
             <Form>SummaryEditor</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.DataSelect.pas">
+            <Form>DataSelectEditor</Form>
         </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.NewColumn.pas">
             <Form>AddColumn</Form>
@@ -180,11 +188,72 @@
             <Form>DataEditor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Data.Links.pas">
+            <Form>DataLinksEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.DataComponent.pas">
+            <Form>DataComponent</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.DateTimeRange.pas">
+            <Form>DateTimeRangeEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.DynamicFilter.pas">
+            <Form>DynamicFilterEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Filter.Item.pas">
+            <Form>FilterItemEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Filter.DateTime.pas">
+            <Form>DateTimeFilterEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Formats.pas">
+            <Form>DataFormatEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.ListItems.pas">
+            <Form>FormListItems</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.NumericFromTo.pas">
+            <Form>NumericFromTo</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Query.pas">
+            <Form>BIQueryEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.SelectText.pas">
+            <Form>SelectTextItems</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Sort.pas">
+            <Form>SortEditor</Form>
+        </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.Editor.Stores.pas">
             <Form>StoreEditor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.WorkflowItem.pas">
+            <Form>WorkflowItemEditor</Form>
+        </DCCReference>
         <DCCReference Include="..\VCL\BI.VCL.Grid.DBGrid.pas"/>
+        <DCCReference Include="..\VCL\BI.VCL.Visualizer.pas"/>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Visualizer.pas">
+            <Form>VisualizerEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Dashboard.pas"/>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Template.pas">
+            <Form>TemplateEditor</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Template.Data.pas">
+            <Form>DataGallery</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Template.Panels.pas">
+            <Form>PanelGallery</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Editor.Template.Layouts.pas">
+            <Form>LayoutGallery</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Designer.Template.Layouts.pas">
+            <Form>LayoutDesigner</Form>
+        </DCCReference>
+        <DCCReference Include="..\VCL\BI.VCL.Tree.pas"/>
+        <DCCReference Include="..\VCL\BI.VCL.Tree.TreeView.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -207,23 +276,14 @@
                     <Source Name="MainSource">VCLTeeBI.dpk</Source>
                 </Source>
             </Delphi.Personality>
-            <Deployment Version="2">
+            <Deployment Version="3">
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\VCLTeeBI.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>VCLTeeBI.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -269,16 +329,19 @@
                     </Platform>
                 </DeployClass>
                 <DeployClass Required="true" Name="ProjectOutput">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                    </Platform>
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
                     </Platform>
-                    <Platform Name="OSX32">
+                    <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
                     </Platform>
-                    <Platform Name="iOSDevice32">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Linux64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Android">
@@ -330,12 +393,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="AndroidLibnativeX86File">
-                    <Platform Name="Android">
-                        <RemoteDir>library\lib\x86</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="AndroidLibnativeX86File"/>
                 <DeployClass Name="iPhone_Launch320">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>
@@ -537,11 +595,21 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>

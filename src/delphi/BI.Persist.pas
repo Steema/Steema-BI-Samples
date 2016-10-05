@@ -23,7 +23,7 @@ uses
   {$IFDEF FPC}
   BI.FPC,
   {$ENDIF}
-  BI.Data, BI.Arrays, BI.Streams;
+  BI.Data, BI.Arrays, BI.Arrays.Strings, BI.Streams;
 
 type
   TBIError=function(const Sender:TObject; const Error:String):Boolean of object;
@@ -43,8 +43,11 @@ type
   TBaseDataImporter=class(TDataProvider)
   private
     function GetData:TDataItem;
+    procedure TryUnloadData;
   protected
     FData : TDataItem;
+
+    IKeepData : Boolean;
 
     procedure Changed; override;
     procedure Notify(const AEvent:TBIEvent);
@@ -83,6 +86,7 @@ type
     FMaster,
     FDetail : String;
   public
+    procedure Assign(Source:TPersistent); override;
   published
     property Detail:String read FDetail write FDetail;
     property Master:String read FMaster write FMaster;
@@ -97,9 +101,10 @@ type
     property Item[const Index:Integer]:TDataRelation read Get write Put; default;
   end;
 
-  // Abstract class with all settings necessary to import a given data
-  TDataDefinitionKind=(Files,Database,Web,Unknown);
+  TDataDefinitionKind=(Files,Database,Web,Manual,Unknown);
 
+  // Abstract class with all settings necessary to import data from different
+  // kinds of sources (files, web, database or manual)
   TDataDefinition=class(TBaseDataImporter)
   private
     FDatabase : TDatabaseDefinition;
@@ -113,20 +118,25 @@ type
 
     function GetCalcStats: Boolean;
     function GetKind: TDataDefinitionKind;
+    procedure GetKindSettings(const Value: TDataDefinitionKind);
+    function GetLinks: TDataRelations;
     function GetParallel: Boolean;
-    procedure GetRefreshSettings;
+    procedure GetSettings;
     function GetStrings:TStrings;
     function GetValue(const Index: String): String;
+    procedure NotifyManual(const AEvent:TBIEvent);
     procedure PrecalculateStats(const AData:TDataArray);
+    procedure ReadData(Stream: TStream);
     procedure SetCalcStats(const AValue: Boolean);
     procedure SetFileName(const Value: String);
     procedure SetKind(const Value: TDataDefinitionKind);
+    procedure SetLinks(const Value: TDataRelations);
     procedure SetParallel(const AValue: Boolean);
     procedure SetValue(const Index: String; const Value: String);
     procedure SetStrings(const Value: TStrings);
-    procedure TryLoadDetailRelations(const AData:TDataArray);
-    function GetLinks: TDataRelations;
-    procedure SetLinks(const Value: TDataRelations);
+    procedure TryLoadDetailRelations(const AData:TDataArray; const AStore:String);
+    procedure TryLoadFile;
+    procedure WriteData(Stream: TStream);
   protected
     FStrings : TStrings;
 
@@ -134,11 +144,14 @@ type
 
     Volatile : Boolean; // When True, changes to Strings aren't saved
 
+    // Embedd a TDataItem saved / loaded from a TStream in DFM/FMX
+    procedure DefineProperties(Filer: TFiler); override;
+
     procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
-    procedure LoadFromString(const AText:String);
+    procedure Loaded; override;
     procedure Save;
-    procedure TryLoadDetails;
+    procedure TryLoadDetails(const AStore:String);
   public
     const
       Extension='.def';
@@ -161,16 +174,25 @@ type
 
     function LastImport:String;
 
+    class function LinksFrom(const AStrings:TStrings):TDataRelations; static;
+
     procedure LoadFromFile(const AFileName:String);
     procedure LoadFromText(const AText:String);
 
-    class procedure Merge(const AData: TDataItem; const AItems:TDataArray); static;
+    class procedure Merge(const AData: TDataItem; const AItems:TDataArray); overload; static;
+    class procedure Merge(const AData,ASource: TDataItem); overload; static;
+
     function MultiLineText(const ATag:String):String;
     function NextRefresh:TDateTime;
     procedure SaveLinks;
+
     class procedure SetMasters(const AData:TDataItem;
                                const AStore:String;
-                               const Items:TDataRelations); static;
+                               const Items:TDataRelations); overload; static;
+
+    class procedure SetMasters(const AData:TDataItem;
+                               const AStore:String;
+                               const AStrings:TStrings); overload; static;
 
     property AsDatabase:TDatabaseDefinition read FDatabase;
     property CalcStats:Boolean read GetCalcStats write SetCalcStats default False;
@@ -244,8 +266,9 @@ type
     class function Load(const AName:String):TDataItem; overload; static;
     class function Load(const AStore,AName:String; const OnError:TBIErrorProc=nil):TDataItem; overload; static;
 
+    class function DataToStream(const AData:TDataItem; const Zip:Boolean=False):TStream; overload; static;
     class function DataToStream(const APath,AName:String; const Zip:Boolean=False):TStream; overload; static;
-    class function DataToStream(const AName:String):TStream; overload; static;
+    class function DataToStream(const AName:String; const Zip:Boolean=False):TStream; overload; static;
 
     class function NotRegistered(const AName: String):EBIException;
 
@@ -270,7 +293,7 @@ type
     class procedure UnLoad(const AStore,AName:String); static;
     class procedure UnLoadAll; static;
 
-    class function ZipStream(const AStream: TStream): TMemoryStream; static;
+    class function ZipStream(const AStream: TStream): TStream; static;
 
     class property DefaultName:String read GetDefaultName write SetDefaultName;
   end;

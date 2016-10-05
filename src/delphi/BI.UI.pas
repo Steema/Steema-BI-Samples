@@ -22,6 +22,9 @@ type
 
   TCommonUI=record
   public
+    const
+      CRLF=#13#10;
+
     class var
       ShowMessage:TShowMessageProc;
 
@@ -29,6 +32,7 @@ type
     class procedure AddInfo(const AData:TDataItem; const AItems:TStrings); static;
     class procedure AddKinds(const AItems:TStrings); static;
     class function BytesToString(const Bytes: Int64): String; static;
+    class function IsURL(const AFileName:String):Boolean; static;
     class function MSecToString(const MSec:Int64):String; static;
     class function ToBooleanString(const Bool:Boolean):String; static;
     class function UniqueName(const AComponent:TComponent):String; static;
@@ -53,6 +57,8 @@ type
   public
   type
     TDataMapOrder=(None,Item,Count);
+
+    class procedure CopyFrom(const ASource,ADest:TDataItem); static;
 
     class function FromData(const AData:TDataItem;
                             const AddCounts:Boolean=True;
@@ -89,6 +95,7 @@ type
   TDataColorizersHelper=record helper for TDataColorizers
   public
     procedure Add(const AItem:TDataItem);
+    procedure Clear;
     function TryColorize(const AItem:TDataItem; const AIndex:Integer;
                          out APercent:Double; out AColorIndex:Integer):Boolean;
   end;
@@ -113,11 +120,6 @@ type
     property Enabled:Boolean read FEnabled write SetEnabled default False;
 
     property OnChange:TNotifyEvent read FOnChange write FOnChange;
-  end;
-
-  TDataKindConvert=record
-  public
-    class function Convert(const AData:TDataItem; const AKind:TDataKind):Boolean; static;
   end;
 
 implementation

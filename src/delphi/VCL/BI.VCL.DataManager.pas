@@ -65,6 +65,7 @@ type
     PanelManage: TPanel;
     BManageStores: TButton;
     TabLinks: TTabSheet;
+    Custommanual1: TMenuItem;
     procedure TreeChange(Sender: TObject; Node: TTreeNode);
     procedure TreeExpanding(Sender: TObject; Node: TTreeNode;
       var AllowExpansion: Boolean);
@@ -89,6 +90,7 @@ type
     procedure ViewData1Click(Sender: TObject);
     procedure BRenameClick(Sender: TObject);
     procedure PanelStoresResize(Sender: TObject);
+    procedure Custommanual1Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -172,7 +174,6 @@ type
     Destructor Destroy; override;
 
     procedure Add(const AData:TDataItem);
-    procedure AddName(const AData:TDataItem);
 
     procedure Clear; override;
     function Valid(const AName:String):Boolean; override;

@@ -58,6 +58,5 @@ object BIGridForm: TBIGridForm
     ParentColor = False
     TabOrder = 1
     OnDataChange = GridDataChange
-    ExplicitTop = 5
   end
 end

@@ -39,7 +39,9 @@ requires
 
 contains
   BI.Arrays in '..\BI.Arrays.pas',
+  BI.Arrays.Strings in '..\BI.Arrays.Strings.pas',
   BI.Compare in '..\BI.Compare.pas',
+  BI.Compression in '..\BI.Compression.pas',
   BI.Dashboard in '..\BI.Dashboard.pas',
   BI.Dashboard.Layouts in '..\BI.Dashboard.Layouts.pas',
   BI.Dashboard.Loader in '..\BI.Dashboard.Loader.pas',
@@ -60,9 +62,11 @@ contains
   BI.UI in '..\BI.UI.pas',
   BI.UI.Colors in '..\BI.UI.Colors.pas',
   BI.Data.CollectionItem in '..\BI.Data.CollectionItem.pas',
+  BI.Data.Convert in '..\BI.Data.Convert.pas',
   BI.Data.DB in '..\BI.Data.DB.pas',
   BI.Data.CSV in '..\BI.Data.CSV.pas',
   BI.Data.Dataset in '..\BI.Data.Dataset.pas',
+  BI.Data.Geographic in '..\BI.Data.Geographic.pas',
   BI.Data.Info in '..\BI.Data.Info.pas',
   BI.Data.Html in '..\BI.Data.Html.pas',
   BI.Data.JSON in '..\BI.Data.JSON.pas',

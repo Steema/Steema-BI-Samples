@@ -8,7 +8,13 @@
 
 {$IF Declared(TeeVCLBuildVersionInteger)}
   {$DEFINE HASTAGOBJECT}
+
   {$IF TeeVCLBuildVersionInteger >= 160406}
     {$DEFINE SERIESLABELSRESIZE}
   {$ENDIF}
+
+  {$IF TeeVCLBuildVersionInteger >= 161005}
+    {$DEFINE CHARTLAYERS}
+  {$ENDIF}
+
 {$ENDIF}

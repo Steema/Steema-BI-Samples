@@ -29,6 +29,8 @@ type
                           const AParent:TWinControl;
                           const AData:TDataItem):TBIGridForm;
 
+    procedure MakeEditable;
+
     class function Present(const AOwner:TComponent; const AData:TDataItem):TModalResult; overload;
   end;
 

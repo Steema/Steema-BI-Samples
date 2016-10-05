@@ -57,8 +57,10 @@ type
     procedure AddMap(const AData:TDataItem); overload;
 
     procedure Check(const AIndex:Integer; const ACheck:Boolean);
-    procedure CheckAll(const ACheck:Boolean);
+    procedure CheckAll(const ACheck:Boolean=True);
     function CheckedCount:Integer;
+
+    class function Embed(const AOwner:TComponent; const AParent:TWinControl):TFormListItems; static;
 
     procedure EnableCheckButtons;
     procedure EnableDrag(const AEnabled:Boolean);

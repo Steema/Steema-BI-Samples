@@ -99,11 +99,13 @@ type
     FAlternate : TAlternateColor;
     FGridFilters : TGridFilters;
     FOnDataChange : TNotifyEvent;
+    FOnUpdateData : TNotifyEvent;
     FRowNumbers : TRowNumbers;
     FSearch : TGridSearch;
     FShowItems : TGridShowItems;
 
     procedure ChangedRow(Sender: TObject; Field: TField);
+    procedure ControlDblClick(Sender:TObject);
     function GetCurrentRow: Integer;
     function GetDataSource: TDataSource;
     function GetFilter: TExpression;
@@ -124,12 +126,17 @@ type
     procedure SetSearch(const Value: TGridSearch);
     procedure SetShowItems(const Value: TGridShowItems);
     procedure SetTotals(const Value: Boolean);
+
+    procedure UpdatedData(DataSet: TDataSet);
+
     procedure TryShowItems;
   protected
     procedure SetDataDirect(const Value: TDataItem); override;
 
     function SubItem:TDataItem;
     function SubGrid:TBIGridPlugin;
+
+    procedure UpdatedDataValues; override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
@@ -153,6 +160,7 @@ type
     property Totals:Boolean read GetTotals write SetTotals default False;
 
     property OnDataChange:TNotifyEvent read FOnDataChange write FOnDataChange;
+    property OnUpdateData:TNotifyEvent read FOnUpdateData write FOnUpdateData;
   end;
 
   // See global TUICommon.Diagram property
@@ -178,6 +186,7 @@ type
     class procedure GotoURL(const AOwner:TWinControl; const AURL:String); static;
     class function Input(const ATitle,ACaption,ADefault:String; out ANew:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCustomForm; const Key:String); static;
+    class function Point(const X,Y:Integer):TPoint; static; inline;
     class procedure Popup(const APopup:TPopupMenu; const AParent:TControl); static;
     class procedure SavePosition(const AForm:TCustomForm; const Key:String); static;
     class function SelectFolder(var AFolder:String):Boolean; static;

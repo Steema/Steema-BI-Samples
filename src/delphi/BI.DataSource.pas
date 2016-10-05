@@ -14,14 +14,10 @@ uses
   {$ENDIF}
 
   System.Classes, System.SysUtils, BI.Arrays, BI.Data, BI.Persist,
-
-  {$IFNDEF FPC}
-  System.Zip,
-  {$ENDIF}
-
-  BI.Expression, System.Types, BI.Data.Expressions;
+  BI.Compression, BI.Expression, System.Types, BI.Data.Expressions;
 
 type
+  // Base abstract class to define a "Source" of Data to import into a TDataItem
   TBISource=class
   private
     FIgnoreMissing : Boolean;
@@ -36,7 +32,7 @@ type
 
     function NameOfFile(const FileName:String):String;
   public
-    Parallel : Boolean;
+    Parallel : Boolean; // Use multiple-cpus to import data
 
     Constructor Create(const Definition:TDataDefinition=nil;
                        const MultiThread:Boolean=False); virtual;
@@ -48,6 +44,8 @@ type
     property OnError:TBIError read FOnError write FOnError;
     property OnProgress:TBIProgress read FOnProgress write FOnProgress;
   end;
+
+  // TDataCursor types
 
   TCursorLoop={$IFNDEF FPC}reference to{$ENDIF} procedure(const AIndex:TInteger);
   TCursorLoopObject=procedure(const AIndex:TInteger) of object;
@@ -66,6 +64,7 @@ type
 
   TDataCursorItemsHelper=record helper for TDataCursorItems
   public
+    procedure Add(const AData:TDataItem);
     procedure Clear;
     function Count:Integer;
     procedure Delete(const AIndex:Integer);
@@ -115,7 +114,7 @@ type
 
     class function CreateFilter(const AMasters,ADetails:TDataArray;
                                 const AIndex:TInteger;
-                                out Expressions:TExpressions):TLogicalExpression; static;
+                                out Expressions:TExpressions):TExpression; static;
 
     function DataItems:TDataArray;
 
@@ -150,6 +149,8 @@ type
     class procedure SetMasterExpression(const Master:TDataItem;
                                         const MasterCol:TExpression;
                                         const AIndex:TInteger); static;
+
+    function ToData:TDataItem;
   published
     property Filter:TExpression read FFilter write SetFilter;
     property Start:TInteger read FStart write FStart;
@@ -157,12 +158,46 @@ type
     property UseFilter:Boolean read FUseFilter write FUseFilter;
   end;
 
+  TFileFilter=record
+  public
+    Description,
+    Extensions : String;
+
+    function FirstExtension:String;
+  end;
+
+  TFileFilters=Array of TFileFilter;
+
+  TFileFiltersHelper=record helper for TFileFilters
+  public
+    procedure Add(const ADescription,AExtensions:String);
+    procedure ToDialogFilter(var AFilter:String; var All:String);
+  end;
+
+  // Export types
+
   TBIExport=class;
 
   TBIExportClass=class of TBIExport;
 
   TExportGetText=procedure(const Sender:TBIExport; const Data:TDataItem; const AIndex:TInteger; var Text:String) of object;
 
+  TBIExporters=Array of TBIExportClass;
+
+  TBIExportersHelper=record helper for TBIExporters
+  protected
+    class function Find(const AClass:TBIExportClass):Integer; static;
+  public
+    class var
+      Items : TBIExporters;
+
+    class function GuessExtension(const Extension:String):TBIExportClass; static;
+
+    class procedure RegisterClass(const AClass:TBIExportClass); static;
+    class procedure UnRegisterClass(const AClass:TBIExportClass); static;
+  end;
+
+  // Base abstract class to export a TDataItem
   TBIExport=class
   private
     FSchemaOnly : Boolean;
@@ -174,8 +209,9 @@ type
 
     Items : TDataArray;
 
-    procedure DoEmit(const AItems: TStrings); virtual; abstract;
+    procedure DoEmit(const AItems: TStrings); virtual;
   public
+    BinaryOnly : Boolean;
     Cursor : TDataCursor;
     Totals : TDataItem;
 
@@ -187,11 +223,15 @@ type
     function AsString:String; overload;
     class function AsString(const AData:TDataItem):String; overload;
 
-    procedure SaveToFile(const AFileName:String); overload;
+    class function FileFilter:TFileFilters; virtual;
+
+    procedure SaveToFile(const AFileName:String); overload; virtual;
 
     class procedure SaveToFile(const AData:TDataItem; const AFileName:String); overload;
 
-    procedure SaveToStream(const AStream:TStream);
+    procedure SaveToStream(const AStream:TStream); // virtual
+
+    class function Supports(const Extension:String):Boolean; virtual; abstract;
 
     function ToStrings:TStrings; overload;
     class function ToStrings(const AData:TDataItem):TStrings; overload;
@@ -200,6 +240,13 @@ type
     property SchemaOnly:Boolean read FSchemaOnly write FSchemaOnly default False;
 
     property OnGetText:TExportGetText read FOnGetText write FOnGetText;
+  end;
+
+  TBITextExport=class(TBIExport)
+  public
+    FloatFormat : String;
+
+    function DataToString(const AData:TDataItem; const AIndex:TInteger):String;
   end;
 
   TBIItemsSource=class(TBISource)
@@ -218,19 +265,8 @@ type
 
   TBIFileSourceClass=class of TBIFileSource;
 
-{$IFNDEF FPC}
-{$IF CompilerVersion>=31}
-{$DEFINE ENCRYPTEDZIP}
-{$ENDIF}
-{$ENDIF}
-
+  // Base abstract class to import Data from Files
   TBIFileSource=class(TBIItemsSource)
-
-  {$IFDEF ENCRYPTEDZIP}
-  private
-    function DecryptZipStream(const InStream: TStream; const ZipFile: TZipFile; const Item: TZipHeader; IsEncrypted: Boolean): TStream;
-  {$ENDIF}
-
   protected
     IFiles : TStringDynArray;
     IResult : Array of TDataArray;
@@ -244,23 +280,7 @@ type
     function ImportZip(const FileName:String):TDataArray;
     procedure TaskImport(Sender:TObject);
   public
-    type
-      TFileFilter=record
-      public
-        Description,
-        Extensions : String;
-      end;
-
-      TFileFilters=Array of TFileFilter;
-
-      TFileFiltersHelper=record helper for TFileFilters
-      public
-        procedure Add(const ADescription,AExtensions:String);
-      end;
-
     class function DataFromFiles(const AFiles:TStringDynArray; const Local:Boolean): TDataItem; static;
-
-    class function ExportFormat:TBIExport; virtual;
 
     class function FileFilter:TFileFilters; virtual;
 
@@ -284,6 +304,7 @@ type
 
   TFileShareMode=(Exclusive, DenyWrite, DenyRead, DenyNone);
 
+  // Base abstract class to import Data from Text files
   TBITextSource=class(TBIFileSource)
   protected
     ISettings : TFormatSettings;
@@ -324,20 +345,32 @@ type
     property Text:String read FText;
   end;
 
-  TBIFileImporters=class abstract
-  protected
-    class function Find(const AClass:TBIFileSourceClass):Integer;
+  // Base abstract class to import Data from hierarchical-capable sources,
+  // like for example JSON or XML.  (That provide tree-like data structures)
+  TBIHierarchicalSource=class(TBITextSource)
   public
-    class var
-      Importers:Array of TBIFileSourceClass;
+    Hierarchical : Boolean; // <-- Default is False (try to return a flat table)
 
-    class function GuessExtension(const Extension:String):TBIFileSourceClass;
-    function Import:TDataItem; virtual; abstract;
-
-    class procedure RegisterClass(const AClass:TBIFileSourceClass);
-    class procedure UnRegisterClass(const AClass:TBIFileSourceClass);
+    Constructor Create(const Definition:TDataDefinition=nil;
+                       const MultiThread:Boolean=False); override;
   end;
 
+  TBIFileImporters=Array of TBIFileSourceClass;
+
+  TBIFileImportersHelper=record helper for TBIFileImporters
+  protected
+    class function Find(const AClass:TBIFileSourceClass):Integer; static;
+  public
+    class var
+      Items : TBIFileImporters;
+
+    class function GuessExtension(const Extension:String):TBIFileSourceClass; static;
+
+    class procedure RegisterClass(const AClass:TBIFileSourceClass); static;
+    class procedure UnRegisterClass(const AClass:TBIFileSourceClass); static;
+  end;
+
+  // Perform "select ...." queries
   TDataSelect=class(TDataCursor)
   private
     FDistinct : Boolean;
@@ -362,11 +395,16 @@ type
     property Distinct:Boolean read FDistinct write FDistinct default False;
   end;
 
-  // Simple method to Clone a TDataItem using a temporary memory stream
+  // Simple method to Clone a TDataItem, using a temporary memory stream or
+  // a loop on all ASource data.
   TDataClone=record // class(TBaseDataImporter) ?
   public
     class function Clone(const AData:TDataItem):TDataItem; overload; static;
     class procedure Clone(const ASource,ADest:TDataItem); overload; static;
+    class function CloneStructure(const AData:TDataItem; const AItems:TDataArray=nil):TDataItem; static;
+    class procedure CopyData(const ASource,ADest:TDataItem;
+                             const AIndex,ADestPos:TInteger;
+                             const AItems:TDataArray=nil); static;
   end;
 
 implementation

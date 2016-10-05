@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ExtCtrls, Vcl.Grids,
   Vcl.DBGrids, BI.Data, BI.DataSet, BI.DataSource, Vcl.StdCtrls, BI.VCL.Grid,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  BI.VCL.Chart, BI.VCL.DataControl;
+  BI.VCL.Chart, BI.VCL.Chart.Plugin, BI.VCL.DataControl;
 
 // Note: This example uses TBIGrid controls to show the extra features of TBIGrid.
 //       Standard VCL TDBGrid (with DataSource) or FMX TGrid controls (with LiveBindings)

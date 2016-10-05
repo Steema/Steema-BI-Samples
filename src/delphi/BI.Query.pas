@@ -166,6 +166,10 @@ type
                  const AStyle:TDimensionStyle=TDimensionStyle.Automatic;
                  const IsActive:Boolean=True): TQueryDimension; overload;
 
+    function Add(const AData:TDataItem;
+                 const AExpression:String;
+                 const AStyle:TDimensionStyle=TDimensionStyle.Automatic): TQueryDimension; overload;
+
     procedure Exchange(const A,B:TQueryDimension);
     function IndexOf(const ADimension:TQueryDimension):Integer;
     procedure Swap;

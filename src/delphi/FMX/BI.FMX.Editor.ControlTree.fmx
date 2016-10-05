@@ -99,7 +99,7 @@ object BIControlTree: TBIControlTree
       AutoSize = True
       Position.X = 160.000000000000000000
       Position.Y = 24.000000000000000000
-      Size.Width = 26.000000000000000000
+      Size.Width = 23.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -117,7 +117,7 @@ object BIControlTree: TBIControlTree
       AutoSize = True
       Position.X = 160.000000000000000000
       Position.Y = 72.000000000000000000
-      Size.Width = 26.000000000000000000
+      Size.Width = 22.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -135,7 +135,7 @@ object BIControlTree: TBIControlTree
       AutoSize = True
       Position.X = 160.000000000000000000
       Position.Y = 120.000000000000000000
-      Size.Width = 39.000000000000000000
+      Size.Width = 35.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -153,7 +153,7 @@ object BIControlTree: TBIControlTree
       AutoSize = True
       Position.X = 160.000000000000000000
       Position.Y = 168.000000000000000000
-      Size.Width = 42.000000000000000000
+      Size.Width = 39.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -184,7 +184,7 @@ object BIControlTree: TBIControlTree
       AutoSize = True
       Position.X = 160.000000000000000000
       Position.Y = 224.000000000000000000
-      Size.Width = 47.000000000000000000
+      Size.Width = 44.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False

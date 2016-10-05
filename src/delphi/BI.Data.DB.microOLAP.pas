@@ -10,6 +10,18 @@ unit BI.Data.DB.microOLAP;
 
 interface
 
+{
+  Alternative Database Engine using microOLAP mySQL components
+
+  Usage:
+
+    uses
+      BI.Data.DB, BI.Data.DB.microOLAP;
+
+    TBIDB.Engine:=TDBmicroOLAPEngine.Create;
+
+}
+
 uses
   System.Classes, System.Types, Data.DB, BI.Data, BI.Data.DB, BI.DataSource,
   BI.Persist;

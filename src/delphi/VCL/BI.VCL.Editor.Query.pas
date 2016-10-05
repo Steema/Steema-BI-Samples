@@ -83,12 +83,8 @@ type
     CBDatePart: TComboBox;
     GBHistogram: TGroupBox;
     CBHistoActive: TCheckBox;
-    SBRowUp: TSpeedButton;
-    SBRowDown: TSpeedButton;
     SBMeasureUp: TSpeedButton;
     SBMeasureDown: TSpeedButton;
-    SBColUp: TSpeedButton;
-    SBColDown: TSpeedButton;
     Label6: TLabel;
     EBins: TEdit;
     UDBins: TUpDown;
@@ -112,6 +108,12 @@ type
     TabSQL: TTabSheet;
     MemoSQL: TMemo;
     CBPreview: TCheckBox;
+    Panel6: TPanel;
+    SBRowUp: TSpeedButton;
+    SBRowDown: TSpeedButton;
+    Panel8: TPanel;
+    SBColUp: TSpeedButton;
+    SBColDown: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure ListRowsDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -197,6 +199,8 @@ type
     procedure DoExchangeItem(const AList:TCheckListBox; const A,B:Integer); overload;
     procedure DoExchangeItem(const AList:TCheckListBox; const Delta:Integer); overload;
 
+    function EditResolver(const S:String; IsFunction:Boolean):TExpression;
+
     procedure EnableHistogramControls;
     procedure EnableColumnButtons;
     procedure EnableMeasureButtons;
@@ -213,7 +217,9 @@ type
     procedure RefreshFilterAndSort;
     procedure RefreshQuery;
     procedure RefreshSelector;
-    procedure RemoveFromList(const AList:TCheckListBox);
+    procedure RemoveFromList(const AList:TCheckListBox); overload;
+    procedure RemoveFromList(const AList:TCheckListBox; const AIndex:Integer); overload;
+    function ResolveData(const APos:Integer; const AMessage:String):Boolean;
     function Resolver(const S:String; IsFunction:Boolean):TExpression;
 
     procedure SetDataProperties(const AItem:TQueryDimension); overload;
@@ -235,6 +241,7 @@ type
     { Public declarations }
 
     class
+      // Event used by BI.VCL.Editor.Chart to display a BIChart at Preview tab
       var OnShowEditor : TOnShowQueryEditor;
 
     function Selector:TDataSelector;
@@ -245,6 +252,7 @@ type
     procedure Refresh(const AQuery:TBIQuery);
     procedure ShowSelector(const AShow:Boolean);
 
+    // Show or hide the "Preview" tab
     property Preview:Boolean read GetPreview write SetPreview;
   end;
 

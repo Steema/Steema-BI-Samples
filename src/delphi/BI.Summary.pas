@@ -98,13 +98,17 @@ type
   end;
 
   // Basic summary operations
-  TAggregate=(Count,Sum,Average,Minimum,Maximum); // pending: First, Last
+  TAggregate=(Count,Sum,Average,Minimum,Maximum,First,Last);
 
   TAggregateHelper=record helper for TAggregate
+  private
+    const
+      Names:Array[TAggregate] of String=('Count','Sum','Average','Minimum','Maximum','First','Last');
   public
     class function AllToText:String; static;
     class function FromString(const S:String; out Aggregate:TAggregate):Boolean; static;
-    function ToString:String;
+    function SupportsAsZero:Boolean;
+    function ToString:String; inline;
   end;
 
   // Options to include or not missing (null) values in summarizations
@@ -128,6 +132,7 @@ type
     FName : String;
 
     FDestData  : TDataItem;
+
     KeepSource : Boolean;
 
     procedure LoadData(const Item:TExpression);
@@ -206,6 +211,7 @@ type
     procedure SetZeroAsMissing;
     procedure SetAggregate(const Value: TAggregate);
     procedure SetCalculation(const Value: TMeasureCalculation);
+    procedure SetAllMissing;
     procedure SetMissing(const Value: TMeasureMissing);
   public
     Constructor Create; override;
@@ -229,6 +235,7 @@ type
   TMeasuresHelper=record helper for TMeasures
   private
     function Active:TMeasures;
+    function AddDirect(const AExpression: TExpression; const Aggregate: TAggregate):TMeasure;
     procedure Finish; inline;
     procedure Prepare; inline;
   public
@@ -283,7 +290,8 @@ type
     procedure FillGroupBy(const AData:TDataItem; const Repeated,MaxSteps:TInteger); // 1D
     function GetDatePart: TDateTimePart; inline;
 
-    procedure Prepare(const AHops:TDataHops; const AData:TDataItem);
+    procedure ObtainData(const AHops:TDataHops);
+    procedure Prepare(const AData:TDataItem);
     procedure SetDatePart(const Value: TDateTimePart);
     procedure SetHistogram(const Value: THistogram);
     procedure TryFreeData;
@@ -310,15 +318,18 @@ type
   TGroupBysHelper=record helper for TGroupBys
   private
     function Active:TGroupBys;
-    function Position(const Pos:TInteger; out Index:TInteger):Boolean;
+    function AddDirect(const AExpression: TExpression): TGroupBy;
+    procedure Extract(const AIndex:Integer);
     procedure GuessSteps;
+    function Position(const Pos:TInteger; out Index:TInteger):Boolean;
+    procedure RemoveRedundant;
     function Total:TInteger;
   public
     function Add(const AData:TDataItem):TGroupBy; overload;
     function Add(const AExpression: TExpression):TGroupBy; overload;
     procedure Append(const AGroupBy:TGroupBy);
     function Count:Integer; inline;
-    procedure Delete(const Index:Integer);
+    procedure Delete(const AIndex:Integer);
     procedure Exchange(const A,B:Integer);
     function IndexOf(const AGroupBy:TGroupBy):Integer;
     procedure Remove(const AGroupBy:TGroupBy);
@@ -397,6 +408,7 @@ type
     ActiveByCount : Integer;
 
     procedure ApplyHaving(const AData:TDataItem);
+    function BySameParent(const ABy:TGroupBy):TGroupBy;
     procedure DoRemoveMissing(const Data:TDataItem);
     procedure Fill;
     procedure GetActive;

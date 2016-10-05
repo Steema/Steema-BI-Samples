@@ -14,8 +14,8 @@ uses
   {$ENDIF}
   System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.Persist, BI.DataSource;
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
+  BI.Data, BI.Persist, BI.DataSource, BI.VCL.Editor.Items;
 
 type
   TDataEditor = class(TForm)
@@ -125,6 +125,8 @@ type
     CBParallel: TCheckBox;
     CBStats: TCheckBox;
     CBDBViews: TCheckBox;
+    TabManual: TTabSheet;
+    Panel2: TPanel;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -184,11 +186,6 @@ type
 
     IStore : String;
 
-    procedure AddFilter(const ADialog:TOpenDialog;
-                        const AFilters:TBIFileSource.TFileFilters;
-                        var AFilter:String;
-                        var All:String);
-
     procedure CheckFileFilter(const ADialog:TOpenDialog);
     procedure CheckDBFileFilter(const ADialog:TOpenDialog);
     procedure DatabaseSettings;
@@ -196,10 +193,11 @@ type
     procedure DoTest;
     procedure EnableTestButton;
     procedure FileSettings;
+    procedure FilesSettings;
     function FileTypeExtension(const Index:Integer):String;
     procedure FillDBDrivers;
     procedure FinishAddFilter(const ADialog:TOpenDialog; const AFilter,All:String);
-
+    procedure ManualSettings;
     procedure RefreshSettings;
     procedure ResetWebTest;
     procedure ShowSingleTab(const ATab:TTabSheet);
@@ -212,6 +210,7 @@ type
     function WebURL:String;
   protected
     ITabFormats : TTabSheet;
+    ItemsEditor : TItemsEditor;
 
     procedure ClearWeb;
     procedure SetWebPath(const APath:String);

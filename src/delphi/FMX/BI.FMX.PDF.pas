@@ -163,7 +163,7 @@ type
     property Alternate:TFormat read FAlternate write SetAlternate;
   end;
 
-  TBIPDFExport=class(TBIExport)
+  TBIPDFExport=class(TBITextExport)
   private
     FAlignment : TAlignment;
     FAutoWidth : Boolean;
@@ -225,6 +225,8 @@ type
   public
     Constructor Create; override;
     Destructor Destroy; override;
+
+    class function Supports(const Extension:String):Boolean; override;
 
     property Alignment:TAlignment read FAlignment write FAlignment default TAlignment.Center;
     property AutoWidth:Boolean read FAutoWidth write FAutoWidth default True;

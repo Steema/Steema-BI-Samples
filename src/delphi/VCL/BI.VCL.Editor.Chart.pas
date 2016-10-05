@@ -31,10 +31,21 @@ uses
   {$ENDIF}
 
   {$IFDEF TEEPRO}
-  VCLTee.TeeEdit,
+  VCLTee.TeeEdit, VCLTee.TeeWorldSeries, VCLTee.TeeMapSeries,
   {$ENDIF}
 
   BI.VCL.Editor.ListItems, VCLTee.TeeProcs;
+
+// XE6 dcc32 BUG, workaround not available
+{$IF CompilerVersion>27}
+{$I BI.Chart.Options.inc} // <-- see .inc contents for reason/explanation
+{$ENDIF}
+
+{$IFDEF TEEPRO}
+{$IFDEF CHARTLAYERS}
+  {$DEFINE PROLAYERS}
+{$ENDIF}
+{$ENDIF}
 
 type
   TBIChartEditor = class(TForm)
@@ -47,7 +58,6 @@ type
     TabData: TTabSheet;
     Panel1: TPanel;
     Button1: TButton;
-    BIGrid1: TBIGrid;
     PageMode: TPageControl;
     Tab2D: TTabSheet;
     Tab3D: TTabSheet;
@@ -111,6 +121,13 @@ type
     PanelY: TPanel;
     CBHoriz2D: TComboBox;
     CBFlags: TCheckBox;
+    CBStates: TCheckBox;
+    GroupBox3: TGroupBox;
+    CBAutoMap: TCheckBox;
+    CBMap: TComboBox;
+    CBCities: TCheckBox;
+    BIGrid1: TBIGrid;
+    CBMap3D: TCheckBox;
     procedure PageControl1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -145,6 +162,11 @@ type
     procedure CBStackedChange(Sender: TObject);
     procedure CBHoriz2DChange(Sender: TObject);
     procedure CBFlagsClick(Sender: TObject);
+    procedure CBStatesClick(Sender: TObject);
+    procedure CBAutoMapClick(Sender: TObject);
+    procedure CBCitiesClick(Sender: TObject);
+    procedure CBMap3DClick(Sender: TObject);
+    procedure CBMapChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -174,6 +196,10 @@ type
     procedure SetPostSettings;
     procedure SetChart(const Value: TBIChart);
     procedure SetChartEditorChart;
+
+    {$IFDEF TEEPRO}
+    function WorldMap:TWorldSeries;
+    {$ENDIF}
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure RefreshData(const AItems:TBIChartItems); overload;

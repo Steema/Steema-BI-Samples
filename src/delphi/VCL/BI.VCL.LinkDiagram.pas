@@ -48,7 +48,9 @@ type
     function ShapeOf(const AObject:TObject):TTreeNodeShape;
   public
     { Public declarations }
-    class function Show(const AOwner:TComponent; const AData:TDataItem):TModalResult;
+
+    class function Embedd(const AOwner:TComponent; const AParent:TWinControl; const AData:TDataItem):TDataDiagram; static;
+    class function Show(const AOwner:TComponent; const AData:TDataItem):TModalResult; static;
   end;
 
 implementation

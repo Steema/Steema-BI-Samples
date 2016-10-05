@@ -20,7 +20,7 @@ uses
 
 type
   TDataViewer = class(TForm)
-    Panel1: TPanel;
+    PanelTop: TPanel;
     Label1: TLabel;
     LName: TLabel;
     Splitter1: TSplitter;
@@ -62,42 +62,32 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button2Click(Sender: TObject);
     procedure CBViewChange(Sender: TObject);
-    procedure DataSource2UpdateData(Sender: TObject);
-    procedure ItemsBeforeDelete(DataSet: TDataSet);
     procedure ItemsAfterInsert(DataSet: TDataSet);
     procedure DataGridDataChange(Sender: TObject);
     procedure CBRecordClick(Sender: TObject);
   private
     { Private declarations }
-    FData : TDataItem;
-
-    IEditing : Boolean;
-
     DataStats,
     DataMap : TDataItem;
 
-    Tree : TTreeView;
-
     procedure CheckPanelDataAlign;
-    procedure EditButtonClick(Sender: TObject);
-    procedure FillData(const AData:TDataItem);
-
     procedure GetKind(Sender: TField; var Text: string; DisplayText: Boolean);
     procedure SetKind(Sender: TField; const Text: string);
 
     procedure NewItems(const AData:TDataItem);
 
+  protected
+    FData : TDataItem;
+
+    Tree : TTreeView;
+
+    procedure FillData(const AData:TDataItem);
     procedure RefreshLabelName;
     function Selected:TDataItem;
     procedure SelectedChange(Sender: TObject);
-    procedure SelectedEdited(Sender: TObject; Node: TTreeNode; var S: string);
-    function SelectedItem:TDataItem;
-
-    procedure TryAddInfoEditors(const AGrid:TObject);
+    procedure TryAddInfoEditors(const AGrid:TObject); virtual;
   public
     { Public declarations }
-
-    class procedure Edit(const AOwner:TComponent; const AData:TDataItem); static;
 
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl; const AData:TDataItem):TDataViewer; static;
     procedure Select(const AData:TDataItem);

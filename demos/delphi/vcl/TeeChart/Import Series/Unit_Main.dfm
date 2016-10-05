@@ -22,13 +22,14 @@ object SeriesImport: TSeriesImport
     Height = 263
     Align = alLeft
     UseDockManager = False
+    Padding.Top = 24
     ParentBackground = False
     TabOrder = 0
     object BITChart1: TBITChart
       Left = 0
-      Top = 0
+      Top = 24
       Width = 400
-      Height = 263
+      Height = 239
       BackWall.Brush.Gradient.Direction = gdBottomTop
       BackWall.Brush.Gradient.EndColor = clWhite
       BackWall.Brush.Gradient.StartColor = 15395562
@@ -83,6 +84,14 @@ object SeriesImport: TSeriesImport
       TabOrder = 0
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 9
+      object TMarksTipTool
+        Format.CustomPosition = True
+        Format.Left = 0
+        Format.TextAlignment = taCenter
+        Format.Top = 0
+        Format.Visible = False
+        Style = smsLabelValue
+      end
     end
   end
   object BIGrid1: TBIGrid

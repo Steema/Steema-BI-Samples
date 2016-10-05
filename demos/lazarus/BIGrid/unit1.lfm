@@ -8,7 +8,8 @@ object Form1: TForm1
   ClientWidth = 1020
   OnCreate = FormCreate
   Position = poOwnerFormCenter
-  LCLVersion = '1.6.0.4'
+  LCLVersion = '1.7'
+  Visible = False
   object Panel1: TPanel
     Left = 0
     Height = 50

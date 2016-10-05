@@ -99,95 +99,50 @@ object Form24: TForm24
       TabOrder = 1
       OnClick = Button2Click
     end
-    object Benchmark: TButton
-      Left = 175
-      Top = 10
-      Width = 75
-      Height = 25
-      Caption = 'Benchmark'
-      Enabled = False
-      TabOrder = 2
-      OnClick = BenchmarkClick
-    end
     object BViewData: TButton
-      Left = 658
-      Top = 10
+      Left = 490
+      Top = 9
       Width = 113
       Height = 25
       Caption = 'View result data...'
       Enabled = False
-      TabOrder = 3
+      TabOrder = 2
       OnClick = BViewDataClick
     end
     object Button3: TButton
-      Left = 777
+      Left = 625
       Top = 10
       Width = 81
       Height = 25
       Caption = '&Edit Query...'
-      TabOrder = 4
+      TabOrder = 3
       OnClick = Button3Click
     end
-    object CBVerifySQL: TCheckBox
-      Left = 97
-      Top = 14
-      Width = 72
-      Height = 17
-      Caption = 'Verify SQL'
-      TabOrder = 5
-    end
-    object Button4: TButton
-      Left = 256
-      Top = 10
-      Width = 99
-      Height = 25
-      Caption = 'Benchmark All'
-      TabOrder = 6
-      OnClick = Button4Click
-    end
     object Button5: TButton
-      Left = 864
+      Left = 728
       Top = 10
       Width = 75
       Height = 25
       Caption = 'Save Results'
-      TabOrder = 7
+      TabOrder = 4
     end
     object Button6: TButton
-      Left = 952
+      Left = 809
       Top = 10
       Width = 75
       Height = 25
       Caption = 'Verify Saved'
       Enabled = False
-      TabOrder = 8
+      TabOrder = 5
     end
-    object Button7: TButton
-      Left = 488
-      Top = 9
-      Width = 73
+    object Button8: TButton
+      Left = 904
+      Top = 10
+      Width = 75
       Height = 25
-      Caption = 'Thread Test'
-      TabOrder = 9
-      OnClick = Button7Click
-    end
-    object CBMultiCPU: TCheckBox
-      Left = 567
-      Top = 2
-      Width = 68
-      Height = 17
-      Caption = 'Multi CPU'
-      Checked = True
-      State = cbChecked
-      TabOrder = 10
-    end
-    object CBLoopThread: TCheckBox
-      Left = 567
-      Top = 18
-      Width = 85
-      Height = 17
-      Caption = 'Loop in thread'
-      TabOrder = 11
+      Caption = 'View Hops...'
+      TabOrder = 6
+      OnClick = Button8Click
     end
   end
   object PageControl1: TPageControl
@@ -216,6 +171,10 @@ object Form24: TForm24
     object TabSheet2: TTabSheet
       Caption = 'Visualizer'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIVisualizer1: TBIComposer
         Left = 0
         Top = 0
@@ -232,6 +191,64 @@ object Form24: TForm24
     object TabSheet3: TTabSheet
       Caption = 'Grid Options'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'Benchmarks'
+      ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object Benchmark: TButton
+        Left = 22
+        Top = 10
+        Width = 75
+        Height = 25
+        Caption = 'Benchmark'
+        Enabled = False
+        TabOrder = 0
+        OnClick = BenchmarkClick
+      end
+      object Button4: TButton
+        Left = 22
+        Top = 50
+        Width = 99
+        Height = 25
+        Caption = 'Benchmark All'
+        TabOrder = 1
+        OnClick = Button4Click
+      end
+      object Button7: TButton
+        Left = 22
+        Top = 97
+        Width = 73
+        Height = 25
+        Caption = 'Thread Test'
+        TabOrder = 2
+        OnClick = Button7Click
+      end
+      object CBMultiCPU: TCheckBox
+        Left = 24
+        Top = 130
+        Width = 68
+        Height = 17
+        Caption = 'Multi CPU'
+        Checked = True
+        State = cbChecked
+        TabOrder = 3
+      end
+      object CBLoopThread: TCheckBox
+        Left = 24
+        Top = 146
+        Width = 85
+        Height = 17
+        Caption = 'Loop in thread'
+        TabOrder = 4
+      end
     end
   end
   object Panel2: TPanel
@@ -259,6 +276,14 @@ object Form24: TForm24
         Enabled = False
         TabOrder = 0
         OnClick = BExecSQLClick
+      end
+      object CBVerifySQL: TCheckBox
+        Left = 11
+        Top = 37
+        Width = 72
+        Height = 17
+        Caption = 'Verify SQL'
+        TabOrder = 1
       end
     end
     object Memo1: TMemo

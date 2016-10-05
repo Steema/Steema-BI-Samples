@@ -29,8 +29,7 @@ type
 
     Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;
 
-    class function ExportFormat:TBIExport; override;
-    class function FileFilter: TBIFileSource.TFileFilters; override;
+    class function FileFilter: TFileFilters; override;
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
 
     class function Supports(const Extension: String): Boolean; override;
@@ -46,12 +45,16 @@ type
   end;
 
   TBIExcelExport=class(TBIExport)
-  protected
-    procedure DoEmit(const AItems: TStrings); override;
   public
-    class var Engine : TBIExcelEngineClass;
+    class
+      var Engine : TBIExcelEngineClass;
 
-    class procedure SaveToFile(const AData:TDataItem; const AFileName:String); static;
+    Constructor Create; override;
+
+    class function FileFilter: TFileFilters; override;
+
+    procedure SaveToFile(const AFileName:String); override;
+    class function Supports(const Extension: String): Boolean; override;
   end;
 
 implementation

@@ -4,7 +4,7 @@
 {  Copyright (c) 2015-2016 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
-unit BI.FMX.DataEditor;
+unit BI.FMX.Editor.Data;
 
 interface
 
@@ -31,7 +31,7 @@ uses
   {$ENDIF}
 
   FMX.Dialogs, FMX.StdCtrls, FMX.Edit, FMX.TabControl, BI.Persist, System.Math,
-  FMX.ListBox, FMX.Memo, FMX.Layouts;
+  FMX.ListBox, FMX.Memo, FMX.Layouts, BI.FMX.Editor.Items;
 
 type
   TDataEditor = class(TForm)
@@ -114,6 +114,7 @@ type
     Label16: TLabel;
     EDBPort: TEdit;
     CBDBSystem: TCheckBox;
+    TabManual: TTabItem;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -157,10 +158,13 @@ type
 
     FOnChangeWeb : TNotifyEvent;
 
+    OwnsData,
     IChanging : Boolean;
 
     IWebPath,
     IStore : String;
+
+    IManual : TItemsEditor;
 
     procedure DatabaseSettings;
     function DBDriverID:String;
@@ -169,6 +173,7 @@ type
     function FileTypeExtension(const Index:Integer):String;
     procedure FillDBDrivers;
 
+    procedure ManualSettings;
     procedure RefreshSettings;
     procedure ResetWebTest;
     procedure TryChange(const ATag,AText:String);
@@ -183,6 +188,8 @@ type
   public
     { Public declarations }
     Data : TDataDefinition;
+
+    class function Edit(const AOwner:TComponent; const AData:TDataDefinition):Boolean; static;
 
     class function NewWeb(const AOwner:TComponent; out AWeb:String):Boolean; static;
     procedure Select(const AStore,AName:String); overload;

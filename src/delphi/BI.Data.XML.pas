@@ -36,7 +36,7 @@ type
     function Text:String; virtual; abstract;
   end;
 
-  TBIXML=class(TBITextSource)
+  TBIXML=class(TBIHierarchicalSource)
   private
     FExclude : TTextArray;
 
@@ -47,9 +47,7 @@ type
     Constructor CreateEngine(const AEngine:TXmlEngine);
     Destructor Destroy; override;
 
-    class function ExportFormat:TBIExport; override;
-
-    class function FileFilter: TBIFileSource.TFileFilters; override;
+    class function FileFilter: TFileFilters; override;
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
     function Import(const Strings:TStrings):TDataArray; overload; override;
 
@@ -63,7 +61,7 @@ type
 
   TBIXMLEmit=(Header,Simple);
 
-  TBIXMLExport=class(TBIExport)
+  TBIXMLExport=class(TBITextExport)
   private
     const
        Tab=#9;
@@ -78,6 +76,9 @@ type
     procedure DoEmit(const AItems: TStrings); override;
   public
     Emit : TBIXMLEmit;
+
+    class function FileFilter: TFileFilters; override;
+    class function Supports(const Extension:String):Boolean; override;
   end;
 
 implementation

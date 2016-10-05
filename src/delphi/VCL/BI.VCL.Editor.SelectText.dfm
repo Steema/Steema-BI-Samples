@@ -23,18 +23,20 @@ object SelectTextItems: TSelectTextItems
     Align = alClient
     TabOrder = 0
     OnChange = PageTextChange
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 394
-    ExplicitHeight = 174
     object TabMultiText: TTabSheet
       Caption = 'Multiple'
-      ExplicitLeft = 8
-      ExplicitTop = 28
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabSingleText: TTabSheet
       Caption = 'Single'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LBSingleText: TListBox
         Left = 0
         Top = 0

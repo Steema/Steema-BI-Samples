@@ -44,26 +44,14 @@ object BIQueryEditor: TBIQueryEditor
       OnChange = PageDataChange
       object TabData: TTabSheet
         Caption = 'Data'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabFilter: TTabSheet
         Caption = 'Filter'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabSort: TTabSheet
         Caption = 'Sort'
         ImageIndex = 2
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
     end
   end
@@ -117,33 +105,43 @@ object BIQueryEditor: TBIQueryEditor
             Height = 13
             Caption = 'Rows'
           end
-          object SBRowUp: TSpeedButton
-            Left = 119
-            Top = 9
-            Width = 23
-            Height = 22
-            Caption = '^'
-            Enabled = False
-            OnClick = SBRowUpClick
-          end
-          object SBRowDown: TSpeedButton
-            Left = 147
-            Top = 9
-            Width = 23
-            Height = 22
-            Caption = 'v'
-            Enabled = False
-            OnClick = SBRowDownClick
-          end
           object BDeleteRow: TButton
             Left = 51
             Top = 7
-            Width = 59
+            Width = 25
             Height = 25
-            Caption = 'Delete'
+            Caption = '-'
             Enabled = False
             TabOrder = 0
             OnClick = BDeleteRowClick
+          end
+          object Panel6: TPanel
+            Left = 123
+            Top = 0
+            Width = 60
+            Height = 41
+            Align = alRight
+            BevelOuter = bvNone
+            TabOrder = 1
+            ExplicitLeft = 122
+            object SBRowUp: TSpeedButton
+              Left = 3
+              Top = 9
+              Width = 23
+              Height = 22
+              Caption = '^'
+              Enabled = False
+              OnClick = SBRowUpClick
+            end
+            object SBRowDown: TSpeedButton
+              Left = 31
+              Top = 9
+              Width = 23
+              Height = 22
+              Caption = 'v'
+              Enabled = False
+              OnClick = SBRowDownClick
+            end
           end
         end
         object ListRows: TCheckListBox
@@ -238,8 +236,8 @@ object BIQueryEditor: TBIQueryEditor
           Caption = 'Columns:   '
           TabOrder = 0
           object SBSwap: TSpeedButton
-            Left = 147
-            Top = 46
+            Left = 51
+            Top = 22
             Width = 23
             Height = 22
             Glyph.Data = {
@@ -296,50 +294,64 @@ object BIQueryEditor: TBIQueryEditor
             Flat = True
             OnClick = SBSelectorClick
           end
+          object Panel8: TPanel
+            Left = 116
+            Top = 0
+            Width = 67
+            Height = 73
+            Align = alRight
+            BevelOuter = bvNone
+            TabOrder = 0
+            ExplicitLeft = -2
+            ExplicitTop = 16
+            ExplicitHeight = 41
+            object SBColUp: TSpeedButton
+              Left = 8
+              Top = 6
+              Width = 23
+              Height = 22
+              Caption = '^'
+              Enabled = False
+              OnClick = SBColUpClick
+            end
+            object SBColDown: TSpeedButton
+              Left = 36
+              Top = 6
+              Width = 23
+              Height = 22
+              Caption = 'v'
+              Enabled = False
+              OnClick = SBColDownClick
+            end
+          end
         end
         object ListColumns: TCheckListBox
           Left = 184
           Top = 1
-          Width = 324
+          Width = 339
           Height = 73
           OnClickCheck = ListRowsClickCheck
           Align = alClient
           ItemHeight = 13
           TabOrder = 1
           OnClick = ListColumnsClick
+          ExplicitWidth = 324
         end
         object Panel7: TPanel
-          Left = 508
+          Left = 523
           Top = 1
-          Width = 133
+          Width = 118
           Height = 73
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 2
-          object SBColUp: TSpeedButton
-            Left = 78
-            Top = 10
-            Width = 23
-            Height = 22
-            Caption = '^'
-            Enabled = False
-            OnClick = SBColUpClick
-          end
-          object SBColDown: TSpeedButton
-            Left = 106
-            Top = 10
-            Width = 23
-            Height = 22
-            Caption = 'v'
-            Enabled = False
-            OnClick = SBColDownClick
-          end
+          ExplicitLeft = 522
           object BDeleteColumn: TButton
             Left = 7
             Top = 9
-            Width = 63
+            Width = 25
             Height = 25
-            Caption = 'Delete'
+            Caption = '-'
             Enabled = False
             TabOrder = 0
             OnClick = BDeleteColumnClick
@@ -381,7 +393,7 @@ object BIQueryEditor: TBIQueryEditor
             Caption = 'Measures'
           end
           object SBMeasureUp: TSpeedButton
-            Left = 163
+            Left = 125
             Top = 9
             Width = 23
             Height = 22
@@ -390,7 +402,7 @@ object BIQueryEditor: TBIQueryEditor
             OnClick = SBMeasureUpClick
           end
           object SBMeasureDown: TSpeedButton
-            Left = 191
+            Left = 153
             Top = 9
             Width = 23
             Height = 22
@@ -401,9 +413,9 @@ object BIQueryEditor: TBIQueryEditor
           object BDeleteMeasure: TButton
             Left = 75
             Top = 7
-            Width = 75
+            Width = 25
             Height = 25
-            Caption = 'Delete'
+            Caption = '-'
             Enabled = False
             TabOrder = 0
             OnClick = BDeleteMeasureClick
@@ -434,16 +446,12 @@ object BIQueryEditor: TBIQueryEditor
             Top = 0
             Width = 274
             Height = 194
-            ActivePage = TabMeasureOptions
+            ActivePage = TabItemData
             Align = alClient
             TabOrder = 0
             Visible = False
             object TabItem: TTabSheet
               Caption = 'Options'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Label3: TLabel
                 Left = 9
                 Top = 4
@@ -507,24 +515,16 @@ object BIQueryEditor: TBIQueryEditor
             object TabMeasureOptions: TTabSheet
               Caption = 'Options'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object PageMeasures: TPageControl
                 Left = 0
                 Top = 0
                 Width = 266
                 Height = 166
-                ActivePage = TabCalc
+                ActivePage = TabMeasure
                 Align = alClient
                 TabOrder = 0
                 object TabMeasure: TTabSheet
                   Caption = 'Aggregate'
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object CBAggregate: TComboBox
                     Left = 8
                     Top = 14
@@ -540,7 +540,9 @@ object BIQueryEditor: TBIQueryEditor
                       'Sum'
                       'Average'
                       'Minimum'
-                      'Maximum')
+                      'Maximum'
+                      'First'
+                      'Last')
                   end
                   object CBMissingAsZero: TCheckBox
                     Left = 8
@@ -555,10 +557,6 @@ object BIQueryEditor: TBIQueryEditor
                 object TabCalc: TTabSheet
                   Caption = 'Calculation'
                   ImageIndex = 3
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object RGRunning: TRadioGroup
                     Left = 135
                     Top = 3
@@ -603,10 +601,6 @@ object BIQueryEditor: TBIQueryEditor
             object TabItemData: TTabSheet
               Caption = 'Data'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object SpeedButton1: TSpeedButton
                 Left = 231
                 Top = 22
@@ -671,10 +665,6 @@ object BIQueryEditor: TBIQueryEditor
       OnChange = PagePreviewChange
       object TabGrid: TTabSheet
         Caption = 'Grid'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object BIGrid1: TBIGrid
           Left = 0
           Top = 0
@@ -690,18 +680,10 @@ object BIQueryEditor: TBIQueryEditor
       object TabChart: TTabSheet
         Caption = 'Chart'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabSQL: TTabSheet
         Caption = 'SQL'
         ImageIndex = 2
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object MemoSQL: TMemo
           Left = 0
           Top = 0

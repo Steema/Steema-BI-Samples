@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Generic dialog to edit numeric ranges      }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.NumericFromTo;
 
 interface
@@ -6,6 +12,14 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
   BI.Data, Vcl.ExtCtrls;
+
+(*
+  TNumericFromTo dialog is used by TDynamicFilterEditor dialog to edit
+  numeric ranges.
+
+  It can also be used standalone without a TDataItem.
+
+*)
 
 type
   TNumericFromTo = class(TForm)

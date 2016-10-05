@@ -29,10 +29,6 @@ object FilterItemEditor: TFilterItemEditor
     object TabBoolean: TTabSheet
       Caption = 'Boolean'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CBTrue: TCheckBox
         Left = 16
         Top = 16
@@ -55,10 +51,6 @@ object FilterItemEditor: TFilterItemEditor
     object TabNumeric: TTabSheet
       Caption = 'Numeric'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageNumeric: TPageControl
         Left = 0
         Top = 0
@@ -69,18 +61,10 @@ object FilterItemEditor: TFilterItemEditor
         TabOrder = 0
         object TabNumericRange: TTabSheet
           Caption = 'Range'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object TabNumericSelected: TTabSheet
           Caption = 'Selected'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
       end
     end
@@ -141,18 +125,10 @@ object FilterItemEditor: TFilterItemEditor
         end
         object TabIncluded: TTabSheet
           Caption = 'Include'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object TabExcluded: TTabSheet
           Caption = 'Exclude'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
       end
     end

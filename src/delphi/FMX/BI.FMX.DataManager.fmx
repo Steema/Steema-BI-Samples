@@ -23,14 +23,13 @@ object DataManager: TDataManager
       AutoSize = True
       Position.X = 8.000000000000000000
       Position.Y = 10.000000000000000000
-      Size.Width = 34.000000000000000000
+      Size.Width = 31.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
       Text = 'Store:'
     end
     object CBStores: TComboBox
-      DisableFocusEffect = False
       Position.X = 80.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 193.000000000000000000
@@ -177,6 +176,13 @@ object DataManager: TDataManager
     TabPosition = Top
     OnChange = TabControl1Change
     OnResize = TabControl1Resize
+    Sizes = (
+      398s
+      408s
+      398s
+      408s
+      398s
+      408s)
     object TabSettings: TTabItem
       CustomIcon = <
         item
@@ -196,7 +202,7 @@ object DataManager: TDataManager
         item
         end>
       IsSelected = True
-      Size.Width = 68.000000000000000000
+      Size.Width = 69.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -223,7 +229,6 @@ object DataManager: TDataManager
         Text = 'Every:'
       end
       object RefreshUnit: TComboBox
-        DisableFocusEffect = False
         Items.Strings = (
           'Seconds'
           'Minutes'
@@ -316,7 +321,7 @@ object DataManager: TDataManager
         item
         end>
       IsSelected = False
-      Size.Width = 44.000000000000000000
+      Size.Width = 45.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -338,7 +343,7 @@ object DataManager: TDataManager
       end
       object Layout1: TLayout
         Align = Top
-        Size.Width = 50.000000000000000000
+        Size.Width = 398.000000000000000000
         Size.Height = 304.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
@@ -447,6 +452,10 @@ object DataManager: TDataManager
     object MenuItem1: TMenuItem
       Text = 'BI Web'
       OnClick = MenuItem1Click
+    end
+    object MenuItem4: TMenuItem
+      Text = 'Custom (manual)'
+      OnClick = MenuItem4Click
     end
   end
   object ListData: TListBox

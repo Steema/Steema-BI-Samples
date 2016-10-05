@@ -143,6 +143,33 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
               'Quarter'
               'Year')
           end
+          object CBFromEqual: TComboBox
+            Left = 272
+            Top = 23
+            Width = 49
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 8
+            Text = '>='
+            OnChange = CBFromEqualChange
+            Items.Strings = (
+              '>='
+              '>')
+          end
+          object CBToEqual: TComboBox
+            Left = 272
+            Top = 66
+            Width = 49
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 9
+            Text = '<='
+            Items.Strings = (
+              '<='
+              '<')
+          end
         end
         object TabCalendar: TTabSheet
           Caption = 'Calendar'
@@ -168,7 +195,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
             Top = 20
             Width = 170
             Height = 143
-            Date = 42571.699485810180000000
+            Date = 42571.523108634260000000
             ShowToday = False
             ShowTodayCircle = False
             TabOrder = 0
@@ -179,7 +206,7 @@ object DateTimeRangeEditor: TDateTimeRangeEditor
             Top = 20
             Width = 169
             Height = 143
-            Date = 42571.699485810180000000
+            Date = 42571.523108634260000000
             ShowToday = False
             ShowTodayCircle = False
             TabOrder = 1

@@ -39,38 +39,38 @@ type
 
   TSortedAscendingArray=record
   public
-    class function Merge(const A,B:TInt32Array; const BFrom,BTo:TInteger):TInt32Array; overload; static;
+    class function Merge(const A,B:TInt32Array; AFrom,ATo,BFrom,BTo:TInteger):TInt32Array; overload; static;
     class function Merge(const A,B:TInt32Array):TInt32Array; overload; inline; static;
     class function Merge(const Value:Array of TInt32Array):TInt32Array; overload; static;
 
-    class function Merge(const A,B:TInt64Array; const BFrom,BTo:TInteger):TInt64Array; overload; static;
+    class function Merge(const A,B:TInt64Array; AFrom,ATo,BFrom,BTo:TInteger):TInt64Array; overload; static;
     class function Merge(const A,B:TInt64Array):TInt64Array; overload; inline; static;
     class function Merge(const Value:Array of TInt64Array):TInt64Array; overload; static;
 
-    class function Merge(const A,B:TSingleArray; const BFrom,BTo:TInteger):TSingleArray; overload; static;
+    class function Merge(const A,B:TSingleArray; AFrom,ATo,BFrom,BTo:TInteger):TSingleArray; overload; static;
     class function Merge(const A,B:TSingleArray):TSingleArray; overload; inline; static;
     class function Merge(const Value:Array of TSingleArray):TSingleArray; overload; static;
 
-    class function Merge(const A,B:TDoubleArray; const BFrom,BTo:TInteger):TDoubleArray; overload; static;
+    class function Merge(const A,B:TDoubleArray; AFrom,ATo,BFrom,BTo:TInteger):TDoubleArray; overload; static;
     class function Merge(const A,B:TDoubleArray):TDoubleArray; overload; inline; static;
     class function Merge(const Value:Array of TDoubleArray):TDoubleArray; overload; static;
   end;
 
   TSortedDescendingArray=record
   public
-    class function Merge(const A,B:TInt32Array; const BFrom,BTo:TInteger):TInt32Array; overload; static;
+    class function Merge(const A,B:TInt32Array; AFrom,ATo,BFrom,BTo:TInteger):TInt32Array; overload; static;
     class function Merge(const A,B:TInt32Array):TInt32Array; overload; inline; static;
     class function Merge(const Value:Array of TInt32Array):TInt32Array; overload; static;
 
-    class function Merge(const A,B:TInt64Array; const BFrom,BTo:TInteger):TInt64Array; overload; static;
+    class function Merge(const A,B:TInt64Array; AFrom,ATo,BFrom,BTo:TInteger):TInt64Array; overload; static;
     class function Merge(const A,B:TInt64Array):TInt64Array; overload; inline; static;
     class function Merge(const Value:Array of TInt64Array):TInt64Array; overload; static;
 
-    class function Merge(const A,B:TSingleArray; const BFrom,BTo:TInteger):TSingleArray; overload; static;
+    class function Merge(const A,B:TSingleArray; AFrom,ATo,BFrom,BTo:TInteger):TSingleArray; overload; static;
     class function Merge(const A,B:TSingleArray):TSingleArray; overload; inline; static;
     class function Merge(const Value:Array of TSingleArray):TSingleArray; overload; static;
 
-    class function Merge(const A,B:TDoubleArray; const BFrom,BTo:TInteger):TDoubleArray; overload; static;
+    class function Merge(const A,B:TDoubleArray; AFrom,ATo,BFrom,BTo:TInteger):TDoubleArray; overload; static;
     class function Merge(const A,B:TDoubleArray):TDoubleArray; overload; inline; static;
     class function Merge(const Value:Array of TDoubleArray):TDoubleArray; overload; static;
   end;

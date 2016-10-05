@@ -4,9 +4,25 @@
 {  Copyright (c) 2015-2016 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
-unit BI.Data.DB.Unidac;
+unit BI.Data.DB.UniDAC;
 
 interface
+
+// Database Engine for DevArt UniDAC "Data Access Components"
+
+{
+  https://www.devart.com/unidac
+
+  "MSAccess" and "MSClasses" units are required by this unit.
+
+  Usage:
+
+    uses
+      BI.Data.DB, BI.Data.Db.UniDAC;
+
+    TBIDB.Engine:=TDBUniDACEngine.Create;
+
+}
 
 uses
   System.Classes, System.Types, Data.DB, MSAccess, BI.Data.DB, BI.Data,
@@ -41,7 +57,5 @@ type
     class function Import(const Connection:TMSConnection; const MultiThread:Boolean):TDataItem; overload;
   end;
   }
-
-{.$DEFINE TEEPARALLEL}
 
 implementation

@@ -15,8 +15,10 @@ uses
   System.Classes, System.SysUtils, Data.DB,
 
   {$IFDEF FMX}
+  FMX.Controls,
   FMXTee.Constants, FMXTee.Procs, BI.FMX.DataControl, BI.FMX.Grid,
   {$ELSE}
+  Winapi.Messages,
   VCLTee.TeeConst, VCLTee.TeeProcs, BI.VCL.DataControl, BI.VCL.Grid,
   VCLTee.TeeGDIPlus,
   {$ENDIF}
@@ -32,103 +34,27 @@ uses
 
   {$IFDEF FMX}
   System.UITypes, FMXTee.Chart, FMXTee.Engine, FMXTee.Series,
-  {$ELSE}
-  VCL.Graphics, VCL.Controls, VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series, VCLTee.BubbleCh,
-  {$ENDIF}
+  BI.FMX.Chart.Plugin,
 
   {$IFDEF TEEPRO}
-  {$IFDEF FMX}
-  FMXTee.Series.OHLC, FMXTee.Series.Candle, FMXTee.Series.Surface,
-  {$ELSE}
-  VCLTee.OHLChart, VCLTee.CandleCh, VCLTee.TeeSurfa,
+  BI.FMX.Chart.Geo,
   {$ENDIF}
+
+  {$ELSE}
+
+  VCL.Graphics, VCL.Controls, VCLTee.Chart, VCLTee.TeEngine, VCLTee.Series,
+  //VCLTee.BubbleCh,
+  BI.VCL.Chart.Plugin,
+
+  {$IFDEF TEEPRO}
+  BI.VCL.Chart.Geo,
+  {$ENDIF}
+
   {$ENDIF}
 
   BI.Data, BI.Arrays, BI.Summary, BI.DataSource, BI.Data.Info;
 
-// XE6 dcc32 BUG, workaround not available
-{$IF CompilerVersion>27}
-{$I BI.Chart.Options.inc} // <-- see .inc contents for reason/explanation
-{$ENDIF}
-
-const
-  WhiteColor={$IFDEF FMX}TAlphaColors.White{$ELSE}clWhite{$ENDIF};
-
 type
-  {$IFDEF TEEPRO}
-  TCustom3DSeriesClass=class of TCustom3DSeries;
-  {$ENDIF}
-
-  TBIChartDirection=(Automatic, Rows, Columns);
-
-  TBITChart=class(TChart)
-  private
-    procedure ClearTitles;
-
-    procedure CreateMulti2D(const X,Y,Z:TDataItem; const ADirection:TBIChartDirection);
-
-    {$IFDEF TEEPRO}
-    function CreateFinancial(const ADate,AOpen,AClose,AHigh,ALow,
-                             AVolume:TDataItem;
-                             const AReverseDate:Boolean):TOHLCSeries;
-    procedure CreateGrid3D(const X,Y,Z:TDataItem; const ADirection:TBIChartDirection);
-    function Create3DSeries:TCustom3DSeries;
-    procedure CreateGridTable(const AData:TDataArray; const ADirection:TBIChartDirection);
-    procedure CreateXYZ(const X,Y,Z:TDataItem);
-    procedure FinishXYZ;
-    class function GetDateTime(const AData:TDataItem; const Index:TInteger; const Reverse:Boolean):TDateTime;
-    procedure TryAddUniqueTool(const AOwner:TComponent;
-                               const AClass:TTeeCustomToolClass;
-                               const AName:String);
-    procedure TryDisableTool(const AClass:TTeeCustomToolClass; const ADisable:Boolean);
-    {$ENDIF}
-
-    procedure Init;
-    function InitCountSeries(const ACount:TInteger):TChartSeries;
-    function NewSeries(const AClass:TChartSeriesClass):TChartSeries; overload;
-    function NewSeries(const Count:Integer):TChartSeries; overload;
-    function NewSeries(const X,Y:String):TChartSeries; overload;
-  protected
-    FSeries2D : TChartSeriesClass;
-
-    {$IFDEF TEEPRO}
-    FSeries3D : TCustom3DSeriesClass;
-    {$ELSE}
-    FSeries3D : TChartSeriesClass;
-    {$ENDIF}
-
-    DefaultXYSeries : TChartSeriesClass;
-
-    LinePointer : Boolean;
-
-    procedure ReadState(Reader: TReader); override;
-  public
-    Constructor Create(AOwner:TComponent); override;
-
-    procedure Fill(const AData:TDataArray; const ASeries: TDataItem); overload;
-    function Fill(const AData:TInt32Array):TChartSeries; overload;
-    function Fill(const AData:TInt64Array):TChartSeries; overload;
-    function Fill(const AData:TDoubleArray):TChartSeries; overload;
-    function Fill(const AData:TDataItem):TChartSeries; overload;
-    procedure Fill(const AData:TDataSet; const ValueField:Integer; const TextField:Integer=-1); overload;
-
-    function FillXY(const X,Y:TField):TChartSeries; overload;
-    function FillXY(const AData:TDataSet; const X,Y:Integer):TChartSeries; overload;
-
-    Function GetParentComponent: TComponent; override;
-
-    class function GetValue(const AData:TDataItem; const Index:TInteger):TChartValue; static;
-
-    Function HasParent:Boolean; override;
-//    procedure SetBounds(X, Y, AWidth, AHeight: Single); override;
-    procedure SetParentComponent(AParent: TComponent); override;
-  published
-    property Align default TUICommon.AlignClient;
-    property BevelOuter default bvNone;
-    property Color default WhiteColor;
-    property View3D default False;
-  end;
-
   TBIChartItems=class(TPersistent)
   private
     IX,
@@ -139,15 +65,15 @@ type
 
     IY : TTextArray;
 
+    {$IFDEF TEEPRO}
+    FGeoContext : TGeoContext;
+    {$ENDIF}
+
     procedure ExchangeXY;
     procedure ExchangeXZ;
     procedure ExchangeYZ;
     procedure Guess(const AData:TDataArray);
-
-    {$IFDEF TEEPRO}
     procedure GetXYZ(out AX,AY,AZ:TDataItem);
-    {$ENDIF}
-
     procedure MoveXToY;
 
     procedure ReadColors(Reader: TReader);
@@ -191,7 +117,6 @@ type
   TBIChartDimensions=(Automatic, View2D, Orthogonal, View3D);
   TBIChartLegend=(Automatic, Show, Hide);
   TBIChartMarks=(Automatic, Show, Hide);
-  TBIChartStacked=(Automatic, No, Yes, Stacked100, Side, SideAll, SelfStack);
   TBISeriesDirection=(Automatic, Horizontal, Vertical);
 
   TBIChart=class;
@@ -265,6 +190,7 @@ type
     FOptions : TBIChartOptions;
 
     IDataInfo : TDataInfo;
+    IDirtyData : TDataItem;
 
     procedure AddXY(const AItems:TBIChartItems);
 
@@ -273,6 +199,7 @@ type
     function CreateSeries(const X,Y:TDataItem):TChartSeries;
     function DirectChart:TBITChart;
     procedure FillSeries(const ASeries:TChartSeries; const X,Y,AText:TDataItem);
+    function DoFreeSeries:Boolean;
     function GetChart:TBITChart;
     function GuessRealData(const AData:TDataArray):TDataArray;
     function IsDesigning:Boolean;
@@ -289,6 +216,13 @@ type
 
     procedure DirectRefresh;
     procedure Loaded; override;
+
+    {$IFDEF FMX}
+    procedure Paint; override;
+    {$ELSE}
+    procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
+    {$ENDIF}
+
     procedure ReadState(Reader: TReader); override;
     procedure ResetTheme;
     procedure SetDataDirect(const Value: TDataItem); override;
@@ -323,26 +257,6 @@ type
     {$ENDIF}
 
     property Options:TBIChartOptions read FOptions write SetOptions;
-  end;
-
-  // Converts data from a Chart or one or more Series to a TDataItem
-  TChartData=record
-  private
-    class procedure InitNotMandatory(const ASeries:TChartSeries;
-                                     const ACount:Integer); static;
-
-    class function NewSeries(const AOwner:TComponent;
-                             const AClass:TChartSeriesClass):TChartSeries; static;
-  public
-    class procedure AddSeries(const ASeries: TChartSeries; const ADest: TDataItem); static;
-
-    class function From(const AData:TDataItem;
-                        const AOwner:TComponent;
-                        const AClass:TChartSeriesClass=nil):TChartSeries; overload; static;
-
-    class function From(const ASeries:TChartSeries):TDataItem; overload; static;
-    class function From(const AChart:TCustomChart):TDataItem; overload; static;
-    class function From(const ASeries:Array of TChartSeries):TDataItem; overload; static;
   end;
 
 implementation

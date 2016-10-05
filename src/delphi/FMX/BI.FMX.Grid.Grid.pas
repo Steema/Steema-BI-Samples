@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.Types,
-  {$IF CompilerVersion>25}
+  {$IF CompilerVersion>26}
   System.Math.Vectors,
   {$ENDIF}
   FMX.Types, FMX.Grid,
@@ -18,7 +18,7 @@ uses
   Data.Bind.DBScope, Data.Bind.Grid, FMX.Bind.Grid, BI.FMX.Grid, BI.DataSet,
   BI.Data, FMX.Controls, Data.DB, System.UITypes, BI.UI, FMX.Header,
 
-  {$IF CompilerVersion<27}
+  {$IF CompilerVersion<26}
   {$DEFINE HASFMX20}
   {$ENDIF}
 
@@ -40,7 +40,7 @@ type
     type
       TPrivateGrid=class(TGrid)
       private
-        IGrid : TObject;
+        FMXGrid : TBIFMXGrid;
 
         {$IFDEF NODEFAULTDRAWING}
         function GetAlignOf(const AColumn:TColumn):TTextAlign;
@@ -49,13 +49,11 @@ type
             const Column: TColumn; const Bounds: TRectF;
             const Row: Integer; const Value: TValue; const State: TGridDrawStates);
         {$ENDIF}
-
-        function FMXGrid:TBIFMXGrid;
       protected
         procedure DoAddObject(const AObject: TFmxObject); override;
 
         {$IF CompilerVersion<31}
-        {$IF CompilerVersion>25}
+        {$IF CompilerVersion>26}
         procedure DoDrawColumnHeader(const Canvas: TCanvas; const Item: THeaderItem;
                          const Bounds: TRectF); override;
         {$ENDIF}
@@ -146,6 +144,7 @@ type
     procedure BindTo(const ADataSet:TDataSet); override;
     procedure Colorize(const AItems:TDataColorizers); override;
     procedure Duplicates(const AData:TDataItem; const Hide:Boolean); override;
+    function GetControl:TControl; override;
     function GetObject:TObject; override;
   end;
 

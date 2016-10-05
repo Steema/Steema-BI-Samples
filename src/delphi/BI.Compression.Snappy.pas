@@ -13,7 +13,7 @@ interface
 {$ENDIF}
 
 uses
-  System.Classes, BI.Arrays, BI.Compression,
+  System.Classes, BI.Arrays.Strings, BI.Compression,
   Snappy;
 
 type

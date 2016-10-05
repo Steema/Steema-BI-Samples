@@ -25,7 +25,7 @@ object DataViewer: TDataViewer
     ExplicitTop = 312
     ExplicitHeight = 100
   end
-  object Panel1: TPanel
+  object PanelTop: TPanel
     Left = 0
     Top = 0
     Width = 1091
@@ -206,6 +206,8 @@ object DataViewer: TDataViewer
             ParentColor = False
             TabOrder = 0
             OnDataChange = DataGridDataChange
+            ExplicitLeft = 3
+            ExplicitTop = 3
           end
           object RecordView: TBIGrid
             Left = 554
@@ -296,7 +298,6 @@ object DataViewer: TDataViewer
   end
   object DataSource2: TDataSource
     DataSet = Items
-    OnUpdateData = DataSource2UpdateData
     Left = 440
     Top = 96
   end
@@ -313,7 +314,6 @@ object DataViewer: TDataViewer
   end
   object Items: TBIDataset
     AfterInsert = ItemsAfterInsert
-    BeforeDelete = ItemsBeforeDelete
     RowNumbers = False
     Left = 360
     Top = 96

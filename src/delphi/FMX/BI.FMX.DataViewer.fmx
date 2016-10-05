@@ -53,6 +53,7 @@ object DataViewer: TDataViewer
       Size.Height = 193.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
+      ReadOnly = False
     end
     object DataGrid: TBIGrid
       Align = Client
@@ -60,6 +61,7 @@ object DataViewer: TDataViewer
       Size.Height = 431.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
+      ReadOnly = False
     end
   end
   object Splitter1: TSplitter

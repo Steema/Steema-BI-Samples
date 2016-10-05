@@ -37,7 +37,7 @@ uses
   {$ENDIF}
 
   FMX.Dialogs, FMX.ListView.Types, FMX.ListView, FMX.StdCtrls,
-  FMX.Layouts, BI.Persist, FMX.ListBox, FMX.TabControl, BI.FMX.DataEditor,
+  FMX.Layouts, BI.Persist, FMX.ListBox, FMX.TabControl, BI.FMX.Editor.Data,
   FMX.Edit, FMX.Menus, FMX.Memo, BI.Data;
 
 type
@@ -91,6 +91,7 @@ type
     BDelete: TSpeedButton;
     BChange: TButton;
     BRename: TButton;
+    MenuItem4: TMenuItem;
     procedure BChangeClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure LSourcesChange(Sender: TObject);
@@ -116,6 +117,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure CBStoresChange(Sender: TObject);
     procedure BRenameClick(Sender: TObject);
+    procedure MenuItem4Click(Sender: TObject);
   private
     { Private declarations }
 

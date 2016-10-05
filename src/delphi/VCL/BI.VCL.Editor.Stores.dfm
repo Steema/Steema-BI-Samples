@@ -117,10 +117,6 @@ object StoreEditor: TStoreEditor
     TabOrder = 3
     object TabFolder: TTabSheet
       Caption = 'Folder'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 16
         Top = 16
@@ -163,10 +159,6 @@ object StoreEditor: TStoreEditor
     object TabWeb: TTabSheet
       Caption = 'Web'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object PopupMenu1: TPopupMenu

@@ -25,7 +25,6 @@ type
     Button1: TButton;
     Button2: TButton;
     Splitter1: TSplitter;
-    Benchmark: TButton;
     BViewData: TButton;
     Button3: TButton;
     Panel2: TPanel;
@@ -35,16 +34,19 @@ type
     Panel4: TPanel;
     LError: TLabel;
     BIGrid1: TBIGrid;
-    CBVerifySQL: TCheckBox;
-    Button4: TButton;
     Button5: TButton;
     Button6: TButton;
     TabSheet2: TTabSheet;
     BIVisualizer1: TBIComposer;
     TabSheet3: TTabSheet;
+    CBVerifySQL: TCheckBox;
+    TabSheet4: TTabSheet;
+    Benchmark: TButton;
+    Button4: TButton;
     Button7: TButton;
     CBMultiCPU: TCheckBox;
     CBLoopThread: TCheckBox;
+    Button8: TButton;
     procedure ListBox1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -58,6 +60,7 @@ type
     procedure Button4Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -89,6 +92,8 @@ uses
   BI.Summary,
 
   BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer.Chart,
+
+  BI.VCL.Editor.Hops, BI.Data.Expressions, BI.Data.HTML,
 
   BI.VCL.GridForm, BI.Tests.SummarySamples, BI.Tests.SelectSamples,
   BI.Query, BI.VCL.Editor.Query, BI.Queries.Benchmark;
@@ -182,16 +187,12 @@ end;
 procedure TForm24.Button3Click(Sender: TObject);
 var tmp : TBIQuery;
 begin
-  // Debug test, show the new "Pivot" Query editor:
   tmp:=TBIQuery.From(Self,Query as TDataSelect);
   try
     TBIQueryEditor.Edit(Self,tmp);
   finally
     tmp.Free;
   end;
-
-//  if Query is TDataSelect then
-//     TDataSelectEditor.Edit(Self,Query as TDataSelect,ChangedEditor);
 end;
 
 procedure TForm24.Button4Click(Sender: TObject);
@@ -210,6 +211,13 @@ var tmp : Int64;
 begin
   tmp:=TQueryBenchmark.MultiCPU(CBMultiCPU.Checked,CBLoopThread.Checked);
   Caption:='Time: '+tmp.ToString+' msec';
+end;
+
+procedure TForm24.Button8Click(Sender: TObject);
+var tmp : TDataHops;
+begin
+  tmp:=THopsViewer.HopsFrom(Query as TDataSelect);
+  THopsViewer.View(Self,tmp);
 end;
 
 // Execute current selected Query a number of time to benchmark its speed

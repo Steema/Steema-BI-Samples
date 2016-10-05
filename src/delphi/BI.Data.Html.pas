@@ -6,6 +6,21 @@
 {*********************************************}
 unit BI.Data.Html;
 
+(*
+  Classes to import / export TDataItem from / to HTML <table>
+
+   TBIHtml.Import : From HTML one or more <table> content into a TDataItem
+
+   TBIHtmlExport.AsString : From TDataItem into HTML <table>
+
+  TBIHtmlHelper : Methods to generate HTML content easier, for example:
+
+     TBIHtmlHelper.Link('SteeBI', 'http://www.steebi.com')
+
+     returns:  '<a href="http://www.steebi.com">SteeBI</a>'
+
+*)
+
 interface
 
 uses
@@ -15,7 +30,8 @@ uses
   {$ELSE}
   System.UITypes,
   {$ENDIF}
-  Data.DB, BI.Data, BI.DataSource, BI.Arrays, BI.UI, BI.Data.XML;
+  Data.DB, BI.Data, BI.DataSource, BI.Arrays, BI.Arrays.Strings, BI.UI,
+  BI.Data.XML;
 
 type
   TBIHTML=class(TBITextSource)
@@ -24,14 +40,12 @@ type
     class function GetTables(const Xml:TXmlEngine):TDataArray; static;
     class function TryFindID(const Xml:TXmlEngine):String; static;
   public
-    class function ExportFormat:TBIExport; override;
-
-    class function FileFilter: TBIFileSource.TFileFilters; override;
+    class function FileFilter: TFileFilters; override;
     function Import(const Strings:TStrings):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;
   end;
 
-  TBIHTMLExport=class(TBIExport)
+  TBIHTMLExport=class(TBITextExport)
   private
     AddedRows : TInteger;
     IItems : TStrings;
@@ -39,22 +53,22 @@ type
     procedure AddRow(const AIndex:TInteger);
     function AddRows(const AItems: TStrings):TInteger;
     function CellAlign(const AData:TDataItem; const AddLeft:Boolean):String;
+    function CellValue(const AItem:TDataItem; const AIndex:TInteger):String;
     function Headers(const AddSortIcons:Boolean):String;
     function MaxDepth(const AData:TDataArray):Integer;
     function Row(const AIndex:TInteger; const AData:TDataArray):String;
   protected
     procedure DoEmit(const AItems: TStrings); override;
   public
-    const
-      CRLF=#13#10;
-
     var
       Borders : Boolean;
       Colorizers : TDataColorizers;
-      FloatFormat : String;
       SortIcons : Boolean;
 
     Constructor Create; override;
+
+    class function FileFilter: TFileFilters; override;
+    class function Supports(const Extension:String):Boolean; override;
   end;
 
   TBIHtmlHelper=class

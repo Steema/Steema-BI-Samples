@@ -45,6 +45,10 @@ requires
 
 contains
   BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas',
+  BI.VCL.Chart.Financial in '..\VCL\BI.VCL.Chart.Financial.pas',
+  BI.VCL.Chart.Geo in '..\VCL\BI.VCL.Chart.Geo.pas',
+  BI.VCL.Chart.Plugin in '..\VCL\BI.VCL.Chart.Plugin.pas',
+  BI.VCL.Chart.ThreeD in '..\VCL\BI.VCL.Chart.ThreeD.pas',
   BI.VCL.PDF in '..\VCL\BI.VCL.PDF.pas',
   BI.VCL.LinkDiagram in '..\VCL\BI.VCL.LinkDiagram.pas' {DataDiagram},
   BI.VCL.Dashboard.Chart in '..\VCL\BI.VCL.Dashboard.Chart.pas',

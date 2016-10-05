@@ -30,7 +30,7 @@ uses
   BI.VCL.LinkDiagram, // <-- this unit uses TeeTree control ("Pro" version)
   {$ENDIF}
 
-  BI.VCL.Chart,
+  BI.VCL.Chart, BI.VCL.Chart.Plugin,
   BI.VCL.Editor.Summary, BI.VCL.Editor.BIGrid, Vcl.Grids,
   BI.Data.ClientDataset, System.UITypes,
   BI.VCL.Visualizer, BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer.Chart,
@@ -102,6 +102,7 @@ type
     BITChart1: TBITChart;
     BIChart1: TBIChart;
     Splitter2: TSplitter;
+    Button3: TButton;
     procedure LBTestClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -131,6 +132,7 @@ type
     procedure CBAlternateClick(Sender: TObject);
     procedure BEditChartClick(Sender: TObject);
     procedure BIGridTotalsDataChange(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -174,6 +176,8 @@ uses
   {$IF CompilerVersion>27} // RAD XE7 and up
   System.Threading,
   {$ENDIF}
+
+  BI.VCL.Editor.Hops,
 
   BI.Data.JSON, BI.Data.XML, BI.Data.CSV, BI.Data.Excel,
   BI.Languages.English, BI.UI, BI.Summary.Totals, BI.Data.Expressions;
@@ -353,6 +357,13 @@ begin
   end;
 
   Caption:='Time: '+IntToStr(t1.ElapsedMilliseconds)+' msec';
+end;
+
+procedure TFormSummary.Button3Click(Sender: TObject);
+var tmp : TDataHops;
+begin
+  tmp:=THopsViewer.HopsFrom(Summary);
+  THopsViewer.View(Self,tmp);
 end;
 
 procedure TFormSummary.BEditChartClick(Sender: TObject);
