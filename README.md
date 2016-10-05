@@ -3,9 +3,9 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 15, August-3rd 2016)
+[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 16, October-5th 2016)
 
-[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 15)
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 16)
 
  
 ### What is TeeBI ?
