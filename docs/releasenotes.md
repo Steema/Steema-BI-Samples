@@ -1,6 +1,199 @@
 # TeeBI Release Notes
 -------------------
 
+## 5th-October-2016 Beta 16
+
+Lots of improvements for this release, and more to come !
+
+![](https://raw.github.com/Steema/BI/master/docs/img/teechart_worldseries_3d.png)
+
+
+- Delphi 10.1 Starter Edition support
+
+  Support for the [free Delphi 10.1 Starter edition](https://www.embarcadero.com/es/products/delphi/starter/promotional-download)
+
+  Note: Packages must be manually compiled in the Delphi IDE because "Starter" does not provide command-line compilation. Run TeeBIRecompile.exe tool to generate the appropiate packages and follow the instructions. 
+
+- Geo Database
+
+
+![](https://raw.github.com/Steema/BI/master/docs/img/geo_database.png)
+
+ * The Geo database (located in "Sample Data" folder) now contains many more tables with data from several countries (like provinces of France, Prefectures of Japan, etc, etc). These tables can be used to perform query aggregations at several levels eg: "group by Germany.Lands" with just setting your custom data "Master" property to its equivalent field in Geo tables, like:
+ 
+ ```delphi
+ uses BI.Data.Geographic;
+ MyData['FIPS'].Master := TGeo.Entities.USA.Counties.ID;
+ // "MyData" can now be used in queries that use TGeo data, like: 
+ //  sum(MyData.Value) group by Geo.Entities.USA.State
+ ```
+ 
+ Another use of Geo tables is BIChart control will automatically detect which map corresponds to a data or query to fill the map polygons with the data values, at the selected levels (continents, countries, regions, provinces / counties and so on)
+ 
+ ```delphi
+ BIChart1.Data := MyData;
+ ```
+
+![](https://raw.github.com/Steema/BI/master/docs/img/geo_chart_custom_polygons.png)
+
+- BIChart control
+
+ * Many refactoring changes in BIChart. Code is now split into several different units, one for each special chart style:
+ 
+ * BI.VCL(fmx).Chart.Financial for stock / candle OHLC charts
+ * BI.VCL(fmx).Chart.Three3D for surface, contouring, 3D grid xyz charts
+ * BI.VCL(fmx).Chart.Geo for geographic world maps
+ 
+ * Another new unit BI.VCL(fmx).Chart.Plugin implements the link with TeeChart. 
+ The final goal is BI.Chart unit by default not using TeeChart directly.
+ 
+ * Geographic charts have been the most improved kind, capable of linking directly to TGeo database to automatically recognize data links to countries, provinces, regions, etc to fill the appropiate polygons.
+ 
+ * Several new features in TeeChart TWorldSeries are also used by BIChart when present. The latest TeeChart Pro build (build 161005 or greater) is required. 
+ 
+![](https://raw.github.com/Steema/BI/master/docs/img/geo_chart_usa_counties_and_state_boundaries.png)
+   
+ 
+- More sample data
+
+ * "Sample Data" folder contains a new native TeeBI file with a table imported from a Excel file with USA by County "education" levels from 1970 to 2014.  This table is used to test BIChart control filling the USA map county by county, with year by year optional animation.
+
+- Custom Data at design-time
+
+ * TDataDefinition component has a new style: "Custom" to enable creating data structures at design-time just double-clicking the component to show the editor dialog where we can add or remove children items and manually entering data values. Data is saved into the DFM / FMX form file.  This can be useful for simple small data tables that should participate in queries or used in charts at design-time without needing to store them on disk
+  
+- Summary Aggregations
+
+ * Two new TAggregate values: "First" and "Last" allow creating group-by queries to return not only numeric values (sum, max, min, average, count), but also the first or last ocurrences of all values of a given group, being them numeric or not (text, etc)
+ 
+ ```delphi
+ // Show Name of first Person ocurrence for each Department
+ BIQuery.Measures.Add( Persons['Name'], TAggregate.First );
+ BIQuery.Dimensions.Add( Persons['Department'] );
+ ```
+ 
+- Data Gridify
+
+ * New TGridify class (BI.Data.Gridify unit) enables creating a "grid" from a "flat" table:
+ 
+   Example:
+
+```delphi
+  BIGrid2.Data:= TGridify.From(BIGrid1.Data, 'Happiness', 'Year', 'Person')
+
+  From this BIGrid1.Data original data:
+
+  -----------------------
+  Year  Person Happiness
+
+  2016  Alice    21
+  2016  Bob      14
+  2016  Mike     39
+  2017  Bob      65
+  2017  Mike     80
+  2018  Alice     3
+  2018  Bob       9
+  2018  Mike      4
+
+  Output is:
+
+  -----------------------
+         Happiness
+  Year   Person
+         Alice Bob Mike
+
+  2016    21    14   39
+  2017          65   80
+  2018     3     9    4
+  -----------------------
+```
+ 
+![](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Gridify.png)
+ 
+- Data Rankings
+
+ * New class TDataRank (at BI.Data.Rank unit) with a simple single method, to create a new column with "rankings" (eg: 1st, 2nd, 3rd..., etc) from any column values, grouped by zero or more fields, in ascending or descending order. This feature is more or less equivalent to SQL "rank over partition"
+ 
+```delphi
+  MyTable.Items.Add( TDataRank.From( MyTable, MyTable['By Year'], MyTable['Some Value'] );
+```
+
+![](https://raw.github.com/Steema/BI/master/docs/img/Data_Rankings.png)
+
+- Demos
+
+ * [Expression test](https://github.com/Steema/BI/tree/master/demos/delphi/firemonkey/Expressions) example has a new improved benchmark code, for both parsing and evaluating expressions.
+ 
+ * [Speed test](https://github.com/Steema/BI/tree/master/demos/delphi/firemonkey/Speed) is now available for both Firemonkey and VCL
+ 
+ * New [Custom Expressions](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Expressions/Custom_Function_Expressions) example shows how easy it is to create a new custom function that can be then used in many places, like for example in SQL query expressions (select, where, group by, order), TExpression.Evaluate('myfunction(params...)') and BIQuery filter properties
+ 
+ * New [Filtering example](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Filter/BIGrid_Filter) showing usage of the low-level data filter classes. These classes are internally used by high-level BIQuery component and its visual editor dialogs
+ 
+ * New [BIGrid](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Grid/Basic) simple examples
+ 
+ * New [Gridify example](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Grid/Gridify) shows TGridify and TDataRank classes in action
+ 
+ * [Import demo](https://github.com/Steema/BI/blob/master/demos/delphi/vcl/Import/Import_ByCode.pas) has a new tab to show importing data from an HTML table tag
+ 
+ * New [TDataRank example](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Query/Ranks) offers several combinations to create "rankings" on data values or expressions
+ 
+ * New [TDataSelect example](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Query/Select_Queries) contains several examples of low-level use of the TDataSelect class to perform "select" queries that do not involve summarization or aggregations. TDataSelect and TSummary classes are used at high-level TBIQuery component for design-time visual no-code query / pivot-table features
+ 
+- Data Compression
+
+ * New BI.Data.Compression unit implements a TCompression class with methods to compress and decompress TStreams. This class uses by default the system Zip class, and it provides a "Plugin" property to choose a different alternative compression engine: TCompression.Plugin := TSynZipCompression.
+ 
+   Two units are provided with compression engines for SynZip and Snappy.
+   
+- Data Export
+
+ * New Export Data dialog (VCL only, FMX soon) to copy to clipboard or to save to a file data contents in all available formats (CSV, JSON, XML, HTML, Excel, PDF, native, etc).  This dialog is accessible by code or visually in the BIGrid top-left menu
+ 
+- TRichView support 
+
+  [www.TRichView.com](http://www.TRichView.com)
+
+ * New unit BI.VCL.Export.RichView includes a small TDataRichView class with methods to Add any TDataItem to a TRichView control
+ 
+ 
+- Other
+
+ * New methods in TDataClone class (BI.DataSource unit) to clone just the structure of a TDataItem (including sub-tables recursively), and to clone just the data (eg: copy the data from a TDataItem to another, provided they have the same structure)
+ 
+ * New TDataCursor.ToData function uses TDataClone new methods to return the output of a cursor, including cursor sorting, filtering, row selection (from row ... to row), and Items selection (eg: just some items, not all items)
+ 
+ * New FloatFormat property in base class TBITextExport enables custom formatting for float data (single, double, extended) in all descendant classes (CSV, JSON, XML, HTML and PDF)
+ 
+ * New FromEqual and ToEqual boolean properties in TDateTimeFilter class (BI.Expression.Filter unit) to determine if the filter From and To properties include "equal" or not. ( > versus >= ,  < versus <= )
+ 
+ * New TParameterExpression abstract class (in BI.Expression unit) can be used to derive custom expression functions that require parameters
+ 
+ * New Abs and Sign functions supported in TMathExpression  (eg: TExpression.Evaluate('Abs(-123)') returns 123)
+ 
+ * New BI.Arrays.Strings unit contains a simple TStringArray type and helper methods
+ 
+ * New TCommonUI IsURL function, returns True when parameter begins with http:// or https://
+ 
+ * New TClientDatasetExport class (in BI.Data.ClientDataset unit) to export any TDataItem to a TClientDataset
+ 
+ * New TDataKindConvert methods (in BI.Data.Convert unit) enables switching the Kind of a TDataItem (eg: from Text to Integer) by converting all data from one kind to another. A "CanConvert" boolean function returns True if the conversion will succeed. This is specially important when converting from for example text to numbers, to detect incompatible texts with no numbers.
+ 
+ * TBIDataset string fields are now "ftWideString" instead of "ftString", to support Unicode character encoding
+ 
+ * Fixes for RAD Studio XE5 (some units could not be compiled)
+ 
+ * Optimizations in "THops" class to reduce the number of steps when executing queries involving complex relationships (ie: "query plan" redundancy elimination)
+
+ * BIGrid now detects changes in its source data to refresh the grid cells in a more optimized manner (without re-creating the grid columns)
+
+ * TDataItem now issues broadcasts when adding, removing, exchanging or renaming child Items, for listeners (eg: BIGrid) to refresh their contents
+ 
+ * TBIWebClient class (BI.Web unit) now uses the new TCompression class for compressing and decompressing web streams (for example when used in BIWeb server). TCompression can specify a custom "plugin" engine library to replace the default System.Zip
+ 
+ * Several changes to improve FreePascal / Lazarus compatibility (removed some "anonymous methods")
+ 
+
 ## 3rd-August-2016 Beta 15
 
 - TBIDataset
