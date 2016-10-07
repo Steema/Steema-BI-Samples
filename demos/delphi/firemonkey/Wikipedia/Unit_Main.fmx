@@ -56,6 +56,8 @@ object FormWiki: TFormWiki
       StyleLookup = ''
       TabOrder = 0
       Text = 'Chart'
+      ExplicitSize.cx = 49.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object BIChart1: TBIChart
         Align = Client
         Padding.Top = 24.000000000000000000
@@ -69,22 +71,14 @@ object FormWiki: TFormWiki
           Legend.Symbol.Shadow.Visible = False
           Legend.Title.Font.StyleExt = {00070000000000000004000000}
           SubFoot.Font.StyleExt = {00040000000200000004000000}
+          Title.Text.Strings = (
+            'TBITChart')
           Zoom.Brush.Kind = None
           Zoom.Pen.Fill.Color = claSilver
-          TabOrder = 0
           Size.Width = 929.000000000000000000
           Size.Height = 505.000000000000000000
           Size.PlatformDefault = False
           ColorPaletteIndex = 9
-          object TMarksTipTool
-            Format.CustomPosition = True
-            Format.Left = 0
-            Format.TextAlignment = taCenter
-            Format.Top = 0
-            Format.Visible = False
-            MouseDelay = 0
-            Style = smsLabelValue
-          end
         end
       end
     end
@@ -108,7 +102,8 @@ object FormWiki: TFormWiki
       Items.Strings = (
         'List of mountains by elevation'
         'List of USA cities'
-        'List of tallest buildings')
+        'List of tallest buildings'
+        'https://en.wikipedia.org/wiki/ISO_3166-2:ID')
       ItemIndex = 0
       Text = 'List of mountains by elevation'
       Position.X = 65.000000000000000000

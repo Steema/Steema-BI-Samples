@@ -8,8 +8,11 @@ uses
   BI.FMX.DataControl, BI.FMX.Grid, FMX.TabControl, FMX.StdCtrls, FMX.Edit,
   FMX.ComboEdit, FMX.Controls.Presentation, FMX.Layouts,
 
-  BI.Data, BI.Web, BI.Data.JSON, BI.Data.HTML, FMXTee.Engine, FMXTee.Procs,
-  FMXTee.Chart, BI.FMX.Chart.Plugin, BI.FMX.Chart;
+  // TeeBI
+  BI.Data, BI.Web, BI.Data.JSON, BI.Data.HTML, BI.UI,
+
+  // TeeChart and BIChart
+  FMXTee.Engine, FMXTee.Procs, FMXTee.Chart, BI.FMX.Chart.Plugin, BI.FMX.Chart;
 
 type
   TFormWiki = class(TForm)
@@ -150,8 +153,10 @@ begin
 
     LabelURL.Text:='';
 
-    // Search Wikipedia !
-    Search(tmp);
+    if TCommonUI.IsURL(tmp) then
+       LoadData(tmp)  // <-- direct load
+    else
+       Search(tmp);   // <-- Search Wikipedia !
   end;
 end;
 
