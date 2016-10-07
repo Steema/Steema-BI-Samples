@@ -3,7 +3,7 @@ program TeeBI_Wikipedia;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Unit_Main in 'Unit_Main.pas' {Form35};
+  Unit_Main in 'Unit_Main.pas' {FormWiki};
 
 {$R *.res}
 
@@ -12,6 +12,6 @@ begin
   ReportMemoryLeaksOnShutdown:=True;
   {$ENDIF}
   Application.Initialize;
-  Application.CreateForm(TForm35, Form35);
+  Application.CreateForm(TFormWiki, FormWiki);
   Application.Run;
 end.
