@@ -26,6 +26,6 @@ begin
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm24, Form24);
+  Application.CreateForm(TTestSQLQueries, TestSQLQueries);
   Application.Run;
 end.

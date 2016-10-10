@@ -1,4 +1,4 @@
-object Form24: TForm24
+object TestSQLQueries: TTestSQLQueries
   Left = 0
   Top = 0
   Caption = 'TeeBI Select Queries'
@@ -150,7 +150,7 @@ object Form24: TForm24
     Top = 41
     Width = 682
     Height = 519
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 2
     OnChange = PageControl1Change
@@ -171,10 +171,6 @@ object Form24: TForm24
     object TabSheet2: TTabSheet
       Caption = 'Visualizer'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object BIVisualizer1: TBIComposer
         Left = 0
         Top = 0
@@ -191,22 +187,14 @@ object Form24: TForm24
     object TabSheet3: TTabSheet
       Caption = 'Grid Options'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabSheet4: TTabSheet
       Caption = 'Benchmarks'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Benchmark: TButton
         Left = 22
         Top = 10
-        Width = 75
+        Width = 99
         Height = 25
         Caption = 'Benchmark'
         Enabled = False
@@ -222,14 +210,14 @@ object Form24: TForm24
         TabOrder = 1
         OnClick = Button4Click
       end
-      object Button7: TButton
+      object BThreadTest: TButton
         Left = 22
         Top = 97
-        Width = 73
+        Width = 99
         Height = 25
         Caption = 'Thread Test'
         TabOrder = 2
-        OnClick = Button7Click
+        OnClick = BThreadTestClick
       end
       object CBMultiCPU: TCheckBox
         Left = 24

@@ -1,23 +1,42 @@
 unit Unit24;
 
+(*
+   This example creates SQL queries with TeeBI TBISQL classes,
+   parses them from string, executes them and verifies the outputs.
+
+   It also includes speed tests to benchmark the different SQL query features.
+*)
+
 interface
 
 {.$DEFINE LEAKCHECK}
 
+{$IFNDEF FPC}
+{$IF CompilerVersion>27}
+{$DEFINE THREADING}   // RAD XE7 and up
+{$ENDIF}
+{$ENDIF}
+
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics, BI.VCL.Editor.BIGrid,
+  System.Classes, Vcl.Graphics,
 
   {$IFDEF LEAKCHECK}
   LeakCheck,
   {$ENDIF}
 
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataSource, BI.VCL.Grid,
-  Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, BI.Data, BI.VCL.Visualizer,
-  BI.VCL.Editor.Grid, System.Threading, BI.VCL.DataControl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls,
+
+  {$IFDEF THREADING}
+  System.Threading,
+  {$ENDIF}
+
+  // TeeBI units
+  BI.VCL.Editor.BIGrid, BI.DataSource, BI.VCL.Grid, BI.Data, BI.VCL.Visualizer,
+  BI.VCL.Editor.Grid, BI.VCL.DataControl;
 
 type
-  TForm24 = class(TForm)
+  TTestSQLQueries = class(TForm)
     ListBox1: TListBox;
     Panel1: TPanel;
     PageControl1: TPageControl;
@@ -43,7 +62,7 @@ type
     TabSheet4: TTabSheet;
     Benchmark: TButton;
     Button4: TButton;
-    Button7: TButton;
+    BThreadTest: TButton;
     CBMultiCPU: TCheckBox;
     CBLoopThread: TCheckBox;
     Button8: TButton;
@@ -59,7 +78,7 @@ type
     procedure Memo1Change(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
-    procedure Button7Click(Sender: TObject);
+    procedure BThreadTestClick(Sender: TObject);
     procedure Button8Click(Sender: TObject);
   private
     { Private declarations }
@@ -80,7 +99,7 @@ type
   end;
 
 var
-  Form24: TForm24;
+  TestSQLQueries: TTestSQLQueries;
 
 implementation
 
@@ -100,7 +119,7 @@ uses
 
 // Compare existing data output with the results of parsing SQL text.
 // If they are different, show Data Viewer dialog with the differences.
-function TForm24.DoVerifySQL:Boolean;
+function TTestSQLQueries.DoVerifySQL:Boolean;
 var tmpOut,
     tmpMain,
     tmp : TDataItem;
@@ -153,18 +172,18 @@ begin
   end;
 end;
 
-procedure TForm24.BExecSQLClick(Sender: TObject);
+procedure TTestSQLQueries.BExecSQLClick(Sender: TObject);
 begin
   DoVerifySQL;
 end;
 
-procedure TForm24.Button1Click(Sender: TObject);
+procedure TTestSQLQueries.Button1Click(Sender: TObject);
 begin
   TDataManager.Edit(Self);
 end;
 
 // Test All Queries
-procedure TForm24.Button2Click(Sender: TObject);
+procedure TTestSQLQueries.Button2Click(Sender: TObject);
 var t : Integer;
     t1 : TStopWatch;
 begin
@@ -184,7 +203,7 @@ begin
   Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
 end;
 
-procedure TForm24.Button3Click(Sender: TObject);
+procedure TTestSQLQueries.Button3Click(Sender: TObject);
 var tmp : TBIQuery;
 begin
   tmp:=TBIQuery.From(Self,Query as TDataSelect);
@@ -195,7 +214,7 @@ begin
   end;
 end;
 
-procedure TForm24.Button4Click(Sender: TObject);
+procedure TTestSQLQueries.Button4Click(Sender: TObject);
 var D : TDataItem;
 begin
   D:=TQueryBenchmark.BenchmarkAll(ListBox1.Items);
@@ -206,14 +225,14 @@ begin
   end;
 end;
 
-procedure TForm24.Button7Click(Sender: TObject);
+procedure TTestSQLQueries.BThreadTestClick(Sender: TObject);
 var tmp : Int64;
 begin
   tmp:=TQueryBenchmark.MultiCPU(CBMultiCPU.Checked,CBLoopThread.Checked);
   Caption:='Time: '+tmp.ToString+' msec';
 end;
 
-procedure TForm24.Button8Click(Sender: TObject);
+procedure TTestSQLQueries.Button8Click(Sender: TObject);
 var tmp : TDataHops;
 begin
   tmp:=THopsViewer.HopsFrom(Query as TDataSelect);
@@ -221,7 +240,7 @@ begin
 end;
 
 // Execute current selected Query a number of time to benchmark its speed
-procedure TForm24.BenchmarkClick(Sender: TObject);
+procedure TTestSQLQueries.BenchmarkClick(Sender: TObject);
 var tmp : Int64;
     Rows : Int64;
     Num : Integer;
@@ -233,26 +252,26 @@ begin
   end;
 end;
 
-procedure TForm24.BViewDataClick(Sender: TObject);
+procedure TTestSQLQueries.BViewDataClick(Sender: TObject);
 begin
   if BIGrid1.Data<>nil then
      TDataViewer.View(Self,BIGrid1.Data);
 end;
 
 // Pre-Load demo tables
-procedure TForm24.FormCreate(Sender: TObject);
+procedure TTestSQLQueries.FormCreate(Sender: TObject);
 begin
   Samples.LoadData;
 
   PageControl1.ActivePage:=TabSheet1;
 end;
 
-procedure TForm24.FormDestroy(Sender: TObject);
+procedure TTestSQLQueries.FormDestroy(Sender: TObject);
 begin
   BIGrid1.Data.Free;
 end;
 
-procedure TForm24.Recalculate(const AQuery:TDataProvider);
+procedure TTestSQLQueries.Recalculate(const AQuery:TDataProvider);
 begin
   BIVisualizer1.Data:=nil;
 
@@ -278,12 +297,12 @@ begin
   PageControl1Change(Self);
 end;
 
-procedure TForm24.ChangedEditor(Sender: TObject);
+procedure TTestSQLQueries.ChangedEditor(Sender: TObject);
 begin
   Recalculate( (Sender as TDataSelectEditor).Select);
 end;
 
-procedure TForm24.ListBox1Click(Sender: TObject);
+procedure TTestSQLQueries.ListBox1Click(Sender: TObject);
 var tmp : Integer;
 begin
   tmp:=ListBox1.ItemIndex;
@@ -326,7 +345,7 @@ begin
   until i=0;
 end;
 
-procedure TForm24.VerifySQL;
+procedure TTestSQLQueries.VerifySQL;
 var tmp : TDataProvider;
     tmpParser : TSQLParser;
 begin
@@ -357,7 +376,7 @@ begin
 end;
 
 // Reparse Memo SQL text to verify its syntax
-procedure TForm24.Memo1Change(Sender: TObject);
+procedure TTestSQLQueries.Memo1Change(Sender: TObject);
 begin
   if not IChanging then
   begin
@@ -366,7 +385,7 @@ begin
   end;
 end;
 
-procedure TForm24.PageControl1Change(Sender: TObject);
+procedure TTestSQLQueries.PageControl1Change(Sender: TObject);
 begin
   if PageControl1.ActivePage=TabSheet2 then
      BIVisualizer1.Data:=BIGrid1.Data

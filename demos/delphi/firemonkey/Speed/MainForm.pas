@@ -10,9 +10,23 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  BI.Data, FMX.StdCtrls, BI.FMX.DataControl, BI.FMX.Grid,
-  FMX.Controls.Presentation, FMX.Layouts, BI.Tests.Speed;
+  FMX.Types, FMX.Controls, FMX.Forms,
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IF CompilerVersion>25}
+  FMX.Graphics,
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Controls.Presentation,
+  {$ENDIF}
+
+  FMX.Dialogs, FMX.Layouts, FMX.StdCtrls,
+
+  BI.Data, BI.FMX.DataControl, BI.FMX.Grid, BI.Tests.Speed;
 
 type
   TFormSpeed = class(TForm)

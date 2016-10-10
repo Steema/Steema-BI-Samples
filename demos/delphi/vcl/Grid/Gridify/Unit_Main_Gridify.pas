@@ -33,7 +33,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data, BI.Data.Gridify, BI.Data.Rank, BI.UI;
+  BI.Data, BI.Data.Gridify, BI.Data.Rank, BI.UI, BI.Arrays.Strings;
 
 function BigRandomTable:TDataItem;
 const
@@ -108,6 +108,10 @@ begin
   tmp.Items.Add(tmpRank);
 end;
 
+{$IF CompilerVersion>27}
+{$DEFINE XE7}
+{$ENDIF}
+
 procedure TFromGridify.DoGridify;
 var Year,
     Person,
@@ -116,6 +120,11 @@ var Year,
     tmp : TDataItem;
 
     t1 : TStopWatch;
+
+    {$IFNDEF XE7}
+    DataRows, DataColumns : TDataArray;
+    RowNames, ColumnNames : TStringArray;
+    {$ENDIF}
 begin
   Year:=BIGrid1.Data['Year'];
   Person:=BIGrid1.Data['Person'];
@@ -124,8 +133,36 @@ begin
   t1:=TStopwatch.StartNew;
 
   case LBTest.ItemIndex of
+
+    {$IFDEF XE7}
     0: tmp:=TGridify.From(Happiness,[Year],[Person]);
     1: tmp:=TGridify.FromItems(BIGrid1.Data,'Happiness',['Year'],['Person']);
+
+    {$ELSE}
+    // Pre-XE7 limitation, cannot pass arrays inline
+
+    0: begin
+         SetLength(DataRows,1);
+         DataRows[0]:=Year;
+
+         SetLength(DataColumns,1);
+         DataColumns[0]:=Person;
+
+         tmp:=TGridify.From(Happiness,DataRows,DataColumns);
+       end;
+
+    1: begin
+         SetLength(RowNames,1);
+         RowNames[0]:='Year';
+
+         SetLength(ColumnNames,1);
+         ColumnNames[0]:='Person';
+
+         tmp:=TGridify.FromItems(BIGrid1.Data,'Happiness',RowNames,ColumnNames);
+       end;
+
+    {$ENDIF}
+
     2: tmp:=TGridify.From(BIGrid1.Data,'Happiness','Year','Person');
     3: tmp:=TGridify.From(BIGrid1.Data,'Color','Year','Person');
     4: tmp:=TGridify.From(BIGrid1.Data,'Color','Person','Year');

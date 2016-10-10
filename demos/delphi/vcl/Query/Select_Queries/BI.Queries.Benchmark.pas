@@ -2,6 +2,17 @@ unit BI.Queries.Benchmark;
 
 interface
 
+(*
+   Small class to execute one or more SQL queries and return the speed
+   (time to execute them).
+*)
+
+{$IFNDEF FPC}
+{$IF CompilerVersion>27}
+{$DEFINE THREADING}   // RAD XE7 and up
+{$ENDIF}
+{$ENDIF}
+
 uses
   System.Classes, System.SysUtils, BI.Data;
 
@@ -20,8 +31,13 @@ type
 implementation
 
 uses
-  BI.Arrays, BI.DataSource, System.Diagnostics, BI.Tests.SelectSamples,
-  System.Threading;
+  BI.Arrays, BI.DataSource, System.Diagnostics,
+
+  {$IFDEF THREADING}
+  System.Threading,
+  {$ENDIF}
+
+  BI.Tests.SelectSamples;
 
 class function TQueryBenchmark.Benchmark(const AIndex:Integer;
                                          out AIterations:Integer;
@@ -134,16 +150,15 @@ class function TQueryBenchmark.MultiCPU(const IsMultiCPU,IsThreadLoop:Boolean):I
 
 var Data : Array of TDataItem;
     Query : Array of TDataSelect;
-    tmpMax : Integer;
 
   procedure FreeDatas;
   var t : Integer;
   begin
-    for t:=0 to tmpMax-1 do
-    begin
-      Data[t].Free;
-      Query[t].Free;
-    end;
+    for t:=0 to High(Data) do
+        Data[t].Free;
+
+    for t:=0 to High(Query) do
+        Query[t].Free;
   end;
 
 const
@@ -164,25 +179,18 @@ const
     end;
   end;
 
-var Loop,
-    t : Integer;
-    t1 : TStopWatch;
-begin
-  t1:=TStopwatch.StartNew;
-
-  tmpMax:=23;//ListBox1.Count;
-
-  SetLength(Data,tmpMax);
-  SetLength(Query,tmpMax);
-
-  if IsMultiCPU then
+  {$IFDEF THREADING}
+  procedure MultiCPUBenchmark(const ACount:Integer);
+  var Loop : Integer;
   begin
     if IsThreadLoop then
-       TParallel.&For(0,tmpMax-1, procedure(N:Integer)
+       TParallel.&For(0,ACount-1, procedure(N:Integer)
        var Query : TDataSelect;
            Data : TDataItem;
            Loop : Integer;
        begin
+         // Do loop inside thread
+
          for Loop:=1 to MaxLoop do
          begin
            Query:=TSelectSamples.CreateSelect(nil,N);
@@ -196,7 +204,9 @@ begin
     begin
       for Loop:=1 to MaxLoop do
       begin
-        TParallel.&For(0,tmpMax-1,procedure(N:Integer)
+        // Do thread inside loop
+
+        TParallel.&For(0,ACount-1,procedure(N:Integer)
         begin
           Query[N]:=TSelectSamples.CreateSelect(nil,N);
           Data[N]:=Query[N].Calculate;
@@ -205,17 +215,21 @@ begin
         FreeDatas;
       end;
     end;
-  end
-  else
+  end;
+  {$ENDIF}
+
+  procedure SingleCPUBenchmark(const ACount:Integer);
+  var Loop,
+      t : Integer;
   begin
     if IsThreadLoop then
-       for t:=0 to tmpMax-1 do
+       for t:=0 to ACount-1 do
            BenchQuery(t)
     else
     begin
       for Loop:=1 to MaxLoop do
       begin
-        for t:=0 to tmpMax-1 do
+        for t:=0 to ACount-1 do
         begin
           Query[t]:=TSelectSamples.CreateSelect(nil,t);
           Data[t]:=Query[t].Calculate;
@@ -225,6 +239,23 @@ begin
       end;
     end;
   end;
+
+var t1 : TStopWatch;
+    tmpCount : Integer;
+begin
+  t1:=TStopwatch.StartNew;
+
+  tmpCount:=TSelectSamples.Count;
+
+  SetLength(Data,tmpCount);
+  SetLength(Query,tmpCount);
+
+  {$IFDEF THREADING}
+  if IsMultiCPU then
+     MultiCPUBenchmark(tmpCount)
+  else
+  {$ENDIF}
+     SingleCPUBenchmark(tmpCount);
 
   result:=t1.ElapsedMilliseconds;
 end;

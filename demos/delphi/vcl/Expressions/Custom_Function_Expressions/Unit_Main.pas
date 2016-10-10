@@ -69,10 +69,18 @@ begin
   end;
 end;
 
+{$IF CompilerVersion>27}
+{$DEFINE XE7}
+{$ENDIF}
+
 // Create THypot by code
 procedure TCustomFuncTest.TestByCode;
 var h : THypot;
     Three,Four : TExpression;
+
+    {$IFNDEF XE7}
+    Parameters : TExpressions;
+    {$ENDIF}
 begin
   // Pass numbers directly
   h:=THypot.Create([2,3]);
@@ -84,7 +92,20 @@ begin
     Four:=TIntegerExpression.Create(4);
 
     // Change XY parameters
+
+    {$IFDEF XE7}
     h.Expression:=h.Call([Three,Four]);
+    {$ELSE}
+
+    // Pre-XE7, inline array constructor not allowed
+
+    SetLength(Parameters,2);
+    Parameters[0]:=Three;
+    Parameters[1]:=Four;
+
+    h.Expression:=h.Call(Parameters);
+
+    {$ENDIF}
 
     Label1.Caption:=Label1.Caption+' '+String(h.Value);
 

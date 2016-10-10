@@ -4,12 +4,25 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  BI.FMX.DataControl, BI.FMX.Grid, FMX.TabControl, FMX.StdCtrls, FMX.Edit,
-  FMX.ComboEdit, FMX.Controls.Presentation, FMX.Layouts,
+  FMX.Types, FMX.Controls, FMX.Forms,
+
+  {$IF CompilerVersion>25}
+  FMX.Graphics,
+  {$ENDIF}
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
+  {$ENDIF}
+
+  {$IFNDEF HASFMX20}
+  FMX.Controls.Presentation, FMX.ComboEdit,
+  {$ENDIF}
+
+  FMX.Layouts, FMX.Dialogs, FMX.TabControl, FMX.StdCtrls, FMX.Edit,
 
   // TeeBI
   BI.Data, BI.Web, BI.Data.JSON, BI.Data.HTML, BI.UI,
+  BI.FMX.DataControl, BI.FMX.Grid,
 
   // TeeChart and BIChart
   FMXTee.Engine, FMXTee.Procs, FMXTee.Chart, BI.FMX.Chart.Plugin, BI.FMX.Chart;
