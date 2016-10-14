@@ -47,6 +47,7 @@ procedure TExporting_Test.CSV;
 var S : String;
 begin
   S:=TBICSVExport.AsString(Data);
+
   Assert.AreEqual(S,'"Name","Quantity","Price","Units","HasStock"'+CRLF+
                     '"Tomato",1000,123.456,"Kg",True'+CRLF+
                     '"Apples",768,0.78,"Tn",False'+CRLF+
@@ -58,6 +59,7 @@ procedure TExporting_Test.HTML;
 var S : String;
 begin
   S:=TBIHTMLExport.AsString(Data);
+
   Assert.AreEqual(S,'<table class="">'+CRLF+
 CRLF+
 '<thead><tr><th align="left">Name</th><th align="right">Quantity&#x25B2;</th><th align="right">Price</th><th align="left">Units</th><th align="center">HasStock</th></tr>'+CRLF+
