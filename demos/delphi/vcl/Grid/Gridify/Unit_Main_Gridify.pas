@@ -1,5 +1,21 @@
 unit Unit_Main_Gridify;
 
+{
+  Example of TDataRank and TGridify features.
+
+  TDataRank creates a "ranking" of values with optional "group by" fields.
+  A ranking is a sequential number: 1 2 3 4 ...
+
+  (For example, ranking of "Salary" groupped by "Country")
+
+
+  TGridify converts a flat table into a grid table, with one or more fields
+  used for "rows", and for "columns".
+
+  Another field is used to fill the grid cells.
+
+}
+
 interface
 
 uses
@@ -13,13 +29,18 @@ type
     BIGrid2: TBIGrid;
     Splitter1: TSplitter;
     LBTest: TListBox;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure LBTestClick(Sender: TObject);
+    procedure BIGrid2Resize(Sender: TObject);
   private
     { Private declarations }
 
     procedure AddRank;
-    procedure DoGridify;
+    procedure DoGridify(const TestNumber:Integer);
     procedure TryColorizeRanks;
   public
     { Public declarations }
@@ -33,51 +54,10 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data, BI.Data.Gridify, BI.Data.Rank, BI.UI, BI.Arrays.Strings;
+  BI.Data, BI.Data.Gridify, BI.Data.Rank, BI.UI, BI.Arrays.Strings,
+  BI.Demos.RandomTable;
 
-function BigRandomTable:TDataItem;
-const
-  PersonNames:Array[0..4] of String=('Johnny','Mike','Angela','Julia','Claire');
-  ColorNames:Array[0..3] of String=('Red','Blue','Yellow','Green');
-
-  Max_Year=500;
-
-var Year,
-    Person,
-    Colors,
-    Happiness : TDataItem;
-
-    tmpRow,
-    t,
-    p : Integer;
-begin
-  result:=TDataItem.Create(True);
-
-  Year:=result.Items.Add('Year',TDataKind.dkInt32);
-  Person:=result.Items.Add('Person',TDataKind.dkText);
-  Happiness:=result.Items.Add('Happiness',TDataKind.dkSingle);
-  Colors:=result.Items.Add('Color',TDataKind.dkText);
-
-//  result.Resize((Max_Year+1)*5);
-
-  for t:=0 to Max_Year do
-      for p:=0 to 4 do
-      if Random(1000)<500 then
-      begin
-        //tmpRow:=(t*5)+p;
-
-        result.Resize(result.Count+1);
-        tmpRow:=result.Count-1;
-
-        Year.Int32Data[tmpRow]:=2016+t;
-        Person.TextData[tmpRow]:=PersonNames[p];
-        Happiness.SingleData[tmpRow]:=Random(1000)*0.1;
-        Colors.TextData[tmpRow]:=ColorNames[Random(Length(ColorNames))];
-      end;
-
-  result.SortBy(Happiness);
-end;
-
+// Use the grid "Colorize" feature on "Rank" field (if available)
 procedure TFromGridify.TryColorizeRanks;
 var tmp : TDataColorizers;
     tmpRank : TDataItem;
@@ -92,6 +72,7 @@ begin
   BIGrid2.Colorize(tmp);
 end;
 
+// Creates a new TDataItem using TDataRank, based on "Happiness" values
 procedure TFromGridify.AddRank;
 var tmp,
     tmpRank : TDataItem;
@@ -104,7 +85,7 @@ begin
 
   tmpRank.Name:='Rank';
 
-  // Add "Rank" to table
+  // Add new "Rank" field to table
   tmp.Items.Add(tmpRank);
 end;
 
@@ -112,14 +93,19 @@ end;
 {$DEFINE XE7}
 {$ENDIF}
 
-procedure TFromGridify.DoGridify;
+// Execute TGridify tests
+procedure TFromGridify.BIGrid2Resize(Sender: TObject);
+begin
+  // Cosmetic
+  Label3.Left:=BIGrid2.Left;
+end;
+
+procedure TFromGridify.DoGridify(const TestNumber:Integer);
 var Year,
     Person,
     Happiness : TDataItem;
 
     tmp : TDataItem;
-
-    t1 : TStopWatch;
 
     {$IFNDEF XE7}
     DataRows, DataColumns : TDataArray;
@@ -130,13 +116,11 @@ begin
   Person:=BIGrid1.Data['Person'];
   Happiness:=BIGrid1.Data['Happiness'];
 
-  t1:=TStopwatch.StartNew;
-
-  case LBTest.ItemIndex of
+  case TestNumber of
 
     {$IFDEF XE7}
     0: tmp:=TGridify.From(Happiness,[Year],[Person]);
-    1: tmp:=TGridify.FromItems(BIGrid1.Data,'Happiness',['Year'],['Person']);
+    1: tmp:=TGridify.FromItems(BIGrid1.Data,'Year',['Color'],['Person']);
 
     {$ELSE}
     // Pre-XE7 limitation, cannot pass arrays inline
@@ -153,17 +137,17 @@ begin
 
     1: begin
          SetLength(RowNames,1);
-         RowNames[0]:='Year';
+         RowNames[0]:='Color';
 
          SetLength(ColumnNames,1);
          ColumnNames[0]:='Person';
 
-         tmp:=TGridify.FromItems(BIGrid1.Data,'Happiness',RowNames,ColumnNames);
+         tmp:=TGridify.FromItems(BIGrid1.Data,'Year',RowNames,ColumnNames);
        end;
 
     {$ENDIF}
 
-    2: tmp:=TGridify.From(BIGrid1.Data,'Happiness','Year','Person');
+    2: tmp:=TGridify.From(BIGrid1.Data,'Person','Year','Color');
     3: tmp:=TGridify.From(BIGrid1.Data,'Color','Year','Person');
     4: tmp:=TGridify.From(BIGrid1.Data,'Color','Person','Year');
     5: tmp:=TGridify.From(BIGrid1.Data,'Rank','Year','Person');
@@ -174,8 +158,6 @@ begin
   end;
 
   BIGrid2.Data:=tmp;
-
-  Caption:=t1.ElapsedMilliseconds.ToString;
 end;
 
 procedure TFromGridify.FormCreate(Sender: TObject);
@@ -185,15 +167,21 @@ begin
   AddRank;
   BIGrid1.RefreshData;
 
-  LBTest.ItemIndex:=4;
+  // Start with test number 5
+  LBTest.ItemIndex:=5;
   LBTestClick(Self);
-
-  TryColorizeRanks;
 end;
 
 procedure TFromGridify.LBTestClick(Sender: TObject);
+var t1 : TStopWatch;
 begin
-  DoGridify;
+  t1:=TStopwatch.StartNew;
+
+  DoGridify(LBTest.ItemIndex);
+
+  Label1.Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
+
+  TryColorizeRanks;
 end;
 
 end.

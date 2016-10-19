@@ -3,7 +3,7 @@ program TeeBI_Gridify_Table;
 uses
   Vcl.Forms,
   Unit_Main_Gridify in 'Unit_Main_Gridify.pas' {FromGridify},
-  BI.Data.Gridify in '..\..\..\..\..\..\Sources\BI.Data.Gridify.pas';
+  BI.Demos.RandomTable in 'BI.Demos.RandomTable.pas';
 
 {$R *.res}
 
