@@ -1,6 +1,123 @@
 # TeeBI Release Notes
 -------------------
 
+## 12th-December-2016 Beta 17
+
+Due to [TeeGrid](https://github.com/Steema/TeeGrid) new control release, TeeBI development has been slower than expected. 
+
+Speed will come back again in the near future.
+
+- Support for RAD Studio XE 10.1 Berlin Update 2 "Anniversary Edition"
+
+- New TTeeBISource class to enable using TChart control with TeeBI data-items. Design-time and run-time support.
+
+  See [this example](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/TeeChart/Connect)
+  
+- Fixes and improvements in [Wikipedia](https://github.com/Steema/BI/tree/master/demos/delphi/firemonkey/Wikipedia) demo
+
+- New "Sample Data\Stock Data" database, and updated "Sample Data\Geo" database with more countries and entities:
+
+ Canada
+ 
+ India
+ 
+ Indonesia
+ 
+ Mexico
+ 
+ Netherlands
+ 
+ Portugal
+ 
+ South Africa
+ 
+ South Korea
+ 
+ Switzerland
+
+- New TDataCompare.Compare overload method to add the differences between two TDataItem into a third TDataItem
+
+- Improved support importing HTML tables, detect RowSpan attributes
+
+- Improved JSON importing:
+
+  Detecting the minimum numeric type (integer, float, etc)
+  
+  New class var EngineClass of type TJSONEngineClass to enable using alternative libraries like SuperObject
+
+- Improved XML importing:
+
+  New class var EngineClass of type TXMLEngineClass to enable using alternative XML libraries like Omni, OXml etc
+  
+- New [TDataMerge](https://github.com/Steema/BI/blob/master/src/delphi/BI.Data.Merge.pas) methods
+
+  Common, Different and Subtract: compare two sets of rows and return results in a TDataItem
+  
+  FromData: merges multiple TDataItem into a single one
+  
+- New [BI.Data.Tools](https://github.com/Steema/BI/blob/master/src/delphi/BI.Data.Tools.pas) unit, contains "Split" and "Normalize" methods
+
+  Split: Divides rows into two sets using several optional parameters (random, percentage, etc)
+  
+  Normalize: Modifies a TDataItem values to "fit" into the 0..1 range (for any kind of data)
+  
+- Extensive refactoring to TBIWorkflow component
+
+  Improved design-time, several new workflow actions: 
+  
+  Convert
+  
+  Delete
+  
+  Query
+  
+  NewItem
+  
+  Reorder
+  
+  Compare
+  
+  Merge
+  
+  Split
+  
+  Sort
+  
+  DataRank
+  
+  DataGridify
+  
+  Duplicate
+  
+  Rename
+  
+  Transpose
+  
+  Normalize
+  
+  Filter
+  
+  Shuffle
+  
+  GroupBy
+
+- Fixes to TBIDataSet master-detail link mode
+
+  New MasterDataLinkClass variable enables using a custom class derived from TBIMasterDataLink
+  
+- Improved TBIChart control
+
+- New TBITree OnExpanding event
+
+- Several new editor dialogs for the TBIWorkflow different action item classes
+
+- Improved TBIGrid user interface for its "Search" functionality
+
+- More XE4 / XE5 specific fixes
+
+- Experimental [BI.Data.DB.ZeosLib](https://github.com/Steema/BI/blob/master/src/delphi/BI.Data.DB.ZeosLib.pas) plugin unit for Zeos Database library
+
+
 ## 5th-October-2016 Beta 16
 
 Lots of improvements for this release, and more to come !
