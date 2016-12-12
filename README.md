@@ -3,9 +3,9 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 16, October-5th 2016)
+[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 17, December-12th 2016)
 
-[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 16)
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 17)
 
  
 ### What is TeeBI ?
@@ -58,4 +58,4 @@ A simple class to implement in-memory database complex structures to provide:
 
 - [TeeBI Google+ Community](https://plus.google.com/u/0/communities/117324086536146457211)
 - Website: <http://www.steebi.com>
-
+- [TeeGrid Control](https://github.com/Steema/TeeGrid)
