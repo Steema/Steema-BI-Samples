@@ -120,9 +120,11 @@ type
 
     procedure Delete(const APosition:TInteger);
 
+    function DetailIndex(const AMasters,ADetails:TDataArray; const AIndex:TInteger):TExpressions; overload;
+
     class function DetailIndex(const AData:TDataItem;
                                const AMasters,ADetails:TDataArray;
-                               const AIndex:TInteger):TCursorIndex; static;
+                               const AIndex:TInteger):TCursorIndex; overload; static;
 
     procedure GuessItems(const S:String);
 
@@ -383,8 +385,6 @@ type
     procedure GetItems(const AData:TDataItem); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   public
-    Destructor Destroy; override;
-
     procedure Assign(Source:TPersistent); override;
     function Calculate:TDataItem; overload;
     procedure Calculate(const AData:TDataItem); overload;
@@ -400,11 +400,22 @@ type
   TDataClone=record // class(TBaseDataImporter) ?
   public
     class function Clone(const AData:TDataItem):TDataItem; overload; static;
-    class procedure Clone(const ASource,ADest:TDataItem); overload; static;
-    class function CloneStructure(const AData:TDataItem; const AItems:TDataArray=nil):TDataItem; static;
+    class function Clone(const AData:TDataItem; const AIndex:TNativeIntArray):TDataItem; overload; static;
+
+    class procedure Clone(const ASource,ADest:TDataItem; const AItems:TDataArray=nil); overload; static;
+
+    class procedure CloneStructure(const ADest,AData:TDataItem;
+                                   const AItems:TDataArray=nil); overload; static;
+
+    class function CloneStructure(const AData:TDataItem;
+                                  const AItems:TDataArray=nil):TDataItem; overload; static;
+
     class procedure CopyData(const ASource,ADest:TDataItem;
                              const AIndex,ADestPos:TInteger;
-                             const AItems:TDataArray=nil); static;
+                             const AItems:TDataArray=nil); overload; static;
+
+    class procedure CopyData(const ASource,ADest:TDataArray;
+                             const AIndex,ADestPos:TInteger); overload; static;
   end;
 
 implementation

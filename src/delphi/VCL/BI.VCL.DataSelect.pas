@@ -33,7 +33,7 @@ type
     TabStore: TTabSheet;
     TabComponent: TTabSheet;
     PanelButtons: TPanel;
-    Panel2: TPanel;
+    PanelAlignButtons: TPanel;
     BOK: TButton;
     BCancel: TButton;
     BClear: TButton;
@@ -44,17 +44,19 @@ type
     Import1: TMenuItem;
     Query1: TMenuItem;
     Panel1: TPanel;
-    Button1: TButton;
+    BNew: TButton;
+    CustomData1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure BClearClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure Query1Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BNewClick(Sender: TObject);
     procedure Database1Click(Sender: TObject);
     procedure Files1Click(Sender: TObject);
     procedure Web1Click(Sender: TObject);
+    procedure CustomData1Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -81,11 +83,11 @@ type
                            const AEdited:TBIDataControl); overload; static;
 
     class function Choose(const AOwner:TComponent;
-                           const AEdited:TComponent):TDataItem; overload; static;
+                          const AEdited:TComponent):TDataItem; overload; static;
 
     class function Choose(const AOwner:TComponent;
                           const AEdited:TComponent;
-                          out AData:TDataItem;
+                          var AData:TDataItem;
                           const AFilterOwner:TComponent=nil):Boolean; overload; static;
 
     class function Embedd(const AOwner:TComponent;

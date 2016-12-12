@@ -31,6 +31,7 @@ type
     function GetTotals:Boolean; virtual; abstract;
     procedure SetDataSource(const Value: TDataSource); virtual; abstract;
     procedure SetOnRowChanged(const AEvent:TNotifyEvent); virtual; abstract;
+    procedure SetPopup(const Value:TPopupMenu); virtual; abstract;
     procedure SetReadOnly(const Value:Boolean); virtual; abstract;
     procedure SetTotals(const Value:Boolean); virtual; abstract;
   public
@@ -73,6 +74,8 @@ type
     IPluginRight : TBIGridPlugin;
 
     procedure ControlDblClick(Sender: TObject);
+    procedure CopyTable(Sender:TObject);
+    function CreatePopup(const AOwner:TBIGridPlugin):TPopupMenu;
     function GetCurrentRow: Integer;
     function GetReadOnly: Boolean;
     function HasSubItem: Boolean;
@@ -130,11 +133,13 @@ type
 
     class procedure AddForm(const AForm: TCommonCustomForm; const AParent: TFmxObject); static;
     class function AutoTest:Boolean; static;
+    class procedure CopyToClipboard(const AText:String); static;
     class procedure GotoURL(const AOwner:TControl; const AURL:String); static;
     class function Input(const ATitle,ACaption,ADefault:String; out AValue:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCommonCustomForm; const Key:String); static;
     class procedure Popup(const APopup:TPopupMenu; const AControl:TControl); static;
     class procedure SavePosition(const AForm:TCommonCustomForm; const Key:String); static;
+    class function SelectFolder(var AFolder: String): Boolean; static;
     class function YesNo(const AMessage:String):Boolean; static;
   end;
 

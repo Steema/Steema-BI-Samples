@@ -29,7 +29,9 @@ uses
   BI.Expression, BI.VCL.Editor.Sort, BI.VCL.DataManager;
 
 type
-  TOnShowQueryEditor=procedure(const AEditor:TForm);
+  TOnShowQueryEditor=procedure(const AParent:TWinControl;
+                               const AProvider:TComponent;
+                               const AData:TDataItem);
 
   TBIQueryEditor = class(TForm)
     PanelSelector: TPanel;

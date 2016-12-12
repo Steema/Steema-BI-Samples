@@ -32,7 +32,7 @@ object BIChartEditor: TBIChartEditor
         Top = 0
         Width = 354
         Height = 332
-        ActivePage = Tab2D
+        ActivePage = Tab3D
         Align = alClient
         TabOrder = 0
         object Tab2D: TTabSheet
@@ -569,6 +569,7 @@ object BIChartEditor: TBIChartEditor
               'Candle'
               'Point and Figure')
             TabOrder = 5
+            OnClick = LBFinancialClick
           end
           object CBVolume: TComboBox
             Left = 71
@@ -802,17 +803,6 @@ object BIChartEditor: TBIChartEditor
           TabOrder = 0
           OnClick = Button1Click
         end
-      end
-      object BIGrid1: TBIGrid
-        Left = 0
-        Top = 41
-        Width = 483
-        Height = 291
-        Align = alClient
-        UseDockManager = False
-        ParentBackground = False
-        ParentColor = False
-        TabOrder = 1
       end
     end
   end

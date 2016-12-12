@@ -119,7 +119,7 @@ type
     function Current:TFilterItem;
     function CurrentData:TDataItem;
     procedure DoChanged;
-    procedure Expanding(Sender: TObject; Node: TTreeNode; var AllowExpansion: Boolean);
+    procedure Expanding(Sender: TObject; const Node: TBITreeNode; var AllowExpansion: Boolean);
     function HasDummy(const ANode:TBITreeNode):Boolean;
     function ParseError(const APos:Integer; const AMessage:String):Boolean;
     procedure RefreshProperties(const AItem:TFilterItem);

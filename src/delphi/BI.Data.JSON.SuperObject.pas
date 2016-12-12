@@ -27,7 +27,10 @@ var J : TBIJSON;
 interface
 
 uses
-  BI.Data.JSON, SuperObject;
+  BI.Data.JSON,
+
+  // Unit not found? Download SuperObject from: http://www.progdigy.com
+  SuperObject;
 
 type
   TSuperObjectJSON=class(TJSONEngine)

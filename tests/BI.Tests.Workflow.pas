@@ -195,7 +195,7 @@ end;
 
 procedure TBIWorkflowTests.TestCloneItem;
 begin
-  DoTest(TCloneItem);
+  DoTest(TCloneProvider);
 end;
 
 procedure TBIWorkflowTests.TestCompareItem;

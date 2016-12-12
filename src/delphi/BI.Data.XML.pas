@@ -36,6 +36,8 @@ type
     function Text:String; virtual; abstract;
   end;
 
+  TXmlEngineClass=class of TXmlEngine;
+
   TBIXML=class(TBIHierarchicalSource)
   private
     FExclude : TTextArray;
@@ -44,6 +46,9 @@ type
   protected
     XML : TXmlEngine;
   public
+    class var
+      EngineClass : TXmlEngineClass;
+
     Constructor CreateEngine(const AEngine:TXmlEngine);
     Destructor Destroy; override;
 

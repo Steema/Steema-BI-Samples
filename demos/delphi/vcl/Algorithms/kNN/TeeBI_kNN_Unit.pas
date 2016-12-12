@@ -9,7 +9,7 @@ uses
   Vcl.ComCtrls, Vcl.StdCtrls, VCLTee.Series,
   BI.VCL.R.Console,
   BI.Algorithm.Model, BI.DataSource, System.Diagnostics, BI.VCL.DataViewer,
-  BI.VCL.DataControl;
+  BI.VCL.DataControl, BI.VCL.Chart.Plugin;
 
 // Dependencies:
 // To use the native R <--> Delphi access, the following libraries are required:
@@ -20,17 +20,17 @@ Paths:
 
 https://github.com/SigmaSciences/opaR
 
-opaR\Src
-opaR\Src\Devices
+  opaR\Src
+  opaR\Src\Devices
 
 https://bitbucket.org/sglienke/spring4d
 
-Spring4D\Source\Base
-Spring4D\Source\Base\Collections
+  Spring4D\Source\Base
+  Spring4D\Source\Base\Collections
 
 https://github.com/malcolmgroves/generics.tuples
 
-generics.tuples\src
+  generics.tuples\src
 
 *)
 
@@ -97,7 +97,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.CSV, System.IOUtils, BI.UI, BI.Algorithm,
+  BI.Data.CSV, System.IOUtils, BI.UI, BI.Algorithm, BI.Data.Tools,
   BI.Algorithm.Classify, BI.Algorithm.Regression, BI.Persist,
   BI.Plugins.R, BI.Plugins.R.opaR,
 
@@ -140,17 +140,23 @@ begin
   end;
 end;
 
+// Create and visualize a "Cross Table" using current model output
 procedure TFormkNN.Button1Click(Sender: TObject);
 var Cross : TBICrossTable;
+    Output : TDataItem;
 begin
   Cross:=TBICrossTable.Create(nil);
   try
     Cross.Real:=Model.Predicted.Items[1];
     Cross.Predicted:=Model.Predicted.Items[2];
 
-    Cross.Calculate;
+    Output:=TDataItem.Create(Cross);
+    try
+      TDataViewer.View(Self,Output);
+    finally
+      Output.Free;
+    end;
 
-    TDataViewer.View(Self,Cross.Output);
   finally
     Cross.Free;
   end;
@@ -180,7 +186,7 @@ begin
   Attributes:=Normalized.Items.Select(1,4);
 
   // Do normalization of numeric columns
-  TModel.Normalize(Attributes);
+  TDataNormalize.Normalize(Attributes);
 
   // Visualization
 
@@ -201,8 +207,7 @@ procedure AddLinearRegression(const AChart:TChart; const X,Y:TDataItem);
 const
   LinearTitle='Linear Regression';
 
-  // Returns the series in BIChart1 that will contain the linear regression
-  // output.
+  // Returns the series in AChart containing the linear regression output
   function FindLinearSeries:TChartSeries;
   var t : Integer;
   begin
@@ -213,31 +218,40 @@ const
     result:=nil;
   end;
 
+  // Add two points at min and max using the Regression slope
+  procedure AddPoints(const Regression:TLinearRegression;
+                      const ASeries:TChartSeries);
+  var MinX,
+      MaxX : TChartValue;
+  begin
+    MinX:=AChart.MinXValue(AChart.Axes.Bottom);
+    MaxX:=AChart.MaxXValue(AChart.Axes.Bottom);
+
+    ASeries.AddXY(MinX,(Regression.M*MinX)+Regression.B);
+    ASeries.AddXY(MaxX,(Regression.M*MaxX)+Regression.B);
+  end;
+
 var L : TLinearRegression;
     S : TChartSeries;
-    MinX,
-    MaxX : TChartValue;
 begin
+  // Try to reuse existing Line series
   S:=FindLinearSeries;
 
-  if S<>nil then
-     S.Free;
+  if S=nil then
+  begin
+    // Create Line series if it does not exist yet
+    S:=AChart.AddSeries(TLineSeries);
+    S.Title:=LinearTitle;
+  end;
 
+  // Calculate regression
   L:=TLinearRegression.Create(nil);
   try
     L.X:=X;
     L.Y:=Y;
-
     L.Calculate;
 
-    MinX:=AChart.MinXValue(AChart.Axes.Bottom);
-    MaxX:=AChart.MaxXValue(AChart.Axes.Bottom);
-
-    S:=AChart.AddSeries(TLineSeries);
-    S.Title:=LinearTitle;
-
-    S.AddXY(MinX,(L.M*MinX)+L.B);
-    S.AddXY(MaxX,(L.M*MaxX)+L.B);
+    AddPoints(L,S);
   finally
     L.Free;
   end;
@@ -245,6 +259,7 @@ end;
 
 procedure TFormkNN.Button3Click(Sender: TObject);
 begin
+  // Add a new Line series to chart, with a Linear Regression calculation
   AddLinearRegression(BIChart1.Chart,Data['Petal.Length'],Data['Petal.Width']);
 end;
 
@@ -256,11 +271,13 @@ end;
 
 procedure TFormkNN.CBNativeRClick(Sender: TObject);
 begin
+  // Choose between "native" R and "command line" R
   if CBNativeR.Checked then
      TBIREngine.Engine:=TopaR.Create
   else
      TBIREngine.Engine:=TRCommand.Create;
 
+  // Redirect R output to our console memo
   TBIREngine.Engine.Output:=RConsole.Memo.Lines;
 end;
 
@@ -281,7 +298,7 @@ begin
   Model.Attributes:=Attributes;
 
   // Tell model we are going to use 2/3 of data to train, 1/3 to test
-  Model.Split(2/3);
+  Model.Split.Percent:=100*(2/3);
 
   // Do train and test
   t1:=TStopwatch.StartNew;
@@ -299,11 +316,14 @@ end;
 
 procedure TFormkNN.FormCreate(Sender: TObject);
 begin
+  // Create an R Console form
   RConsole:=TBIRConsole.Create(Self);
   TUICommon.AddForm(RConsole,TabConsole);
 
+  // Initialize R engine
   CBNativeRClick(Self);
 
+  // Add all registered Model classes to CBModel combobox
   TAllModels.AllModels(CBModel.Items);
   CBModel.ItemIndex:=CBModel.Items.IndexOfObject(TObject(TBINearestNeighbour));
 
@@ -315,6 +335,7 @@ end;
 
 procedure TFormkNN.FormDestroy(Sender: TObject);
 begin
+  // Clear all calculated data to avoid memory leaks
   Data.Free;
   Normalized.Free;
   BIGrid2.Data.Free;

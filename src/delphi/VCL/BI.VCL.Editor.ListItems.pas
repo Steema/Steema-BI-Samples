@@ -1,6 +1,21 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Items Selector Editor Dialog               }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.ListItems;
 
 interface
+
+// This dialog can be used to select and re-order child Items of a TDataItem.
+
+(*
+  Using this dialog does not modify the Data.
+
+  Use the Items function to obtain the array of checked items with the
+  desired order.
+*)
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
@@ -19,6 +34,10 @@ type
     SBDown: TSpeedButton;
     BAll: TButton;
     BNone: TButton;
+    PanelButtons: TPanel;
+    PanelOk: TPanel;
+    BOk: TButton;
+    BCancel: TButton;
     procedure LBItemsClick(Sender: TObject);
     procedure LBItemsDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure LBItemsDragOver(Sender, Source: TObject; X, Y: Integer;
@@ -59,6 +78,10 @@ type
     procedure Check(const AIndex:Integer; const ACheck:Boolean);
     procedure CheckAll(const ACheck:Boolean=True);
     function CheckedCount:Integer;
+
+    class function Edit(const AOwner:TComponent;
+                        var AItems:TDataArray;
+                        const AllChecked:Boolean=True):Boolean; static;
 
     class function Embed(const AOwner:TComponent; const AParent:TWinControl):TFormListItems; static;
 

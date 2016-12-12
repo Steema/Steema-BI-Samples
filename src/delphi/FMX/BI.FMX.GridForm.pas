@@ -10,14 +10,14 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types,
 
-  {$IF CompilerVersion<=27}
-  {$DEFINE HASFMX20}
-  {$ENDIF}
-
   FMX.Controls, FMX.Forms,
 
   {$IF CompilerVersion>25}
   FMX.Graphics,
+  {$ENDIF}
+
+  {$IF CompilerVersion<=27}
+  {$DEFINE HASFMX20}
   {$ENDIF}
 
   {$IFNDEF HASFMX20}
@@ -38,6 +38,8 @@ type
   private
     { Private declarations }
 
+    FOnDataChange : TNotifyEvent;
+
     procedure DataChange(Sender: TObject; Field: TField);
     procedure SetDataItem(const AData:TDataItem);
   public
@@ -51,6 +53,8 @@ type
     procedure MakeEditable;
 
     class function Present(const AOwner:TComponent; const AData:TDataItem):TModalResult; overload;
+
+    property OnDataChange:TNotifyEvent read FOnDataChange write FOnDataChange;
   end;
 
 implementation

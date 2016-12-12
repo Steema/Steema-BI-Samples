@@ -8,6 +8,11 @@ unit BI.Algorithm.Register;
 
 interface
 
+{
+  This unit uses and registers all available Machine-Learning algorithms
+}
+
+
 {$IFNDEF IOS}
 {$IFNDEF ANDROID}
 {$DEFINE USE_PYTHON}

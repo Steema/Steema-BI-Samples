@@ -26,7 +26,7 @@ uses
   {$ENDIF}
 
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.Grids, BI.Data, Vcl.Menus;
+  Vcl.StdCtrls, Vcl.Grids, BI.Data, Vcl.Menus, Vcl.ExtCtrls;
 
 type
   TFilterEvent=procedure(Sender: TComponent; var Valid:Boolean) of object;
@@ -35,6 +35,10 @@ type
     Tree: TTreeView;
     PopupMenu1: TPopupMenu;
     ViewData1: TMenuItem;
+    PanelButtons: TPanel;
+    PanelOk: TPanel;
+    BOk: TButton;
+    BCancel: TButton;
     procedure FormShow(Sender: TObject);
     procedure TreeChange(Sender: TObject; Node: TTreeNode);
     procedure PopupMenu1Popup(Sender: TObject);
@@ -47,11 +51,14 @@ type
 
     IComponents : {$IFDEF FPC}TFPGList{$ELSE}TList{$ENDIF}<TComponent>;
 
+    FRoot : TDataItem;
+
     FOnFilter : TFilterEvent;
     FOnSelected : TNotifyEvent;
 
     function CalcName(const AComponent:TComponent; const AName:String):String;
     function CanAdd(const AComponent:TComponent):Boolean;
+    procedure DoAddData(const AParent:TTreeNode; const AData:TDataItem);
     procedure FillTree;
   protected
     FCurrent : TObject;
@@ -76,12 +83,26 @@ type
     class function Import(const AOwner:TComponent; const AObject:TObject):TDataItem; static;
 
     class function Choose(const AOwner,AEdited:TComponent;
-                    const ACurrent:TComponent=nil):TComponent; static;
+                          const ACurrent:TComponent=nil):TComponent; overload; static;
+
+    // Select a data item from ARoot
+    class function Choose(const AOwner:TComponent; const ARoot:TDataItem;
+                          const ACurrent:TDataItem=nil):TDataItem; overload; static;
+
+    // Multi Select an array of data items from ARoot
+    class function ChooseMany(const AOwner:TComponent; const ARoot:TDataItem;
+                              const ACurrent:TDataItem=nil;
+                              const Compatible:Boolean=False):TDataArray; static;
+
+    class function Embedd(const AOwner:TComponent;
+                          const AParent:TWinControl;
+                          const ARoot:TDataItem):TDataComponent; static;
 
     procedure Select(const AObject:TObject);
 
     function Selected:TComponent;
     function SelectedData:TDataItem;
+    function SelectedItems:TDataArray;
 
     property OnFilter:TFilterEvent read FOnFilter write FOnFilter;
     property OnSelected:TNotifyEvent read FOnSelected write FOnSelected;

@@ -2,7 +2,7 @@ object DataEditor: TDataEditor
   Left = 220
   Top = 210
   Caption = 'Data Definition Editor'
-  ClientHeight = 436
+  ClientHeight = 445
   ClientWidth = 518
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,6 +11,7 @@ object DataEditor: TDataEditor
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -20,30 +21,23 @@ object DataEditor: TDataEditor
     Left = 0
     Top = 0
     Width = 518
-    Height = 395
-    ActivePage = TabUnknown
+    Height = 404
+    ActivePage = TabFiles
     Align = alClient
     TabOrder = 0
     object TabFiles: TTabSheet
       Caption = 'Files'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControlFile: TPageControl
         Left = 0
         Top = 0
         Width = 510
-        Height = 367
+        Height = 376
         ActivePage = TabFile
         Align = alClient
         TabOrder = 0
+        OnChange = PageControlFileChange
         object TabFile: TTabSheet
           Caption = 'Single File'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label2: TLabel
             Left = 16
             Top = 16
@@ -87,10 +81,6 @@ object DataEditor: TDataEditor
         object TabFolder: TTabSheet
           Caption = 'Folder'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label3: TLabel
             Left = 16
             Top = 16
@@ -204,10 +194,6 @@ object DataEditor: TDataEditor
         object TabFTP: TTabSheet
           Caption = 'FTP'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label18: TLabel
             Left = 20
             Top = 16
@@ -312,24 +298,16 @@ object DataEditor: TDataEditor
     object TabDatabase: TTabSheet
       Caption = 'Database'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControlDBItems: TPageControl
         Left = 0
         Top = 0
         Width = 510
-        Height = 367
+        Height = 376
         ActivePage = TabConnection
         Align = alClient
         TabOrder = 0
         object TabConnection: TTabSheet
           Caption = 'Connection'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label7: TLabel
             Left = 16
             Top = 8
@@ -441,7 +419,7 @@ object DataEditor: TDataEditor
           end
           object MemoDBTest: TMemo
             Left = 0
-            Top = 285
+            Top = 294
             Width = 502
             Height = 54
             Align = alBottom
@@ -471,24 +449,16 @@ object DataEditor: TDataEditor
         object SQL: TTabSheet
           Caption = 'Items'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object PageControl3: TPageControl
             Left = 0
             Top = 0
             Width = 502
-            Height = 339
+            Height = 348
             ActivePage = TabItemAllDB
             Align = alClient
             TabOrder = 0
             object TabItemAllDB: TTabSheet
               Caption = 'All'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object LDBExclude: TLabel
                 Left = 16
                 Top = 96
@@ -567,15 +537,11 @@ object DataEditor: TDataEditor
             object TabSQL: TTabSheet
               Caption = 'Custom SQL'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object MemoSQL: TMemo
                 Left = 0
                 Top = 0
                 Width = 494
-                Height = 311
+                Height = 320
                 Align = alClient
                 Lines.Strings = (
                   'select * from')
@@ -589,10 +555,6 @@ object DataEditor: TDataEditor
         object TabDBOptions: TTabSheet
           Caption = 'Options'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object CBParallel: TCheckBox
             Left = 16
             Top = 16
@@ -617,15 +579,11 @@ object DataEditor: TDataEditor
     object TabWeb: TTabSheet
       Caption = 'BI Web'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LayoutWebData: TPanel
         Left = 0
         Top = 257
         Width = 510
-        Height = 110
+        Height = 119
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
@@ -674,10 +632,6 @@ object DataEditor: TDataEditor
         TabOrder = 1
         object TabHttpServer: TTabSheet
           Caption = 'Server'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label4: TLabel
             Left = 12
             Top = 8
@@ -804,10 +758,6 @@ object DataEditor: TDataEditor
         object TabHttpProxy: TTabSheet
           Caption = 'Proxy'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label13: TLabel
             Left = 12
             Top = 16
@@ -890,28 +840,15 @@ object DataEditor: TDataEditor
     object TabManual: TTabSheet
       Caption = 'Manual'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
-    object TabUnknown: TTabSheet
+    object TabStyle: TTabSheet
       Caption = 'Style'
       ImageIndex = 4
       ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object LabelUnknown: TLabel
-        Left = 24
-        Top = 24
-        Width = 123
-        Height = 13
-        Caption = 'Missing data definition file'
-      end
+      ExplicitTop = 22
       object RGKind: TRadioGroup
-        Left = 24
-        Top = 56
+        Left = 16
+        Top = 16
         Width = 225
         Height = 169
         Caption = '&Import Style:'
@@ -923,13 +860,12 @@ object DataEditor: TDataEditor
           'Custom (manual)')
         TabOrder = 0
         Visible = False
-        OnClick = RGKindClick
       end
     end
   end
   object PanelButtons: TPanel
     Left = 0
-    Top = 395
+    Top = 404
     Width = 518
     Height = 41
     Align = alBottom
@@ -950,6 +886,7 @@ object DataEditor: TDataEditor
         Height = 25
         Caption = 'OK'
         Default = True
+        Enabled = False
         ModalResult = 1
         TabOrder = 0
         OnClick = BOKClick

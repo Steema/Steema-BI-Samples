@@ -19,7 +19,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
   VclTee.TeeConst, VclTee.TeeEditCha, BI.VCL.Chart, BI.VCL.DataControl,
-  BI.VCL.Grid, Vcl.Buttons, Vcl.CheckLst, BI.Data,
+  BI.VCL.Grid, BI.VCL.GridForm, Vcl.Buttons, Vcl.CheckLst, BI.Data,
 
   {$IFDEF FPC}
   {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
@@ -126,7 +126,6 @@ type
     CBAutoMap: TCheckBox;
     CBMap: TComboBox;
     CBCities: TCheckBox;
-    BIGrid1: TBIGrid;
     CBMap3D: TCheckBox;
     procedure PageControl1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -167,6 +166,7 @@ type
     procedure CBCitiesClick(Sender: TObject);
     procedure CBMap3DClick(Sender: TObject);
     procedure CBMapChange(Sender: TObject);
+    procedure LBFinancialClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -176,6 +176,8 @@ type
 
     IListY,
     IListYTable : TFormListItems;
+
+    IGrid : TBIGridForm;
 
     {$IFDEF TEEPRO}
     ChartEditor : TChartEditorPanel;

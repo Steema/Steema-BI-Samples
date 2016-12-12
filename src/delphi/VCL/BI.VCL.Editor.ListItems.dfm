@@ -11,13 +11,14 @@ object FormListItems: TFormListItems
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poOwnerFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object LBItems: TCheckListBox
     Left = 0
     Top = 33
     Width = 331
-    Height = 258
+    Height = 217
     OnClickCheck = LBItemsClickCheck
     Align = alClient
     DragMode = dmAutomatic
@@ -74,6 +75,48 @@ object FormListItems: TFormListItems
       Enabled = False
       TabOrder = 1
       OnClick = BNoneClick
+    end
+  end
+  object PanelButtons: TPanel
+    Left = 0
+    Top = 250
+    Width = 331
+    Height = 41
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 2
+    Visible = False
+    ExplicitWidth = 310
+    object PanelOk: TPanel
+      Left = 142
+      Top = 0
+      Width = 189
+      Height = 41
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitLeft = 121
+      object BOk: TButton
+        Left = 14
+        Top = 8
+        Width = 75
+        Height = 25
+        Caption = 'Select'
+        Default = True
+        Enabled = False
+        ModalResult = 1
+        TabOrder = 0
+      end
+      object BCancel: TButton
+        Left = 102
+        Top = 8
+        Width = 75
+        Height = 25
+        Cancel = True
+        Caption = 'Cancel'
+        ModalResult = 2
+        TabOrder = 1
+      end
     end
   end
 end

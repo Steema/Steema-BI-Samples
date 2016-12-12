@@ -9,9 +9,9 @@ unit BI.Arrays;
 // Supported from ide XE4 and up (needed: record helpers)
 
 {$IF Declared(CompilerVersion)}
-{$IF CompilerVersion>=25}
-{$EXCESSPRECISION OFF} // x64 "to double" speedup (less precission)
-{$ENDIF}
+ {$IF CompilerVersion>=25}
+  {$EXCESSPRECISION OFF} // x64 "to double" speedup (less precission)
+ {$ENDIF}
 {$ENDIF}
 
 {$POINTERMATH ON}
@@ -22,9 +22,9 @@ uses
   System.SysUtils, System.DateUtils;
 
 {$IF Declared(CompilerVersion)}
-{$IF COMPILERVERSION>28}
-{.$DEFINE DELETEARRAY} // Very Slow !!!
-{$ENDIF}
+ {$IF CompilerVersion>28}
+  {.$DEFINE DELETEARRAY} // <--- Very Slow !!!
+ {$ENDIF}
 {$ENDIF}
 
 type

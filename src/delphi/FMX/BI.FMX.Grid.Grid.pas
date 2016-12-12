@@ -17,6 +17,7 @@ uses
   FMX.Bind.Editors, Data.Bind.Components,
   Data.Bind.DBScope, Data.Bind.Grid, FMX.Bind.Grid, BI.FMX.Grid, BI.DataSet,
   BI.Data, FMX.Controls, Data.DB, System.UITypes, BI.UI, FMX.Header,
+  FMX.Menus,
 
   {$IF CompilerVersion<26}
   {$DEFINE HASFMX20}
@@ -60,6 +61,8 @@ type
         {$ENDIF}
       public
         Constructor Create(AOwner:TComponent); override;
+
+        property ReadOnly default True;
       end;
 
     var
@@ -136,6 +139,7 @@ type
     procedure SetDataSource(const Value: TDataSource); override;
     procedure SetReadOnly(const Value:Boolean); override;
     procedure SetOnRowChanged(const AEvent:TNotifyEvent); override;
+    procedure SetPopup(const Value:TPopupMenu); override;
     procedure SetTotals(const Value:Boolean); override;
   public
     Constructor Create(const AOwner:TComponent); override;

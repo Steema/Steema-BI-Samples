@@ -28,7 +28,7 @@ object StoreStatus: TStoreStatus
       AutoSize = True
       Position.X = 80.000000000000000000
       Position.Y = 16.000000000000000000
-      Size.Width = 54.000000000000000000
+      Size.Width = 51.000000000000000000
       Size.Height = 16.000000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
@@ -585,12 +585,15 @@ object StoreStatus: TStoreStatus
     TabIndex = 0
     TabOrder = 1
     TabPosition = PlatformDefault
+    Sizes = (
+      640s
+      404s)
     object TabItem1: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = True
-      Size.Width = 59.000000000000000000
+      Size.Width = 60.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''

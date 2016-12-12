@@ -56,6 +56,20 @@ uses
 type
   TGridify=record
   public
+    {
+     Explanation of parameters:
+
+     AValue = Field to use as grid cells value
+     AData = Table that contains source fields
+     ARow / ARows = Fields that will be used at left side (vertical direction)
+     ACol / ACols = Fields that will be used at top side (horizontal direction)
+    }
+
+    // ADest is the target TDataItem that will contain the "gridify" output
+    class procedure Calculate(const ADest:TDataItem;
+                              const AValue:TDataItem;
+                              const ARows,ACols:TDataArray); static;
+
     class function From(const AValue:TDataItem;
                         const ARows,ACols:TDataArray):TDataItem; overload; static;
 

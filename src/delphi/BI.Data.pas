@@ -87,15 +87,21 @@ type
   public
     procedure Add(const AData:TDataItem); overload;
     procedure Add(const AData:TDataArray); overload;
+    procedure Clear; inline;
+    function Copy:TDataArray;
     function Count:Integer; inline;
     procedure Delete(const Index:Integer);
     function Equal(const Value:TDataArray):Boolean;
     procedure Exchange(const A,B:Integer);
     function Exists(const AData:TDataItem):Boolean; inline;
     function Find(const AName:String):TDataItem;
+    procedure FreeAll;
     function IndexOf(const AData:TDataItem):Integer; overload;
     function IndexOf(const AName:String):Integer; overload;
     procedure Insert(const AData:TDataItem; const AIndex:Integer);
+    procedure Remove(const AData:TDataItem);
+    function Subtract(const AItems:TDataArray):TDataArray; overload;
+    function Subtract(const AItem:TDataItem):TDataArray; overload;
   end;
 
   // Contains the list of sub-items of a TDataItem
@@ -402,13 +408,20 @@ type
     procedure ClearData(const Recursive:Boolean=False);
 
     function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):ShortInt;
-    procedure CopyFrom(const DestIndex:TInteger; const Source:TDataItem; const SourceIndex:TInteger);
+    procedure CopyFrom(const DestIndex:TInteger;
+                       const Source:TDataItem;
+                       const SourceIndex:TInteger); overload;
+
+    procedure CopyFrom(const DestIndex:TInteger;
+                       const Source:TDataMap;
+                       const SourceIndex:TInteger); overload;
 
     class function CreateIndexMulti(const Items:TDataArray):TNativeIntArray; static;
     procedure CreateMasterIndex;
 
     procedure Delete(const Row:TInteger; const ACount:TInteger=1);
     function DataToString(const Index:TInteger):String; overload;
+    function EqualsMap(const A,B:TInteger):Boolean;
     function FindInMap(const Index:TInteger; out ABin:TNativeInteger):Boolean;
     procedure Finish;
     function FullName:String;

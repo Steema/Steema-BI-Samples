@@ -66,6 +66,8 @@ begin
   // Start with a sample table:
   BIGrid1.Data:=TStore.Load('BISamples','SQLite_Demo')['Products'];
 
+  // BIGrid1.CurrentRow:=5; // <-- just a test to start at a given row
+
   // Tell the selector to locate our sample table:
   FSelector.Select(BIGrid1.Data);
 end;

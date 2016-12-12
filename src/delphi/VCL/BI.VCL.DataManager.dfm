@@ -3,8 +3,8 @@ object DataManager: TDataManager
   Top = 203
   ActiveControl = ESearch
   Caption = 'Data Manager'
-  ClientHeight = 468
-  ClientWidth = 547
+  ClientHeight = 492
+  ClientWidth = 633
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,24 +22,28 @@ object DataManager: TDataManager
   object Splitter1: TSplitter
     Left = 224
     Top = 41
-    Height = 386
+    Height = 410
+    ExplicitHeight = 386
   end
   object PanelButtons: TPanel
     Left = 0
-    Top = 427
-    Width = 547
+    Top = 451
+    Width = 633
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 427
+    ExplicitWidth = 547
     object PanelOk: TPanel
-      Left = 358
+      Left = 444
       Top = 0
       Width = 189
       Height = 41
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitLeft = 358
       object BOk: TButton
         Left = 14
         Top = 8
@@ -96,14 +100,15 @@ object DataManager: TDataManager
   object PanelSearch: TPanel
     Left = 0
     Top = 0
-    Width = 547
+    Width = 633
     Height = 41
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
     OnResize = PanelSearchResize
+    ExplicitWidth = 547
     object PanelStores: TPanel
-      Left = 273
+      Left = 359
       Top = 0
       Width = 274
       Height = 41
@@ -111,6 +116,7 @@ object DataManager: TDataManager
       BevelOuter = bvNone
       TabOrder = 0
       OnResize = PanelStoresResize
+      ExplicitLeft = 273
       object Label1: TLabel
         Left = 11
         Top = 14
@@ -151,11 +157,12 @@ object DataManager: TDataManager
     object Panel1: TPanel
       Left = 0
       Top = 0
-      Width = 273
+      Width = 359
       Height = 41
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitWidth = 273
       object LSearch: TLabel
         Left = 9
         Top = 14
@@ -178,7 +185,7 @@ object DataManager: TDataManager
     Left = 0
     Top = 41
     Width = 224
-    Height = 386
+    Height = 410
     Align = alLeft
     HideSelection = False
     HotTrack = True
@@ -189,116 +196,126 @@ object DataManager: TDataManager
     OnChange = TreeChange
     OnDblClick = TreeDblClick
     OnExpanding = TreeExpanding
+    ExplicitHeight = 386
   end
   object PageControl1: TPageControl
     Left = 227
     Top = 41
-    Width = 320
-    Height = 386
-    ActivePage = TabSettings
+    Width = 406
+    Height = 410
+    ActivePage = TabData
     Align = alClient
     TabOrder = 3
     OnChange = PageControl1Change
+    ExplicitWidth = 320
+    ExplicitHeight = 386
     object TabSettings: TTabSheet
       Caption = 'Settings'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 312
+      ExplicitHeight = 358
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object Label2: TLabel
-        Left = 11
-        Top = 44
-        Width = 57
-        Height = 13
-        Caption = 'Last import:'
-      end
-      object LLastImport: TLabel
-        Left = 11
-        Top = 63
-        Width = 5
-        Height = 13
-        Caption = '?'
-      end
-      object BViewData: TButton
-        Left = 129
-        Top = 10
-        Width = 102
-        Height = 25
-        Caption = '&View Data...'
-        Enabled = False
-        TabOrder = 0
-        OnClick = BViewDataClick
-      end
-      object MemoDataInfo: TMemo
-        Left = 11
-        Top = 82
-        Width = 254
-        Height = 89
-        ReadOnly = True
-        ScrollBars = ssBoth
-        TabOrder = 1
-      end
-      object BImportNow: TButton
-        Left = 11
-        Top = 10
-        Width = 75
-        Height = 25
-        Caption = 'Import &Now'
-        TabOrder = 2
-        OnClick = BImportNowClick
-      end
-      object CBParallel: TCheckBox
-        Left = 11
-        Top = 219
-        Width = 190
-        Height = 17
-        Caption = 'Use multiple CPU'
-        TabOrder = 3
-        OnClick = CBParallelClick
-      end
-      object CBStoponerrors: TCheckBox
-        Left = 11
-        Top = 242
-        Width = 182
-        Height = 17
-        Caption = 'Stop on errors'
-        TabOrder = 4
-      end
+      ExplicitWidth = 312
+      ExplicitHeight = 358
       object MemoImportLog: TMemo
         Left = 0
-        Top = 269
-        Width = 312
-        Height = 89
-        Align = alBottom
+        Top = 273
+        Width = 398
+        Height = 109
+        Align = alClient
         ScrollBars = ssBoth
-        TabOrder = 5
+        TabOrder = 0
         Visible = False
         WordWrap = False
+        ExplicitTop = 269
+        ExplicitWidth = 312
+        ExplicitHeight = 89
       end
-      object ImportProgress: TProgressBar
-        Left = 11
-        Top = 189
-        Width = 254
-        Height = 17
-        TabOrder = 6
-        Visible = False
+      object PanelDataTop: TPanel
+        Left = 0
+        Top = 0
+        Width = 398
+        Height = 273
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitWidth = 568
+        object Label2: TLabel
+          Left = 11
+          Top = 44
+          Width = 57
+          Height = 13
+          Caption = 'Last import:'
+        end
+        object LLastImport: TLabel
+          Left = 11
+          Top = 63
+          Width = 5
+          Height = 13
+          Caption = '?'
+        end
+        object BViewData: TButton
+          Left = 129
+          Top = 10
+          Width = 102
+          Height = 25
+          Caption = '&View Data...'
+          Enabled = False
+          TabOrder = 0
+          OnClick = BViewDataClick
+        end
+        object MemoDataInfo: TMemo
+          Left = 11
+          Top = 82
+          Width = 254
+          Height = 89
+          ReadOnly = True
+          ScrollBars = ssBoth
+          TabOrder = 1
+        end
+        object BImportNow: TButton
+          Left = 11
+          Top = 10
+          Width = 75
+          Height = 25
+          Caption = 'Import &Now'
+          TabOrder = 2
+          OnClick = BImportNowClick
+        end
+        object CBParallel: TCheckBox
+          Left = 11
+          Top = 219
+          Width = 190
+          Height = 17
+          Caption = 'Use multiple CPU'
+          TabOrder = 3
+          OnClick = CBParallelClick
+        end
+        object CBStoponerrors: TCheckBox
+          Left = 11
+          Top = 242
+          Width = 182
+          Height = 17
+          Caption = 'Stop on errors'
+          TabOrder = 4
+        end
+        object ImportProgress: TProgressBar
+          Left = 11
+          Top = 189
+          Width = 254
+          Height = 17
+          TabOrder = 5
+          Visible = False
+        end
       end
     end
     object TabLinks: TTabSheet
       Caption = 'Links'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 312
+      ExplicitHeight = 358
     end
   end
   object PopupMenu1: TPopupMenu

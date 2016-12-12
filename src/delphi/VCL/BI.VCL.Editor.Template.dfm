@@ -69,6 +69,9 @@ object TemplateEditor: TTemplateEditor
       Visible = False
       object TabData: TTabSheet
         Caption = 'Data'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
         ExplicitHeight = 165
         object Label2: TLabel
           Left = 7
@@ -107,6 +110,9 @@ object TemplateEditor: TTemplateEditor
       object TabPanel: TTabSheet
         Caption = 'Panel'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
         ExplicitHeight = 165
         object Label3: TLabel
           Left = 7
@@ -176,6 +182,9 @@ object TemplateEditor: TTemplateEditor
       object TabDashboard: TTabSheet
         Caption = 'Dashboard'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
         ExplicitHeight = 165
         object LLayout: TLabel
           Left = 98
@@ -214,6 +223,9 @@ object TemplateEditor: TTemplateEditor
       object TabItem: TTabSheet
         Caption = 'Item'
         ImageIndex = 3
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
         ExplicitHeight = 165
         object PageControl2: TPageControl
           Left = 0
@@ -225,6 +237,10 @@ object TemplateEditor: TTemplateEditor
           TabOrder = 0
           object TabItemOptions: TTabSheet
             Caption = 'Options'
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label4: TLabel
               Left = 7
               Top = 9
@@ -310,6 +326,10 @@ object TemplateEditor: TTemplateEditor
           object TabItemSize: TTabSheet
             Caption = 'Size'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label1: TLabel
               Left = 16
               Top = 16
@@ -412,6 +432,10 @@ object TemplateEditor: TTemplateEditor
     OnChange = PageControl1Change
     object TabPreview: TTabSheet
       Caption = 'Preview'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIGrid1: TBIGrid
         Left = 0
         Top = 0
@@ -440,6 +464,10 @@ object TemplateEditor: TTemplateEditor
     object TabTemplate: TTabSheet
       Caption = 'Template'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object MemoJSON: TMemo
         Left = 0
         Top = 0

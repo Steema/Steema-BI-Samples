@@ -19,10 +19,42 @@ interface
 
   Usage example:
 
-  tmp:=TControlImporter.Create(Self);
-  tmp.Source:=Memo1;
+   var tmp : TControlImporter;
+   tmp:=TControlImporter.Create(Self);
+   tmp.Source:=Memo1;
 
-  BIGrid1.Data:=tmp.Data;
+   BIGrid1.Data:=tmp.Data;
+
+  Simpler usage:
+
+   BIGrid1.Data:=TControlImporter.From(Self,Memo1);
+
+
+  Supported TControl classes (and derived classes):
+
+  VCL and Firemonkey:
+
+  - TCustomEdit
+  - TCustomGrid
+  - TCustomTreeView
+  - TCustomListView
+  - TBIDataControl ( TBIGrid, TBIChart, TBITree, etc )
+  - TDataProvider ( many TeeBI classes: TBIWorkflow etc etc etc )
+
+  Firemonkey only:
+
+  - TCustomComboEdit
+  - TPopupBox
+  - TPopupColumn
+  - TCustomListBox
+  - TCustomComboBox
+  - TCustomMemo
+
+  When a control is not supported, TControlImporter calls its parent class
+  to try to obtain data from it.
+
+  See BI.Store.Component unit :  TComponentImporter class
+
 }
 
 uses

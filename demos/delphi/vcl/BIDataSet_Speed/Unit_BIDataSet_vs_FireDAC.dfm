@@ -88,10 +88,6 @@ object DatasetSpeed: TDatasetSpeed
       'Data Items')
     TabOrder = 5
   end
-  object FDStanStorageBinLink1: TFDStanStorageBinLink
-    Left = 280
-    Top = 216
-  end
   object BIDataset1: TBIDataset
     RowNumbers = False
     Left = 280

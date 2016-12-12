@@ -9,28 +9,25 @@ unit BI.Data.SingleRecord;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Persist;
+  System.Classes, BI.Arrays, BI.Data, BI.Persist, BI.Algorithm;
 
 type
   // Returns a TDataItem that is a record-view of another AData item,
   // for the specified ARow record
-  TSingleRecord=class(TDataProvider)
+  TSingleRecord=class(TSingleSourceProvider)
   private
     FRow : TInteger;
-    FData: TDataItem;
 
     procedure SetRow(const Value:TInteger);
-    procedure SetData(const Value: TDataItem);
   protected
-    procedure Changed; override;
+    procedure ClearSource; override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
-    procedure Notify(const AEvent:TBIEvent);
+    procedure SetSource(const Value: TDataItem); override;
   public
     Constructor Create(AOwner:TComponent); override;
 
     class function From(const AData:TDataItem; const ARow:TInteger):TDataItem; static;
   published
-    property Data:TDataItem read FData write SetData;
     property Row:TInteger read FRow write SetRow;
   end;
 

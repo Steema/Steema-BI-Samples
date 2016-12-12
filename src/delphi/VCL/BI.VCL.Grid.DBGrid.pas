@@ -21,19 +21,10 @@ uses
   Classes, SysUtils,
   VCL.Controls, VCL.Grids, VCL.DBGrids, VCL.Graphics, Data.DB,
   VCL.Buttons, VCL.Menus, VCL.StdCtrls, VCL.ExtCtrls,
-  BI.VCL.Grid, BI.Data, BI.UI, BI.DataSet, BI.DataSource;
+  BI.VCL.Grid, BI.Data, BI.UI, BI.DataSet, BI.DataSource,
+  BI.VCL.Editor.Search;
 
 type
-  TBIDBGrid=class;
-
-  TGridPanel=class(TPanel)
-  private
-    ICloseButton : TSpeedButton;
-    IGrid : TBIDBGrid;
-  public
-    procedure Reset; virtual;
-  end;
-
   {$IFDEF FPC}
   TDrawCellEvent=TOnDrawCell;
   {$ENDIF}
@@ -42,6 +33,7 @@ type
   private
   const
     OffsetTotals=2;
+    function GetSearchEditor: TSearchEditor;
 
   type
     TGridMenu=record
@@ -57,10 +49,6 @@ type
       Sort : TMenuItem;
       Popup : TPopupMenu;
       RowNumbers : TMenuItem;
-
-      function Add(const ACaption:String; const AClick:TNotifyEvent):TMenuItem;
-      class function NewItem(const AOwner:TComponent;
-                             const ACaption:String; const AClick:TNotifyEvent):TMenuItem; static;
     end;
 
     TGridGroup=record
@@ -90,8 +78,8 @@ type
     FLastFontStyle : TFontStyles;
 
     IAlternate : TAlternateColor;
-    IAssociated : TGridPanel;
-    IHighLight : TGridPanel;
+    IAssociated : TPanel;
+    IHighLight : TSearchEditor;
 
     IMenu : TGridMenu;
 
@@ -102,7 +90,6 @@ type
 
     IWasDragging : Boolean;
 
-    procedure AddButton(const AParent:TGridPanel; const AEvent:TNotifyEvent);
     procedure AddDetailMenu;
     procedure AddGroupByMenu;
     class function AddMenuButton(const AParent:TWinControl; const ACaption:String;
@@ -116,9 +103,9 @@ type
     function CanColorize:Boolean;
     procedure ChangeDataSet(const ADataSet:TDataSet);
     procedure ChangedFilter(const ACol:Integer; const Value:String);
+    procedure ChangedSearch(Sender:TObject);
     procedure CheckDataSource;
     procedure CheckFilterGrid;
-    procedure CheckSearchControls;
     procedure CloseGroup(Sender:TObject);
     function Colorizable:TDataColorizers;
     procedure ColorizeClick(Sender:TObject);
@@ -190,6 +177,10 @@ type
     procedure TryClearFilter;
     procedure TryCloseGroup;
   public
+    {$IFDEF FPC}
+    IndicatorOffset : Integer;
+    {$ENDIF}
+
     ScrollTrack : Boolean;
 
     Constructor Create(AOwner:TComponent); override;
@@ -201,6 +192,7 @@ type
 
     property Detail:TDataItem read GetDetail write SetDetail;
     property MenuButton:TSpeedButton read IMenu.Button;
+    property SearchEditor:TSearchEditor read GetSearchEditor;
     property TopRow;
   published
     property ColumnSort:Boolean read FColumnSort write SetColumnSort default True;

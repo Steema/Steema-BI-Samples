@@ -27,8 +27,7 @@ type
     Panel1: TPanel;
     BOK: TButton;
     Button2: TButton;
-    TabUnknown: TTabSheet;
-    LabelUnknown: TLabel;
+    TabStyle: TTabSheet;
     PageControlFile: TPageControl;
     TabFile: TTabSheet;
     TabFolder: TTabSheet;
@@ -171,12 +170,12 @@ type
     procedure Button6Click(Sender: TObject);
     procedure LayoutWebDataResize(Sender: TObject);
     procedure EWebURLChange(Sender: TObject);
-    procedure RGKindClick(Sender: TObject);
     procedure BOKClick(Sender: TObject);
     procedure ETimeoutChange(Sender: TObject);
     procedure CBParallelClick(Sender: TObject);
     procedure CBStatsClick(Sender: TObject);
     procedure CBDBViewsClick(Sender: TObject);
+    procedure PageControlFileChange(Sender: TObject);
   private
     { Private declarations }
     FOnChangeWeb : TNotifyEvent;
@@ -203,9 +202,10 @@ type
     procedure ShowSingleTab(const ATab:TTabSheet);
     procedure TryChange(const ATag,AText:String);
     procedure TryChangeMultiLine(const ATag,AText:String);
-    procedure TryWebChange(const ATag, AText: String);
+    procedure TryEnableOk;
     procedure TryFillWebData;
     procedure TrySetHostPort;
+    procedure TryWebChange(const ATag, AText: String);
     procedure WebSettings;
     function WebURL:String;
   protected

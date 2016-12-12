@@ -3,9 +3,9 @@ unit BI.Languages.English;
 interface
 
 const
-  TeeBI_Version=20161005;
-  TeeBI_VersionString='v1 20161005';
-  TeeBI_VersionMode='(BETA 16)';
+  TeeBI_Version=20161021;
+  TeeBI_VersionString='v1 20161021';
+  TeeBI_VersionMode='(BETA 17)';
   TeeBI_Description='TeeBI';
   TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2016 by Steema Software';
 
@@ -18,6 +18,7 @@ var
   BIMsg_CannotAccessData:String            = 'Cannot access data: %s from: %s';
   BIMsg_RelativeOriginNoParent:String      = 'Error: Cannot find relative ".." origin, data: %s has no parent';
   BIMsg_UnNamed:String                     = '(unnamed)';
+  BIMsg_DuplicatedItem:String              = 'Error: A duplicated data named: %s already exists';
 
   // Stores
   BIMsg_Store_ErrorOpening:String          = 'Error: %s opening store: %s';
@@ -144,5 +145,13 @@ var
 
   // Native
   BIMsg_NativeFiles:String                 = 'TeeBI native';
+
+  // Structure
+  BIMsg_NotCompatible:String               = 'Error: Incompatible structures: %s %s';
+
+  // Algorithm Needs
+  BIMsg_AlgorithmNeedQuantity:String       = 'Input Data quantity not valid. Expected: %d, Actual: %d';
+  BIMsg_AlgorithmNeedKind:String           = 'Input Data Kind not valid: %s';
+
 
 implementation

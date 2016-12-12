@@ -1,4 +1,4 @@
-{*********************************************}
+﻿{*********************************************}
 {  TeeBI Software Library                     }
 {  Geographic Database Support                }
 {  Copyright (c) 2015-2016 by Steema Software }
@@ -110,6 +110,15 @@ type
         States : TEntity;
       end;
 
+      TCanada=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Provinces : TEntity;
+      end;
+
       TChina=record
       private
         procedure Init(const AData:TDataItem);
@@ -140,6 +149,26 @@ type
         Districts : TEntity;
       end;
 
+      TIndia=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Zones,
+        States : TEntity;
+      end;
+
+      TIndonesia=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Zones,
+        Provinces : TEntity;
+      end;
+
       TItaly=record
       private
         procedure Init(const AData:TDataItem);
@@ -161,6 +190,35 @@ type
         Prefectures : TEntity;
       end;
 
+      TMexico=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        States : TEntity;
+      end;
+
+      TNetherlands=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Provinces,
+        Municipalities : TEntity;
+      end;
+
+      TPortugal=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Regions,
+        Districts : TEntity;
+      end;
+
       TRussia=record
       private
         procedure Init(const AData:TDataItem);
@@ -171,6 +229,25 @@ type
         Subjects: TEntity;
       end;
 
+      TSouthAfrica=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Provinces: TEntity;
+      end;
+
+      TSouthKorea=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Types,
+        Provinces: TEntity;
+      end;
+
       TSpain=record
       private
         procedure Init(const AData:TDataItem);
@@ -179,6 +256,15 @@ type
 
         Regions,
         Provinces : TEntity;
+      end;
+
+      TSwitzerland=record
+      private
+        procedure Init(const AData:TDataItem);
+      public
+        Data : TDataItem;
+
+        Cantons : TEntity;
       end;
 
       TUK=record
@@ -208,13 +294,22 @@ type
 
     Australia : TAustralia;
     Brazil : TBrazil;
+    Canada : TCanada;
     China : TChina;
     France : TFrance;
     Germany : TGermany;
+    India : TIndia;
+    Indonesia : TIndonesia;
     Italy : TItaly;
     Japan : TJapan;
+    Mexico : TMexico;
+    Netherlands : TNetherlands;
+    Portugal : TPortugal;
     Russia : TRussia;
+    SouthAfrica : TSouthAfrica;
+    SouthKorea : TSouthKorea;
     Spain : TSpain;
+    Switzerland : TSwitzerland;
     UK : TUK;
     USA : TUSA;
   end;

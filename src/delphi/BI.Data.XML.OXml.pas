@@ -16,7 +16,7 @@ uses
 
 var X : TBIXML; Data : TDataArray;
 
-  X:=TBIXML.CreateEngine(TOmniXML.Create);
+  X:=TBIXML.CreateEngine(TOmniXML.Create(Self));  // <-- ( Self or nil )
   try
     Data:=X.ImportFile('sample.xml');
   finally
@@ -28,14 +28,17 @@ interface
 
 
 uses
-  System.Classes, BI.Data.XML, OXmlPDOM;
+  System.Classes, BI.Data.XML,
+
+  // Unit not found? Download OXml from: http://www.kluug.net
+  OXmlPDOM;
 
 type
   TOXml=class(TXMLEngine)
   private
     Doc : TXmlDocument;
     Node : PXmlNode;
-  protected
+  public
     function Attribute(const Index:Integer):String; override;
     function AttributeCount:Integer; override;
     function AttributeName(const Index: Integer): String; override;
@@ -43,8 +46,8 @@ type
     procedure FromString(const Text:String); override;
     function HasParent:Boolean; override;
     function HasText:Boolean; override;
-    function IsValid:Boolean; override;
     procedure Item(const Index: Integer); override;
+    function IsValid:Boolean; override;
     procedure LoadFromFile(const Filename: String); override;
     function Name:String; override;
     procedure Parent; override;

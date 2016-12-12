@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Sort Editor Dialog                         }
+{  Copyright (c) 2015-2016 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.VCL.Editor.Sort;
 
 interface
@@ -5,18 +11,22 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Query,
-  BI.VCL.Editor.ListItems, Vcl.StdCtrls, Vcl.ExtCtrls, BI.Data;
+  BI.VCL.Editor.ListItems, Vcl.StdCtrls, Vcl.ExtCtrls, BI.Data,
+  BI.Data.Expressions;
 
 type
   TSortEditor = class(TForm)
     Panel1: TPanel;
     CBAscending: TCheckBox;
     BDelete: TButton;
-    LBAvailable: TListBox;
     Splitter1: TSplitter;
-    Panel2: TPanel;
-    BAdd: TButton;
     CBIgnoreCase: TCheckBox;
+    LBAvailable: TListBox;
+    PanelButtons: TPanel;
+    PanelOk: TPanel;
+    BOk: TButton;
+    BCancel: TButton;
+    BAdd: TButton;
     procedure FormShow(Sender: TObject);
     procedure CBAscendingClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -45,7 +55,13 @@ type
   public
     { Public declarations }
 
-    class procedure Edit(const AOwner:TComponent; const ASort:TQuerySort); static;
+    class function Edit(const AOwner:TComponent;
+                        const ASort:TQuerySort):Boolean; overload; static;
+
+    class function Edit(const AOwner: TComponent;
+                        const AData:TDataItem;
+                        out AItems:TSortItems):Boolean; overload; static;
+
     class function Embedd(const AOwner:TComponent; const AParent:TWinControl;
                           const ASort:TQuerySort):TSortEditor; static;
 

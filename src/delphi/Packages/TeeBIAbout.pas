@@ -10,7 +10,13 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
-  Controls, Forms, Dialogs, StdCtrls, jpeg, ExtCtrls;
+  Controls, Forms, Dialogs, StdCtrls,
+  {$IFDEF LCL}
+  jpeglib,
+  {$ELSE}
+  jpeg,
+  {$ENDIF}
+  ExtCtrls;
 
 type
   TAboutBI = class(TForm)

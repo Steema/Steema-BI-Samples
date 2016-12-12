@@ -10,35 +10,55 @@ unit BI.FMX.ChartFunctions;
 interface
 
 uses
+  System.Classes,
+
   BI.Data,
+
   {$IFDEF FMX}
-  FMXTee.Engine,
+  FMXTee.Constants, FMXTee.Engine,
   {$ELSE}
-  VCLTee.TeEngine,
+  VCLTee.TeeConst, VCLTee.TeEngine,
   {$ENDIF}
+
+  {$IFDEF FPC}
+  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
+  {$ELSE}
+
+  {$IF TeeMsg_TeeChartPalette='TeeChart'}
+  {$DEFINE TEEPRO} // <-- TeeChart Lite or Pro ?
+  {$ENDIF}
+  {$ENDIF}
+
+
   BI.Algorithm;
 
 type
-  TDataFunction=class(TBaseAlgorithm)
+  TDataFunction=class(TDataProviderNeeds)
   private
     FFunction : TTeeFunction;
     FFunctionClass : TTeeFunctionClass;
-    FSource : TDataItem;
-    FPeriod: Integer;
 
-    procedure AddNeeds(const AFunction:TTeeFunction);
-    procedure SetSource(const Value: TDataItem);
-    procedure SetPeriod(const Value: Integer);
+    procedure AddNeeds(const AFunctionClass:TTeeFunctionClass);
+    function CalcClass:TTeeFunctionClass;
+    function GetPeriod: Double;
+    function GetTeeFunction: TTeeFunction;
+    procedure SetPeriod(const Value: Double);
   protected
+    function GetChildOwner: TComponent; override;
+    Procedure GetChildren(Proc:TGetChildProc; Root:TComponent); override;
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
+    procedure Loaded; override;
   public
-    Constructor CreateFunction(const AFunctionClass:TTeeFunctionClass); overload;
-    Constructor CreateFunction(const AFunction:TTeeFunction); overload;
+    Constructor CreateFunction(const AOwner:TComponent; const AFunctionClass:TTeeFunctionClass); overload;
+    Constructor CreateFunction(const AOwner:TComponent; const AFunction:TTeeFunction); overload;
 
-    procedure Calculate; override;
+    function FunctionTitle:String;
+    function IsFinancial:Boolean;
 
-    property Period:Integer read FPeriod write SetPeriod;
-    property Source:TDataItem read FSource write SetSource;
+    property FunctionClass:TTeeFunctionClass read CalcClass;
+    property TeeFunction:TTeeFunction read GetTeeFunction;
+  published
+    property Period:Double read GetPeriod write SetPeriod stored False;
   end;
 
 implementation

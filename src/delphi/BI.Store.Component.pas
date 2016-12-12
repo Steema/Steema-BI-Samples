@@ -8,6 +8,37 @@ unit BI.Store.Component;
 
 interface
 
+{
+  This unit declares the TComponentImporter class.
+
+  TComponentImporter is used to import data from any TComponent into a
+  TDataItem.
+
+  For example, we can import contents from a TStrings:
+
+  BIGrid1.Data := TComponentImporter.From(Self, Memo1.Lines)
+
+  Supported component classes (and derived classes):
+
+  - Any TComponent that has a TStrings or TStringList property
+  - TXMLDocument
+  - TDataSet
+  - TField
+  - TDataSource
+  - TCustomConnection (FireDAC, any other database library, etc)
+  - TBaseDataImporter
+  - Any TComponent that has a TDataSource property
+
+  - Any TComponent class supported by a "plugin":
+
+    Available plugin classes:
+
+      - TControlImporter (see BI.VCL.Component and BI.FMX.Component units)
+
+  This class is also internally used by editor dialogs to allow selecting any
+  control or component to import its data
+}
+
 uses
   System.Classes,
   {$IFNDEF FPC}

@@ -45,6 +45,7 @@ type
     function Count:TInteger;
     function Exists(const ARow:TInteger; const AData:TDataItem):Boolean;
     procedure Find(const AIndex:TInteger; out ARow:TInteger; out AData:TDataItem);
+    function IndexOf(const ARow:TInteger; const AData:TDataItem):TInteger;
   end;
 
   TDataSearch=record

@@ -18,7 +18,7 @@ object DataEditor: TDataEditor
     Size.Width = 503.000000000000000000
     Size.Height = 425.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 0
+    TabIndex = 4
     TabOrder = 0
     TabPosition = Top
     OnChange = TabSourcesChange
@@ -37,7 +37,7 @@ object DataEditor: TDataEditor
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 44.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -410,8 +410,8 @@ object DataEditor: TDataEditor
             Size.PlatformDefault = False
             TabOrder = 17
             Visible = False
-            Viewport.Width = 503.000000000000000000
-            Viewport.Height = 50.000000000000000000
+            Viewport.Width = 499.000000000000000000
+            Viewport.Height = 46.000000000000000000
           end
           object Label16: TLabel
             Position.X = 248.000000000000000000
@@ -560,8 +560,8 @@ object DataEditor: TDataEditor
                 Size.Height = 347.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
-                Viewport.Width = 503.000000000000000000
-                Viewport.Height = 347.000000000000000000
+                Viewport.Width = 499.000000000000000000
+                Viewport.Height = 343.000000000000000000
               end
             end
           end
@@ -838,7 +838,7 @@ object DataEditor: TDataEditor
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 60.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
@@ -862,33 +862,41 @@ object DataEditor: TDataEditor
   object LayoutOkCancel: TLayout
     Align = Bottom
     Position.Y = 375.000000000000000000
-    Size.Width = 50.000000000000000000
+    Size.Width = 503.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     Visible = False
     TabOrder = 2
-    object BOK: TButton
-      Default = True
-      Enabled = False
-      ModalResult = 1
-      Position.X = 312.000000000000000000
-      Position.Y = 16.000000000000000000
-      Size.Width = 80.000000000000000000
-      Size.Height = 22.000000000000000000
+    object Layout1: TLayout
+      Align = Right
+      Position.X = 302.000000000000000000
+      Size.Width = 201.000000000000000000
+      Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      Text = 'OK'
-    end
-    object Button3: TButton
-      Cancel = True
-      ModalResult = 2
-      Position.X = 408.000000000000000000
-      Position.Y = 16.000000000000000000
-      Size.Width = 80.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      Text = 'Cancel'
+      object BOK: TButton
+        Default = True
+        Enabled = False
+        ModalResult = 1
+        Position.X = 9.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'OK'
+      end
+      object BCancel: TButton
+        Cancel = True
+        ModalResult = 2
+        Position.X = 105.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Cancel'
+      end
     end
   end
 end

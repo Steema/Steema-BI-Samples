@@ -220,6 +220,7 @@ type
     procedure CopyFrom(const ASort:TSortItems);
     function Get(const Index: Integer): TQuerySortItem;
     procedure Put(const Index: Integer; const Value: TQuerySortItem);
+  protected
     function Sort:TSortItems;
   public
     Constructor Create(AOwner: TPersistent);
@@ -299,7 +300,7 @@ type
     class function CanBeMeasure(const AData:TDataItem):Boolean; static;
     procedure Clear;
 
-    procedure Parse(const AData:TDataItem; const SQL:String);
+    procedure Parse(const AData:TDataItem; const SQL:String; const AError:TBIErrorProc=nil);
     procedure Refresh;
     function ToString:String; override;
 

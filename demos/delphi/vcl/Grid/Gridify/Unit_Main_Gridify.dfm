@@ -33,8 +33,6 @@ object FromGridify: TFromGridify
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 599
   end
   object BIGrid2: TBIGrid
     Left = 484
@@ -47,8 +45,6 @@ object FromGridify: TFromGridify
     ParentColor = False
     TabOrder = 1
     OnResize = BIGrid2Resize
-    ExplicitTop = 0
-    ExplicitHeight = 599
   end
   object LBTest: TListBox
     Left = 0
@@ -65,12 +61,9 @@ object FromGridify: TFromGridify
       #39'Color'#39','#39'Person'#39','#39'Year'#39
       #39'Rank'#39','#39'Year'#39','#39'Person'#39
       #39'Rank'#39','#39'Person'#39','#39'Year'#39
-      #39'Color'#39','#39'Rank'#39','#39'Person'#39
-      '')
+      #39'Color'#39','#39'Rank'#39','#39'Person'#39)
     TabOrder = 2
     OnClick = LBTestClick
-    ExplicitTop = 0
-    ExplicitHeight = 599
   end
   object Panel1: TPanel
     Left = 0
@@ -80,9 +73,6 @@ object FromGridify: TFromGridify
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 3
-    ExplicitLeft = 368
-    ExplicitTop = 296
-    ExplicitWidth = 185
     object Label1: TLabel
       Left = 16
       Top = 14

@@ -27,6 +27,9 @@ uses
 type
   TBITreeNode=class(TObject);
 
+  TBITreeExpandingEvent=procedure(Sender: TObject; const Node: TBITreeNode;
+                                  var AllowExpansion: Boolean) of object;
+
   TBITreePlugin=class abstract
   public
   type
@@ -37,7 +40,7 @@ type
       {$IFDEF AUTOREFCOUNT}[Weak]{$ENDIF}
       Tag : TObject;
     end;
-
+  private
   protected
     IData : Array of TNodeData;
 
@@ -55,6 +58,7 @@ type
     function GetNode(const AIndex:Integer):TBITreeNode; virtual; abstract;
     function GetOnChange: TNotifyEvent; virtual; abstract;
     function GetOnCheck: TNotifyEvent; virtual; abstract;
+    function GetOnExpanding: TBITreeExpandingEvent; virtual; abstract;
     function GetSelected:TBITreeNode; virtual; abstract;
     function GetSelectedData:TBITreePlugin.TNodeData; virtual; abstract;
     function NewNodeData(const ATag:TObject; const AIndex:TInteger):TNodeData;
@@ -64,6 +68,7 @@ type
     procedure SetData(const ANode:TBITreeNode; const AData:TObject); virtual; abstract;
     procedure SetOnChange(const Value: TNotifyEvent); virtual; abstract;
     procedure SetOnCheck(const Value: TNotifyEvent); virtual; abstract;
+    procedure SetOnExpanding(const Value: TBITreeExpandingEvent); virtual; abstract;
     procedure SetSelected(const Value: TBITreeNode); virtual; abstract;
   public
     Constructor Create(const AOwner:TComponent); virtual; abstract;
@@ -106,6 +111,7 @@ type
 
     property OnChange:TNotifyEvent read GetOnChange write SetOnChange;
     property OnCheck:TNotifyEvent read GetOnCheck write SetOnCheck;
+    property OnExpanding:TBITreeExpandingEvent read GetOnExpanding write SetOnExpanding;
   end;
 
   TBITreePluginClass=class of TBITreePlugin;
@@ -147,6 +153,8 @@ type
     procedure SetOnChange(const Value: TNotifyEvent);
     procedure SetSelected(const Value: TBITreeNode);
     procedure SetPlugin(const APlugin:TBITreePlugin);
+    function GetExpanding: TBITreeExpandingEvent;
+    procedure SetExpanding(const Value: TBITreeExpandingEvent);
   protected
     procedure ChangeDragMode;
     procedure DeletedNode(Sender:TObject);
@@ -205,6 +213,7 @@ type
 
     property OnChange:TNotifyEvent read GetOnChange write SetOnChange;
     property OnDeleting:TNotifyEvent read FOnDeleting write FOnDeleting;
+    property OnExpanding:TBITreeExpandingEvent read GetExpanding write SetExpanding;
   end;
 
 implementation

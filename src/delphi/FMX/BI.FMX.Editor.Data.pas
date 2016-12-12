@@ -79,8 +79,6 @@ type
     TabWeb: TTabItem;
     Button1: TButton;
     LayoutOkCancel: TLayout;
-    BOK: TButton;
-    Button3: TButton;
     LFileMissing: TLabel;
     Label11: TLabel;
     EExcluded: TEdit;
@@ -115,6 +113,9 @@ type
     EDBPort: TEdit;
     CBDBSystem: TCheckBox;
     TabManual: TTabItem;
+    Layout1: TLayout;
+    BOK: TButton;
+    BCancel: TButton;
     procedure FormDestroy(Sender: TObject);
     procedure EFileChange(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -173,6 +174,7 @@ type
     function FileTypeExtension(const Index:Integer):String;
     procedure FillDBDrivers;
 
+    procedure ManualChanged(Sender: TObject);
     procedure ManualSettings;
     procedure RefreshSettings;
     procedure ResetWebTest;

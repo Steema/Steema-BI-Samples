@@ -9,38 +9,36 @@ unit BI.Algorithm.Model;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Algorithm;
+  System.Classes, BI.Arrays, BI.Data, BI.Algorithm, BI.Data.Tools;
 
 type
+  TModelClass=class of TModel;
+
+  TModels=Array of TModelClass;
+
+  TModelsHelper=record helper for TModels
+  public
+    function Count:Integer; inline;
+    function Exists(const AModel:TModelClass):Boolean; inline;
+    function IndexOf(const AModel:TModelClass):Integer;
+
+    procedure Register(const AModel:TModelClass); overload;
+    procedure Register(const AModels:Array of TModelClass); overload;
+
+    procedure UnRegister(const AModel:TModelClass); overload;
+    procedure UnRegister(const AModels:Array of TModelClass); overload;
+  end;
+
   // Base class for machine-learning algorithms that require a "Target"
   // (or "Class" or "Label") data
   TModel=class(TBaseAlgorithm)
-  private
-    class procedure ChangeAndRecalculate(const AData:TDataItem; const AKind:TDataKind); static;
-    class procedure NormalizeInt32(const AData:TDataItem); static;
-    class procedure NormalizeInt64(const AData:TDataItem); static;
-    class procedure NormalizeSingle(const AData:TDataItem); static;
-    class procedure NormalizeDouble(const AData:TDataItem); static;
-    class procedure NormalizeExtended(const AData:TDataItem); static;
-    class procedure NormalizeDateTime(const AData:TDataItem); static;
-    class procedure NormalizeBoolean(const AData:TDataItem); static;
-    class procedure NormalizeText(const AData:TDataItem); static;
   public
+    class var
+       Models : TModels;
+
     Constructor Create(AOwner:TComponent); override;
 
-    class procedure Normalize(const AData:TDataItem); overload; static;
-    class procedure Normalize(const AData:TDataArray); overload; static;
-  end;
-
-  TSplitMode=(Random,Start);
-
-  // Fills A and B arrays either using random values or sequential
-  TDataSplit=record
-    A,
-    B : TNativeIntArray;
-
-    procedure Random(const CountA, CountB:TInteger);
-    procedure Sequence(const CountA, CountB:TInteger);
+    class function Description:String;
   end;
 
   // Special TDataItem containing 3 columns:
@@ -53,9 +51,15 @@ type
     FPredicted : TDataItem;
     FReal : TDataItem;
 
+    procedure AddItems(const AMap:TTextMap);
+    procedure CheckNeeds(const A,B:TDataItem);
+    procedure Fill(const AMap:TTextMap; const A,B:TDataItem);
     function GetConfusion:TDataItem;
     function GetCorrect:TInteger;
   public
+    class var
+       ConfusionClass : TBaseAlgorithmClass;
+
     Constructor Create(const ATarget:TDataItem; const Indices:TNativeIntArray);
     Destructor Destroy; override;
 
@@ -67,38 +71,69 @@ type
     property Real:TDataItem read FReal;
   end;
 
-  TSupervisedModelClass=class of TSupervisedModel;
+  TModelSplit=class(TPersistent)
+  private
+    IProvider : TDataProvider;
 
-  TSupervisedModels=Array of TSupervisedModelClass;
+    procedure Changed;
+    function GetBy: TSplitBy;
+    function GetCount: Integer;
+    function GetMode: TSplitMode;
+    function GetPercent: Single;
+    function IsPercentStored: Boolean;
+    procedure SetBy(const Value: TSplitBy);
+    procedure SetCount(const Value: Integer);
+    procedure SetMode(const Value: TSplitMode);
+    procedure SetPercent(const Value: Single);
+  public
+    Split : TSplitOptions;
+
+    Constructor Create(const AProvider:TDataProvider);
+
+    procedure Assign(Source:TPersistent); override;
+  published
+    property By:TSplitBy read GetBy write SetBy default TSplitBy.Percent;
+    property Count: Integer read GetCount write SetCount default 0;
+    property Mode:TSplitMode read GetMode write SetMode default TSplitMode.Random;
+    property Percent:Single read GetPercent write SetPercent stored IsPercentStored;
+  end;
 
   // Model class supporting "train" and "test" of an algorithm
   TSupervisedModel=class(TModel)
   private
-    function GetTarget: TDataItem;
-    procedure SetTarget(const Value: TDataItem);
+    FNormalize : Boolean;
+    FSplit : TModelSplit;
+
     function GetAttributes: TDataArray;
+    function GetTarget: TDataItem;
     procedure SetAttributes(const Value: TDataArray);
+    procedure SetNormalize(const Value: Boolean);
+    procedure SetSplit(const Value:TModelSplit);
+    procedure SetTarget(const Value: TDataItem);
   protected
     FPredicted : TPredictedData;
 
+    procedure AddOutput(const AData:TDataItem); override;
     function GetPredicted:TPredictedData;
   public
-    class var
-       Models : TSupervisedModels;
-
     Indices : TDataSplit;
 
+    Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
 
-    class procedure RegisterModels(const AModels:Array of TSupervisedModelClass); static;
+    // procedure Assign
 
-    procedure Split(const Train,Test:TInteger; const Mode:TSplitMode=TSplitMode.Random); overload;
-    procedure Split(const Ratio:Single; const Mode:TSplitMode=TSplitMode.Random); overload;
+    procedure Calculate; override;
 
-    property Attributes:TDataArray read GetAttributes write SetAttributes;
     property Predicted:TPredictedData read GetPredicted;
+  published
+    property Attributes:TDataArray read GetAttributes write SetAttributes;
+    property Normalize:Boolean read FNormalize write SetNormalize default False;
+    property Split:TModelSplit read FSplit write SetSplit;
     property Target:TDataItem read GetTarget write SetTarget;
   end;
+
+  TSupervisedModelClass=class of TSupervisedModel;
 
   // Base class for interfaces to frameworks like R and Python
   TBIPlugin=class

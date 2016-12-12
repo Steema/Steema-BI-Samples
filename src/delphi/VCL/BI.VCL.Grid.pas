@@ -14,7 +14,7 @@ uses
   System.UITypes,
   {$ENDIF}
   VCL.Controls, VCL.Forms, Data.DB, BI.Data,
-  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.Menus, Vcl.ComCtrls,
+  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.ComCtrls,
   BI.UI, BI.VCL.DataControl, BI.Expression;
 
 type
@@ -187,7 +187,6 @@ type
     class function Input(const ATitle,ACaption,ADefault:String; out ANew:String):Boolean; static;
     class procedure LoadPosition(const AForm:TCustomForm; const Key:String); static;
     class function Point(const X,Y:Integer):TPoint; static; inline;
-    class procedure Popup(const APopup:TPopupMenu; const AParent:TControl); static;
     class procedure SavePosition(const AForm:TCustomForm; const Key:String); static;
     class function SelectFolder(var AFolder:String):Boolean; static;
     class procedure ShowUnique(const ATab:TTabSheet); static;

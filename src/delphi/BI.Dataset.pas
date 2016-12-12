@@ -55,7 +55,7 @@ uses System.Classes, System.Types,
      {$ENDIF}
      {$ENDIF}
      {$ENDIF}
-     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary,
+     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
      BI.Expression.Filter;
 
 const
@@ -263,8 +263,30 @@ type
 
     property Link:TMasterDataLink read ILink;
   public
+    type
+      TBIMasterDataLink=class(TMasterDataLink)
+      private
+        Masters,
+        Details : TDataArray;
+        ICursor : TDataCursor;
+        MasterCol : TExpressions;
+
+        Old : TInteger;
+
+        procedure ResetIndex;
+      protected
+        procedure ActiveChanged; override;
+        procedure RecordChanged(Field: TField); override;
+      public
+        Destructor Destroy; override;
+      end;
+
+      TBIMasterDataLinkClass=class of TBIMasterDataLink;
+
+    var
     PercentFormat : String;
     FloatFormat : String;
+    MasterDataLinkClass : TBIMasterDataLinkClass;
 
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;

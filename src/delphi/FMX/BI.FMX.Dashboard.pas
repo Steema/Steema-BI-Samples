@@ -9,6 +9,12 @@ unit BI.FMX.Dashboard;
 
 interface
 
+{$IFNDEF FPC}
+{$IF CompilerVersion>26}
+{$DEFINE XE6}
+{$ENDIF}
+{$ENDIF}
+
 uses
   System.Classes,
 

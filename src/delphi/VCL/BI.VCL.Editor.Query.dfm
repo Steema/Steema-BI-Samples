@@ -123,7 +123,6 @@ object BIQueryEditor: TBIQueryEditor
             Align = alRight
             BevelOuter = bvNone
             TabOrder = 1
-            ExplicitLeft = 122
             object SBRowUp: TSpeedButton
               Left = 3
               Top = 9
@@ -302,9 +301,6 @@ object BIQueryEditor: TBIQueryEditor
             Align = alRight
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitLeft = -2
-            ExplicitTop = 16
-            ExplicitHeight = 41
             object SBColUp: TSpeedButton
               Left = 8
               Top = 6
@@ -335,7 +331,6 @@ object BIQueryEditor: TBIQueryEditor
           ItemHeight = 13
           TabOrder = 1
           OnClick = ListColumnsClick
-          ExplicitWidth = 324
         end
         object Panel7: TPanel
           Left = 523
@@ -345,7 +340,6 @@ object BIQueryEditor: TBIQueryEditor
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 2
-          ExplicitLeft = 522
           object BDeleteColumn: TButton
             Left = 7
             Top = 9

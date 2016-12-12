@@ -81,7 +81,7 @@ type
   public
 
     class var
-       FiveItemSeries,
+       FourItemSeries,
        Three3DSeries : TChartSeriesClass;
 
     Constructor Create(AOwner:TComponent); override;
@@ -98,7 +98,7 @@ type
     procedure Fill(const AData:TDataArray; const ASeries: TDataItem); overload;
     function Fill(const AData:TInt32Array):TChartSeries; overload;
     function Fill(const AData:TInt64Array):TChartSeries; overload;
-    function Fill(const AData:TDoubleArray):TChartSeries; overload;
+    function Fill(const AData:BI.Arrays.TDoubleArray):TChartSeries; overload;
     function Fill(const AData:TDataItem):TChartSeries; overload;
     procedure Fill(const AData:TDataSet; const ValueField:Integer; const TextField:Integer=-1); overload;
 
@@ -126,7 +126,6 @@ type
 
     property Series2D:TChartSeriesClass read FSeries2D write FSeries2D;
     property Series3D:TChartSeriesClass read FSeries3D write FSeries3D;
-
   published
     property Align default TUICommon.AlignClient;
     property BevelOuter default bvNone;
@@ -144,6 +143,10 @@ type
                              const AClass:TChartSeriesClass):TChartSeries; static;
   public
     class procedure AddSeries(const ASeries: TChartSeries; const ADest: TDataItem); static;
+
+    class function From(const AData:TDataArray;
+                        const AOwner:TComponent;
+                        const AClass:TChartSeriesClass=nil):TChartSeries; overload; static;
 
     class function From(const AData:TDataItem;
                         const AOwner:TComponent;

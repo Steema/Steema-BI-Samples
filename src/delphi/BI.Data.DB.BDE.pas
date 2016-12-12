@@ -11,6 +11,17 @@ interface
 // "Engine" class to support importing BDE ("Borland Database Engine")
 // databases, tables and queries (TDatabase, TTable and TQuery components)
 
+(*
+  Use this unit to enable BDE as the "Engine" for all TeeBI database operations.
+
+  Usage:
+
+    uses
+      BI.Data.DB, BI.Data.DB.BDE;
+
+    TBIDB.Engine:=TDBBDEEngine.Create;
+*)
+
 uses
   System.Classes, System.Types,
   Data.DB, BDE.DBTables, BI.Data, BI.Data.DB, BI.Persist, BI.DataSource;

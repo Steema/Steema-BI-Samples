@@ -8,6 +8,22 @@ unit BI.Data.DB.FireDAC;
 
 interface
 
+(*
+  Just include this unit in the "uses" of any unit, to enable FireDAC as the
+  "Engine" for all TeeBI database operations.
+
+  Note: Better to not include BI.Data.DB.ZeosLib or any other unit that
+        also provides a different "Engine".
+
+  When using multiple engines (optionally),
+  the current one must be manually selected like:
+
+  uses BI.Data.DB;
+    TBIDB.Engine:=TDBFireDACEngine.Create; <--- the desired engine class
+
+*)
+
+
 uses
   System.Classes, System.Types, Data.DB, BI.Data, BI.Data.DB, BI.DataSource,
   BI.Persist, FireDAC.Comp.Client;

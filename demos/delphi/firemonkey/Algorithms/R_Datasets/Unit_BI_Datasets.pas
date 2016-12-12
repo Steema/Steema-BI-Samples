@@ -214,7 +214,7 @@ begin
     Model.Target:=SelectedTarget;
     Model.Attributes:=SelectedAttributes;
 
-    Model.Split(2/3);
+    Model.Split.Percent:=100*(2/3);
 
     t1:=TStopwatch.StartNew;
 

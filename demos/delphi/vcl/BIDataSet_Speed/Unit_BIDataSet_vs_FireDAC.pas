@@ -39,7 +39,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Diagnostics, DB, Vcl.StdCtrls,
 
   // FireDAC units
-  FireDAC.Comp.Client, FireDAC.Stan.Intf, FireDAC.Stan.StorageBin,
+  FireDAC.Comp.Client, FireDAC.Stan.Intf,
+
+  {$IF CompilerVersion>26}
+  FireDAC.Stan.StorageBin,
+  {$ENDIF}
 
   // TeeBI units
   BI.Data, BI.DataSet, BI.Persist, BI.DataSource, Vcl.ExtCtrls;
@@ -49,7 +53,6 @@ type
     BTestFireDAC: TButton;
     BTestBIDataset: TButton;
     Memo1: TMemo;
-    FDStanStorageBinLink1: TFDStanStorageBinLink;
     Label1: TLabel;
     Edit1: TEdit;
     BIDataset1: TBIDataset;
@@ -64,6 +67,10 @@ type
     { Private declarations }
 
     Samples : Integer;
+
+    {$IF CompilerVersion>26}
+    FDStanStorageBinLink1: TFDStanStorageBinLink;
+    {$ENDIF}
 
     procedure AddSamples(const Data:TDataSet);
     procedure AddTime(const ACaption:String; const Elapsed:Int64);
@@ -227,6 +234,10 @@ end;
 
 procedure TDatasetSpeed.FormCreate(Sender: TObject);
 begin
+  {$IF CompilerVersion>26}
+  FDStanStorageBinLink1:=TFDStanStorageBinLink.Create(Self);
+  {$ENDIF}
+
   ETemp.Text:=TPath.GetTempPath;
 
   Memo1.Clear;

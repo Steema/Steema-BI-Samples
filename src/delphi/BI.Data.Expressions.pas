@@ -328,6 +328,10 @@ type
   end;
 
   TMovingAverageColumn=class(TColumnExpression)
+  private
+    const
+      FunctionName='MovingAverage';
+
   protected
     procedure Calculate(const Hops:TDataHops; const Dest:TDataItem); override;
     function Kind:TDataKind; override;

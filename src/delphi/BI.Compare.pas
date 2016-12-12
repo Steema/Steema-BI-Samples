@@ -70,13 +70,18 @@ type
     class function Same(const Before,After:TDataItems; var Diff:TItemDifferences):Boolean; overload; static;
 
     class function Same(const Before,After:TDataItem; var Diff:TBaseDifferences):Boolean; overload; static;
-//    class function Same(const Before,After:TDataArray; const Diff:TDataDifferences):Boolean; overload; static;
   public
-    class function Compare(const A:TDataItem; const ARow:TInteger; const B:TDataItem; const BRow:TInteger): Boolean; overload; static;
+    class function Compare(const A:TDataItem; const ARow:TInteger;
+                           const B:TDataItem; const BRow:TInteger): Boolean; overload; static;
+
     class function Compare(const Before, After: TDataItem; const ARow:TInteger): Boolean; overload; static;
+
+    class function Compare(const A:TDataArray; const ARow:TInteger;
+                           const B:TDataArray; const BRow:TInteger): Boolean; overload; static;
 
     class function Same(const Before,After:TDataItem):Boolean; overload; static;
     class function Same(const Before,After:TDataItem; var Diff:TDifference):Boolean; overload; static;
+    class procedure Compare(const Before,After:TDataItem; const Dest:TDataItem); overload; static;
   end;
 
 implementation

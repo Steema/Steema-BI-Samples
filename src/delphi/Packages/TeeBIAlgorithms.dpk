@@ -43,7 +43,6 @@ contains
   BI.Algorithm.DecisionTree in '..\Algorithms\BI.Algorithm.DecisionTree.pas',
   BI.Algorithm.DimReduction in '..\Algorithms\BI.Algorithm.DimReduction.pas',
   BI.Algorithm.Ensemble in '..\Algorithms\BI.Algorithm.Ensemble.pas',
-  BI.Algorithm.Model in '..\Algorithms\BI.Algorithm.Model.pas',
   BI.Algorithm.Register in '..\Algorithms\BI.Algorithm.Register.pas',
   BI.Algorithm.Regression in '..\Algorithms\BI.Algorithm.Regression.pas',
   BI.Plugins.Python in '..\Algorithms\BI.Plugins.Python.pas',

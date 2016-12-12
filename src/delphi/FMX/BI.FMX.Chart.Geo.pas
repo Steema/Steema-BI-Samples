@@ -1,4 +1,4 @@
-{*********************************************}
+﻿{*********************************************}
 {  TeeBI Software Library                     }
 {  TChart Geographic Maps                     }
 {  Copyright (c) 2015-2016 by Steema Software }

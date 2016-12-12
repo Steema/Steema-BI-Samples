@@ -384,6 +384,10 @@ type
 
   // Both Data info (structure) and Data values, all together into a single stream
   TDataItemPersistence=class
+  public
+  const
+    Extension='.bidata';
+
     class function Load(const Stream:TStream):TDataItem; overload; static;
     class function Load(const FileName:String):TDataItem; overload; static;
 

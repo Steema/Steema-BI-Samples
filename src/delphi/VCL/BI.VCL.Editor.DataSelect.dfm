@@ -24,10 +24,6 @@ object DataSelectEditor: TDataSelectEditor
     TabOrder = 0
     object TabItems: TTabSheet
       Caption = 'Items'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel2: TPanel
         Left = 0
         Top = 41
@@ -335,10 +331,6 @@ object DataSelectEditor: TDataSelectEditor
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object MemoSQL: TMemo
         Left = 0
         Top = 0

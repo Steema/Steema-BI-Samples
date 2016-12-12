@@ -33,6 +33,8 @@ type
     procedure Pop; virtual; abstract;
   end;
 
+  TJSONEngineClass=class of TJSONEngine;
+
   TBIJSONFormat=(&Normal, &Array);
 
   TBIJSON=class(TBIHierarchicalSource)
@@ -44,6 +46,9 @@ type
     procedure CheckEngine;
     procedure DoAppend(const Index:TInteger; const Data:TDataItem);
   public
+    class var
+      EngineClass : TJSONEngineClass;
+
     Format : TBIJSONFormat;
 
     Constructor Create(const Definition:TDataDefinition=nil; const MultiThread:Boolean=False); override;

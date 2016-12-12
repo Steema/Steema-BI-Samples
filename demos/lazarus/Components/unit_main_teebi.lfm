@@ -1,0 +1,132 @@
+object Form1: TForm1
+  Left = 233
+  Height = 887
+  Top = 114
+  Width = 691
+  Caption = 'Form1'
+  ClientHeight = 887
+  ClientWidth = 691
+  LCLVersion = '1.6.0.4'
+  object BIGrid1: TBIGrid
+    Left = 21
+    Height = 528
+    Top = 88
+    Width = 651
+    UseDockManager = False
+    ParentBackground = False
+    ParentColor = False
+    TabOrder = 0
+    Origin = '|SQLite_Demo|Products'
+  end
+  object BITree1: TBITree
+    Left = 24
+    Height = 188
+    Top = 624
+    Width = 155
+    UseDockManager = False
+    ParentBackground = False
+    ParentColor = False
+    TabOrder = 1
+    Origin = '|Geo'
+  end
+  object BIDataset1: TBIDataset
+    RowNumbers = False
+    left = 35
+    top = 23
+  end
+  object BIQuery1: TBIQuery
+    Dimensions = <    
+      item
+        Histogram.BinSize = 0
+        Histogram.Minimum = 0
+        Histogram.Maximum = 0
+        Style = Row
+        Origin = '|Geo|Continents|Name'
+      end>
+    Measures = <    
+      item
+        Aggregate = Sum
+        Origin = '|TechProducts|Fact_Invoices|Invoice_Value'
+      end>
+    left = 110
+    top = 22
+  end
+  object BIWorkflow1: TBIWorkflow
+    Items = <    
+      item
+        Provider = BIQuery1
+        Items = <        
+          item
+            _Provider = 1
+          end        
+          item
+            _Provider = 2
+          end        
+          item
+            _Provider = 3
+          end        
+          item
+            _Provider = 4
+          end        
+          item
+            _Provider = 5
+          end        
+          item
+            _Provider = 6
+          end>
+        _Provider = 0
+      end>
+    left = 176
+    top = 24
+    object BIQuery1: TBIQuery
+      Dimensions = <      
+        item
+          Histogram.BinSize = 0
+          Histogram.Minimum = 0
+          Histogram.Maximum = 0
+          Style = Row
+          Origin = '|Geo|Continents|Name'
+        end>
+      Measures = <      
+        item
+          Aggregate = Sum
+          Origin = '|TechProducts|Fact_Invoices|Invoice_Value'
+        end>
+      left = 110
+      top = 22
+    end
+    object TNormalizeItem
+    end
+    object TDataShuffle
+    end
+    object TSingleRecord
+      Row = 0
+    end
+    object TSortActionItem
+    end
+    object TSplitItem
+      Percent = 50
+    end
+    object TDataTranspose
+    end
+  end
+  object ControlImporter1: TControlImporter
+    Source = BIGrid1
+    left = 272
+    top = 25
+  end
+  object DataDefinition1: TDataDefinition
+    Kind = Manual
+    Links = <>
+    Strings.Strings = (
+      'Kind=MANUAL'
+    )
+    left = 369
+    top = 26
+    Data = {
+      000208060F44617461446566696E6974696F6E31020809020002000200080802
+      0008080811889B8E9A10D5E44002000200020002000200020000020502014600
+      000000000000020808020008
+    }
+  end
+end

@@ -49,7 +49,7 @@ begin
   BIGrid1.Data:=FSelector.Selected;
 
   // Change it also at our FSingle object:
-  FSingle.Data:=BIGrid1.Data;
+  FSingle.Source:=BIGrid1.Data;
 end;
 
 // When the current row in BIGrid1 is changed,
@@ -75,7 +75,7 @@ begin
   FSelector.Select(BIGrid1.Data);
 
   // Set our FSingle object data:
-  FSingle.Data:=BIGrid1.Data;
+  FSingle.Source:=BIGrid1.Data;
 
   // Tell BIGrid2 to use our FSingle object as automatic data "provider":
   BIGrid2.Provider:=FSingle;

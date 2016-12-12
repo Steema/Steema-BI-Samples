@@ -150,7 +150,7 @@ begin
   else
      LabelPath.Caption:=PathOf(Node);
 
-  BNext.Enabled:=LabelPath.Caption<>'';
+  BNext.Enabled:=(LabelPath.Caption<>'') and (Node.Count=0);
 end;
 
 procedure TImportDemoForm.SamplesDblClick(Sender: TObject);

@@ -33,45 +33,55 @@ interface
 }
 
 uses
-  System.Classes, BI.Data, BI.Persist, BI.Query, BI.Arrays,
-  BI.DataSource, BI.Summary, //BI.Store.Component,
-  BI.Data.CollectionItem;
+  System.Classes, BI.Data, BI.Persist, BI.Query, BI.Arrays, BI.Arrays.Strings,
+  BI.DataSource, BI.Summary, BI.Data.Expressions, BI.Algorithm,
+  BI.Data.CollectionItem, BI.Data.Tools, BI.Expression.Filter, BI.Data.Rank,
+  BI.Data.Merge;
 
 type
-  TWorkflowAction=class(TBaseDataImporter)
-  private
-    FSource : TDataItem;
-  protected
-    procedure Load(const AData:TDataItem; const Children:Boolean); override;
-  public
-    property Source:TDataItem read FSource write FSource;
-  end;
+  TWorkflowItems=class;
 
-  TWorkflowActions=class;
-
+  // Collection Item
   TWorkflowItem=class(TDataCollectionItem)
   private
-    FItems: TWorkflowActions;
+    FItems: TWorkflowItems;
+
+    FParentItem : String;
+
     OwnsData : Boolean;
 
-//    procedure ReadWorkAction(Reader: TReader);
-    procedure SetItems(const Value: TWorkflowActions);
-    procedure SetProvider(const AProvider:TDataProvider; const AName:String);
- //   procedure WriteWorkAction(Writer: TWriter);
+    // Temporary during loading
+    IProvider : Integer;
+    IOrigins : TDataOrigins;
+
+    procedure FixOrigins(const AParent:TDataItem);
     function IsItemsStored: Boolean;
-    function GetWorkAction: TDataProvider;
-    function IsWorkActionStored: Boolean;
+    procedure ReadProvider(Reader: TReader);
+    procedure ReadOrigins(Reader: TReader);
+    procedure SetItems(const Value: TWorkflowItems);
+    procedure TrySetNeeds(const Value:TComponent);
+    procedure TrySetSource(const Value:TDataItem); overload;
+    procedure TrySetSource(const Value:TDataArray); overload;
+    procedure WriteProvider(Writer: TWriter);
+    procedure WriteOrigins(Writer: TWriter);
   protected
+    procedure DefineProperties(Filer: TFiler); override;
+    function OriginsStored:Boolean;
     function Owner:TComponent; override;
+    procedure SetData(const Value: TDataItem); override;
+    procedure SetProvider(const Value: TComponent); override;
   public
     Constructor Create(Collection: TCollection); override;
     Destructor Destroy; override;
+
+    function ParentData:TDataItem;
   published
-    property Items:TWorkflowActions read FItems write SetItems stored IsItemsStored;
-    property WorkAction:TDataProvider read GetWorkAction stored IsWorkActionStored;
+    property Items:TWorkflowItems read FItems write SetItems stored IsItemsStored;
+    property ParentItem:String read FParentItem write FParentItem;
   end;
 
-  TWorkflowActions=class(TOwnedCollection)
+  // Collection
+  TWorkflowItems=class(TOwnedCollection)
   private
     function Get(const Index: Integer): TWorkflowItem;
     procedure Put(const Index: Integer; const Value: TWorkflowItem);
@@ -79,7 +89,17 @@ type
     Constructor Create(AOwner: TPersistent);
 
     function Add: TWorkflowItem; overload;
-    function Add(const AProvider:TDataProvider; const AName:String):TWorkflowItem; overload;
+
+    function Add(const AProvider:TDataProvider;
+                 const AName:String):TWorkflowItem; overload;
+
+    function Add(const ASource:TDataItem;
+                 const AProvider:TDataProvider;
+                 const AName:String):TWorkflowItem; overload;
+
+    function Add(const ASources:TDataArray;
+                 const AProvider:TDataProvider;
+                 const AName:String):TWorkflowItem; overload;
 
     property Items[const Index:Integer]:TWorkflowItem read Get write Put; default;
   end;
@@ -93,25 +113,152 @@ type
               )]
   {$ENDIF}
   {$ENDIF}
-  TBIWorkflow=class(TComponent)
+  TBIWorkflow=class(TBaseDataImporter)
   private
-    FItems: TWorkflowActions;
-    FSelected: TWorkflowItem;
+    FItems: TWorkflowItems;
 
-    procedure SetItems(const Value: TWorkflowActions);
+    function IndexOfProvider(const AProvider:TDataProvider):Integer;
+    procedure SetItems(const Value: TWorkflowItems);
   protected
+    function GetChildOwner: TComponent; override;
+    Procedure GetChildren(Proc:TGetChildProc; Root:TComponent); override;
+
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+
+    procedure Loaded; override;
+
     procedure Notification(AComponent: TComponent;
                            Operation: TOperation); override;
   public
     Constructor Create(AOwner:TComponent); override;
     Destructor Destroy; override;
-
-    property Selected:TWorkflowItem read FSelected write FSelected;
   published
-    property Items:TWorkflowActions read FItems write SetItems;
+    property Items:TWorkflowItems read FItems write SetItems;
   end;
 
-  TItemAction=class(TWorkflowAction)
+  TConvertItem=class(TCloneProvider)
+  private
+    FKind : TDataKind;
+
+    procedure SetKind(const Value: TDataKind);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+  published
+    property Kind:TDataKind read FKind write SetKind default TDataKind.dkUnknown;
+  end;
+
+  TReorderItem=class(TCloneProvider)
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Items : TDataArray;
+  end;
+
+  TCompareItem=class(TDataProviderNeeds)
+  private
+    function GetA: TDataItem;
+    function GetB: TDataItem;
+    procedure SetA(const Value: TDataItem);
+    procedure SetB(const Value: TDataItem);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+
+    property A:TDataItem read GetA write SetA;
+    property B:TDataItem read GetB write SetB;
+  end;
+
+  TMergeStyle=(Join,Subtract,Common,Different);
+
+  TMergeItem=class(TCloneProvider)
+  private
+    FItems : TDataArray;
+    FStyle : TMergeStyle;
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+  published
+    property Items:TDataArray read FItems write FItems;
+    property Style:TMergeStyle read FStyle write FStyle default TMergeStyle.Join;
+  end;
+
+  TSplitItem=class(TSingleSourceProvider)
+  private
+    FBy : TSplitBy;
+    FCount : Integer;
+    FMode : TSplitMode;
+    FPercent : Single;
+
+    procedure SetBy(const Value:TSplitBy);
+    procedure SetCount(const Value:Integer);
+    procedure SetMode(const Value:TSplitMode);
+    procedure SetPercent(const Value:Single);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+  published
+    property By:TSplitBy read FBy write SetBy default TSplitBy.Percent;
+    property Count:Integer read FCount write SetCount default 0;
+    property Mode:TSplitMode read FMode write SetMode default TSplitMode.Start;
+    property Percent:Single read FPercent write SetPercent;
+  end;
+
+  TSortActionItem=class(TCloneProvider)
+  private
+    FItems : TSortItems;
+
+    procedure SetItems(const Value: TSortItems);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    property SortItems:TSortItems read FItems write SetItems;
+  published
+  end;
+
+  TDataRankItem=class(TCloneProvider)
+  private
+    FAscending: Boolean;
+
+    function GetGroups: TDataArray;
+    function GetValue: TDataItem;
+    procedure SetAscending(const Value: Boolean);
+    procedure SetGroups(const Value: TDataArray);
+    procedure SetValue(const Value: TDataItem);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+
+    property Groups:TDataArray read GetGroups write SetGroups;
+    property Value:TDataItem read GetValue write SetValue;
+  published
+    property Ascending:Boolean read FAscending write SetAscending;
+  end;
+
+  TDataGridifyItem=class(TSingleSourceProvider)
+  private
+    function GetColumns: TDataArray;
+    function GetRows: TDataArray;
+    function GetValue: TDataItem;
+    procedure SetColumns(const Value: TDataArray);
+    procedure SetRows(const Value: TDataArray);
+    procedure SetValue(const Value: TDataItem);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+
+    property Columns:TDataArray read GetColumns write SetColumns;
+    property Rows:TDataArray read GetRows write SetRows;
+    property Value:TDataItem read GetValue write SetValue;
+  end;
+
+  TItemAction=class(TCloneProvider)
   private
     FItemName : String;
 
@@ -124,6 +271,7 @@ type
   private
     FKind : TDataKind;
 
+    function AddNewItem(const AData:TDataItem):TDataItem;
     procedure SetKind(const Value: TDataKind);
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
@@ -131,7 +279,21 @@ type
     property Kind:TDataKind read FKind write SetKind;
   end;
 
-  TDeleteItem=class(TItemAction)
+  TItemsAction=class(TCloneProvider)
+  private
+    FItems : TStringArray;
+
+    procedure SetItems(const Value: TStringArray);
+  published
+    property Items:TStringArray read FItems write SetItems;
+  end;
+
+  TDeleteItems=class(TItemsAction)
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  end;
+
+  TDuplicateItems=class(TItemsAction)
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   end;
@@ -147,41 +309,57 @@ type
     property NewName:String read FNewName write SetNewName;
   end;
 
-  TDataTranspose=class(TWorkflowAction)
+  TDataTranspose=class(TSingleSourceProvider)
   private
     procedure TransposeRow(const ADest:TDataItem; const ARow:TInteger; const AOffset:Integer);
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   end;
 
-  TQueryAction=class(TWorkflowAction)
-  private
-    FQuery: TBIQuery;
-    FSQL: String;
-    FOnError: TBIErrorProc;
+  TNormalizeItem=class(TCloneProvider)
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  end;
 
-    procedure SetSQL(const Value: String);
-    procedure SetQuery(const Value: TBIQuery);
+  TFilterAction=class(TSingleSourceProvider)
+  private
+    FQuery : TBIQuery;
+
+    procedure SetFilter(const Value: TBIFilter);
+    function GetFilter: TBIFilter;
   protected
     procedure Load(const AData:TDataItem; const Children:Boolean); override;
   public
     Constructor Create(AOwner:TComponent); override;
-    Constructor From(const AOwner:TComponent; const ASelect:TDataSelect); overload;
-    Constructor From(const AOwner:TComponent; const ASummary:TSummary); overload;
-
     Destructor Destroy; override;
 
-    function Add(const AData:TDataItem;
-                 const AStyle:TDimensionStyle=TDimensionStyle.Automatic;
-                 const IsActive:Boolean=True): TQueryItem; overload;
+    property Filter:TBIFilter read GetFilter write SetFilter;
+  end;
 
-    function Add(const AData:TDataItem;
-                 const AMeasure:TAggregate): TQueryItem; overload;
+  TDataShuffle=class(TCloneProvider)
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  end;
 
-    property OnError:TBIErrorProc read FOnError write FOnError;
-  published
-    property Query:TBIQuery read FQuery write SetQuery;
-    property SQL:String read FSQL write SetSQL;
- end;
+  TGroupByItem=class(TSingleSourceProvider)
+  private
+    function GetGroups: TDataArray;
+    procedure SetGroups(const Value: TDataArray);
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
+  public
+    Constructor Create(AOwner:TComponent); override;
+
+    property Groups:TDataArray read GetGroups write SetGroups;
+  end;
+
+  // Pending:
+  // TDataMapReduce=class(TCloneProvider)
+  // end;
+
+  TBIProviderChooser=function(const AOwner:TComponent):TDataProvider;
+
+var
+  BIFunctionChooser:TBIProviderChooser=nil;
 
 implementation

@@ -22,6 +22,10 @@ type
     procedure GridDataChange(Sender: TObject);
   private
     { Private declarations }
+
+    function GetDataItem: TDataItem;
+    procedure RefreshNavigator;
+    procedure SetDataItem(const Value: TDataItem);
   public
     { Public declarations }
 
@@ -32,6 +36,8 @@ type
     procedure MakeEditable;
 
     class function Present(const AOwner:TComponent; const AData:TDataItem):TModalResult; overload;
+
+    property Data:TDataItem read GetDataItem write SetDataItem;
   end;
 
 implementation

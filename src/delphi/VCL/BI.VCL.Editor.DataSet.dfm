@@ -85,6 +85,10 @@ object BIDataSetEditor: TBIDataSetEditor
     OnChange = PageControl1Change
     object TabOptions: TTabSheet
       Caption = 'Options'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -134,6 +138,10 @@ object BIDataSetEditor: TBIDataSetEditor
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object Backup: TBIDataset

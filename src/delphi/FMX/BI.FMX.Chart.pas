@@ -137,6 +137,8 @@ type
 
     procedure Finish;
     procedure FinishViewDimensions;
+    function GetSeries2D: TChartSeriesClass;
+    function GetSeries3D: TChartSeriesClass;
     procedure SetDimensions(const Value: TBIChartDimensions);
     procedure SetDirection(const Value: TBIChartDirection);
     procedure SetItems(const Value: TBIChartItems);
@@ -148,8 +150,6 @@ type
     procedure SetStacked(const Value: TBIChartStacked);
     procedure SetXYZMode(const Value: TBIChart3DMode);
     procedure SetSeriesDirection(const Value: TBISeriesDirection);
-    function GetSeries2D: TChartSeriesClass;
-    function GetSeries3D: TChartSeriesClass;
   public
     Constructor Create(const AChart:TBIChart);
     Destructor Destroy; override;

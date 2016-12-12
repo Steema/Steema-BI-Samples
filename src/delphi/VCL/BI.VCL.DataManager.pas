@@ -50,15 +50,7 @@ type
     Splitter1: TSplitter;
     TabSettings: TTabSheet;
     TabData: TTabSheet;
-    BViewData: TButton;
-    Label2: TLabel;
-    LLastImport: TLabel;
-    MemoDataInfo: TMemo;
-    BImportNow: TButton;
-    CBParallel: TCheckBox;
-    CBStoponerrors: TCheckBox;
     MemoImportLog: TMemo;
-    ImportProgress: TProgressBar;
     DataMenu: TPopupMenu;
     ViewData1: TMenuItem;
     BRename: TButton;
@@ -66,6 +58,15 @@ type
     BManageStores: TButton;
     TabLinks: TTabSheet;
     Custommanual1: TMenuItem;
+    PanelDataTop: TPanel;
+    Label2: TLabel;
+    LLastImport: TLabel;
+    BViewData: TButton;
+    MemoDataInfo: TMemo;
+    BImportNow: TButton;
+    CBParallel: TCheckBox;
+    CBStoponerrors: TCheckBox;
+    ImportProgress: TProgressBar;
     procedure TreeChange(Sender: TObject; Node: TTreeNode);
     procedure TreeExpanding(Sender: TObject; Node: TTreeNode;
       var AllowExpansion: Boolean);
@@ -140,6 +141,7 @@ type
 
     procedure AddNodeItems(const Node:TTreeNode);
 
+    // Select a data item from any Store
     class function Choose(const AOwner:TComponent; const ACurrent:TDataItem=nil;
                           const FillItems:Boolean=False):TDataItem; static;
 

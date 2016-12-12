@@ -36,7 +36,7 @@ uses
 type
   TBIHTML=class(TBITextSource)
   private
-    class function GetTable(const Xml:TXmlEngine):TDataItem; static;
+    function GetTable(const Xml:TXmlEngine):TDataItem;
     class function GetTables(const Xml:TXmlEngine):TDataArray; static;
     class function TryFindID(const Xml:TXmlEngine):String; static;
   public

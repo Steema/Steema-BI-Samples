@@ -66,6 +66,11 @@ type
     IGrid : TBIGridForm;
     Items : TDataItems;
 
+    FOnChanged : TNotifyEvent;
+
+    procedure Changed;
+
+    procedure DataChanged(Sender: TObject);
     function DataOf(const AIndex:Integer): TDataItem;
     function SelectedField:TDataItem;
     function SelectedItems:TDataItems;
@@ -82,6 +87,8 @@ type
                         const AItems:TDataItems):TModalResult; static;
 
     procedure Refresh(const AItems:TDataItems);
+
+    property OnChanged:TNotifyEvent read FOnChanged write FOnChanged;
   end;
 
 implementation

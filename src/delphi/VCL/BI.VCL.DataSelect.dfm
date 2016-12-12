@@ -21,20 +21,20 @@ object DataSelector: TDataSelector
     Top = 0
     Width = 426
     Height = 457
-    ActivePage = TabStore
+    ActivePage = TabComponent
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
     object TabStore: TTabSheet
       Caption = 'Store'
-    end
-    object TabComponent: TTabSheet
-      Caption = 'Component'
-      ImageIndex = 1
       ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 0
       ExplicitHeight = 0
+    end
+    object TabComponent: TTabSheet
+      Caption = 'Component'
+      ImageIndex = 1
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -43,14 +43,14 @@ object DataSelector: TDataSelector
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        object Button1: TButton
+        object BNew: TButton
           Left = 8
           Top = 8
           Width = 75
           Height = 25
           Caption = '&New...'
           TabOrder = 0
-          OnClick = Button1Click
+          OnClick = BNewClick
         end
       end
     end
@@ -63,7 +63,7 @@ object DataSelector: TDataSelector
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    object Panel2: TPanel
+    object PanelAlignButtons: TPanel
       Left = 241
       Top = 0
       Width = 185
@@ -125,6 +125,10 @@ object DataSelector: TDataSelector
     object Query1: TMenuItem
       Caption = '&Query...'
       OnClick = Query1Click
+    end
+    object CustomData1: TMenuItem
+      Caption = '&Custom Data...'
+      OnClick = CustomData1Click
     end
   end
 end

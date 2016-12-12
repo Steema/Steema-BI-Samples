@@ -87,6 +87,9 @@
 (* header and its copyright text is intact.                               *)
 (* Dr. Dietmar Budelsky, 1998-01-07                                       *)
 (**************************************************************************)
+{$IFDEF FPC}
+  {$MODE DELPHI}
+{$ENDIF}
 
 /////////////////////////////////////////////////////////////////////////////
 // Select a Python version by commenting out the corresponding line, or
@@ -553,7 +556,7 @@
 {$ENDIF}
 
 {$IFDEF FPC}
-  {$MODE DELPHI}
+//  {$MODE DELPHI}
   {$IFDEF CPU64}
     {$DEFINE CPUX64}
   {$ENDIF CPU64}
@@ -578,7 +581,7 @@ unit BI.Plugins.Python.Engine;
 
 {$IFNDEF FPC}
   {$IFNDEF DELPHI7_OR_HIGHER}
-      Error! Delphi 7 or higher is required!
+      Error Delphi 7 or higher is required!
   {$ENDIF}
 {$ENDIF}
 

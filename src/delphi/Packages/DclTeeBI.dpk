@@ -37,6 +37,9 @@ requires
   designide;
 
 contains
+  TeeBIRegisterAbout in 'TeeBIRegisterAbout.pas',
+  TeeBIRegisterMenu in 'TeeBIRegisterMenu.pas',
+  TeeBIRegisterCreator in 'TeeBIRegisterCreator.pas',
   TeeBIRegister in 'TeeBIRegister.pas',
   TeeBIAbout in 'TeeBIAbout.pas' {AboutBI},
   TeeBIDebugVisualizer in 'TeeBIDebugVisualizer.pas',

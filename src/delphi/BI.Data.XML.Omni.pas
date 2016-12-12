@@ -33,14 +33,20 @@ var X : TBIXML;
 interface
 
 uses
-  System.Classes, BI.Data.XML, OmniXML;
+  System.Classes, BI.Data.XML,
+
+  // Unit not found? Download OmniXML from:
+  // http://omnixml.com
+  // http://www.MihaRemec.com
+
+  OmniXML;
 
 type
   TOmniXML=class(TXMLEngine)
   private
     Doc : TXmlDocument;
     Node : IXmlNode;
-  protected
+  public
     function Attribute(const Index:Integer):String; override;
     function AttributeCount:Integer; override;
     function AttributeName(const Index: Integer): String; override;

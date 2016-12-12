@@ -181,7 +181,8 @@ begin
 
   Label1.Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
 
-  TryColorizeRanks;
+  if BIGrid2.Data<>nil then
+     TryColorizeRanks;
 end;
 
 end.

@@ -1,4 +1,4 @@
-{*********************************************}
+﻿{*********************************************}
 {  TeeBI Software Library                     }
 {  TChart Financial Charts                    }
 {  Copyright (c) 2015-2016 by Steema Software }
@@ -49,6 +49,8 @@ uses
   ;
 
 type
+  TOHLCSeriesClass=class of TOHLCSeries;
+
   TFinancialChart=record
   private
     class function CreateFinancial(const AChart:TBITChart;
@@ -58,6 +60,9 @@ type
     class function GetDateTime(const AData:TDataItem; const Index:TInteger;
                                const Reverse:Boolean):TDateTime; static;
   public
+    class var
+      SeriesClass : TOHLCSeriesClass;
+
     class function CanReuse(const AChart:TBITChart):Boolean; static;
 
     class procedure Fill(const AChart:TBITChart;

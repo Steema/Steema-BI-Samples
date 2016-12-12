@@ -22,6 +22,8 @@ type
     function GetY: TDataItem; inline;
     procedure SetX(const Value: TDataItem); inline;
     procedure SetY(const Value: TDataItem); inline;
+  protected
+    procedure Load(const AData:TDataItem; const Children:Boolean); override;
   public
     // Output
     Coefficient,

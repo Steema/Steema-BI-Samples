@@ -1,9 +1,9 @@
 object BIRConsole: TBIRConsole
   Left = 518
   Top = 251
-  Width = 651
-  Height = 338
   Caption = 'R Console'
+  ClientHeight = 299
+  ClientWidth = 635
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -31,10 +31,11 @@ object BIRConsole: TBIRConsole
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    OnResize = Panel1Resize
     object EStatement: TEdit
       Left = 6
       Top = 6
-      Width = 536
+      Width = 524
       Height = 21
       TabOrder = 0
       OnChange = EStatementChange

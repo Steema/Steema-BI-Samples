@@ -24,10 +24,13 @@ unit BI.Data.Rank;
 interface
 
 uses
-  BI.Data;
+  BI.Data, BI.DataSource;
 
 type
   TDataRank=record
+  private
+    class function DataFrom(const AIndex:TCursorIndex;
+                            const LastGroup:TDataItem):TDataItem; static;
   public
     // Note:
     // "AGroups" parameter can be nil. In this case the Rankings will be

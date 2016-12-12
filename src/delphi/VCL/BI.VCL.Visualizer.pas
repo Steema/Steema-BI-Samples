@@ -10,6 +10,12 @@ unit BI.VCL.Visualizer;
 
 interface
 
+{$IFNDEF FPC}
+{$IF CompilerVersion>26}
+{$DEFINE XE6}
+{$ENDIF}
+{$ENDIF}
+
 uses
   System.Classes, Data.DB,
   BI.Data, BI.Arrays, BI.DataSource,

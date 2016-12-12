@@ -53,15 +53,16 @@ type
   TRBaseAlgorithm=class(TBaseAlgorithm)
   protected
     procedure BuildScript; virtual; abstract;
-    function R:TBIREngine;
+    function R:TBIREngine; inline;
   public
     procedure Calculate; override;
+    procedure Plot; virtual;
   end;
 
   TRSupervisedModel=class(TSupervisedModel)
   protected
     procedure BuildScript; virtual; abstract;
-    function R:TBIREngine;
+    function R:TBIREngine; inline;
   public
     procedure Calculate; override;
     procedure Plot; virtual;

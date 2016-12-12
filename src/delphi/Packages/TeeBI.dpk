@@ -67,12 +67,16 @@ contains
   BI.Data.CSV in '..\BI.Data.CSV.pas',
   BI.Data.Dataset in '..\BI.Data.Dataset.pas',
   BI.Data.Geographic in '..\BI.Data.Geographic.pas',
+  BI.Data.Gridify in '..\BI.Data.Gridify.pas',
   BI.Data.Info in '..\BI.Data.Info.pas',
   BI.Data.Html in '..\BI.Data.Html.pas',
   BI.Data.JSON in '..\BI.Data.JSON.pas',
   BI.Data.Excel in '..\BI.Data.Excel.pas',
+  BI.Data.Merge in '..\BI.Data.Merge.pas',
+  BI.Data.Rank in '..\BI.Data.Rank.pas',
   BI.Data.Rtti in '..\BI.Data.Rtti.pas',
   BI.Data.SingleRecord in '..\BI.Data.SingleRecord.pas',
+  BI.Data.Tools in '..\BI.Data.Tools.pas',
   BI.Data.SQL in '..\BI.Data.SQL.pas',
   BI.Data.XML in '..\BI.Data.XML.pas',
   BI.Data.JSON.Standard in '..\BI.Data.JSON.Standard.pas',
@@ -85,6 +89,7 @@ contains
   BI.Languages.English in '..\BI.Languages.English.pas',
   BI.Store.Component in '..\BI.Store.Component.pas',
   BI.Data.Workflow in '..\BI.Data.Workflow.pas',
-  BI.Algorithm in '..\Algorithms\BI.Algorithm.pas';
+  BI.Algorithm in '..\Algorithms\BI.Algorithm.pas',
+  BI.Algorithm.Model in '..\Algorithms\BI.Algorithm.Model.pas';
 
 end.

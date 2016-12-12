@@ -41,11 +41,13 @@ contains
   BI.FMX.Chart.Financial in '..\FMX\BI.FMX.Chart.Financial.pas',
   BI.FMX.Chart.Geo in '..\FMX\BI.FMX.Chart.Geo.pas',
   BI.FMX.Chart.Plugin in '..\FMX\BI.FMX.Chart.Plugin.pas',
+  BI.FMX.Chart.Source in '..\FMX\BI.FMX.Chart.Source.pas',
   BI.FMX.Chart.ThreeD in '..\FMX\BI.FMX.Chart.ThreeD.pas',
   BI.FMX.PDF in '..\FMX\BI.FMX.PDF.pas',
   BI.FMX.Dashboard.Chart in '..\FMX\BI.FMX.Dashboard.Chart.pas',
   BI.FMX.Visualizer.Chart in '..\FMX\BI.FMX.Visualizer.Chart.pas',
   BI.FMX.Editor.Visualizer.Chart in '..\FMX\BI.FMX.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
+  BI.FMX.Editor.Chart.Source in '..\FMX\BI.FMX.Editor.Chart.Source.pas' {BISourceEditor},
   BI.FMX.ChartFunctions in '..\FMX\BI.FMX.ChartFunctions.pas';
 
 end.
