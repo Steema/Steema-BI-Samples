@@ -36,12 +36,12 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils, BI.UI;
 
 { TExporting_Test }
 
 const
-  CRLF=#13#10;
+  CRLF=TCommonUI.CRLF;
 
 procedure TExporting_Test.CSV;
 var S : String;
