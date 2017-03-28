@@ -3,9 +3,9 @@
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 17, December-12th 2016)
+[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 18, March-28th 2017)
 
-[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 17)
+[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 18)
 
  
 ### What is TeeBI ?
@@ -19,6 +19,8 @@ A simple class to implement in-memory database complex structures to provide:
 - Automatic relationships between columns (master-detail), indexes and foreign keys
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
+
+- Geographic database (Countries, States, Provinces...) to automatically create summary queries and TeeChart world maps
 
 - Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams)
 
@@ -36,7 +38,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Supported development environments: 
 
-  *  Embarcadero RAD Studio 10.1 Berlin, and from Studio XE4 and up (Delphi and C++)
+  *  Embarcadero RAD Studio 10.2 Tokyo, and from Studio XE4 and up (Delphi and C++)
   *  Visual Studio (.NET)
   *  Lazarus / FreePascal
   

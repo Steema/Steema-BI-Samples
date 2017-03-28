@@ -1,6 +1,31 @@
 # TeeBI Release Notes
 -------------------
 
+## 28th-March-2017 Beta 18
+
+- Support for RAD Studio XE 10.2 Tokyo
+
+- New BIWeb server for Linux (console project) : BI_Linux_Web project
+
+- New support for TeeGrid control instead of default DBGrid / Grid controls
+
+- New demos:
+
+  * Using TeeGrid
+  
+- Other
+
+  * Separated all TeeChart-related code from BI.Web.Common.pas unit to a new unit: BI.Web.Common.Chart
+  
+  * All TArray helper classes "Zero" method renamed to "Initialize"
+  
+  * Lazarus / FreePascal, use namespaces ("." in unit names) instead of renaming them
+  
+  * Improved / fixed support for Extended (80bit float) in FreePascal x64 cpu
+  
+  * Miscellaneous bug fixes and improvements
+  
+  
 ## 12th-December-2016 Beta 17
 
 Due to [TeeGrid](https://github.com/Steema/TeeGrid) new control release, TeeBI development has been slower than expected. 
