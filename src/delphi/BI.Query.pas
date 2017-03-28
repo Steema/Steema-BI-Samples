@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TBIQuery Component                         }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Query;
@@ -9,7 +9,7 @@ unit BI.Query;
 interface
 
 uses
-  System.Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
+  {System.}Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
   BI.Persist, BI.Expression.Filter, BI.Data.CollectionItem,
   BI.Data.Expressions;
 

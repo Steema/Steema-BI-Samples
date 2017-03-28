@@ -65,7 +65,7 @@ type
     procedure AddControls(const AParent:TBITreeNode; const AControl:TWinControl);
     procedure CreateHover;
 
-    procedure FillGallery;
+    //procedure FillGallery;
     procedure FillTree(const ALayout:TLayoutItem);
 
     procedure BIClick(Sender: TObject);

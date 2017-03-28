@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Database connection tester                 }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.DB.FireDAC.AllDrivers;
@@ -13,39 +13,39 @@ interface
 
   {$DEFINE HASFIREDAC_SQLite}
   {$DEFINE HASFIREDAC_IB}
-  {.$DEFINE HASFIREDAC_ADS}
+  {$DEFINE HASFIREDAC_ADS}
 
   {$IFNDEF ANDROID}
-  {.$DEFINE HASFIREDAC_MSSQL}
+  {$DEFINE HASFIREDAC_MSSQL}
   {$ENDIF}
 
   {$IFDEF MSWINDOWS}
-  {.$DEFINE HASFIREDAC_ODBC}
+  {$DEFINE HASFIREDAC_ODBC}
   {.$DEFINE HASFIREDAC_MSAcc}
   {$ENDIF}
 
   {$IF CompilerVersion>27}
-  {.$DEFINE HASFIREDAC_ORACLE}
+  {$DEFINE HASFIREDAC_ORACLE}
 
     {$IFNDEF ANDROID}
-    {.$DEFINE HASFIREDAC_MYSQL}
+    {$DEFINE HASFIREDAC_MYSQL}
     {$ENDIF}
 
     {$IF CompilerVersion>=30}
       {$IFNDEF ANDROID}
-      {.$DEFINE HASFIREDAC_MONGODB}
+      {$DEFINE HASFIREDAC_MONGODB}
       {$ENDIF}
     {$ENDIF}
 
   {$ELSE}
 
     {$IFDEF MSWINDOWS}
-    {.$DEFINE HASFIREDAC_ORACLE}
-    {.$DEFINE HASFIREDAC_MYSQL}
+    {$DEFINE HASFIREDAC_ORACLE}
+    {$DEFINE HASFIREDAC_MYSQL}
     {$ELSE}
     {$IFDEF MACOSX}
-    {.$DEFINE HASFIREDAC_ORACLE}
-    {.$DEFINE HASFIREDAC_MYSQL}
+    {$DEFINE HASFIREDAC_ORACLE}
+    {$DEFINE HASFIREDAC_MYSQL}
     {$ENDIF}
     {$ENDIF}
 

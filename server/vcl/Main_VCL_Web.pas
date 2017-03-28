@@ -14,12 +14,12 @@ uses
   Data.DB, Vcl.ExtCtrls, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids,
   Vcl.Menus,
 
-  // Indy
+  // Indy Server
   IdBaseComponent, IdComponent, IdCustomTCPServer, IdCustomHTTPServer,
   IdHTTPServer, IdContext,
 
   BI.Web.AllData, BI.Web, BI.Web.Common, BI.Persist,
-  BI.VCL.Grid, BI.VCL.DataControl;
+  BI.VCL.Grid, BI.VCL.DataControl, BI.Web.SingleInstance;
 
 type
   TFormBIWeb = class(TForm)
@@ -136,7 +136,7 @@ implementation
 
 uses
   BI.Arrays, BI.Data, BI.UI, Unit_Constants, BI.Data.Html, BI.VCL.DataManager,
-  BI.Data.CSV, BI.Data.JSON, BI.Data.XML,
+  BI.Data.CSV, BI.Data.JSON, BI.Data.XML, BI.Data.Excel,
 
   {$IFNDEF FPC}
   {$IF CompilerVersion>26}
@@ -308,7 +308,6 @@ end;
 
 procedure TFormBIWeb.SetupPublicFolder;
 begin
-  CBPublic.Checked:=BIWeb.PublicFolder.Enabled;
   CBPublic.Checked:=BIWeb.PublicFolder.Enabled;
 end;
 
@@ -560,22 +559,4 @@ begin
   Show;
 end;
 
-{$IFDEF MSWINDOWS}
-var
-  Mutex : THandle=0;
-
-initialization
-  Mutex:=CreateMutex(nil,True,'BIWeb.ts');
-
-  if GetLastError=ERROR_ALREADY_EXISTS then
-  begin
-    MessageDlg(BIMsg_ServerAlreadyRunning, TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
-    Halt;
-  end;
-
-finalization
-  if Mutex<>0 then
-     CloseHandle(Mutex);
-
-{$ENDIF}
 end.

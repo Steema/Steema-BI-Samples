@@ -216,6 +216,12 @@ type
 
     property OnResize;
 
+    {$IFDEF FMX}
+    {$IF CompilerVersion>=32}
+    property OnResized;
+    {$IFEND}
+    {$ENDIF}
+
     {$IFNDEF FMX}
     property OnStartDock;
     property OnStartDrag;

@@ -1,9 +1,9 @@
 object DataEditor: TDataEditor
   Left = 220
   Top = 210
+  Width = 534
+  Height = 484
   Caption = 'Data Definition Editor'
-  ClientHeight = 445
-  ClientWidth = 518
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -160,6 +160,7 @@ object DataEditor: TDataEditor
             Width = 145
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 5
             Text = 'Custom'
@@ -362,6 +363,7 @@ object DataEditor: TDataEditor
             Width = 153
             Height = 21
             Style = csDropDownList
+            ItemHeight = 0
             TabOrder = 0
             OnChange = CBDBDriverChange
           end
@@ -609,6 +611,7 @@ object DataEditor: TDataEditor
           Width = 177
           Height = 21
           Style = csDropDownList
+          ItemHeight = 0
           TabOrder = 0
           OnChange = CBWebDataChange
           OnDropDown = CBWebDataDropDown
@@ -727,7 +730,7 @@ object DataEditor: TDataEditor
             Width = 16
             Height = 21
             Associate = ETimeout
-            Max = 65535
+            Max = -1
             Position = 2000
             TabOrder = 6
             Thousands = False
@@ -748,10 +751,6 @@ object DataEditor: TDataEditor
               Align = alClient
               AutoSize = False
               WordWrap = True
-              ExplicitLeft = 20
-              ExplicitTop = 28
-              ExplicitWidth = 3
-              ExplicitHeight = 13
             end
           end
         end
@@ -844,8 +843,6 @@ object DataEditor: TDataEditor
     object TabStyle: TTabSheet
       Caption = 'Style'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 22
       object RGKind: TRadioGroup
         Left = 16
         Top = 16

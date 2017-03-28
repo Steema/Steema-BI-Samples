@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Generic Database data import and export    }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.DB;
@@ -9,7 +9,7 @@ unit BI.Data.DB;
 interface
 
 uses
-  System.Classes, System.Types, Data.DB,
+  {System.}Classes, {System.}Types, {Data.}DB,
   BI.Data.Dataset, BI.Data, BI.Arrays, BI.DataSource, BI.Persist;
 
 type

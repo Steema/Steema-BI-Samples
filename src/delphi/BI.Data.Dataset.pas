@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TDataSet data import                       }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.Dataset;
@@ -9,7 +9,8 @@ unit BI.Data.Dataset;
 interface
 
 uses
-  System.Classes, System.SysUtils, Data.DB, BI.Arrays, BI.Data, BI.DataSource;
+  {System.}Classes, {System.}SysUtils, {Data.}DB,
+  BI.Arrays, BI.Data, BI.DataSource;
 
 // Import any TDataset, TCustomConnection or one or more TField objects
 // into a TDataItem

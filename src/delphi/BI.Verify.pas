@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Data Verification                          }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Verify;

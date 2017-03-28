@@ -8,6 +8,21 @@ unit BI.VCL.Grid;
 
 interface
 
+(*
+  Base class for TBIGrid control.
+
+  TBIGrid can use different "grid" controls, it uses standard VCL TDBGrid
+  by default.
+
+  To use another grid control, like for example a TeeGrid:
+
+  uses
+    BI.VCL.Grid, BI.VCL.Grid.TeeGrid;
+
+  TBIGridPlugin.Engine:=TBITeeGridPlugin;
+
+*)
+
 uses
   System.Classes, System.SysUtils, System.Types,
   {$IFNDEF FPC}

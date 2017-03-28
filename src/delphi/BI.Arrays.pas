@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Base Array helper classes                  }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Arrays;
@@ -19,7 +19,7 @@ unit BI.Arrays;
 interface
 
 uses
-  System.SysUtils, System.DateUtils;
+  {System.}SysUtils, {System.}DateUtils;
 
 {$IF Declared(CompilerVersion)}
  {$IF CompilerVersion>28}
@@ -366,6 +366,7 @@ type
     procedure Empty; inline;
     function Equals(const Value:TBooleanArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
+    procedure Initialize(const Value:Boolean=False);
     procedure Insert(const Index:TInteger; const Value:Boolean);
     function Map:TBooleanMap;
     procedure Resize(const Count:TInteger); inline;
@@ -374,7 +375,6 @@ type
     procedure Sort(const Ascending:Boolean=True); overload; inline;
     function Stats:TBooleanStats; inline;
     procedure Swap(const A,B:TInteger); inline;
-    procedure Zero(const Value:Boolean=False);
   end;
 
   TTextArrayHelper=record helper for TTextArray
@@ -397,6 +397,7 @@ type
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:String):TInteger; overload; inline;
     function IndexOf(const Value:String; const CaseSensitive:Boolean):TInteger; overload;
+    procedure Initialize(const Value:String='');
     procedure Insert(const Index:TInteger; const Value:String);
     function Map(const IgnoreCase:Boolean=False):TTextMap;
     function MaxLength:Integer;
@@ -407,7 +408,6 @@ type
     function SortedFind(const Value: String; out Exists:Boolean; const IgnoreCase:Boolean): TNativeInteger;
     function Stats:TTextStats; inline;
     procedure Swap(const A,B:TInteger); inline;
-    procedure Zero;
   end;
 
   TDateTimeArrayHelper=record helper for TDateTimeArray
@@ -424,6 +424,7 @@ type
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
+    procedure Initialize(const Value:TDateTime=0);
     procedure Insert(const Index:TInteger; const Value:TDateTime);
     function Map(out Median,Mode:TDateTime):TDateTimeMap; overload;
     function Maximum:TDateTime;
@@ -438,7 +439,6 @@ type
     function StdDeviation(const Mean:TDateTime):TFloat;
     procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:TDateTime):TFloat;
-    procedure Zero;
   end;
 
   TInt32ArrayHelper=record helper for TInt32Array
@@ -463,6 +463,7 @@ type
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:Integer):TInteger;
     function IndexOfMax:TInteger;
+    procedure Initialize(const Value:Integer=0);
     procedure Insert(const Index:TInteger; const Value:Integer);
     function Map(out Median,Mode:Integer):TInt32Map;
     function Maximum:Integer;
@@ -481,7 +482,6 @@ type
     function SumOfSquares: TFloat;
     procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:TFloat):TFloat;
-    procedure Zero;
   end;
 
   TInt64ArrayHelper=record helper for TInt64Array
@@ -506,6 +506,7 @@ type
     function ExistsBefore(const AIndex:TInteger):Boolean;
     function IndexOf(const Value:Int64):TInteger;
     function IndexOfMax:TInteger;
+    procedure Initialize(const Value:Int64=0);
     procedure Insert(const Index:TInteger; const Value:Int64);
     function Map(out Median,Mode:Int64):TInt64Map;
     function Maximum:Int64;
@@ -524,7 +525,6 @@ type
     function SumOfSquares: TFloat;
     procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:TFloat):TFloat;
-    procedure Zero;
   end;
 
   TSingleArrayHelper=record helper for TSingleArray
@@ -547,6 +547,7 @@ type
     procedure Empty; inline;
     function Equals(const Value:TSingleArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
+    procedure Initialize(const Value:Single=0);
     procedure Insert(const Index:TInteger; const Value:Single);
     function Map(out Median,Mode:Single):TSingleMap; overload;
     function Maximum:Single;
@@ -565,7 +566,6 @@ type
     function SumOfSquares: Single;
     procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:Single):Single;
-    procedure Zero;
   end;
 
   TDoubleArrayHelper=record helper for TDoubleArray
@@ -588,6 +588,7 @@ type
     procedure Empty; inline;
     function Equals(const Value:TDoubleArray):Boolean;
     function ExistsBefore(const AIndex:TInteger):Boolean;
+    procedure Initialize(const Value:Double=0);
     procedure Insert(const Index:TInteger; const Value:Double);
     function Map(out Median,Mode:Double):TDoubleMap; overload;
     function Maximum:Double;
@@ -606,7 +607,6 @@ type
     function SumOfSquares: Double;
     procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:Double):Double;
-    procedure Zero;
   end;
 
   {$IFDEF CPUX86}
@@ -626,6 +626,7 @@ type
     procedure Delete(const Index:TInteger; const ACount:TInteger=1); {$IFDEF DELETEARRAY}inline;{$ENDIF}
     procedure Empty; inline;
     function ExistsBefore(const AIndex:TInteger):Boolean;
+    procedure Initialize(const Value:Extended=0);
     procedure Insert(const Index:TInteger; const Value:Extended);
     function Map(out Median,Mode:Extended):TExtendedMap; overload;
     function Maximum:Extended;
@@ -643,28 +644,27 @@ type
     function SumOfSquares: Extended;
     procedure Swap(const A,B:TInteger); inline;
     function Variance(const Mean:Extended):Extended;
-    procedure Zero;
   end;
   {$ENDIF}
 
   TSquareGridHelper=record helper for TSquareGrid
   public
     function Count:TInteger; inline;
+    procedure Initialize(const Value:Double=0);
     procedure MakeIdentity;
     procedure Resize(const Count:TInteger); inline;
-    procedure Zero;
   end;
 
   TFloatGridHelper=record helper for TFloatGrid
   public
     function Count:TInteger; inline;
     function CoVarianceMatrix(const Means:TDoubleArray):TSquareGrid;
+    procedure Initialize(const Value:Double=0);
+    procedure InitializeRandom;
     function Means:TDoubleArray;
     procedure Normalize(const Means:TDoubleArray);
-    procedure Random;
     procedure Resize(const Cols,Rows:TInteger); inline;
     function ScatterMatrix(const CoVarianceMatrix:TSquareGrid):TSquareGrid;
-    procedure Zero;
   end;
 
 implementation

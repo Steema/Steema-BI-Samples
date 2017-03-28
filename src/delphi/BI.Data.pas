@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Main TDataItem classes                     }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data;
@@ -22,7 +22,7 @@ uses
   BI.FPC,
   {$ENDIF}
 
-  System.Classes, System.SysUtils,
+  {System.}Classes, {System.}SysUtils,
   BI.Arrays, BI.Expression;
 
 type
@@ -249,9 +249,12 @@ type
       // Used only during link loading:
       FOrigin : String;
 
+      procedure Notify(const AEvent: TBIEvent);
+      procedure Removed;
+      procedure SetData(const Value: TDataItem);
       procedure SetOrigin(const Value: String);
     public
-      Data : TDataItem;
+      FData : TDataItem;
 
       Index : TNativeIntArray;    // For self-detail relationship
 
@@ -266,6 +269,7 @@ type
       // Returns the array of detail Indexes for given master AIndex position
       function GetIndex(const AMaster:TDataItem; const AIndex:TInteger):TNativeIntArray;
 
+      property Data:TDataItem read FData write SetData;
       property Origin:String read FOrigin write SetOrigin;
     end;
 
@@ -407,7 +411,7 @@ type
     procedure Clear;
     procedure ClearData(const Recursive:Boolean=False);
 
-    function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):ShortInt;
+    function Compare(const A,B:TInteger; const IgnoreTextCase:Boolean=False):Integer;
     procedure CopyFrom(const DestIndex:TInteger;
                        const Source:TDataItem;
                        const SourceIndex:TInteger); overload;

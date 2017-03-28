@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TBIFilter class using Expressions          }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Expression.Filter;
@@ -9,7 +9,7 @@ unit BI.Expression.Filter;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Expression, BI.Data.CollectionItem,
+  {System.}Classes, BI.Data, BI.Expression, BI.Data.CollectionItem,
   BI.Arrays, BI.Data.Expressions;
 
 type

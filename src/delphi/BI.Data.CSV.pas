@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  CSV (TSV) data import and export           }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.CSV;
@@ -11,7 +11,7 @@ interface
 uses
   System.Classes, System.Types,
   {$IFDEF FPC}
-  BI_FPC,
+  BI.FPC,
   {$ELSE}
   System.Diagnostics,
   {$ENDIF}

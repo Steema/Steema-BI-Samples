@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Expression parser and evaluator            }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Expression;
@@ -16,9 +16,9 @@ uses
   {$IFDEF BIVARIANT}
   BI.Variants,
   {$ELSE}
-  System.Variants,
+  {System.}Variants,
   {$ENDIF}
-  System.SysUtils;
+  {System.}SysUtils;
 
 type
   EExpressionParse=class(Exception)

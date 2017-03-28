@@ -91,6 +91,8 @@
   {$MODE DELPHI}
 {$ENDIF}
 
+{$LEGACYIFEND ON}
+
 /////////////////////////////////////////////////////////////////////////////
 // Select a Python version by commenting out the corresponding line, or
 // modify the default Python version below, in the Python versions section.
@@ -407,7 +409,7 @@
   {$DEFINE DELPHIXE8_OR_HIGHER}
   {$DEFINE DELPHIX_OR_HIGHER}
 {$ENDIF}
-{$IFDEF VER310} // Delphi 10.1 London
+{$IFDEF VER310} // Delphi 10.1 BigBen London / Berlin
   {$DEFINE DELPHIX}
   {$DEFINE DELPHI4_OR_HIGHER}
   {$DEFINE DELPHI5_OR_HIGHER}
@@ -429,6 +431,30 @@
   {$DEFINE DELPHIXE8_OR_HIGHER}
   {$DEFINE DELPHIX_OR_HIGHER}
   {$DEFINE DELPHIX01_OR_HIGHER}
+{$ENDIF}
+{$IFDEF VER320} // Delphi 11.0 Tokyo / Godzilla
+  {$DEFINE DELPHIX}
+  {$DEFINE DELPHI4_OR_HIGHER}
+  {$DEFINE DELPHI5_OR_HIGHER}
+  {$DEFINE DELPHI6_OR_HIGHER}
+  {$DEFINE DELPHI7_OR_HIGHER}
+  {$DEFINE DELPHI8_OR_HIGHER}
+  {$DEFINE DELPHI2005_OR_HIGHER}
+  {$DEFINE DELPHI2006_OR_HIGHER}
+  {$DEFINE DELPHI2007_OR_HIGHER}
+  {$DEFINE DELPHI2009_OR_HIGHER}
+  {$DEFINE DELPHI2010_OR_HIGHER}
+  {$DEFINE DELPHIXE_OR_HIGHER}
+  {$DEFINE DELPHIXE2_OR_HIGHER}
+  {$DEFINE DELPHIXE3_OR_HIGHER}
+  {$DEFINE DELPHIXE4_OR_HIGHER}
+  {$DEFINE DELPHIXE5_OR_HIGHER}
+  {$DEFINE DELPHIXE6_OR_HIGHER}
+  {$DEFINE DELPHIXE7_OR_HIGHER}
+  {$DEFINE DELPHIXE8_OR_HIGHER}
+  {$DEFINE DELPHIX_OR_HIGHER}
+  {$DEFINE DELPHIX01_OR_HIGHER}
+  {$DEFINE DELPHIXI0_OR_HIGHER}
 {$ENDIF}
 /////////////////////////////////////////////////////////////////////////////
 // Python versions
@@ -594,8 +620,10 @@ uses
   Posix.PThread,
 {$ENDIF}
 {$IFDEF LINUX}
+  {$IFDEF FPC} // Libc: Not in Godzilla
   Types,
   Libc,
+  {$ENDIF}
 {$ENDIF}
   Classes,
   SysUtils,
@@ -603,8 +631,10 @@ uses
 {$IFDEF DELPHIXE4_OR_HIGHER}
   {$IFNDEF IOS}
   {$IFNDEF ANDROID}
+  {$IFNDEF LINUX}
   {$DEFINE USEANSISTRPAS}
   System.AnsiStrings,
+  {$ENDIF}
   {$ENDIF}
   {$ENDIF}
 {$ENDIF}
@@ -684,7 +714,7 @@ const
     (DllName: 'libpython3.1.so'; RegVersion: '3.1'; APIVersion: 1013; CanUseLatest: True),
     (DllName: 'libpython3.2.so'; RegVersion: '3.2'; APIVersion: 1013; CanUseLatest: True),
     (DllName: 'libpython3.3.so'; RegVersion: '3.3'; APIVersion: 1013; CanUseLatest: True),
-    (DllName: 'libpython3.4.so'; RegVersion: '3.4'; APIVersion: 1013; CanUseLatest: True) );
+    (DllName: 'libpython3.4.so'; RegVersion: '3.4'; APIVersion: 1013; CanUseLatest: True),
     (DllName: 'libpython3.5.so'; RegVersion: '3.5'; APIVersion: 1013; CanUseLatest: True) );
 {$ENDIF}
 {$IFDEF MACOS}
@@ -973,11 +1003,18 @@ const
 //#######################################################
 
 type
+   {$IFDEF LINUX}
+   {$IFNDEF FPC}
+   PAnsiChar=PChar;
+   AnsiString=String;
+   {$ENDIF}
+   {$ENDIF}
+
    TPAnsiChar     = array[0..16000] of PAnsiChar;
    TPWideChar = array[0..16000] of PWideChar;
    PPAnsiChar     = ^TPAnsiChar;
    PPWideChar = ^TPWideChar;
-   PInt	      = ^Integer;
+   PInt       = ^Integer;
    PDouble    = ^Double;
    PFloat     = ^Real;
    PLong      = ^LongInt;

@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Common VCL and FMX UI helper methods       }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.UI;
@@ -9,9 +9,9 @@ unit BI.UI;
 interface
 
 uses
-  System.Classes,
+  {System.}Classes,
   {$IFDEF FPC}
-  BI_FPC,
+  BI.FPC,
   {$ELSE}
   System.UITypes,
   {$ENDIF}
@@ -23,7 +23,7 @@ type
   TCommonUI=record
   public
     const
-      CRLF=#13#10;
+      CRLF=sLineBreak; //#13#10;
 
     class var
       ShowMessage:TShowMessageProc;

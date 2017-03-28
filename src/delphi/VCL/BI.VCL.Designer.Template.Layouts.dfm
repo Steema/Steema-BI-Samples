@@ -31,6 +31,10 @@ object LayoutDesigner: TLayoutDesigner
     TabOrder = 2
     object TabSheet1: TTabSheet
       Caption = 'Preview'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIVisual1: TBIVisual
         Left = 0
         Top = 0

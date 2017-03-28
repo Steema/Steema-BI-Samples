@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Abstract datasource and cursor classes     }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.DataSource;
@@ -10,11 +10,11 @@ interface
 
 uses
   {$IFDEF MSWINDOWS}
-  WinApi.Windows,
+  {WinApi.}Windows,
   {$ENDIF}
 
-  System.Classes, System.SysUtils, BI.Arrays, BI.Data, BI.Persist,
-  BI.Compression, BI.Expression, System.Types, BI.Data.Expressions;
+  {System.}Classes, {System.}SysUtils, BI.Arrays, BI.Data, BI.Persist,
+  BI.Compression, BI.Expression, {System.}Types, BI.Data.Expressions;
 
 type
   // Base abstract class to define a "Source" of Data to import into a TDataItem

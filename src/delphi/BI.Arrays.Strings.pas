@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TStringArray and helper type               }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Arrays.Strings;
@@ -26,5 +26,7 @@ type
     class function Split(const S:String; const Delimiter:Char):TStringArray; overload; static;
     class function Split(const S:String; const Delimiter,Quote:Char):TStringArray; overload; static;
   end;
+
+  TArrayOfStrings=TStringArray;
 
 implementation

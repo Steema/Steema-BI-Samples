@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Data Persistence classes                   }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Persist;
@@ -19,7 +19,7 @@ unit BI.Persist;
 interface
 
 uses
-  System.Classes, System.SysUtils,
+  {System.}Classes, {System.}SysUtils,
   {$IFDEF FPC}
   BI.FPC,
   {$ENDIF}

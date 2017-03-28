@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Custom TBIDataSet component                }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Dataset;
@@ -44,18 +44,20 @@ unit BI.Dataset;
 
 interface
 
-uses System.Classes, System.Types,
+uses {System.}Classes, {System.}Types,
 
      {$IFDEF D18}
      System.Generics.Collections,
 
      {$IFNDEF IOS}
      {$IFNDEF ANDROID}
+     {$IFNDEF LINUX}
      System.AnsiStrings,
      {$ENDIF}
      {$ENDIF}
      {$ENDIF}
-     Data.DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
+     {$ENDIF}
+     {Data.}DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
      BI.Expression.Filter;
 
 const

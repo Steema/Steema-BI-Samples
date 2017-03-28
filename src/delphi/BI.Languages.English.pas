@@ -3,11 +3,11 @@ unit BI.Languages.English;
 interface
 
 const
-  TeeBI_Version=20161021;
-  TeeBI_VersionString='v1 20161021';
-  TeeBI_VersionMode='(BETA 17)';
+  TeeBI_Version=20170328;
+  TeeBI_VersionString='v1 20170328';
+  TeeBI_VersionMode='(BETA 18)';
   TeeBI_Description='TeeBI';
-  TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2016 by Steema Software';
+  TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2017 by Steema Software';
 
 var
   BIMsg_About:String                       = 'About TeeBI...';

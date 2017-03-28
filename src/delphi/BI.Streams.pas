@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Binary Reader and Writer classes           }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Streams;
@@ -34,7 +34,7 @@ interface
 *)
 
 uses
-  System.Classes, System.SysUtils;
+  {System.}Classes, {System.}SysUtils;
 
 {$IF SizeOf(Extended) = 10}
   {$DEFINE EXTENDEDIS10BYTES}  // 32bit cpu x86

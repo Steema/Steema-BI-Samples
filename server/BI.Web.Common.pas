@@ -15,8 +15,6 @@ uses
   BI.Summary, BI.Persist, BI.Data.Info,
 
   {$IFDEF FMX}
-  FMXTee.Constants, FMXTee.Canvas, FMXTee.Procs, FMXTee.Chart,
-
   FMX.Types,
 
   {$IF Declared(FireMonkeyVersion) and (FireMonkeyVersion<+21)}
@@ -27,34 +25,14 @@ uses
   FMX.Graphics,
   {$ENDIF}
 
-  System.UITypes, FMX.Surfaces,
+  FMX.Surfaces,
 
-  {$IF TeeMsg_TeeChartPalette='TeeChart'}
-  {$DEFINE TEEPRO}
   {$ENDIF}
 
-  {$IFDEF TEEPRO}
-  FMXTee.Themes, BI.FMX.PDF, FMXTee.Canvas.Javascript,
-  {$ENDIF}
-  FMXTee.Series, BI.FMX.Chart
-  {$ELSE}
-
-  VCLTee.TeeConst, VCLTee.Chart, VCLTee.TeeExport, VCLTee.TeeBmpOptions,
-
-  {$IF TeeMsg_TeeChartPalette='TeeChart'}
-  {$DEFINE TEEPRO}
-  {$ENDIF}
-
-  {$IFDEF TEEPRO}
-  VCLTee.TeeJPEG, VCLTee.TeePNG, VCLTee.TeeThemes, BI.VCL.PDF,
-  VCLTee.TeeJavascript,
-  {$ENDIF}
-
-  VCLTee.Series, VCLTee.TeEngine, VCL.Controls, VCL.Graphics, BI.VCL.Chart
-  {$ENDIF}
-  ;
+  System.UITypes;
 
 type
+  // Abstract class (see BI.Web.IndyContext for implementation)
   TBIWebContext=class
   public
     ContentText: String;
@@ -127,15 +105,6 @@ type
     class function CalcTotals(const ACursor:TDataCursor;
                               const Aggregate:TAggregate):TDataItem; static;
 
-    class function ChartFromCursor(var ACursor:TDataCursor;
-                           const Params: TStrings;
-                           const AWidth,AHeight:Integer;
-                           const AUseTheme:Boolean=True):TBIChart; static;
-
-    class function ChartToStream(var ACursor:TDataCursor; const Params:TStrings;
-                           const AFormat:String;
-                           const AWidth,AHeight:Integer):TStream; static;
-
     class function CheckZip(const AStream:TStream; const Params:TStrings):TStream; static;
 
     class function CursorToText(var ACursor:TDataCursor; const AFormat:String;
@@ -153,7 +122,6 @@ type
 
     class function GetFilter(const AData:TDataItem; const AFilter:String):TExpression; static;
 
-    class procedure GetWidthHeight(const Params:TStrings; out AWidth,AHeight:Integer); static;
     procedure PrepareCursor(const ACursor:TDataCursor; const AData:TDataItem;
                             const Params:TStrings);
 
@@ -210,8 +178,30 @@ implementation
 uses
   System.SysUtils, System.IOUtils, System.Types,
   BI.Data.SQL, BI.Data.Html, BI.Languages.English,
-  BI.Dashboard, BI.Dashboard.HTML, BI.Dashboard.Loader,
-  BI.Data.Expressions, BI.UI;
+  BI.Dashboard,
+
+  BI.Dashboard.HTML,
+
+  BI.Dashboard.Loader,
+  BI.Data.Expressions,
+
+  {$IFNDEF NOTEECHART}
+
+  {$IFDEF LINUX}
+  {$IFDEF FPC}
+  {$DEFINE TEECHART}
+  {$ENDIF}
+  {$ELSE}
+  {$DEFINE TEECHART}
+  {$ENDIF}
+
+  {$IFDEF TEECHART}
+  BI.Web.Common.Chart,
+  {$ENDIF}
+
+  {$ENDIF}
+
+  BI.UI;
 
 Constructor TBIWebCommon.Create;
 begin
@@ -232,141 +222,6 @@ procedure TBIWebCommon.SetupPublicFolder;
 begin
   PublicFolder.Enabled:=TBIRegistry.ReadBoolean('BIWeb','PublicEnabled',True);
   PublicFolder.Path:=TBIRegistry.ReadString('BIWeb','PublicFolder','public');
-end;
-
-class function TBIWebCommon.ChartFromCursor(var ACursor: TDataCursor;
-                    const Params : TStrings;
-                    const AWidth, AHeight: Integer;
-                    const AUseTheme:Boolean=True): TBIChart;
-
-  function GetBoolean(const ATag:String; const ADefault:Boolean):Boolean;
-  var tmp : String;
-  begin
-    tmp:=Params.Values[ATag];
-
-    if tmp='' then
-       result:=ADefault
-    else
-       result:=StrToBoolDef(tmp,ADefault);
-  end;
-
-  function Get3D:Boolean;
-  begin
-    result:=GetBoolean('view3d',False);
-  end;
-
-  {$IFDEF TEEPRO}
-  function FindThemeClass(const S:String):TChartThemeClass;
-  var t : Integer;
-      tmp : TChartTheme;
-  begin
-    result:=TLookoutTheme;
-
-    if S<>'' then
-    begin
-      for t:=0 to ChartThemes.Count-1 do
-      begin
-        tmp:=ChartThemes[t].Create(nil);
-        try
-          if SameText(tmp.Description,S) then
-             Exit(ChartThemes[t]);
-        finally
-          tmp.Free;
-        end;
-      end;
-    end;
-  end;
-  {$ENDIF}
-
-begin
-  result:=TBIChart.Create(nil);
-
-  {$IFDEF TEEPRO}
-  if AUseTheme then
-  begin
-    ApplyChartTheme(FindThemeClass(Params.Values['theme']),result.Chart);
-
-    // Force disable bevels after applying theme
-    result.Chart.BevelOuter:=bvNone;
-  end;
-  {$ENDIF}
-
-  result.Width:=AWidth;
-  result.Height:=AHeight;
-
-  // Pending: change size internally at TBIChart
-  result.Chart.Width:=AWidth;
-  result.Chart.Height:=AHeight;
-
-  result.Fill(ACursor,nil);
-  result.Chart.View3D:=Get3D;
-end;
-
-{$IFDEF FMX}
-function ChartToImage(const AChart:TChart; const AFormat:String):TStream;
-var tmpB : TBitmap;
-    tmpSurface : TBitmapSurface;
-begin
-  tmpB:=AChart.TeeCreateBitmap(TAlphaColors.Null,AChart.GetRectangle);
-  try
-    tmpSurface:=TBitmapSurface.Create;
-    try
-      tmpSurface.Assign(tmpB);
-
-      result:=TMemoryStream.Create;
-
-      //XE6: AV if png is used for first time (jpg is ok, then png is ok too)
-      //possible workaround: if not TBitmapCodecManager.CodecExists()...
-
-      TBitmapCodecManager.SaveToStream(result, tmpSurface, AFormat, nil {SaveParams});
-    finally
-      tmpSurface.Free;
-    end;
-  finally
-    tmpB.Free;
-  end;
-end;
-
-{$ELSE}
-
-function ChartToImage(const AChart:TChart; const AFormat:String):TStream;
-var tmp : TTeeExportFormat;
-begin
-  {$IFDEF TEEPRO}
-  if SameText(AFormat,'.JPG') or SameText(AFormat,'.JPEG') then
-     tmp:=TJPEGExportFormat.Create
-  else
-     tmp:=TPNGExportFormat.Create;
-  {$ELSE}
-     tmp:=TBMPExportFormat.Create;
-  {$ENDIF}
-
-  try
-    tmp.Panel:=AChart;
-    // Format.CheckSize(AWidth, AHeight);
-
-    result:=TMemoryStream.Create;
-    tmp.SaveToStream(result); // ,Options
-  finally
-    tmp.Free;
-  end;
-end;
-{$ENDIF}
-
-class function TBIWebCommon.ChartToStream(var ACursor:TDataCursor;
-                                    const Params:TStrings;
-                                    const AFormat:String;
-                                    const AWidth,AHeight:Integer):TStream;
-
-var tmp : TBIChart;
-begin
-  tmp:=ChartFromCursor(ACursor,Params,AWidth,AHeight);
-  try
-    result:=ChartToImage(tmp.Chart,AFormat);
-    result.Position:=0;
-  finally
-    tmp.Free;
-  end;
 end;
 
 class function TBIWebCommon.CursorToText(var ACursor:TDataCursor; const AFormat:String;
@@ -399,24 +254,6 @@ begin
       tmp.Free;
     end;
   end;
-end;
-
-class procedure TBIWebCommon.GetWidthHeight(const Params:TStrings; out AWidth,AHeight:Integer);
-
-  function TryTag(const ATag:String; const ADefault:Integer):Integer;
-  var tmp : String;
-  begin
-    tmp:=Params.Values[ATag];
-
-    if tmp='' then
-       result:=ADefault
-    else
-       result:=StrToIntDef(tmp,ADefault);
-  end;
-
-begin
-  AWidth:=TryTag('width',800);
-  AHeight:=TryTag('height',600);
 end;
 
 class function TBIWebCommon.GetCSS(const AName:String):String;
@@ -636,52 +473,6 @@ procedure TBIWebCommon.ReturnCursor(const AContext: TBIWebContext;
       result:=result+'</ul></div>';
   end;
 
-  procedure ExportChart(const AExtension,AContent:String);
-  var w,h : Integer;
-  begin
-    GetWidthHeight(Params,w,h);
-    AContext.ResponseStream:=ChartToStream(ACursor,Params,AExtension,w,h);
-
-    if AContext.ResponseStream<>nil then
-       AContext.ContentType:=AContent;
-  end;
-
-  procedure ExportChartHTML5;
-  var w,h : Integer;
-      tmp : TBIChart;
-      tmpJS : TJavascriptExportFormat;
-  begin
-    GetWidthHeight(Params,w,h);
-
-    tmp:=ChartFromCursor(ACursor,Params,w,h,False);
-    try
-      tmp.Chart.Title.Caption:=Params.Values['title'];
-
-      // Avoid "TeeChart" title in html5 javascript chart
-      if tmp.Chart.Title.Caption='' then
-         tmp.Chart.Title.Caption:=' ';
-
-      tmp.Chart.Color:=clNone; //{$IFDEF FMX}TAlphaColors.White{$ELSE}clWhite{$ENDIF};
-
-      tmpJS:=TJavascriptExportFormat.Create;
-      try
-        // DEBUG using local js:
-        //tmpJS.SourceScriptPath:='file:///C:\Root\Teechartjscript\src';
-
-        tmp.Chart.View3DOptions.FontZoom:=StrToIntDef(Params.Values['fontzoom'],100); // %
-
-        tmpJS.Minify:=True;
-        tmpJS.Panel:=tmp.Chart;
-
-        AContext.ContentText:=tmpJS.JScript.Text;
-      finally
-        tmpJS.Free;
-      end;
-    finally
-      tmp.Free;
-    end;
-  end;
-
   function ExportHTMLHeader:String;
   var tmpButton,
       tmpButtonDisabled,
@@ -723,15 +514,9 @@ var tmp : String;
     tmpTotals : TDataItem;
 begin
   try
-    if SameText(AFormat,'.PNG') then
-       ExportChart('.png','image/png')
-    else
-    if SameText(AFormat,'.JPG') or SameText(AFormat,'.JPEG') then
-       ExportChart('.jpg','image/jpeg')
-    else
-    if SameText(AFormat,'.HTML5') then
-       ExportChartHTML5
-    else
+    {$IFDEF TEECHART}
+    if not TBIWebCommonChart.ExportChart(AContext,ACursor,Params,AFormat) then
+    {$ENDIF}
     begin
       if SameText(AFormat,'.htm') then
          tmp:=ExportHTMLHeader
@@ -1655,6 +1440,4 @@ begin
   end;
 end;
 
-initialization
-  RegisterTeeStandardSeries;
 end.

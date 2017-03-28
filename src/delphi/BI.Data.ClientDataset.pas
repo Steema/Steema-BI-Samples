@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TClientDataSet data import and export      }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.ClientDataset;
@@ -41,6 +41,7 @@ type
 
     class function FileFilter: TFileFilters; override;
     procedure SaveToFile(const AFileName:String); override;
+    class function Supports(const Extension:String):Boolean; override;
   end;
 
 implementation

@@ -211,12 +211,16 @@ object DataManager: TDataManager
     ExplicitHeight = 386
     object TabSettings: TTabSheet
       Caption = 'Settings'
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 312
       ExplicitHeight = 358
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 312
       ExplicitHeight = 358
       object MemoImportLog: TMemo
@@ -314,6 +318,8 @@ object DataManager: TDataManager
     object TabLinks: TTabSheet
       Caption = 'Links'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 312
       ExplicitHeight = 358
     end

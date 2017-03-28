@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  SQL Language support                       }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.SQL;
@@ -10,7 +10,7 @@ interface
 
 uses
   BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
-  BI.Persist, BI.Data.Expressions;
+  BI.Persist, BI.Data.Expressions, BI.Arrays.Strings;
 
 type
   ESQLParser=class(EBIException);

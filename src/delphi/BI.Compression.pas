@@ -33,7 +33,7 @@ interface
 }
 
 uses
-  System.Classes,
+  {System.}Classes,
   {$IFDEF FPC}
   BI.FPC,
   {$ELSE}

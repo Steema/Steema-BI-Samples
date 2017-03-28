@@ -40,10 +40,11 @@ uses
   FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   {$ENDIF}
 
-  FMX.StdCtrls, FMX.Layouts, FMX.Memo, FMX.Objects,
+  FMX.StdCtrls, FMX.Layouts, FMX.Memo, FMX.Objects, FMX.ListBox,
   BI.FMX.DataManager, FMX.Edit, FMX.TabControl,
   FMX.Menus, BI.Web, FMX.ListView.Types, FMX.ListView,
-  BI.Web.Common, FMX.ListBox, BI.FMX.Grid, BI.FMX.DataControl;
+  BI.Web.Common, BI.Web.SingleInstance,
+  BI.FMX.Grid, BI.FMX.DataControl;
 
 type
   TBIWebMain = class(TForm)
@@ -498,7 +499,6 @@ end;
 procedure TBIWebMain.SetupPublicFolder;
 begin
   CBPublic.IsChecked:=BIWeb.PublicFolder.Enabled;
-  CBPublic.IsChecked:=BIWeb.PublicFolder.Enabled;
 end;
 
 procedure TBIWebMain.MenuExitClick(Sender: TObject);
@@ -669,22 +669,4 @@ begin
   BIWeb.Scheduler.Process;
 end;
 
-{$IFDEF MSWINDOWS}
-var
-  Mutex : THandle=0;
-
-initialization
-  Mutex:=CreateMutex(nil,True,'BIWeb.ts');
-
-  if GetLastError=ERROR_ALREADY_EXISTS then
-  begin
-    TCommonUI.ShowMessage(BIMsg_ServerAlreadyRunning);
-    Halt;
-  end;
-
-finalization
-  if Mutex<>0 then
-     CloseHandle(Mutex);
-
-{$ENDIF}
 end.

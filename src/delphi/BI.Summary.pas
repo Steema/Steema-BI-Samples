@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Summary and Query classes                  }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Summary;
@@ -9,7 +9,7 @@ unit BI.Summary;
 interface
 
 uses
-  System.Classes,
+  {System.}Classes,
   {$IFNDEF FPC}
   System.Generics.Collections,
   {$ENDIF}

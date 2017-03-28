@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TDataCollectionItem (Collection Item)      }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Data.CollectionItem;
@@ -19,7 +19,7 @@ interface
 }
 
 uses
-  System.Classes, BI.Data, BI.Expression;
+  {System.}Classes, BI.Data, BI.Expression;
 
 type
   TDataCollectionItem=class(TCollectionItem)

@@ -1,16 +1,12 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  HTML Web Dashboard                         }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Dashboard.HTML;
 
 interface
-
-{$IFNDEF FPC}
-{$DEFINE HASTEECHART}
-{$ENDIF}
 
 uses
   System.Classes,
@@ -19,19 +15,7 @@ uses
   System.Generics.Collections,
   {$ENDIF}
 
-  {$IFDEF HASTEECHART}
-  {$IFDEF FMX}
-  FMXTee.Constants, FMXTee.Engine,
-  {$ELSE}
-  VCLTee.TeeConst, VCLTee.TeEngine,
-  {$ENDIF}
-  {$ENDIF}
-
   BI.Dashboard;
-
-{$IF (TeeVCLBuildVersionInteger >= 160309)}
-{$DEFINE HASJSCRIPTGETSERIES} // New event at TJavascriptExportFormat
-{$ENDIF}
 
 type
   TDiv=record
@@ -47,6 +31,10 @@ type
   public
     function IndexOfPosition(const APosition:String):Integer;
   end;
+
+  THTMLRender=class;
+
+  THTMLChartProc=function(const ARender:THTMLRender; const AItem:TDashboardItem; const AFormat:String):String;
 
   THTMLRender=class(TRender)
   private
@@ -70,12 +58,6 @@ type
     {$ENDIF}
     IDashboard : TDashboard;
 
-  const
-    ScriptBegin='<script type="text/javascript">';
-    ScriptEnd='</script>';
-    CSSBegin='<style type="text/css">';
-    CSSEnd='</style>';
-
     procedure Add(const S:String); inline;
     procedure AddAllChartsFunctions;
     procedure AddButtonsCSS;
@@ -86,21 +68,25 @@ type
     procedure AddUpdateScript;
     procedure EmitDivs;
 
-    function FreeChartName:String;
-
-    {$IFDEF HASJSCRIPTGETSERIES}
-    function GetJScriptSeries(const ASeries:TChartSeries):String;
-    {$ENDIF}
-
     function HTMLGrid(const AItem:TDashboardItem):String;
 
     procedure PrepareVariables(const AParams:TStrings);
   protected
+  const
+    ScriptBegin='<script type="text/javascript">';
+    ScriptEnd='</script>';
+    CSSBegin='<style type="text/css">';
+    CSSEnd='</style>';
+
     procedure AddItemSeparator(const AIndex:Integer=-1; const AKind:TPanelKind=TPanelKind.Automatic); override;
     procedure AddListener(const AName:String; const ASource:TObject); override;
+    function FreeChartName:String;
   public
     const
       PureCSS='<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+
+    class var
+      HTMLChart : THTMLChartProc;
 
     var
       CSS: String;
@@ -113,6 +99,7 @@ type
     Constructor Create;
     Destructor Destroy; override;
 
+    class function ClassOf(const AItem:TDashboardItem):String; static;
     procedure Clear; override;
 
     procedure Emit(const ADashboard:TDashboard; const AItem:Integer; const APosition:String); override;
