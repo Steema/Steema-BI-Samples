@@ -9,8 +9,8 @@ unit BI.Expression.Filter;
 interface
 
 uses
-  {System.}Classes, BI.Data, BI.Expression, BI.Data.CollectionItem,
-  BI.Arrays, BI.Data.Expressions;
+  {System.}Classes, BI.DataItem, BI.Expression, BI.CollectionItem,
+  BI.Arrays, BI.Expressions;
 
 type
   TFloat=Double;

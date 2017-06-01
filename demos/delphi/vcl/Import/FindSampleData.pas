@@ -25,11 +25,11 @@ uses
   BI.DataSource, System.IOUtils, System.Types, BI.Persist,
 
   {$IFDEF HASFIREDAC}
-  BI.Data.DB.FireDAC.AllDrivers,
+  BI.DB.Fire.AllDrivers,
   {$ENDIF}
 
-  BI.Data.Dataset, BI.Data.ClientDataset,
-  BI.Data.XML, BI.Data.JSON, BI.Data.Excel, BI.Data.HTML, BI.Data.DB;
+  BI.Dataset, BI.ClientDataset,
+  BI.XMLData, BI.JSON, BI.Excel, BI.HTML, BI.DB;
 
 function GetStudioDemosFolder(const AVersion:Integer; out AFolder:String):Boolean;
 var R : TRegistry;

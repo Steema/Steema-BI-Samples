@@ -37,17 +37,17 @@ requires
   FMXTeePro923;
 
 contains
-  BI.FMX.Chart in '..\FMX\BI.FMX.Chart.pas',
-  BI.FMX.Chart.Financial in '..\FMX\BI.FMX.Chart.Financial.pas',
-  BI.FMX.Chart.Geo in '..\FMX\BI.FMX.Chart.Geo.pas',
-  BI.FMX.Chart.Plugin in '..\FMX\BI.FMX.Chart.Plugin.pas',
-  BI.FMX.Chart.Source in '..\FMX\BI.FMX.Chart.Source.pas',
-  BI.FMX.Chart.ThreeD in '..\FMX\BI.FMX.Chart.ThreeD.pas',
-  BI.FMX.PDF in '..\FMX\BI.FMX.PDF.pas',
-  BI.FMX.Dashboard.Chart in '..\FMX\BI.FMX.Dashboard.Chart.pas',
-  BI.FMX.Visualizer.Chart in '..\FMX\BI.FMX.Visualizer.Chart.pas',
-  BI.FMX.Editor.Visualizer.Chart in '..\FMX\BI.FMX.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
-  BI.FMX.Editor.Chart.Source in '..\FMX\BI.FMX.Editor.Chart.Source.pas' {BISourceEditor},
-  BI.FMX.ChartFunctions in '..\FMX\BI.FMX.ChartFunctions.pas';
+  FMXBI.Chart in '..\FMX\FMXBI.Chart.pas',
+  FMXBI.Chart.Financial in '..\FMX\FMXBI.Chart.Financial.pas',
+  FMXBI.Chart.Geo in '..\FMX\FMXBI.Chart.Geo.pas',
+  FMXBI.Chart.Plugin in '..\FMX\FMXBI.Chart.Plugin.pas',
+  FMXBI.Chart.Source in '..\FMX\FMXBI.Chart.Source.pas',
+  FMXBI.Chart.ThreeD in '..\FMX\FMXBI.Chart.ThreeD.pas',
+  FMXBI.PDF in '..\FMX\FMXBI.PDF.pas',
+  FMXBI.Dashboard.Chart in '..\FMX\FMXBI.Dashboard.Chart.pas',
+  FMXBI.Visualizer.Chart in '..\FMX\FMXBI.Visualizer.Chart.pas',
+  FMXBI.Editor.Visualizer.Chart in '..\FMX\FMXBI.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
+  FMXBI.Editor.Chart.Source in '..\FMX\FMXBI.Editor.Chart.Source.pas' {BISourceEditor},
+  FMXBI.ChartFunctions in '..\FMX\FMXBI.ChartFunctions.pas';
 
 end.

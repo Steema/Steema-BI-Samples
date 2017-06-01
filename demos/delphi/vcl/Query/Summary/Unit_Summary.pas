@@ -11,7 +11,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.Data, BI.VCL.Grid, BI.Summary, Data.DB, Vcl.CheckLst, System.Types,
+  BI.DataItem, BI.Summary, Data.DB, Vcl.CheckLst, System.Types,
   BI.Expression,
 
   // Detect TeeChart "Pro" or "Lite
@@ -27,16 +27,18 @@ uses
   {$ENDIF}
 
   {$IFDEF TEEPRO}
-  BI.VCL.LinkDiagram, // <-- this unit uses TeeTree control ("Pro" version)
+  VCLBI.LinkDiagram, // <-- this unit uses TeeTree control ("Pro" version)
   {$ENDIF}
 
-  BI.VCL.Chart, BI.VCL.Chart.Plugin,
-  BI.VCL.Editor.Summary, BI.VCL.Editor.BIGrid, Vcl.Grids,
-  BI.Data.ClientDataset, System.UITypes,
-  BI.VCL.Visualizer, BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer.Chart,
-  BI.VCL.Editor.Visualizer, Vcl.Menus, BI.Summary.Persist,
-  BI.VCL.Editor.ControlTree, BI.Data.SQL, BI.VCL.GridForm, BI.VCL.DataControl,
-  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Chart, VCLTee.TeeTools;
+  VCLBI.Chart,
+  VCLBI.Editor.Summary, VCLBI.Editor.BIGrid, Vcl.Grids,
+  BI.ClientDataset, System.UITypes,
+  VCLBI.Visualizer, VCLBI.Visualizer.Chart, VCLBI.Editor.Visualizer.Chart,
+  VCLBI.Editor.Visualizer, Vcl.Menus, BI.Summary.Persist,
+  VCLBI.Editor.ControlTree, BI.SQL, VCLBI.GridForm,
+  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Chart, VCLTee.TeeTools,
+  VCLBI.Chart.Plugin, VCLBI.DataControl,
+  VCLBI.Grid;
 
 type
   TFormSummary = class(TForm)
@@ -169,18 +171,18 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.VCL.DataViewer, System.Diagnostics, VCL.Themes,
-  BI.VCL.DataTree, BI.Tests.SummarySamples, BI.Persist, BI.VCL.Editor.Stores,
-  BI.VCL.DataManager, BI.VCL.Grid.DBGrid, BI.VCL.Editor.Chart,
+  VCLBI.DataViewer, System.Diagnostics, VCL.Themes,
+  VCLBI.DataTree, BI.Tests.SummarySamples, BI.Persist, VCLBI.Editor.Stores,
+  VCLBI.DataManager, VCLBI.Grid.DBGrid, VCLBI.Editor.Chart,
 
   {$IF CompilerVersion>27} // RAD XE7 and up
   System.Threading,
   {$ENDIF}
 
-  BI.VCL.Editor.Hops,
+  VCLBI.Editor.Hops,
 
-  BI.Data.JSON, BI.Data.XML, BI.Data.CSV, BI.Data.Excel,
-  BI.Languages.English, BI.UI, BI.Summary.Totals, BI.Data.Expressions;
+  BI.JSON, BI.XMLData, BI.CSV, BI.Excel, BI.Grid.Plugin,
+  BI.Languages.English, BI.UI, BI.Summary.Totals, BI.Expressions;
 
 procedure AddStyles(const Items:TStrings);
 var s : String;

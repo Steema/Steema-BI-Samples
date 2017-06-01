@@ -3,9 +3,9 @@ unit BI.Languages.English;
 interface
 
 const
-  TeeBI_Version=20170328;
-  TeeBI_VersionString='v1 20170328';
-  TeeBI_VersionMode='(BETA 18)';
+  TeeBI_Version=20170517;
+  TeeBI_VersionString='v1 20170517';
+  TeeBI_VersionMode='';
   TeeBI_Description='TeeBI';
   TeeBI_CopyRight='Copyright '+{$IFDEF LCL}'(C)'{$ELSE}'©'{$ENDIF}+' 2015-2017 by Steema Software';
 
@@ -98,7 +98,7 @@ var
   BIMsg_Export_EmptyData:String            = 'Error: Cannot export empty data';
 
   // DB
-  BIMsg_DB_NoEngineConfigured:String       = 'Error: No Database Engine configured. Use BI.Data.DB.xx (FireDAC,SQLExpr,microOLAP,UniDAC,etc) units';
+  BIMsg_DB_NoEngineConfigured:String       = 'Error: No Database Engine configured. Use BI.DB.xx (Fire,SQLExpr,microOLAP,UniDAC,etc) units';
   BIMsg_DB_SqlExpressWrongConnection:String= 'Error: Connection is not TSQLConnection (SqlExpress engine)';
   BIMsg_ConnectionTestPassed:String        = 'Connection test passed';
   

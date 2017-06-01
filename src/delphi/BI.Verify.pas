@@ -9,7 +9,7 @@ unit BI.Verify;
 interface
 
 uses
-  System.Classes, BI.Data;
+  System.Classes, BI.DataItem;
 
 type
   TVerificator=class

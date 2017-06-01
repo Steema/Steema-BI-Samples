@@ -42,6 +42,6 @@ requires
   TeeBI;
 
 contains
-  BI.Data.DB.SqlExpr in '..\BI.Data.DB.SqlExpr.pas';
+  BI.DB.SqlExpr in '..\BI.DB.SqlExpr.pas';
 
 end.

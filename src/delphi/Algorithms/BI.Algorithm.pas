@@ -9,7 +9,7 @@ unit BI.Algorithm;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Arrays.Strings;
+  System.Classes, BI.DataItem, BI.Arrays.Strings;
 
 type
   // Just a set of TDataKind

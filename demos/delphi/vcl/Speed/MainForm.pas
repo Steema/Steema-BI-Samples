@@ -11,7 +11,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.VCL.Grid, BI.Data, BI.VCL.DataControl, BI.Tests.Speed;
+  BI.DataItem, BI.Tests.Speed, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFormSpeed = class(TForm)
@@ -41,7 +41,7 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Diagnostics, Vcl.Clipbrd, BI.Data.CSV;
+  System.Diagnostics, Vcl.Clipbrd, BI.CSV;
 
 // Execute all tests
 procedure TFormSpeed.BExportClick(Sender: TObject);

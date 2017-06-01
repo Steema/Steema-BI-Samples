@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl, BI.VCL.Grid,
-  Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TCustomFuncTest = class(TForm)
@@ -32,7 +32,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data, BI.Data.SQL, BI.Expression.Custom, BI.Expression;
+  BI.DataItem, BI.SQL, BI.Expression.Custom, BI.Expression;
 
 // Return a 10 row table with two fields random values: X and Y
 function SampleXY:TDataItem;

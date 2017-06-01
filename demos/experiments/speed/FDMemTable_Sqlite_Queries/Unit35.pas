@@ -43,7 +43,7 @@ implementation
 {$R *.fmx}
 
 uses
-  System.Diagnostics, BI.Data, BI.Data.SQL;
+  System.Diagnostics, BI.DataItem, BI.SQL;
 
 const
   SampleNames:Array[0..5] of String=('Sam','Jane','Peter','Carla','Alex','Julie');

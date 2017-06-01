@@ -54,6 +54,10 @@ object FromComponents: TFromComponents
     OnChange = PageControl1Change
     object TabMemo: TTabSheet
       Caption = 'Memo'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Memo1: TMemo
         Left = 0
         Top = 0
@@ -1393,6 +1397,10 @@ object FromComponents: TFromComponents
     object TabDataset: TTabSheet
       Caption = 'Dataset'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIGrid2: TBIGrid
         Left = 0
         Top = 0

@@ -6,7 +6,7 @@ interface
 
 uses
   System.Classes,
-  BI.Data;
+  BI.DataItem;
 
 type
   TUnits=(Pixels,Percent);

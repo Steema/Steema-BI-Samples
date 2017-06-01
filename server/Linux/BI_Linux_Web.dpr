@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Web Server for Linux                       }
+{  Copyright (c) 2015-2017 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 program BI_Linux_Web;
 
 {$APPTYPE CONSOLE}
@@ -8,25 +14,24 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   System.SyncObjs,
 
-  IdBaseComponent, IdComponent, IdCustomTCPServer, IdCustomHTTPServer,
-  IdHTTPServer, IdContext, IdStack,
-
   BI.Web,
   BI.Web.AllData in '..\BI.Web.AllData.pas',
   BI.Web.Common in '..\BI.Web.Common.pas',
   BI.Web.IndyContext in '..\BI.Web.IndyContext.pas',
 
-  BI.Arrays, BI.Data, BI.Persist, System.IOUtils, BI.UI,
-  BI.Data.CSV, BI.Data.Html, BI.Data.JSON, BI.Data.ClientDataset,
-  BI.Data.XML, BI.Data.DB,
+  BI.Arrays, BI.DataItem, BI.Persist, System.IOUtils, BI.UI,
+  BI.CSV, BI.Html, BI.JSON, BI.ClientDataset,
+  BI.XMLData, BI.DB,
 
   {$IFNDEF FPC}
   {$IF CompilerVersion>26}
-  BI.Data.DB.FireDAC,
+  BI.DB.Fire,
   {$ELSE}
-  BI.Data.DB.SqlExpr,
+  BI.DB.SqlExpr,
   {$ENDIF}
   {$ENDIF}
+
+  BI.Web.Server.Indy in '..\BI.Web.Server.Indy.pas',
 
   BI.Languages.English, BI.Languages.Spanish;
 
@@ -38,7 +43,7 @@ type
 
     BIWeb : TBIWebCommon;
 
-    Server: TIdHTTPServer;
+    Server : THttpServer;
 
     FLog : Boolean;
 
@@ -60,15 +65,14 @@ type
 
     procedure SetupLogs;
 
-    procedure ServerCommandGet(AContext: TIdContext;
-                 ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
-    procedure ServerConnect(AContext: TIdContext);
-    procedure ServerDisconnect(AContext: TIdContext);
-    procedure ServerStatus(ASender: TObject; const AStatus: TIdStatus;
-                           const AStatusText: string);
+    procedure ServerConnect(const AContext: TBIWebContext);
+    procedure ServerDisconnect(const AContext: TBIWebContext);
+    procedure ServerException(const AContext: TBIWebContext; const AException: Exception);
+    procedure ServerStatus(const ASender: TObject; const AStatusText: string);
+    procedure ServerCommandGet(const AContext: TBIWebContext);
 
     procedure Show;
-    procedure ShowAddress;
+    procedure ShowAddresses;
     procedure ShowClients;
     procedure ShowHelp;
     procedure ToggleLog;
@@ -80,15 +84,24 @@ type
 { TBIWebMain }
 
 Constructor TBIWebMain.Create;
+
+  procedure CreateServer;
+  begin
+    Server:=THttpServer.Engine.Create(Self);
+
+    Server.Port:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+
+    Server.OnCommandGet:=ServerCommandGet;
+    Server.OnConnect:=ServerConnect;
+    Server.OnDisconnect:=ServerDisconnect;
+    Server.OnException:=ServerException;
+    Server.OnStatus:=ServerStatus;
+  end;
+
 begin
   inherited;
 
-  Server:=TIdHTTPServer.Create(Self);
-
-  Server.OnCommandGet:=ServerCommandGet;
-  Server.OnConnect:=ServerConnect;
-  Server.OnDisconnect:=ServerDisconnect;
-  Server.OnStatus:=ServerStatus;
+  CreateServer;
 
   Init;
   Show;
@@ -100,7 +113,7 @@ begin
   S:=TStore.PathOf(AStore);
 
   // Protection against self-recursivity:
-  if SameText(S,'WEB:LOCALHOST') or SameText(S,'WEB:LOCALHOST:'+IntToStr(Server.DefaultPort)) then
+  if SameText(S,'WEB:LOCALHOST') or SameText(S,'WEB:LOCALHOST:'+IntToStr(Server.Port)) then
      raise EBIException.Create('Error: Store cannot be this same "localhost" server');
 
   Data.Free;
@@ -133,8 +146,6 @@ end;
 
 procedure TBIWebMain.Init;
 begin
-  Server.DefaultPort:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
-
   {$IFNDEF MSWINDOWS}
   // http://codeverge.com/embarcadero.delphi.firemonkey/indy-http-server-android-xe5/1056236
 //  Server.Bindings.Add.IPVersion := id_IPv4;
@@ -145,7 +156,7 @@ begin
 
   WriteLn('BIWeb Server');
   WriteLn('Version: '+TBIWebServer.Version.ToString);
-  WriteLn('Port: '+Server.DefaultPort.ToString);
+  WriteLn('Port: '+Server.Port.ToString);
 end;
 
 procedure TBIWebMain.Show;
@@ -210,9 +221,9 @@ begin
      Log(DateTimeToStr(Now)+' '+IP+' '+Command+' '+Tag);
 end;
 
-procedure TBIWebMain.ServerCommandGet(AContext: TIdContext;
-  ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
+procedure TBIWebMain.ServerCommandGet(const AContext: TBIWebContext);
 
+  {
   function Parameters:String;
   begin
     result:=ARequestInfo.URI;
@@ -223,43 +234,40 @@ procedure TBIWebMain.ServerCommandGet(AContext: TIdContext;
     if ARequestInfo.Params.Count>0 then
        result:=result+' '+ARequestInfo.Params.Text;
   end;
+  }
 
 begin
-  if SameText(ARequestInfo.Document,'/favicon.ico') then
-  begin
-    //AResponseInfo.Pragma:='Cache-Control: public';
-    AResponseInfo.ContentType:='image/x-icon';
-    // AResponseInfo.ContentStream:=FaviconStream; // "data:;base64,iVBORw0KGgo="
-  end
+  if SameText(AContext.GetDocument,'/favicon.ico') then
+     // AContext.ReturnIcon(FaviconStream)
   else
-    try
-      if FLog then
-         Log(AContext.Binding.IP+' '+Parameters);
-
-      TBIIndyContext.Process(BIWeb,AContext,ARequestInfo,AResponseInfo);
-    except
-      on E:Exception do
-      begin
-        WriteLn('EXCEPTION');
-        WriteLn(E.Message);
-
-        AResponseInfo.ContentText:=E.Message;
-      end;
+  try
+    TBIIndyContext.Process(BIWeb,AContext);
+  except
+    on E:Exception do
+    begin
+      Log(E.Message);
+      AContext.SetResponse(E.Message);
     end;
+  end;
 end;
 
-procedure TBIWebMain.ServerConnect(AContext: TIdContext);
+procedure TBIWebMain.ServerConnect(const AContext: TBIWebContext);
 begin
 //  Log('Connected Client: '+AContext.Binding.IP);
 end;
 
-procedure TBIWebMain.ServerDisconnect(AContext: TIdContext);
+procedure TBIWebMain.ServerDisconnect(const AContext: TBIWebContext);
 begin
 //  Log('Disconnected Client: '+AContext.Binding.IP);
 end;
 
-procedure TBIWebMain.ServerStatus(ASender: TObject; const AStatus: TIdStatus;
-  const AStatusText: string);
+procedure TBIWebMain.ServerException(const AContext: TBIWebContext;
+  const AException: Exception);
+begin
+  Log(AException.Message);
+end;
+
+procedure TBIWebMain.ServerStatus(const ASender: TObject; const AStatusText: string);
 begin
   Log(AStatusText);
 end;
@@ -281,27 +289,17 @@ begin
   result:=TCommand.Unknown;
 end;
 
-procedure TBIWebMain.ShowAddress;
+procedure TBIWebMain.ShowAddresses;
 var t : Integer;
-    tmpIP : TIdStackLocalAddressList;
+    tmp : TStrings;
 begin
-  if Server.ServerSoftware<>'' then
-     WriteLn(Server.ServerSoftware);
-
-  WriteLn('IP v6: '+BoolToStr(GStack.SupportsIPv6,True));
-
-  tmpIP:=TIdStackLocalAddressList.Create;
+  tmp:=Server.GetAddresses;
   try
-    GStack.GetLocalAddressList(tmpIP);
-
-    for t:=0 to tmpIP.Count-1 do
-        WriteLn(tmpIP[t].IPAddress);
+    for t:=0 to tmp.Count-1 do
+        WriteLn(tmp[t]);
   finally
-    tmpIP.Free;
+    tmp.Free;
   end;
-
-  //for t:=0 to Server.Bindings.Count-1 do
-  //    WriteLn(Server.Bindings.Items[t].IP);
 end;
 
 procedure TBIWebMain.ShowClients;
@@ -334,14 +332,15 @@ begin
 
     case ReadCommand(tmp) of
       TCommand.Clients : ShowClients;
-      TCommand.Help : ShowHelp;
-      TCommand.Address : ShowAddress;
-      TCommand.Log : ToggleLog;
-      TCommand.Quit : break;
+         TCommand.Help : ShowHelp;
+      TCommand.Address : ShowAddresses;
+          TCommand.Log : ToggleLog;
+         TCommand.Quit : break;
     else
     begin
       WriteLn('Unknown command: '+tmp);
       WriteLn;
+
       ShowHelp;
     end;
     end;

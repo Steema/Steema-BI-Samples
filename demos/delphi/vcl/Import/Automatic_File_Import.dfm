@@ -118,6 +118,10 @@ object ImportDemoForm: TImportDemoForm
       OnChange = PageControl1Change
       object TabSheet1: TTabSheet
         Caption = 'Data'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object BIGrid1: TBIGrid
           Left = 0
           Top = 0
@@ -133,6 +137,10 @@ object ImportDemoForm: TImportDemoForm
       object TabStructure: TTabSheet
         Caption = 'Structure'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
       end
     end
   end

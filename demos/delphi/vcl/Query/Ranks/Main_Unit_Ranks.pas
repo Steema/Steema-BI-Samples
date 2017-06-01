@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.VCL.DataControl, BI.VCL.Grid, BI.Data, BI.VCL.GridForm;
+  BI.DataItem, VCLBI.GridForm,
+  VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFormDataRank = class(TForm)
@@ -44,7 +45,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.Rank, BI.Data.Expressions, BI.UI, BI.Data.Gridify;
+  BI.Rank, BI.Expressions, BI.UI, BI.Gridify;
 
 // Try to find an item named "Rank" to destroy it
 procedure RemoveItem(const AData:TDataItem);

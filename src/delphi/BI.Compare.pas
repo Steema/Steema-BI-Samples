@@ -9,7 +9,7 @@ unit BI.Compare;
 interface
 
 uses
-  BI.Data, BI.Arrays;
+  BI.DataItem, BI.Arrays;
 
 type
   TBaseDifferences=class(TDataItem)

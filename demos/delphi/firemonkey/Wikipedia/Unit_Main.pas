@@ -21,11 +21,11 @@ uses
   FMX.Layouts, FMX.Dialogs, FMX.TabControl, FMX.StdCtrls, FMX.Edit,
 
   // TeeBI
-  BI.Data, BI.Web, BI.Data.JSON, BI.Data.HTML, BI.UI,
-  BI.FMX.DataControl, BI.FMX.Grid,
+  BI.DataItem, BI.Web, BI.JSON, BI.HTML, BI.UI,
+  FMXBI.DataControl, FMXBI.Grid,
 
   // TeeChart and BIChart
-  FMXTee.Engine, FMXTee.Procs, FMXTee.Chart, BI.FMX.Chart.Plugin, BI.FMX.Chart;
+  FMXTee.Engine, FMXTee.Procs, FMXTee.Chart, FMXBI.Chart.Plugin, FMXBI.Chart;
 
 type
   TFormWiki = class(TForm)

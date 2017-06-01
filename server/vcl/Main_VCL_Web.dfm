@@ -29,16 +29,12 @@ object FormBIWeb: TFormBIWeb
     Top = 51
     Width = 591
     Height = 277
-    ActivePage = TabSettings
+    ActivePage = TabConsole
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
     object TabConsole: TTabSheet
       Caption = 'Console'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ErrorLog: TMemo
         Left = 0
         Top = 0
@@ -54,10 +50,6 @@ object FormBIWeb: TFormBIWeb
     object TabSheet2: TTabSheet
       Caption = 'History'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -225,10 +217,6 @@ object FormBIWeb: TFormBIWeb
     object TabScheduler: TTabSheet
       Caption = 'Scheduler'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 237
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -258,7 +246,6 @@ object FormBIWeb: TFormBIWeb
         ParentColor = False
         TabOrder = 1
         ReadOnly = False
-        ExplicitHeight = 206
       end
     end
   end
@@ -332,17 +319,6 @@ object FormBIWeb: TFormBIWeb
       TabOrder = 3
       Thousands = False
     end
-  end
-  object Server: TIdHTTPServer
-    OnStatus = ServerStatus
-    Bindings = <>
-    DefaultPort = 15015
-    OnConnect = ServerConnect
-    OnDisconnect = ServerDisconnect
-    OnException = ServerException
-    OnCommandGet = ServerCommandGet
-    Left = 344
-    Top = 56
   end
   object TrayIcon1: TTrayIcon
     Icon.Data = {

@@ -7,8 +7,9 @@ uses
   Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls,
 
-  BI.Expression.Filter, BI.Data, BI.VCL.DataControl, BI.VCL.Grid,
-  BI.VCL.Editor.DynamicFilter, BI.VCL.Editor.Filter.Item, BI.Expression;
+  BI.Expression.Filter, BI.DataItem,
+  VCLBI.Editor.DynamicFilter, VCLBI.Editor.Filter.Item, BI.Expression,
+  VCLBI.DataControl, VCLBI.Grid;
 
 (*
    This example shows the different ways to "filter" data by code,

@@ -3,7 +3,7 @@ program TaskManager;
 uses
   Vcl.Forms,
   Unit_TaskManager in 'Unit_TaskManager.pas' {FormTaskManager},
-  BI.Data.Process in 'BI.Data.Process.pas';
+  BI.Process in 'BI.Process.pas';
 
 {$R *.res}
 

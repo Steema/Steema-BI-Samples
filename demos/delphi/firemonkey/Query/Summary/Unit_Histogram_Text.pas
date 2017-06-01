@@ -15,7 +15,7 @@ uses
   {$ENDIF}
 
   FMX.Dialogs, FMX.Layouts,
-  BI.FMX.Grid, BI.Data, BI.Summary, BI.FMX.DataControl;
+  FMXBI.Grid, BI.DataItem, BI.Summary, FMXBI.DataControl;
 
 type
   TFormHistogramText = class(TForm)

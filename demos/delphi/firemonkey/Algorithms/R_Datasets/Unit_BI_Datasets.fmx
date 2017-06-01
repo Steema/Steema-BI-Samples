@@ -43,12 +43,15 @@ object RDatasetsDemo: TRDatasetsDemo
     TabIndex = 0
     TabOrder = 1
     TabPosition = PlatformDefault
+    Sizes = (
+      209s
+      572s)
     object TabDatas: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = True
-      Size.Width = 60.000000000000000000
+      Size.Width = 61.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -81,12 +84,15 @@ object RDatasetsDemo: TRDatasetsDemo
     TabIndex = 0
     TabOrder = 2
     TabPosition = PlatformDefault
+    Sizes = (
+      256s
+      572s)
     object TabItem1: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = True
-      Size.Width = 44.000000000000000000
+      Size.Width = 45.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -183,12 +189,21 @@ object RDatasetsDemo: TRDatasetsDemo
     TabIndex = 0
     TabOrder = 4
     TabPosition = PlatformDefault
+    Sizes = (
+      428s
+      572s
+      428s
+      572s
+      428s
+      572s
+      428s
+      572s)
     object TabItem2: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = True
-      Size.Width = 70.000000000000000000
+      Size.Width = 71.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -219,13 +234,14 @@ object RDatasetsDemo: TRDatasetsDemo
       ExplicitSize.cy = 26.000000000000000000
       object ConfusionGrid: TBIGrid
         Align = Client
-        Size.Width = 50.000000000000000000
+        Size.Width = 428.000000000000000000
+        Size.Height = 522.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
       end
       object Layout4: TLayout
         Align = Top
-        Size.Width = 50.000000000000000000
+        Size.Width = 428.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
@@ -248,7 +264,7 @@ object RDatasetsDemo: TRDatasetsDemo
         item
         end>
       IsSelected = False
-      Size.Width = 39.000000000000000000
+      Size.Width = 40.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -262,7 +278,7 @@ object RDatasetsDemo: TRDatasetsDemo
         item
         end>
       IsSelected = False
-      Size.Width = 45.000000000000000000
+      Size.Width = 46.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
@@ -279,16 +295,16 @@ object RDatasetsDemo: TRDatasetsDemo
       end
     end
   end
-  object BIDataset1: TBIDataset
-    RowNumbers = False
-    Left = 816
-    Top = 264
-  end
   object Timer1: TTimer
     Enabled = False
     Interval = 1
     OnTimer = Timer1Timer
     Left = 552
     Top = 312
+  end
+  object BIDataset1: TBIDataset
+    RowNumbers = False
+    Left = 816
+    Top = 264
   end
 end

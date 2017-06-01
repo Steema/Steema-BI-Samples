@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes,
-  BI.Data, BI.Arrays, BI.Algorithm.Model, BI.Algorithm.Clustering.Engine;
+  BI.DataItem, BI.Arrays, BI.Algorithm.Model, BI.Algorithm.Clustering.Engine;
 
 type
   TDistanceMethod=(Euclidean, SquaredEuclidean, Manhattan, Minkowski, Sorensen, Chebyshev);

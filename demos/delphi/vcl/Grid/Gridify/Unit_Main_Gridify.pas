@@ -20,8 +20,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BI.VCL.DataControl,
-  BI.VCL.Grid, Vcl.StdCtrls, System.Diagnostics;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
+  Vcl.StdCtrls, System.Diagnostics, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFromGridify = class(TForm)
@@ -54,7 +54,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data, BI.Data.Gridify, BI.Data.Rank, BI.UI, BI.Arrays.Strings,
+  BI.DataItem, BI.Gridify, BI.Rank, BI.UI, BI.Arrays.Strings,
   BI.Demos.RandomTable;
 
 // Use the grid "Colorize" feature on "Rank" field (if available)

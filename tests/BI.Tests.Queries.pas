@@ -9,7 +9,7 @@ unit BI.Tests.Queries;
 interface
 
 uses
-  BI.Arrays, BI.Data, DUnitX.TestFramework,
+  BI.Arrays, BI.DataItem, DUnitX.TestFramework,
   BI.Summary, BI.DataSource, BI.Persist;
 
 type

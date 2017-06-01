@@ -9,9 +9,9 @@ unit BI.Query;
 interface
 
 uses
-  {System.}Classes, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
-  BI.Persist, BI.Expression.Filter, BI.Data.CollectionItem,
-  BI.Data.Expressions;
+  {System.}Classes, BI.DataItem, BI.DataSource, BI.Summary, BI.Expression,
+  BI.Persist, BI.Expression.Filter, BI.CollectionItem,
+  BI.Expressions;
 
 {
   TBIQuery is a component capable of executing queries against TDataItem objects.

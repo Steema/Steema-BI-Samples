@@ -90,8 +90,12 @@ object MasterDetailForm: TMasterDetailForm
         LeftWall.Color = 14745599
         Legend.Font.Name = 'Verdana'
         Legend.Shadow.Transparency = 0
+        Legend.Shadow.Visible = False
+        Legend.Symbol.Shadow.Visible = False
         RightWall.Color = 14745599
         Title.Font.Name = 'Verdana'
+        Title.Text.Strings = (
+          'TBITChart')
         BottomAxis.Axis.Color = 4210752
         BottomAxis.Grid.Color = 11119017
         BottomAxis.LabelsFormat.Font.Name = 'Verdana'

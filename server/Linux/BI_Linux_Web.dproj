@@ -187,6 +187,7 @@
         <DCCReference Include="..\BI.Web.AllData.pas"/>
         <DCCReference Include="..\BI.Web.Common.pas"/>
         <DCCReference Include="..\BI.Web.IndyContext.pas"/>
+        <DCCReference Include="..\BI.Web.Server.Indy.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

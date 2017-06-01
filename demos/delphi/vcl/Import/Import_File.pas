@@ -3,7 +3,7 @@ unit Import_File;
 interface
 
 uses
-  BI.Data;
+  BI.DataItem;
 
 // Automatic data import based on AFileName extension.
 
@@ -17,7 +17,7 @@ function ImportMongoDB(const AFileName:String):TDataItem;
 implementation
 
 uses
-  BI.DataSource, BI.Data.JSON;
+  BI.DataSource, BI.JSON;
 
 function ImportFile(const AFileName:String):TDataItem;
 begin

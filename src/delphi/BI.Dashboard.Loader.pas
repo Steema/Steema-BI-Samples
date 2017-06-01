@@ -31,7 +31,7 @@ uses
   {$ELSE}
   System.UITypes,
   {$ENDIF}
-  BI.Data, BI.Dashboard, BI.Dashboard.Layouts;
+  BI.DataItem, BI.Dashboard, BI.Dashboard.Layouts;
 
 type
   TTemplateLoader=record

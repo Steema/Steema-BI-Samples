@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
-  Vcl.ComCtrls, Data.DB, Datasnap.DBClient, BI.VCL.DataControl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, VCLBI.Grid,
+  Vcl.ComCtrls, Data.DB, Datasnap.DBClient, VCLBI.DataControl;
 
 type
   TFromComponents = class(TForm)
@@ -39,7 +39,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.DataSource, BI.Data.DB, BI.Data.CSV;
+  BI.DataSource, BI.DB, BI.CSV;
 
 procedure TFromComponents.Button4Click(Sender: TObject);
 begin

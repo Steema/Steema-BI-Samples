@@ -32,8 +32,9 @@ uses
   {$ENDIF}
 
   // TeeBI units
-  BI.VCL.Editor.BIGrid, BI.DataSource, BI.VCL.Grid, BI.Data, BI.VCL.Visualizer,
-  BI.VCL.Editor.Grid, BI.VCL.DataControl;
+  VCLBI.Editor.BIGrid, BI.DataSource, BI.DataItem,
+  VCLBI.Editor.Grid, VCLBI.Visualizer, VCLBI.DataControl,
+  VCLBI.Grid;
 
 type
   TTestSQLQueries = class(TForm)
@@ -106,16 +107,16 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Persist, BI.VCL.DataManager, BI.Compare, System.Diagnostics,
-  BI.VCL.DataViewer, BI.Data.SQL, BI.VCL.Editor.DataSelect, BI.Expression,
+  BI.Persist, VCLBI.DataManager, BI.Compare, System.Diagnostics,
+  VCLBI.DataViewer, BI.SQL, VCLBI.Editor.DataSelect, BI.Expression,
   BI.Summary,
 
-  BI.VCL.Visualizer.Chart, BI.VCL.Editor.Visualizer.Chart,
+  VCLBI.Visualizer.Chart, VCLBI.Editor.Visualizer.Chart,
 
-  BI.VCL.Editor.Hops, BI.Data.Expressions, BI.Data.HTML,
+  VCLBI.Editor.Hops, BI.Expressions, BI.HTML,
 
-  BI.VCL.GridForm, BI.Tests.SummarySamples, BI.Tests.SelectSamples,
-  BI.Query, BI.VCL.Editor.Query, BI.Queries.Benchmark;
+  VCLBI.GridForm, BI.Tests.SummarySamples, BI.Tests.SelectSamples,
+  BI.Query, VCLBI.Editor.Query, BI.Queries.Benchmark;
 
 // Compare existing data output with the results of parsing SQL text.
 // If they are different, show Data Viewer dialog with the differences.

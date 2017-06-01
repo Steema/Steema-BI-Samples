@@ -67,6 +67,8 @@ object Form35: TForm35
       OnChange = PageControl1Change
       object TabDate: TTabSheet
         Caption = 'Date'
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 294
         ExplicitHeight = 293
         object LBDateExamples: TListBox
@@ -106,6 +108,8 @@ object Form35: TForm35
       object TabNumber: TTabSheet
         Caption = 'Number'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 294
         ExplicitHeight = 293
         object LBNumberExamples: TListBox
@@ -131,6 +135,8 @@ object Form35: TForm35
       object TabText: TTabSheet
         Caption = 'Text'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 294
         ExplicitHeight = 293
         object LBTextExamples: TListBox
@@ -155,6 +161,10 @@ object Form35: TForm35
       object TabBoolean: TTabSheet
         Caption = 'Boolean'
         ImageIndex = 3
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object LBBooleanExamples: TListBox
           Left = 0
           Top = 0

@@ -5,10 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.Data, BI.VCL.Grid, BI.Summary, Data.DB, Vcl.CheckLst, System.Types,
-  BI.Expression, BI.VCL.LinkDiagram, BI.VCL.Chart,
-  BI.VCL.Editor.Summary, BI.VCL.Editor.Grid, Vcl.Grids,
-  BI.Data.ClientDataset;
+  BI.DataItem, BI.Summary, Data.DB, Vcl.CheckLst, System.Types,
+  BI.Expression, VCLBI.LinkDiagram, VCLBI.Chart,
+  VCLBI.Editor.Summary, VCLBI.Editor.Grid, Vcl.Grids,
+  BI.ClientDataset, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TForm15 = class(TForm)
@@ -95,11 +95,11 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.VCL.DataViewer, System.Diagnostics, VCL.Themes,
-  BI.VCL.DataTree, Sample_Summaries, BI.Persist, BI.VCL.Editor.Stores,
-  BI.VCL.DataManager, BI.VCL.Grid.DBGrid,
+  VCLBI.DataViewer, System.Diagnostics, VCL.Themes,
+  VCLBI.DataTree, Sample_Summaries, BI.Persist, VCLBI.Editor.Stores,
+  VCLBI.DataManager, VCLBI.Grid.DBGrid,
 
-  BI.Data.JSON, BI.Data.XML, BI.Data.CSV, BI.Data.Excel,
+  BI.JSON, BI.XMLData, BI.CSV, BI.Excel,
   BI.Languages.English;
 
 procedure AddStyles(const Items:TStrings);

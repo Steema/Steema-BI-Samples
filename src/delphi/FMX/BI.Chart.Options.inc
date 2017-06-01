@@ -6,15 +6,20 @@
 
 // XE4,5,7 and up, do not have this bug.
 
+{$WARN COMPARISON_FALSE OFF}
+
 {$IF Declared(TeeVCLBuildVersionInteger)}
   {$DEFINE HASTAGOBJECT}
-
-  {$IF TeeVCLBuildVersionInteger >= 160406}
-    {$DEFINE SERIESLABELSRESIZE}
-  {$ENDIF}
-
-  {$IF TeeVCLBuildVersionInteger >= 161005}
-    {$DEFINE CHARTLAYERS}
-  {$ENDIF}
-
 {$ENDIF}
+
+{$IF Declared(TeeVCLBuildVersionInteger) and (TeeVCLBuildVersionInteger>=+160406)}
+  {$DEFINE SERIESLABELSRESIZE}
+{$ENDIF}
+
+{$IF Declared(TeeVCLBuildVersionInteger) and (TeeVCLBuildVersionInteger>=+161005)}
+  {$DEFINE CHARTLAYERS}
+{$ENDIF}
+
+{$WARN COMPARISON_FALSE ERROR}
+
+

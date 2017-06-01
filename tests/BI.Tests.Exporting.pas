@@ -9,8 +9,8 @@ unit BI.Tests.Exporting;
 interface
 
 uses
-  BI.Arrays, BI.Data, DUnitX.TestFramework,
-  BI.Data.CSV, BI.Data.XML, BI.Data.JSON, BI.Data.DB, BI.Data.HTML;
+  BI.Arrays, BI.DataItem, DUnitX.TestFramework,
+  BI.CSV, BI.XMLData, BI.JSON, BI.DB, BI.HTML;
 
 type
   [TestFixture]

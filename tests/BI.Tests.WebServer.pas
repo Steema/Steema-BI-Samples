@@ -9,7 +9,7 @@ unit BI.Tests.WebServer;
 interface
 
 uses
-  BI.Arrays, BI.Data, DUnitX.TestFramework,
+  BI.Arrays, BI.DataItem, DUnitX.TestFramework,
   BI.Web, BI.Persist;
 
 type

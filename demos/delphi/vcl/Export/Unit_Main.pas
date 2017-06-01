@@ -10,8 +10,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
-  Vcl.DBCtrls, Vcl.ComCtrls, BI.VCL.DataManager, BI.Persist, BI.Data,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.DBCtrls, Vcl.ComCtrls, VCLBI.DataManager, BI.Persist, BI.DataItem,
 
   // Determine if we have TeeChart "Pro" version (necessary for PDF exporting)
 
@@ -32,10 +32,10 @@ uses
   {$ENDIF}
 
   {$IFDEF TEEPRO}
-  BI.VCL.PDF,
+  VCLBI.PDF,
   {$ENDIF}
 
-  ShDocVW, Clipbrd, ShellAPI, BI.VCL.DataControl;
+  ShDocVW, Clipbrd, ShellAPI, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TExportDemo = class(TForm)
@@ -87,7 +87,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.Json, BI.Data.Xml, BI.Data.HTML, BI.Data.CSV, BI.DataSource,
+  BI.Json, BI.XmlData, BI.HTML, BI.CSV, BI.DataSource,
   WebBrowser_Load, System.IOUtils;
 
 procedure TExportDemo.FormCreate(Sender: TObject);

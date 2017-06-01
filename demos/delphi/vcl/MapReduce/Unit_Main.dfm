@@ -83,6 +83,10 @@ object DemoForm: TDemoForm
     object TabSheet2: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object BIGrid2: TBIGrid
         Left = 0
         Top = 0

@@ -9,7 +9,7 @@ unit BI.Algorithm.Classify;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Arrays, BI.Algorithm, BI.Algorithm.Model,
+  System.Classes, BI.DataItem, BI.Arrays, BI.Algorithm, BI.Algorithm.Model,
   BI.Plugins.R;
 
 type

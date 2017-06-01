@@ -5,9 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ExtCtrls, Vcl.Grids,
-  Vcl.DBGrids, BI.Data, BI.DataSet, BI.DataSource, Vcl.StdCtrls, BI.VCL.Grid,
+  Vcl.DBGrids, BI.DataItem, BI.DataSet, BI.DataSource, Vcl.StdCtrls,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  BI.VCL.Chart, BI.VCL.Chart.Plugin, BI.VCL.DataControl;
+  VCLTee.TeeTools,
+  VCLBI.Chart.Plugin, VCLBI.Chart, VCLBI.DataControl, VCLBI.Grid;
 
 // Note: This example uses TBIGrid controls to show the extra features of TBIGrid.
 //       Standard VCL TDBGrid (with DataSource) or FMX TGrid controls (with LiveBindings)

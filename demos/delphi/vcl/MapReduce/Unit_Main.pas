@@ -6,9 +6,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BI.Data, BI.Persist,
-  BI.DataSource, BI.VCL.DataControl, BI.VCL.Grid,
-  System.Diagnostics, Vcl.ComCtrls, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BI.DataItem, BI.Persist,
+  BI.DataSource,
+  System.Diagnostics, Vcl.ComCtrls, Vcl.ExtCtrls, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TDemoForm = class(TForm)

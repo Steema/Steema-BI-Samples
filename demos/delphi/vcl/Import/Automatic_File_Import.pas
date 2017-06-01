@@ -8,16 +8,16 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
 
   {$IFDEF HASFIREDAC}
   FireDAC.Comp.UI, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Stan.Intf,
 
   // All FireDAC phys links
-  BI.Data.DB.FireDAC.AllDrivers,
+  BI.DB.Fire.AllDrivers,
   {$ENDIF}
 
-  Vcl.ComCtrls, BI.VCL.DataControl;
+  Vcl.ComCtrls, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TImportDemoForm = class(TForm)
@@ -60,7 +60,7 @@ implementation
 {$R *.dfm}
 
 uses
-  FindSampleData, Import_File, BI.VCL.DataViewer, System.IOUtils;
+  FindSampleData, Import_File, VCLBI.DataViewer, System.IOUtils;
 
 procedure TImportDemoForm.BNextClick(Sender: TObject);
 var FileName : String;

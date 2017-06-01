@@ -12,7 +12,7 @@ interface
 
 uses
   System.Classes,
-  BI.Data, BI.Arrays, BI.Tree, BI.Algorithm.Model;
+  BI.DataItem, BI.Arrays, BI.Tree, BI.Algorithm.Model;
 
 type
   TNodeData=record

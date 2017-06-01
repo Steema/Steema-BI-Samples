@@ -5,10 +5,10 @@ interface
 (*
   Example using TeeGrid control as the desired grid in TBIGrid.
 
-  To activate, simply add BI.VCL.Grid.TeeGrid unit to your "uses":
+  To activate, simply add VCLBI.Grid.TeeGrid unit to your "uses":
 
   uses
-    BI.VCL.Grid.TeeGrid;
+    VCLBI.Grid.TeeGrid;
 
   to set the desired plugin class:
 
@@ -22,11 +22,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.StdCtrls,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BI.Data,
-  BI.VCL.DataControl,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BI.DataItem,
 
-  BI.VCL.Grid.TeeGrid,
-  BI.VCL.Grid;
+  VCLBI.Grid.TeeGrid,
+  VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFormTeeGrid = class(TForm)

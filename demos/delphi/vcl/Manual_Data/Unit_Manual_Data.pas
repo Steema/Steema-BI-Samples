@@ -15,10 +15,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl, BI.VCL.Grid,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls,
 
-  BI.Data;
+  BI.DataItem, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFormManual = class(TForm)

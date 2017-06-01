@@ -23,7 +23,7 @@ unit BI.Plugins.R.opaR;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Plugins.R,
+  System.Classes, BI.Arrays, BI.DataItem, BI.Plugins.R,
   opaR.Interfaces, opaR.Engine, opaR.Devices.NullCharacterDevice, opaR.Utils;
 
 type

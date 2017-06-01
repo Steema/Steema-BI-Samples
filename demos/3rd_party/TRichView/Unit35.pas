@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Data, BI.VCL.DataControl,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataItem, BI.VCL.DataControl,
   BI.VCL.Grid, RVScroll, RichView, RVStyle, Vcl.ExtCtrls, Vcl.StdCtrls,
   RVTable;
 

@@ -3,7 +3,7 @@ unit BI.Tests.TDataItem;
 interface
 
 uses
-  BI.Arrays, BI.Data, DUnitX.TestFramework;
+  BI.Arrays, BI.DataItem, DUnitX.TestFramework;
 
 type
   [TestFixture]

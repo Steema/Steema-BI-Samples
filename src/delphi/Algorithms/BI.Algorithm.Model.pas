@@ -9,7 +9,7 @@ unit BI.Algorithm.Model;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Algorithm, BI.Data.Tools;
+  System.Classes, BI.Arrays, BI.DataItem, BI.Algorithm, BI.Tools;
 
 type
   TModelClass=class of TModel;

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BI.VCL.Grid, BI.VCL.DataControl;
+  VCLBI.Grid, VCLBI.DataControl;
 
 type
   TFromBIStore = class(TForm)

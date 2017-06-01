@@ -13,8 +13,8 @@ uses
   {WinApi.}Windows,
   {$ENDIF}
 
-  {System.}Classes, {System.}SysUtils, BI.Arrays, BI.Data, BI.Persist,
-  BI.Compression, BI.Expression, {System.}Types, BI.Data.Expressions;
+  {System.}Classes, {System.}SysUtils, BI.Arrays, BI.DataItem, BI.Persist,
+  BI.Compression, BI.Expression, {System.}Types, BI.Expressions;
 
 type
   // Base abstract class to define a "Source" of Data to import into a TDataItem
@@ -327,6 +327,7 @@ type
     class procedure ChangeToBoolean(const Col:TDataItem; const AValue:Boolean);
     class procedure ChangeToText(const Col:TDataItem; const Index,Total:TInteger); static;
     function DoImportFile(const FileName:String):TDataArray; override;
+    function DoImportStream(const AExtension:String; const AStream:TStream):TDataArray; override;
     function GuessKind(const Value:String):TDataKind;
     function InternalImportFile(const FileName:String):TDataArray; virtual;
     procedure SetColumn(const Col:TDataItem; const ARow:TInteger; const Value:String);

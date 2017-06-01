@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes,
-  BI.Data, BI.Arrays, BI.Plugins.R, BI.Algorithm;
+  BI.DataItem, BI.Arrays, BI.Plugins.R, BI.Algorithm;
 
 type
   TRegression=class(TBaseAlgorithm)

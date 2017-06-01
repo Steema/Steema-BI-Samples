@@ -29,7 +29,6 @@ object FormGridDetail: TFormGridDetail
     ExplicitTop = 280
     ExplicitWidth = 320
     ExplicitHeight = 120
-    Origin = '|restaurants|restaurants'
   end
   object Panel1: TPanel
     Left = 0

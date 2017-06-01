@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeeComma,
   Vcl.ExtCtrls, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.Series,
-  Vcl.StdCtrls, BI.Data, BI.VCL.Chart.Source;
+  Vcl.StdCtrls, BI.DataItem, VCLBI.Chart.Source;
 
 type
   TFormTeeConnect = class(TForm)
@@ -34,7 +34,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Persist, BI.VCL.Editor.Chart.Source;
+  BI.Persist, VCLBI.Editor.Chart.Source;
 
 procedure TFormTeeConnect.Button1Click(Sender: TObject);
 begin

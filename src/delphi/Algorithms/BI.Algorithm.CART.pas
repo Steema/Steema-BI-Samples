@@ -9,7 +9,7 @@ unit BI.Algorithm.CART;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Arrays, BI.Algorithm.Model, BI.Plugins.R;
+  System.Classes, BI.DataItem, BI.Arrays, BI.Algorithm.Model, BI.Plugins.R;
 
 type
   TBICART=class(TRSupervisedModel)

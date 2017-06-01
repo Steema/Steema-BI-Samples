@@ -22,7 +22,7 @@ implementation
 
 uses
   System.SysUtils,
-  BI.Data, BI.Persist, BI.Summary, BI.Expression, BI.Data.Expressions,
+  BI.DataItem, BI.Persist, BI.Summary, BI.Expression, BI.Expressions,
   BI.Tests.SummarySamples;
 
 { TSelectSamples }

@@ -14,7 +14,7 @@ interface
 {$ENDIF}
 
 uses
-  System.Classes, System.SysUtils, BI.Data;
+  System.Classes, System.SysUtils, BI.DataItem;
 
 type
   TQueryBenchmark=record

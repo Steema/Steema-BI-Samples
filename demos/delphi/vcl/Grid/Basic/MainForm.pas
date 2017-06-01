@@ -10,8 +10,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.Grid, Vcl.ExtCtrls, Vcl.ComCtrls,
-  BI.VCL.Editor.BIGrid, BI.VCL.DataManager, Vcl.DBCtrls, BI.VCL.DataControl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.ComCtrls,
+  VCLBI.Editor.BIGrid, VCLBI.DataManager, Vcl.DBCtrls,
+  VCLBI.DataControl, VCLBI.Grid;
 
 type
   TGridDemoForm = class(TForm)
@@ -42,7 +43,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Persist, BI.Data;
+  BI.Persist, BI.DataItem;
 
 procedure TGridDemoForm.FormCreate(Sender: TObject);
 begin

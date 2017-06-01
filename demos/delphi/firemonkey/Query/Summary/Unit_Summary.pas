@@ -15,8 +15,8 @@ uses
   {$ENDIF}
 
   FMX.Dialogs, FMX.Layouts,
-  BI.FMX.Grid, BI.Data, BI.Summary, FMX.StdCtrls,
-  BI.FMX.DataControl;
+  FMXBI.Grid, BI.DataItem, BI.Summary, FMX.StdCtrls,
+  FMXBI.DataControl;
 
 type
   TForm17 = class(TForm)

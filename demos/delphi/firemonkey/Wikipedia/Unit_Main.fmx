@@ -41,7 +41,6 @@ object FormWiki: TFormWiki
         Size.Height = 529.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        ReadOnly = False
         OnDataChange = BIGrid1DataChange
       end
     end

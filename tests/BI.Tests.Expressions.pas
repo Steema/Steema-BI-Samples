@@ -9,7 +9,7 @@ unit BI.Tests.Expressions;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, DUnitX.TestFramework,
+  System.Classes, BI.Arrays, BI.DataItem, DUnitX.TestFramework,
   BI.Expression;
 
 type

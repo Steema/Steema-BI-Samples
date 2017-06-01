@@ -82,9 +82,6 @@ type
     procedure AddListener(const AName:String; const ASource:TObject); override;
     function FreeChartName:String;
   public
-    const
-      PureCSS='<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
-
     class var
       HTMLChart : THTMLChartProc;
 

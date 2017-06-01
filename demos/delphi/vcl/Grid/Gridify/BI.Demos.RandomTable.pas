@@ -16,7 +16,7 @@ interface
 }
 
 uses
-  BI.Data;
+  BI.DataItem;
 
 function BigRandomTable:TDataItem;
 

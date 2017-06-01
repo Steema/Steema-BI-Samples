@@ -41,22 +41,22 @@ requires
   TeeBI;
 
 contains
-  BI.FMX.DataControl in '..\FMX\BI.FMX.DataControl.pas',
-  BI.FMX.Grid.Grid in '..\FMX\BI.FMX.Grid.Grid.pas',
-  BI.FMX.Grid in '..\FMX\BI.FMX.Grid.pas',
-  BI.FMX.GridForm in '..\FMX\BI.FMX.GridForm.pas' {BIGridForm},
-  BI.FMX.DataViewer in '..\FMX\BI.FMX.DataViewer.pas' {DataViewer},
-  BI.FMX.DataManager in '..\FMX\BI.FMX.DataManager.pas' {DataManager},
-  BI.FMX.Editor.Column in '..\FMX\BI.FMX.Editor.Column.pas' {ColumnEditor},
-  BI.FMX.Editor.Data in '..\FMX\BI.FMX.Editor.Data.pas' {DataEditor},
-  BI.FMX.Editor.Grid in '..\FMX\BI.FMX.Editor.Grid.pas' {BIGridEditor},
-  BI.FMX.Editor.Items in '..\FMX\BI.FMX.Editor.Items.pas' {ItemsEditor},
-  BI.FMX.Editor.Stores in '..\FMX\BI.FMX.Editor.Stores.pas' {StoreEditor},
-  BI.FMX.Editor.Visualizer in '..\FMX\BI.FMX.Editor.Visualizer.pas' {VisualizerEditor},
-  BI.FMX.Status in '..\FMX\BI.FMX.Status.pas' {StoreStatus},
-  BI.FMX.Visualizer in '..\FMX\BI.FMX.Visualizer.pas',
-  BI.FMX.Dashboard in '..\FMX\BI.FMX.Dashboard.pas',
-  BI.FMX.Tree in '..\FMX\BI.FMX.Tree.pas',
-  BI.FMX.Tree.TreeView in '..\FMX\BI.FMX.Tree.TreeView.pas';
+  FMXBI.DataControl in '..\FMX\FMXBI.DataControl.pas',
+  FMXBI.Grid.Grid in '..\FMX\FMXBI.Grid.Grid.pas',
+  FMXBI.Grid in '..\FMX\FMXBI.Grid.pas',
+  FMXBI.GridForm in '..\FMX\FMXBI.GridForm.pas' {BIGridForm},
+  FMXBI.DataViewer in '..\FMX\FMXBI.DataViewer.pas' {DataViewer},
+  FMXBI.DataManager in '..\FMX\FMXBI.DataManager.pas' {DataManager},
+  FMXBI.Editor.Column in '..\FMX\FMXBI.Editor.Column.pas' {ColumnEditor},
+  FMXBI.Editor.Data in '..\FMX\FMXBI.Editor.Data.pas' {DataEditor},
+  FMXBI.Editor.Grid in '..\FMX\FMXBI.Editor.Grid.pas' {BIGridEditor},
+  FMXBI.Editor.Items in '..\FMX\FMXBI.Editor.Items.pas' {ItemsEditor},
+  FMXBI.Editor.Stores in '..\FMX\FMXBI.Editor.Stores.pas' {StoreEditor},
+  FMXBI.Editor.Visualizer in '..\FMX\FMXBI.Editor.Visualizer.pas' {VisualizerEditor},
+  FMXBI.Status in '..\FMX\FMXBI.Status.pas' {StoreStatus},
+  FMXBI.Visualizer in '..\FMX\FMXBI.Visualizer.pas',
+  FMXBI.Dashboard in '..\FMX\FMXBI.Dashboard.pas',
+  FMXBI.Tree in '..\FMX\FMXBI.Tree.pas',
+  FMXBI.Tree.TreeView in '..\FMX\FMXBI.Tree.TreeView.pas';
 
 end.

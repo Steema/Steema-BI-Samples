@@ -15,7 +15,7 @@ uses
   {$ENDIF}
 
   FMX.Dialogs, FMX.TabControl,
-  FMX.Layouts, BI.FMX.DataManager, BI.FMX.Grid, BI.Persist, FMX.ListView.Types,
+  FMX.Layouts, FMXBI.DataManager, FMXBI.Grid, BI.Persist, FMX.ListView.Types,
 
   {$IF CompilerVersion<=29}
   {$DEFINE HASFMX23}
@@ -25,7 +25,7 @@ uses
   FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   {$ENDIF}
 
-  FMX.ListView, BI.Data, FMX.ListBox, FMX.StdCtrls, BI.Arrays,
+  FMX.ListView, BI.DataItem, FMX.ListBox, FMX.StdCtrls, BI.Arrays,
 
   BI.Algorithm.Model, BI.Algorithm, 
 
@@ -38,7 +38,7 @@ uses
   {$ENDIF}
 
   FMX.Memo,
-  BI.FMX.R.Console,
+  FMXBI.R.Console,
 
   // Two different R "engines" (cmd batch and native)
   {$WARN UNIT_DEPRECATED OFF}
@@ -46,7 +46,7 @@ uses
 
   BI.Plugins.R.opaR, // <-- native R dll
 
-  Data.DB, BI.Dataset, BI.FMX.DataControl;
+  Data.DB, BI.Dataset, FMXBI.DataControl;
 
 type
   TRDatasetsDemo = class(TForm)

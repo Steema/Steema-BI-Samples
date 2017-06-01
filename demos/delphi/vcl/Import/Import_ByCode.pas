@@ -4,9 +4,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, BI.VCL.Grid,
-  Vcl.ComCtrls, BI.VCL.DataViewer, BI.Data, Data.DB, Datasnap.DBClient,
-  Vcl.Grids, Vcl.DBGrids, BI.VCL.DataControl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.ComCtrls, VCLBI.DataViewer, BI.DataItem, Data.DB, Datasnap.DBClient,
+  Vcl.Grids, Vcl.DBGrids, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TByCode = class(TForm)
@@ -63,8 +63,8 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.CSV, BI.Data.JSON, BI.Data.XML, BI.Data.Excel, BI.Data.DB,
-  BI.DataSource, BI.Data.HTML,
+  BI.CSV, BI.JSON, BI.XMLData, BI.Excel, BI.DB,
+  BI.DataSource, BI.HTML,
   FindSampleData;
 
 { TByCode }

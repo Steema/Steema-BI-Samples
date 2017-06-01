@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, BI.Plugins.Python.Engine, BI.Algorithm.Model, BI.Arrays,
-  BI.Data;
+  BI.DataItem;
 
 type
   TBIPython=class(TBIPlugin)

@@ -39,10 +39,10 @@ uses
   {$ENDIF}
 
   FMX.Edit, FMX.Layouts, FMX.TreeView, BI.Expression,
-  BI.Summary, BI.Data, BI.Data.Dataset, Data.DB, Datasnap.DBClient,
-  BI.Data.DB,
+  BI.Summary, BI.DataItem, BI.DB.Dataset, Data.DB, Datasnap.DBClient,
+  BI.DB,
 
-  BI.Data.ClientDataSet, FMX.ListBox, FMX.Memo, System.Math, FMX.TabControl;
+  BI.ClientDataSet, FMX.ListBox, FMX.Memo, System.Math, FMX.TabControl;
 
 type
   TFormMain = class(TForm)
@@ -113,8 +113,8 @@ var
 implementation
 
 uses
-  BI.Arrays, BI.Data.Expressions, BI.Data.RTTI,
-  BI.FMX.Expression.Tree, BI.Expression.Benchmark, BI.Expressions.Samples;
+  BI.Arrays, BI.Expressions, BI.RTTI,
+  FMXBI.Expression.Tree, BI.Expression.Benchmark, BI.Expressions.Samples;
 
 {$R *.fmx}
 

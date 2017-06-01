@@ -9,13 +9,25 @@ unit BI.Tests.Speed;
 interface
 
 uses
-  System.SysUtils, BI.Data;
+  System.SysUtils, BI.DataItem;
 
 type
   TBISpeedTest=class
   private
-    procedure Bench(const AName:String; const Times:Integer; const Run:TProc);
+    procedure Bench(const AName:String; const Times:Integer; const Run:TProc); overload;
+
+    procedure Bench(const ANames:Array of String;
+                    const ATimes:Array of Integer;
+                    const Runs:Array of TProc); overload;
+
+    procedure SQL1_Proc;
+    procedure SQL2_Proc;
+    procedure SQL3_Proc;
   public
+    Parallel_SQL : Boolean;
+
+    Persons : TDataItem;
+
     Results : TDataItem;
 
     Constructor Create;
@@ -28,8 +40,10 @@ type
 implementation
 
 uses
-  System.Classes, BI.DataSource, BI.Summary, System.Diagnostics,
-  BI.Data.Expressions, BI.DataSet, Data.DB, BI.Persist;
+  System.Classes, System.Threading, SyncObjs,
+
+  BI.DataSource, BI.Summary, System.Diagnostics,
+  BI.Expressions, BI.DataSet, Data.DB, BI.Persist;
 
 Constructor TBISpeedTest.Create;
 begin
@@ -50,6 +64,35 @@ begin
   inherited;
 end;
 
+procedure TBISpeedTest.Bench(const ANames: array of String;
+  const ATimes: array of Integer; const Runs: array of TProc);
+
+type
+  TTaskInfo=record Name:String; Times:Integer; Proc:TProc; end;
+
+var t : Integer;
+    tmpCount : Integer;
+
+    tmp : Array of TTaskInfo;
+begin
+  // This tmp array is just to capture the params:
+  tmpCount:=Length(ANames);
+  SetLength(tmp,tmpCount);
+
+  for t:=0 to tmpCount-1 do
+  begin
+    tmp[t].Name:=ANames[t];
+    tmp[t].Times:=ATimes[t];
+    tmp[t].Proc:=Runs[t];
+  end;
+
+  // Loop all benchmarks in parallel (using multiple CPU logical cores)
+  TParallel.&For(0,High(ANames),procedure(Index:Integer)
+  begin
+    Bench(tmp[Index].Name,tmp[Index].Times,tmp[Index].Proc);
+  end);
+end;
+
 procedure TBISpeedTest.Clear;
 begin
   Results.Resize(0);
@@ -60,6 +103,7 @@ procedure TBISpeedTest.Bench(const AName:String; const Times:Integer; const Run:
 var t1 : TStopwatch;
     Pos : Integer;
     Elapsed : Int64;
+    tmp : TCriticalSection;
 begin
   t1:=TStopwatch.StartNew;
 
@@ -67,9 +111,18 @@ begin
 
   Elapsed:=t1.ElapsedMilliseconds;
 
-  // Add a new row to results table
-  Pos:=Results.Count;
-  Results.Resize(Pos+1);
+  tmp:=TCriticalSection.Create;
+  try
+    tmp.Enter;
+
+    // Add a new row to results table
+    Pos:=Results.Count;
+    Results.Resize(Pos+1);
+
+    tmp.Leave;
+  finally
+    tmp.Free;
+  end;
 
   // Fill new row with test name and results
   Results[0].TextData[Pos]:=AName;
@@ -86,7 +139,82 @@ begin
   Results[4].SingleData[Pos]:=Elapsed/Times;
 end;
 
+procedure TBISpeedTest.SQL1_Proc;
+var Query : TDataSelect;
+    Alex : TDataItem;
+begin
+  Query:=TDataSelect.Create(nil);
+  try
+    Query.Add(Persons); // * all fields
+
+    Query.Filter:=TDataFilter.FromString(Persons,'Name="Alex"');
+
+    // Execute Query and after that, just destroy results
+    Alex:=Query.Calculate;
+    Alex.Free;
+
+  finally
+    Query.Free;
+  end;
+end;
+
+procedure TBISpeedTest.SQL2_Proc;
+var Average : TSummary;
+    BySalary : TDataItem;
+begin
+  Average:=TSummary.Create(nil);
+  try
+    Average.AddMeasure(Persons['Salary'],TAggregate.Average);
+    Average.AddGroupBy(Persons['Name']);
+
+    // Execute summary and destroy results
+    BySalary:=Average.Calculate;
+    BySalary.Free;
+  finally
+    Average.Free;
+  end;
+end;
+
+procedure TBISpeedTest.SQL3_Proc;
+var Query : TDataSelect;
+    SortedSalary : TDataItem;
+begin
+  Query:=TDataSelect.Create(nil);
+  try
+    Query.Add(Persons['ID']);
+    Query.Add(Persons['Salary']);
+    Query.SortBy.Add(Persons['Salary'],False);
+
+    // Execute query and destroy results
+    SortedSalary:=Query.Calculate;
+    SortedSalary.Free;
+  finally
+    Query.Free;
+  end;
+end;
+
 procedure TBISpeedTest.Run;
+
+  function RowCount:String;
+  begin
+    result:='SQL ('+Persons.Count.ToString+' rows): ';
+  end;
+
+  function SQL1:String;
+  begin
+    result:=RowCount+' Select * from Persons where Name="Alex"';
+  end;
+
+  function SQL2:String;
+  begin
+    result:=RowCount+' Select Average(Salary) from Persons group by Name';
+  end;
+
+  function SQL3:String;
+  begin
+    result:=RowCount+' Select ID,Salary from Persons order by Salary DESC';
+  end;
+
 const
   SampleNames:Array[0..5] of String=('Sam','Jane','Peter','Carla','Alex','Julie');
 
@@ -100,13 +228,7 @@ const
   Quantity_Delete=10000;
   Quantity_RandomDelete=10000;
 
-var Persons : TDataItem;
-    Query : TDataSelect;
-    Alex : TDataItem;
-    Average : TSummary;
-    BySalary : TDataItem;
-    SortedSalary : TDataItem;
-    PersonsStream : TMemoryStream;
+var PersonsStream : TMemoryStream;
 begin
   Bench('Create and Destroy Table (3 columns)',Times_CreateDestroy, procedure
     var Data : TDataItem;
@@ -175,53 +297,16 @@ begin
           Persons.Delete(Random(Persons.Count)); // <-- delete random record
     end);
 
-  Bench('SQL ('+Persons.Count.ToString+' rows): Select * from Persons where Name="Alex"',1, procedure
-    begin
-      Query:=TDataSelect.Create(nil);
-      try
-        Query.Add(Persons); // * all fields
-
-        Query.Filter:=TDataFilter.FromString(Persons,'Name="Alex"');
-
-        // Execute Query and after that, just destroy results
-        Alex:=Query.Calculate;
-        Alex.Free;
-
-      finally
-        Query.Free;
-      end;
-    end);
-
-  Bench('SQL ('+Persons.Count.ToString+' rows): Select Average(Salary) from Persons group by Name',1, procedure
-    begin
-      Average:=TSummary.Create(nil);
-      try
-        Average.AddMeasure(Persons['Salary'],TAggregate.Average);
-        Average.AddGroupBy(Persons['Name']);
-
-        // Execute summary and destroy results
-        BySalary:=Average.Calculate;
-        BySalary.Free;
-      finally
-        Average.Free;
-      end;
-    end);
-
-  Bench('SQL ('+Persons.Count.ToString+' rows): Select ID,Salary from Persons order by Salary DESC',1, procedure
-    begin
-      Query:=TDataSelect.Create(nil);
-      try
-        Query.Add(Persons['ID']);
-        Query.Add(Persons['Salary']);
-        Query.SortBy.Add(Persons['Salary'],False);
-
-        // Execute query and destroy results
-        SortedSalary:=Query.Calculate;
-        SortedSalary.Free;
-      finally
-        Query.Free;
-      end;
-    end);
+  if Parallel_SQL then
+     Bench([SQL1,SQL2,SQL3],
+           [1,1,1],
+           [SQL1_Proc,SQL2_Proc,SQL3_Proc])
+  else
+  begin
+    Bench(SQL1,1,SQL1_Proc);
+    Bench(SQL2,1,SQL2_Proc);
+    Bench(SQL3,1,SQL3_Proc);
+  end;
 
   Bench('TDataSet Traverse to Sum ('+Persons.Count.ToString+' rows)',1, procedure
     var Dataset : TBIDataset;

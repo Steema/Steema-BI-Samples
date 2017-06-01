@@ -55,7 +55,7 @@ interface
 *)
 
 uses
-  BI.Arrays, BI.Data, BI.Summary;
+  BI.Arrays, BI.DataItem, BI.Summary;
 
 type
   TKeyIndex=TInteger;

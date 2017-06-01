@@ -1,3 +1,9 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Indy implementation of abstract Web Server }
+{  Copyright (c) 2015-2017 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.Web.IndyContext;
 
 interface
@@ -10,29 +16,47 @@ uses
 type
   TBIIndyContext=class(TBIWebContext)
   private
-    IContext : TIdContext;
+    function IContext:TIdContext;
   public
+    Constructor Create(const AContext:TIdContext);
+
+    procedure AddCookie(const AName,AValue:String); override;
+
     procedure Finish;
     function FormParams: String; override;
+    function GetContentType:String; override;
+    function GetCookie(const AName:String):String; override;
+    function GetDocument:String; override;
+    function GetStream:TStream; override;
+    function Headers: TStrings; override;
 
     class procedure Process(const BIWeb:TBIWebCommon;
-                      const AContext:TIdContext;
-                      const ARequestInfo: TIdHTTPRequestInfo;
-                      const AResponseInfo: TIdHTTPResponseInfo); static;
+                            const AContext:TBIWebContext); static;
 
     function Params:TStrings; override;
     function PeerIP:String;
+    procedure Redirect(const AURL: String); override;
     function ResponseSize:Int64; override;
     procedure ReturnFile(const AFile:String); override;
+    procedure ReturnIcon(const AStream:TStream); override;
+
+    procedure SetResponse(const AText: String); override;
+    procedure SetResponse(const AType: String; const AStream:TStream); override;
   end;
 
 implementation
 
 uses
-  IdSSL,
+  IdSSL, IdCookie, IdURI,
   BI.DataSource;
 
 { TBIIndyContext }
+
+constructor TBIIndyContext.Create(const AContext: TIdContext);
+begin
+  inherited Create;
+  Context:=AContext;
+end;
 
 procedure TBIIndyContext.Finish;
 var tmp : TIdHTTPResponseInfo;
@@ -46,6 +70,16 @@ end;
 function TBIIndyContext.FormParams: String;
 begin
   result:=TIdHTTPRequestInfo(RequestInfo).FormParams;
+end;
+
+function TBIIndyContext.Headers: TStrings;
+begin
+  result:=TIdHTTPRequestInfo(RequestInfo).RawHeaders;
+end;
+
+function TBIIndyContext.IContext: TIdContext;
+begin
+  result:=TIdContext(Context);
 end;
 
 function TBIIndyContext.Params: TStrings;
@@ -69,6 +103,11 @@ begin
         result:=Length(ContentText);
 end;
 
+procedure TBIIndyContext.Redirect(const AURL: String);
+begin
+  TIdHTTPResponseInfo(ResponseInfo).Redirect(AURL);
+end;
+
 procedure TBIIndyContext.ReturnFile(const AFile: String);
 var Enable : Boolean;
 begin
@@ -82,30 +121,73 @@ begin
   IContext.Connection.IOHandler.WriteFile(AFile, Enable);
 end;
 
-class procedure TBIIndyContext.Process(const BIWeb:TBIWebCommon;
-                        const AContext:TIdContext;
-                        const ARequestInfo: TIdHTTPRequestInfo;
-                        const AResponseInfo: TIdHTTPResponseInfo);
-var tmp : TBIIndyContext;
+procedure TBIIndyContext.ReturnIcon(const AStream: TStream);
 begin
-  tmp:=TBIIndyContext.Create;
+  SetResponse('image/x-icon',AStream);// "data:;base64,iVBORw0KGgo="
+end;
+
+procedure TBIIndyContext.SetResponse(const AText: String);
+begin
+  //TIdHTTPResponseInfo(ResponseInfo).
+  ContentText:=AText;
+end;
+
+procedure TBIIndyContext.SetResponse(const AType: String;
+  const AStream: TStream);
+begin
+  ContentType:=AType;
+  ResponseStream:=AStream;
+end;
+
+class procedure TBIIndyContext.Process(const BIWeb:TBIWebCommon;
+                                       const AContext:TBIWebContext);
+begin
+  if AContext.GetDocument<>'/' then
+     BIWeb.ProcessFile(AContext.GetDocument,AContext)
+  else
+  if TIdHttpRequestInfo(AContext.RequestInfo).CommandType=hcGET then
+     BIWeb.ProcessGet(AContext)
+  else
+  if TIdHttpRequestInfo(AContext.RequestInfo).CommandType=hcPOST then
+     BIWeb.ProcessPost(AContext);
+
+  TBIIndyContext(AContext).Finish;
+end;
+
+function TBIIndyContext.GetContentType: String;
+begin
+  result:=TIdHTTPRequestInfo(RequestInfo).ContentType;
+end;
+
+function TBIIndyContext.GetCookie(const AName:String):String;
+var tmp : TIdCookie;
+begin
+  tmp:=TIdHTTPRequestInfo(RequestInfo).Cookies.Cookie[AName,''];
+
+  if tmp=nil then
+     result:=''
+  else
+     result:=tmp.Value;
+end;
+
+function TBIIndyContext.GetDocument: String;
+begin
+  result:=TIdHTTPRequestInfo(RequestInfo).Document;
+end;
+
+function TBIIndyContext.GetStream: TStream;
+begin
+  result:=TIdHTTPRequestInfo(RequestInfo).PostStream;
+end;
+
+procedure TBIIndyContext.AddCookie(const AName,AValue:String);
+var URI : TIdURI;
+begin
+  URI:=TIdURI.Create('http://localhost');
   try
-    tmp.IContext:=AContext;
-    tmp.RequestInfo:=ARequestInfo;
-    tmp.ResponseInfo:=AResponseInfo;
-
-    if ARequestInfo.Document<>'/' then
-       BIWeb.ProcessFile(ARequestInfo.Document,tmp)
-    else
-    if ARequestInfo.CommandType=hcGET then
-       BIWeb.ProcessGet(tmp)
-    else
-    if ARequestInfo.CommandType=hcPOST then
-       BIWeb.ProcessPost(tmp);
-
-    tmp.Finish;
+    TIdHTTPResponseInfo(ResponseInfo).Cookies.AddServerCookie(AName+'='+AValue,URI);
   finally
-    tmp.Free;
+    URI.Free;
   end;
 end;
 

@@ -11,12 +11,16 @@ unit nFMX.Trayicon.Win;
 interface
 
 uses
-  System.SysUtils, System.Classes, Winapi.ShellAPI, Winapi.Windows,
-  Winapi.Messages, FMX.Platform.Win, FMX.Dialogs, FMX.Menus, FMX.Forms,
-  FMX.Objects;
+  System.SysUtils, System.Classes,
+  {$IFDEF MSWINDOWS}
+  Winapi.ShellAPI, Winapi.Windows, Winapi.Messages, FMX.Platform.Win,
+  {$ENDIF}
+  FMX.Dialogs, FMX.Menus, FMX.Forms, FMX.Objects;
 
+{$IFDEF MSWINDOWS}
 const
   WM_TRAYICON = WM_USER + 1;
+{$ENDIF}
 
 type
   TBalloonIconType = (None, Info, Warning, Error, User, BigWarning, BigError);
@@ -28,7 +32,11 @@ type
     nBalloonTitle: string;
     nBalloonText: string;
     nBalloonIconType: TBalloonIconType;
+
+    {$IFDEF MSWINDOWS}
     nTrayIcon: TNotifyIconData;
+    {$ENDIF}
+
     nTrayMenu: TPopupMenu;
     nVersion: string;
     nIndent: Integer;
@@ -56,8 +64,10 @@ type
   end;
 
 var
+  {$IFDEF MSWINDOWS}
   mOldWndProc: LONG_PTR;
   mHWND: HWND;
+  {$ENDIF}
   mPopUpMenu: TPopupMenu;
   mFirstRun: Boolean = True;
   mOnClick, mOnDblClick: TNotifyEvent;
@@ -72,6 +82,7 @@ begin
   RegisterComponents('NixCode', [TnTrayIcon]);
 end;
 
+{$IFDEF MSWINDOWS}
 function MyWndProc(HWND: HWND; Msg: UINT; WParam: WParam; LParam: LParam)
   : LRESULT; stdcall;
 var
@@ -95,8 +106,9 @@ begin
   end;
   Result := CallWindowProc(Ptr(mOldWndProc), HWND, Msg, WParam, LParam);
 end;
+{$ENDIF}
 
-constructor TnTrayIcon.Create(AOwner: TComponent);
+Constructor TnTrayIcon.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   nVersion := '0.1';
@@ -105,13 +117,16 @@ end;
 
 procedure TnTrayIcon.Show;
 begin
+  {$IFDEF MSWINDOWS}
   mHWND := WindowHandleToPlatform((Self.Owner as TForm).Handle).Wnd;
+  {$ENDIF}
 
   mPopUpMenu := nTrayMenu;
   mIndent := nIndent;
   mOnClick := nOnClick;
   mOnDblClick := nOnDblClick;
 
+  {$IFDEF MSWINDOWS}
   with nTrayIcon do
   begin
     cbSize := SizeOf;
@@ -132,10 +147,12 @@ begin
     SetWindowLongPtr(mHWND, GWL_WNDPROC, LONG_PTR(@MyWndProc));
     mFirstRun := False;
   end;
+  {$ENDIF}
 end;
 
 procedure TnTrayIcon.ShowBallonHint;
 begin
+  {$IFDEF MSWINDOWS}
   with nTrayIcon do
   begin
     StrLCopy(szInfo, PChar(nBalloonText), High(szInfo));
@@ -159,16 +176,21 @@ begin
     end;
   end;
   Shell_NotifyIcon(NIM_MODIFY, @nTrayIcon);
+  {$ENDIF}
 end;
 
 procedure TnTrayIcon.Hide;
 begin
+  {$IFDEF MSWINDOWS}
   Shell_NotifyIcon(NIM_DELETE, @nTrayIcon);
+  {$ENDIF}
 end;
 
 destructor TnTrayIcon.Destroy;
 begin
+  {$IFDEF MSWINDOWS}
   Shell_NotifyIcon(NIM_DELETE, @nTrayIcon);
+  {$ENDIF}
   inherited;
 end;
 

@@ -44,19 +44,19 @@ requires
   TeeTree2D23Tee9;
 
 contains
-  BI.VCL.Chart in '..\VCL\BI.VCL.Chart.pas',
-  BI.VCL.Chart.Financial in '..\VCL\BI.VCL.Chart.Financial.pas',
-  BI.VCL.Chart.Geo in '..\VCL\BI.VCL.Chart.Geo.pas',
-  BI.VCL.Chart.Plugin in '..\VCL\BI.VCL.Chart.Plugin.pas',
-  BI.VCL.Chart.Source in '..\VCL\BI.VCL.Chart.Source.pas',
-  BI.VCL.Chart.ThreeD in '..\VCL\BI.VCL.Chart.ThreeD.pas',
-  BI.VCL.PDF in '..\VCL\BI.VCL.PDF.pas',
-  BI.VCL.LinkDiagram in '..\VCL\BI.VCL.LinkDiagram.pas' {DataDiagram},
-  BI.VCL.Dashboard.Chart in '..\VCL\BI.VCL.Dashboard.Chart.pas',
-  BI.VCL.Visualizer.Chart in '..\VCL\BI.VCL.Visualizer.Chart.pas',
-  BI.VCL.Editor.Visualizer.Chart in '..\VCL\BI.VCL.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
-  BI.VCL.Editor.Chart in '..\VCL\BI.VCL.Editor.Chart.pas' {BIChartEditor},
-  BI.VCL.Editor.Chart.Source in '..\VCL\BI.VCL.Editor.Chart.Source.pas' {BISourceEditor},
-  BI.VCL.ChartFunctions in '..\VCL\BI.VCL.ChartFunctions.pas';
+  VCLBI.Chart in '..\VCL\VCLBI.Chart.pas',
+  VCLBI.Chart.Financial in '..\VCL\VCLBI.Chart.Financial.pas',
+  VCLBI.Chart.Geo in '..\VCL\VCLBI.Chart.Geo.pas',
+  VCLBI.Chart.Plugin in '..\VCL\VCLBI.Chart.Plugin.pas',
+  VCLBI.Chart.Source in '..\VCL\VCLBI.Chart.Source.pas',
+  VCLBI.Chart.ThreeD in '..\VCL\VCLBI.Chart.ThreeD.pas',
+  VCLBI.PDF in '..\VCL\VCLBI.PDF.pas',
+  VCLBI.LinkDiagram in '..\VCL\VCLBI.LinkDiagram.pas' {DataDiagram},
+  VCLBI.Dashboard.Chart in '..\VCL\VCLBI.Dashboard.Chart.pas',
+  VCLBI.Visualizer.Chart in '..\VCL\VCLBI.Visualizer.Chart.pas',
+  VCLBI.Editor.Visualizer.Chart in '..\VCL\VCLBI.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
+  VCLBI.Editor.Chart in '..\VCL\VCLBI.Editor.Chart.pas' {BIChartEditor},
+  VCLBI.Editor.Chart.Source in '..\VCL\VCLBI.Editor.Chart.Source.pas' {BISourceEditor},
+  VCLBI.ChartFunctions in '..\VCL\VCLBI.ChartFunctions.pas';
 
 end.

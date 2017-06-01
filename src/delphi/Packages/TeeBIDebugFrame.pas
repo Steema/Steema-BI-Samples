@@ -12,7 +12,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils,
   Vcl.Graphics, Vcl.Forms, Vcl.Dialogs,
-  ToolsAPI, BI.VCL.DataViewer, Classes, Controls, StdCtrls;
+  ToolsAPI, VCLBI.DataViewer, Classes, Controls, StdCtrls;
 
 type
   TAvailableState = (asAvailable, asProcRunning, asOutOfScope);

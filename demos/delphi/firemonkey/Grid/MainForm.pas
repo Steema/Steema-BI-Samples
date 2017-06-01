@@ -15,10 +15,10 @@ uses
   {$ENDIF}
 
   FMX.Dialogs,
-  Data.Bind.Controls, Fmx.Bind.Navigator, BI.FMX.Grid, FMX.Layouts,
+  Data.Bind.Controls, Fmx.Bind.Navigator, FMXBI.Grid, FMX.Layouts,
   FMX.StdCtrls, FMX.TabControl,
-  BI.FMX.Editor.Grid,
-  BI.FMX.DataManager, BI.FMX.DataControl;
+  FMXBI.Editor.Grid,
+  FMXBI.DataManager, FMXBI.DataControl;
 
 type
   TGridDemoForm = class(TForm)
@@ -52,7 +52,7 @@ implementation
 {$R *.fmx}
 
 uses
-  BI.Persist, BI.Data;
+  BI.Persist, BI.DataItem;
 
 procedure TGridDemoForm.FormCreate(Sender: TObject);
 begin

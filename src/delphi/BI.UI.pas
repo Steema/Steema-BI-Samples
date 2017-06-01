@@ -15,7 +15,7 @@ uses
   {$ELSE}
   System.UITypes,
   {$ENDIF}
-  BI.Data, BI.UI.Colors;
+  BI.DataItem, BI.UI.Colors;
 
 type
   TShowMessageProc=procedure(const AText:String);

@@ -40,7 +40,7 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Diagnostics, BI.Data, BI.Compression;
+  System.Diagnostics, BI.DataItem, BI.Compression;
 
 function Same(const A,B:TStream):Boolean;
 var tmp : Int64;

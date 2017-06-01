@@ -205,6 +205,7 @@ object FormMain: TFormMain
         Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
         Text = '?'
+        TabOrder = 22
       end
       object Button1: TButton
         Position.X = 24.000000000000000000

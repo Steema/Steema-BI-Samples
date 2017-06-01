@@ -33,7 +33,7 @@ interface
 
     Available plugin classes:
 
-      - TControlImporter (see BI.VCL.Component and BI.FMX.Component units)
+      - TControlImporter (see VCLBI.Component and FMXBI.Component units)
 
   This class is also internally used by editor dialogs to allow selecting any
   control or component to import its data
@@ -44,7 +44,7 @@ uses
   {$IFNDEF FPC}
   System.Generics.Collections,
   {$ENDIF}
-  {Data.}DB, BI.Data, BI.Persist;
+  {Data.}DB, BI.DataItem, BI.Persist;
 
 type
   TComponentImporterClass=class of TComponentImporter;

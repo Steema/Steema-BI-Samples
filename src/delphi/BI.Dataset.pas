@@ -57,7 +57,7 @@ uses {System.}Classes, {System.}Types,
      {$ENDIF}
      {$ENDIF}
      {$ENDIF}
-     {Data.}DB, BI.Arrays, BI.Data, BI.DataSource, BI.Summary, BI.Expression,
+     {Data.}DB, BI.Arrays, BI.DataItem, BI.DataSource, BI.Summary, BI.Expression,
      BI.Expression.Filter;
 
 const

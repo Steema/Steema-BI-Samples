@@ -16,7 +16,7 @@ interface
 // When compiling this unit in x64 bits, the R x64 bits version is used.
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Algorithm, BI.Algorithm.Model,
+  System.Classes, BI.Arrays, BI.DataItem, BI.Algorithm, BI.Algorithm.Model,
   System.SysUtils;
 
 type

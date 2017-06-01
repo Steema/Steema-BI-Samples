@@ -18,8 +18,8 @@ uses
   System.Generics.Collections,
   {$ENDIF}
 
-  BI.Data, BI.Arrays, BI.UI, BI.Expression, BI.DataSource,
-  BI.Data.CollectionItem, BI.Dashboard.Layouts, BI.Query;
+  BI.DataItem, BI.Arrays, BI.UI, BI.Expression, BI.DataSource,
+  BI.CollectionItem, BI.Dashboard.Layouts, BI.Query;
 
 type
   TChangeListener=class;

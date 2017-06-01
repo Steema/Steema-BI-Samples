@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl, BI.VCL.Grid,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VCLBI.DataControl, VCLBI.Grid,
   Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
@@ -32,7 +32,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.Process;
+  BI.Process;
 
 procedure TFormTaskManager.BRefreshClick(Sender: TObject);
 var Old : Integer;

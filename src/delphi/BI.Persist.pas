@@ -23,7 +23,7 @@ uses
   {$IFDEF FPC}
   BI.FPC,
   {$ENDIF}
-  BI.Data, BI.Arrays, BI.Arrays.Strings, BI.Streams;
+  BI.DataItem, BI.Arrays, BI.Arrays.Strings, BI.Streams;
 
 type
   TBIError=function(const Sender:TObject; const Error:String):Boolean of object;

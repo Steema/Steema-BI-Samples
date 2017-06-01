@@ -14,15 +14,15 @@ uses
   FMX.Platform.Win,
   nFMX.Trayicon.Win,
 
-  BI.Data.Excel,
+  BI.Excel,
   {$ENDIF}
 
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   System.SyncObjs,
 
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs,
-  IdBaseComponent, IdComponent, IdCustomTCPServer, IdCustomHTTPServer,
-  IdHTTPServer, BI.Web.AllData, IdContext,
+
+  BI.Web.AllData,
 
   {$IF FireMonkeyVersion<240}
   {$I FiremonkeyChecks.inc}
@@ -41,14 +41,13 @@ uses
   {$ENDIF}
 
   FMX.StdCtrls, FMX.Layouts, FMX.Memo, FMX.Objects, FMX.ListBox,
-  BI.FMX.DataManager, FMX.Edit, FMX.TabControl,
+  FMXBI.DataManager, FMX.Edit, FMX.TabControl,
   FMX.Menus, BI.Web, FMX.ListView.Types, FMX.ListView,
   BI.Web.Common, BI.Web.SingleInstance,
-  BI.FMX.Grid, BI.FMX.DataControl;
+  FMXBI.Grid, FMXBI.DataControl, BI.Web.Server.Indy;
 
 type
   TBIWebMain = class(TForm)
-    Server: TIdHTTPServer;
     Layout1: TLayout;
     Label1: TLabel;
     LConnections: TLabel;
@@ -61,7 +60,7 @@ type
     TabConsole: TTabItem;
     TabHistory: TTabItem;
     TabSettings: TTabItem;
-    MemoLog: TMemo;
+    ErrorLog: TMemo;
     Button2: TButton;
     CBAutoUpdate: TCheckBox;
     Layout2: TLayout;
@@ -92,12 +91,6 @@ type
     TimerScheduler: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure ServerConnect(AContext: TIdContext);
-    procedure ServerDisconnect(AContext: TIdContext);
-    procedure ServerStatus(ASender: TObject; const AStatus: TIdStatus;
-      const AStatusText: string);
-    procedure ServerCommandGet(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
     procedure Button1Click(Sender: TObject);
     procedure CBActiveChange(Sender: TObject);
     procedure NumberBox1ChangeTracking(Sender: TObject);
@@ -132,8 +125,6 @@ type
     CloseFromMenu,
     FirstTime : Boolean;
 
-    BIWeb : TBIWebCommon;
-
     {$IFDEF MSWINDOWS}
     TrayIcon : TnTrayIcon;
     {$ENDIF}
@@ -148,20 +139,33 @@ type
     procedure CheckForUpdates;
     procedure CreateAllData(const AStore:String);
 
-    function FaviconStream:TStream;
+    function FaviconStream : TStream;
+
+    function LocalHost:String;
     procedure Log(const S:String);
     procedure RefreshCount;
     procedure RefreshGrid;
     procedure RefreshMemory;
+
+    procedure ServerConnect(const AContext: TBIWebContext);
+    procedure ServerDisconnect(const AContext: TBIWebContext);
+    procedure ServerException(const AContext: TBIWebContext; const AException: Exception);
+    procedure ServerStatus(const ASender: TObject; const AStatusText: string);
+    procedure ServerCommandGet(const AContext: TBIWebContext);
+
     procedure SetupLogs;
     procedure SetupPublicFolder;
     procedure TryEnableScheduler;
+  protected
+    BIWeb : TBIWebCommon;
   public
     { Public declarations }
+    Server : THttpServer;
   end;
 
 var
   BIWebMain: TBIWebMain;
+  BIWebCommonClass : TBIWebCommonClass;
 
 implementation
 
@@ -171,21 +175,21 @@ uses
   {$IFDEF MSWINDOWS}
   FMX.Platform,
   {$ENDIF}
-  BI.Arrays, BI.Data, BI.Persist, System.IOUtils, BI.UI,
-  BI.Data.CSV, BI.Data.Html, BI.Data.JSON, BI.Data.ClientDataset,
-  BI.Data.XML, BI.Data.DB,
+  BI.Arrays, BI.DataItem, BI.Persist, System.IOUtils, BI.UI,
+  BI.CSV, BI.Html, BI.JSON, BI.ClientDataset,
+  BI.XMLData, BI.DB,
 
   {$IFNDEF FPC}
   {$IF CompilerVersion>26}
-  BI.Data.DB.FireDAC,
+  BI.DB.Fire,
   {$ELSE}
-  BI.Data.DB.SqlExpr,
+  BI.DB.SqlExpr,
   {$ENDIF}
   {$ENDIF}
 
-  BI.FMX.Status,
+  FMXBI.Status,
   BI.Languages.English, BI.Languages.Spanish,
-  FMXTee.Procs, BI.FMX.Editor.Stores, BI.Web.IndyContext;
+  FMXTee.Procs, FMXBI.Editor.Stores, BI.Web.IndyContext;
 
 procedure AppOnTaskbar(const AMainForm : TForm; const Hide:Boolean);
 {$IFDEF MSWINDOWS}
@@ -232,7 +236,7 @@ begin
   until False;
 
   // Protection against self-recursivity:
-  if SameText(S,'WEB:LOCALHOST') or SameText(S,'WEB:LOCALHOST:'+IntToStr(Server.DefaultPort)) then
+  if SameText(S,'WEB:LOCALHOST') or SameText(S,'WEB:LOCALHOST:'+IntToStr(Server.Port)) then
      raise EBIException.Create('Error: Store cannot be this same "localhost" server');
 
   Data.Free;
@@ -361,8 +365,8 @@ procedure TBIWebMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if CloseFromMenu then
   begin
-    if Server.Active and (Server.Contexts.Count>0) then
-       CanClose:=TUICommon.YesNo(Format(BIMsg_ServerSureToClose,[Server.Contexts.Count]))
+    if Server.Active and (Server.ContextsCount>0) then
+       CanClose:=TUICommon.YesNo(Format(BIMsg_ServerSureToClose,[Server.ContextsCount]))
     else
        CanClose:=True;
   end
@@ -392,7 +396,61 @@ begin
   end;
 end;
 
+function TBIWebMain.FaviconStream: TStream;
+begin
+  result:=TMemoryStream.Create;
+  Favicon16.Bitmap.SaveToStream(result);
+end;
+
 procedure TBIWebMain.FormCreate(Sender: TObject);
+
+  procedure CreateServer;
+  begin
+    Server:=THttpServer.Engine.Create(Self);
+
+    Server.Port:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+
+    Server.OnCommandGet:=ServerCommandGet;
+    Server.OnConnect:=ServerConnect;
+    Server.OnDisconnect:=ServerDisconnect;
+    Server.OnException:=ServerException;
+    Server.OnStatus:=ServerStatus;
+  end;
+
+  procedure CreateBIWeb;
+  begin
+    BIWeb:=BIWebCommonClass.Create;
+    BIWeb.Data:=Data;
+
+    BIWeb.Logs.History:=History;
+    BIWeb.Logs.AddHistory:=AddHistory;
+
+    BIWeb.Scheduler.Refresh(Data.Store);
+
+    BIWeb.Logs.Persist:=TBIRegistry.ReadBoolean('BIWeb','LogPersist',True);
+    BIWeb.Logs.Store:=TBIRegistry.ReadString('BIWeb','LogStore','');
+  end;
+
+  procedure CreateHistory;
+  begin
+    History:=TBIWebHistory.Create;
+    History.Name:='History';
+
+    HistoryGrid:=TBIGrid.Embedd(Self,TabHistory);
+    HistoryGrid.BindTo(History);
+  end;
+
+  function DefaultDataStore:String;
+  begin
+    if ParamCount>0 then
+       result:=Trim(ParamStr(1))
+    else
+       result:='';
+
+    if result='' then
+       result:=FMXDefaultStore;
+  end;
+
 begin
   TUICommon.LoadPosition(Self,'FMXBIWeb');
 
@@ -404,18 +462,15 @@ begin
 
   NumberBox1.Value:=TBIWebClient.DefaultPort;
 
-  Server.DefaultPort:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+  CreateServer;
+  CreateHistory;
 
-  {$IFNDEF MSWINDOWS}
-  // http://codeverge.com/embarcadero.delphi.firemonkey/indy-http-server-android-xe5/1056236
-  Server.Bindings.Add.IPVersion := id_IPv4;
-  {$ENDIF}
+  CreateAllData(DefaultDataStore);
+  CreateBIWeb;
 
-  History:=TBIWebHistory.Create;
-  History.Name:='History';
+  Server.Active:=True;
 
-  HistoryGrid:=TBIGrid.Embedd(Self,TabHistory);
-  HistoryGrid.BindTo(History);
+  Log('Started: '+DateTimeToStr(Now));
 end;
 
 procedure TBIWebMain.FormDestroy(Sender: TObject);
@@ -426,42 +481,30 @@ begin
 end;
 
 procedure TBIWebMain.FormShow(Sender: TObject);
-var S : String;
+
+  {$IFDEF MSWINDOWS}
+  procedure CreateTrayIcon;
+  begin
+    TrayIcon:=TnTrayIcon.Create(Self);
+    TrayIcon.Hint:='Steema BIWeb';
+    TrayIcon.BalloonText:='BIWeb Server';
+    TrayIcon.BalloonTitle:='Steema';
+    TrayIcon.IconBalloonType:=Info;
+    TrayIcon.Indent:=150;
+    TrayIcon.PopUpMenu:=PopupMenu1;
+    TrayIcon.OnClick:=nTrayIcon1Click;
+
+    TrayIcon.Show;
+  end;
+  {$ENDIF}
+
 begin
-  if ParamCount>0 then
-     S:=ParamStr(1)
-  else
-     S:='';
-
-  if Trim(S)='' then
-     S:=FMXDefaultStore;
-
-  CreateAllData(S);
-
-  BIWeb:=TBIWebCommon.Create;
-  BIWeb.Data:=Data;
-
-  BIWeb.Logs.History:=History;
-  BIWeb.Logs.AddHistory:=AddHistory;
-
-  BIWeb.Scheduler.Refresh(S);
   BIGrid1.Data:=BIWeb.Scheduler.Data;
-
-  Server.Active:=True;
 
   CBActive.IsChecked:=Server.Active;
 
   {$IFDEF MSWINDOWS}
-  TrayIcon:=TnTrayIcon.Create(Self);
-  TrayIcon.Hint:='Steema BIWeb';
-  TrayIcon.BalloonText:='BIWeb Server';
-  TrayIcon.BalloonTitle:='Steema';
-  TrayIcon.IconBalloonType:=Info;
-  TrayIcon.Indent:=150;
-  TrayIcon.PopUpMenu:=PopupMenu1;
-  TrayIcon.OnClick:=nTrayIcon1Click;
-
-  TrayIcon.Show;
+  CreateTrayIcon;
   {$ELSE}
   CloseFromMenu:=True;
   {$ENDIF}
@@ -474,8 +517,6 @@ begin
   SetupLogs;
   SetupPublicFolder;
 
-  Log('Started: '+DateTimeToStr(Now));
-
   Timer1.Enabled:=CBAutoUpdate.IsChecked;
 
   CBScheduler.IsChecked:=TBIRegistry.ReadBoolean('BIWeb','Scheduler',False);
@@ -484,10 +525,7 @@ end;
 
 procedure TBIWebMain.SetupLogs;
 begin
-  BIWeb.Logs.Persist:=TBIRegistry.ReadBoolean('BIWeb','LogPersist',True);
   CBLogs.IsChecked:=BIWeb.Logs.Persist;
-
-  BIWeb.Logs.Store:=TBIRegistry.ReadString('BIWeb','LogStore','');
 
   CBLogStore.Clear;
   TStores.AllTo(CBLogStore.Items);
@@ -520,7 +558,9 @@ end;
 procedure TBIWebMain.MenuShowClick(Sender: TObject);
 begin
   AppOnTaskbar(Self,False);
-  BIWebMain.Show;
+
+  if not (TFmxFormState.Showing in FormState) then
+     Show;
 
   {$IFDEF MSWINDOWS}
   SetForegroundWindow(FormToHWND(Self));
@@ -541,9 +581,9 @@ end;
 
 procedure TBIWebMain.NumberBox1ChangeTracking(Sender: TObject);
 begin
-  Server.DefaultPort:=Round(NumberBox1.Value);
+  Server.Port:=Round(NumberBox1.Value);
 
-  TBIRegistry.WriteInteger('BIWeb','Port',Server.DefaultPort);
+  TBIRegistry.WriteInteger('BIWeb','Port',Server.Port);
 end;
 
 procedure TBIWebMain.RefreshCount;
@@ -551,7 +591,7 @@ begin
   if Server<>nil then
      TThread.Synchronize(nil,procedure
      begin
-       LConnections.Text:=IntToStr(Server.Contexts.Count);
+       LConnections.Text:=IntToStr(Server.ContextsCount);
      end);
 end;
 
@@ -565,10 +605,10 @@ end;
 
 procedure TBIWebMain.Log(const S:String);
 begin
-  if MemoLog<>nil then
+  if ErrorLog<>nil then
      TThread.Synchronize(nil,procedure
      begin
-       MemoLog.Lines.Add(S);
+       ErrorLog.Lines.Add(S);
      end);
 end;
 
@@ -597,35 +637,29 @@ begin
      RefreshGrid;
 end;
 
+function TBIWebMain.LocalHost:String;
+begin
+  result:='http://localhost:'+IntToStr(Server.Port);
+end;
+
 procedure TBIWebMain.FaviconClick(Sender: TObject);
 begin
-  TUICommon.GotoURL(nil,'http://localhost:'+IntToStr(Server.DefaultPort));
+  TUICommon.GotoURL(nil,LocalHost);
 end;
 
-function TBIWebMain.FaviconStream:TStream;
+procedure TBIWebMain.ServerCommandGet(const AContext: TBIWebContext);
 begin
-  result:=TMemoryStream.Create;
-  Favicon16.Bitmap.SaveToStream(result);
-end;
-
-procedure TBIWebMain.ServerCommandGet(AContext: TIdContext;
-  ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
-begin
-  if SameText(ARequestInfo.Document,'/favicon.ico') then
-  begin
-    //AResponseInfo.Pragma:='Cache-Control: public';
-    AResponseInfo.ContentType:='image/x-icon';
-    AResponseInfo.ContentStream:=FaviconStream; // "data:;base64,iVBORw0KGgo="
-  end
+  if SameText(AContext.GetDocument,'/favicon.ico') then
+     AContext.ReturnIcon(FaviconStream)
   else
   try
     try
-      TBIIndyContext.Process(BIWeb,AContext,ARequestInfo,AResponseInfo);
+      TBIIndyContext.Process(BIWeb,AContext);
     except
       on E:Exception do
       begin
         Log(E.Message);
-        AResponseInfo.ContentText:=E.Message;
+        AContext.SetResponse(E.Message);
       end;
     end;
   finally
@@ -634,20 +668,24 @@ begin
   end;
 end;
 
-procedure TBIWebMain.ServerConnect(AContext: TIdContext);
+procedure TBIWebMain.ServerConnect(const AContext: TBIWebContext);
 begin
   if Visible then
      RefreshCount;
 end;
 
-procedure TBIWebMain.ServerDisconnect(AContext: TIdContext);
+procedure TBIWebMain.ServerDisconnect(const AContext: TBIWebContext);
 begin
   if Visible then
      RefreshCount;
 end;
 
-procedure TBIWebMain.ServerStatus(ASender: TObject; const AStatus: TIdStatus;
-  const AStatusText: string);
+procedure TBIWebMain.ServerException(const AContext: TBIWebContext; const AException: Exception);
+begin
+  Log(AException.Message);
+end;
+
+procedure TBIWebMain.ServerStatus(const ASender: TObject; const AStatusText: string);
 begin
   LStatus.Text:=AStatusText;
 end;
@@ -669,4 +707,6 @@ begin
   BIWeb.Scheduler.Process;
 end;
 
+initialization
+  BIWebCommonClass:=TBIWebCommon;
 end.

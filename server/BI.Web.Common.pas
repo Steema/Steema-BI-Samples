@@ -10,24 +10,9 @@ interface
 
 uses
   System.Classes, System.Diagnostics, System.SyncObjs,
-  BI.Web.AllData, BI.Data, BI.DataSource, BI.Expression, BI.Arrays,
+  BI.Web.AllData, BI.DataItem, BI.DataSource, BI.Expression, BI.Arrays,
   BI.Arrays.Strings,
-  BI.Summary, BI.Persist, BI.Data.Info,
-
-  {$IFDEF FMX}
-  FMX.Types,
-
-  {$IF Declared(FireMonkeyVersion) and (FireMonkeyVersion<+21)}
-  {$DEFINE HASFMX20}
-  {$ENDIF}
-
-  {$IFNDEF HASFMX20}
-  FMX.Graphics,
-  {$ENDIF}
-
-  FMX.Surfaces,
-
-  {$ENDIF}
+  BI.Summary, BI.Persist, BI.Info,
 
   System.UITypes;
 
@@ -35,16 +20,27 @@ type
   // Abstract class (see BI.Web.IndyContext for implementation)
   TBIWebContext=class
   public
+    Context : TObject;
     ContentText: String;
     ContentType: String;
     ResponseInfo: TObject;
     RequestInfo: TObject;
     ResponseStream: TStream;
 
+    procedure AddCookie(const AName,AValue:String); virtual; abstract;
     function FormParams: String; virtual; abstract;
+    function GetContentType:String; virtual; abstract;
+    function GetCookie(const AName:String):String; virtual; abstract;
+    function GetDocument:String; virtual; abstract;
+    function GetStream:TStream; virtual; abstract;
+    function Headers: TStrings; virtual; abstract;
     function Params:TStrings; virtual; abstract;
+    procedure Redirect(const AURL: String); virtual; abstract;
     function ResponseSize: Int64; virtual; abstract;
     procedure ReturnFile(const AFile:String); virtual; abstract;
+    procedure ReturnIcon(const AStream:TStream); virtual; abstract;
+    procedure SetResponse(const AText: String); overload; virtual; abstract;
+    procedure SetResponse(const AType: String; const AStream:TStream); overload; virtual; abstract;
   end;
 
   THistoryProc=procedure(const AContext:TBIWebContext;
@@ -125,7 +121,9 @@ type
     procedure PrepareCursor(const ACursor:TDataCursor; const AData:TDataItem;
                             const Params:TStrings);
 
+    {$IFNDEF NODASHBOARD}
     function ProcessDashboard(const AContext: TBIWebContext):Boolean;
+    {$ENDIF}
 
     procedure ProcessData(const AContext: TBIWebContext;
                           const Format:String;
@@ -137,10 +135,24 @@ type
                            const AURL:String='';
                            const GetText:TExportGetText=nil);
 
+    procedure ReturnNormal(const AContext:TBIWebContext;
+                           const AParams:TStrings;
+                           const AFormat:String;
+                           const AData:TDataItem;
+                           const ACommand,ATag:String;
+                           const FreeData:Boolean=True);
+
     procedure SetupPublicFolder;
 
     function TotalsOf(const Params:TStrings; const ACursor:TDataCursor):TDataItem;
 
+  protected
+    function GetDocument(const AContext: TBIWebContext):String; virtual;
+
+    procedure ProcessSingleData(const AData,AStore:String;
+                                const AContext: TBIWebContext;
+                                const Format:String;
+                                const Params:TStrings);
   public
     type
       TWebPublic=record
@@ -148,10 +160,12 @@ type
         FPath : String;
         RealPath : String;
 
-        function PathOf(const AFileName:String):String;
         procedure SetPath(const Value: String);
       public
         Enabled : Boolean;
+
+        function PathOf(const AFileName:String):String;
+
         property Path : String read FPath write SetPath;
       end;
 
@@ -167,23 +181,29 @@ type
     function QueryOf(const AQuery,AData,AFilter,ADistinct: String): TDataItem;
     function SummaryOf(const ASummary,AData,AHaving,AFilter:String):TDataItem;
 
-    procedure ProcessFile(const ADocument:String; const AContext: TBIWebContext);
+    procedure ProcessFile(const ADocument:String; const AContext: TBIWebContext); virtual;
 
     procedure ProcessGet(const AContext: TBIWebContext);
     procedure ProcessPost(const AContext: TBIWebContext);
   end;
 
+  TBIWebCommonClass=class of TBIWebCommon;
+
 implementation
 
 uses
-  System.SysUtils, System.IOUtils, System.Types,
-  BI.Data.SQL, BI.Data.Html, BI.Languages.English,
+  {System.}SysUtils, {System.}IOUtils, {System.}Types,
+  BI.SQL, BI.Html, BI.Languages.English,
+
+  BI.Web.Html,
+
+  {$IFNDEF NODASHBOARD}
   BI.Dashboard,
-
   BI.Dashboard.HTML,
-
   BI.Dashboard.Loader,
-  BI.Data.Expressions,
+  {$ENDIF}
+
+  BI.Expressions,
 
   {$IFNDEF NOTEECHART}
 
@@ -259,7 +279,7 @@ end;
 class function TBIWebCommon.GetCSS(const AName:String):String;
 begin
   if (AName='') or SameText(AName,'pure') then
-     result:=THTMLRender.PureCSS+TCommonUI.CRLF+
+     result:=THTMLHelper.PureCSS+TCommonUI.CRLF+
              '<meta name="viewport" content="width=device-width, initial-scale=1">'+TCommonUI.CRLF
   else
      result:='';
@@ -575,9 +595,11 @@ begin
 
     DoAddHistory(AContext,'post',tmpS,True);
   end
+  {$IFNDEF NODASHBOARD}
   else
   if not ProcessDashboard(AContext) then
 //     ProcessData(AContext,Format,Params);
+  {$ENDIF}
 end;
 
 class function TBIWebCommon.GetFilter(const AData:TDataItem; const AFilter:String):TExpression;
@@ -694,93 +716,97 @@ begin
   end;
 end;
 
-procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
-                                   const Format:String;
-                                   const Params:TStrings);
+function TBIWebCommon.GetDocument(const AContext: TBIWebContext):String;
+begin
+  result:='Welcome to TeeBI'+TBIHtmlHelper.Return+TBIHtmlHelper.Return+
+                   TBIHtmlHelper.InitForm+
+                   'Choose data:'+
+                   TBIHtmlHelper.Combo('data',Data.GetDataArray,nil)+TBIHtmlHelper.Return+
+                   TBIHtmlHelper.FinishForm('getdata')+
+                   TBIHtmlHelper.Link('All Data','?data&format=.htm')+TBIHtmlHelper.Return+
+                   TBIHtmlHelper.Link('History','?history=yes&format=.htm&max=10000')
+end;
 
-  function CursorToBothStream(const ACursor:TDataCursor):TStream;
+function CursorToBothStream(const ACursor:TDataCursor; const AParams:TStrings):TStream;
+begin
+  if ACursor.Data=nil then
+     result:=nil
+  else
   begin
-    if ACursor.Data=nil then
-       result:=nil
-    else
-    begin
-      result:=TMemoryStream.Create;
-      TDataItemPersistence.Save(ACursor.Data,result); // <-- info+data
-      result:=CheckZip(result,Params);
-    end;
+    result:=TMemoryStream.Create;
+    TDataItemPersistence.Save(ACursor.Data,result); // <-- info+data
+    result:=TBIWebCommon.CheckZip(result,AParams);
   end;
+end;
 
-  function GetDocument:String;
-  begin
-    result:='Welcome to TeeBI'+TBIHtmlHelper.Return+TBIHtmlHelper.Return+
-                     TBIHtmlHelper.InitForm+
-                     'Choose data:'+
-                     TBIHtmlHelper.Combo('data',Data.GetDataArray,nil)+TBIHtmlHelper.Return+
-                     TBIHtmlHelper.FinishForm('getdata')+
-                     TBIHtmlHelper.Link('All Data','?data&format=.htm')+TBIHtmlHelper.Return+
-                     TBIHtmlHelper.Link('History','?history=yes&format=.htm&max=10000')
-  end;
+procedure TBIWebCommon.ReturnNormal(const AContext:TBIWebContext;
+                                    const AParams:TStrings;
+                                    const AFormat:String;
+                                    const AData:TDataItem;
+                                    const ACommand,ATag:String;
+                                    const FreeData:Boolean=True);
+var Cursor : TDataCursor;
+begin
+  Cursor:=TDataCursor.Create(nil);
+  try
+    PrepareCursor(Cursor,AData,AParams);
 
-  procedure SetContentType;
-  begin
-    if Format<>'' then
-       if AContext.ContentType='' then
-       begin
-         if SameText(Format,'.HTM') or SameText(Format,'.HTML') or SameText(Format,'.HTML5')  then
-            AContext.ContentType:='text/html'
-         else
-         if SameText(Format,'.CSV') then
-            AContext.ContentType:='text/plain'
-         else
-            AContext.ContentType:='application/'+LowerCase(Copy(Format,2,Length(Format)));
-       end;
-  end;
-
-  procedure ReturnNormal(const AData:TDataItem; const ACommand,ATag:String; const FreeData:Boolean=True);
-  var Cursor : TDataCursor;
-  begin
-    Cursor:=TDataCursor.Create(nil);
+    if Cursor.Data<>nil then
     try
-      PrepareCursor(Cursor,AData,Params);
-
-      if Cursor.Data<>nil then
-      try
-        if Format='' then
-           AContext.ResponseStream:=CursorToBothStream(Cursor)
-        else
-           ReturnCursor(AContext,Params,Cursor,Format);
-      finally
-        if FreeData then
-           Cursor.Data.Free;
-      end;
-
-      DoAddHistory(AContext,ACommand,ATag,Cursor.Data<>nil);
+      if AFormat='' then
+         AContext.ResponseStream:=CursorToBothStream(Cursor,AParams)
+      else
+         ReturnCursor(AContext,AParams,Cursor,AFormat);
     finally
-      Cursor.Free;
+      if FreeData then
+         Cursor.Data.Free;
     end;
-  end;
 
-  procedure ReturnHistory;
-  begin
-    ReturnNormal(Logs.History,'history','',False);
+    DoAddHistory(AContext,ACommand,ATag,Cursor.Data<>nil);
+  finally
+    Cursor.Free;
   end;
+end;
+
+procedure SetContentType(const AContext:TBIWebContext; const AFormat:String);
+begin
+  if AFormat<>'' then
+     if AContext.ContentType='' then
+     begin
+       if SameText(AFormat,'.HTM') or SameText(AFormat,'.HTML') or SameText(AFormat,'.HTML5')  then
+          AContext.ContentType:='text/html'
+       else
+       if SameText(AFormat,'.CSV') then
+          AContext.ContentType:='text/plain'
+       else
+          AContext.ContentType:='application/'+LowerCase(Copy(AFormat,2,Length(AFormat)));
+     end;
+end;
+
+procedure TBIWebCommon.ProcessSingleData(const AData,AStore:String;
+                                         const AContext: TBIWebContext;
+                                         const Format:String;
+                                         const Params:TStrings);
 
   procedure ReturnSummary(const AData,ASummary:String);
   begin
-    ReturnNormal(SummaryOf(ASummary,AData,
-                      Params.Values['having'],
-                      Params.Values['summaryfilter']),'summary',ASummary);
+    ReturnNormal(AContext,Params,Format,
+                 SummaryOf(ASummary,AData,
+                 Params.Values['having'],
+                 Params.Values['summaryfilter']),'summary',ASummary);
   end;
 
   procedure ReturnQuery(const AData,AQuery:String);
   begin
-    ReturnNormal(QueryOf(AQuery,AData,Params.Values['filter'],
-                                      Params.Values['distinct']),'query',AQuery);
+    ReturnNormal(AContext,Params,Format,
+                 QueryOf(AQuery,AData,Params.Values['filter'],
+                 Params.Values['distinct']),'query',AQuery);
   end;
 
   procedure ReturnSQL(const AData,ASQL:String);
   begin
-    ReturnNormal(TBISQL.From(Data.Find(AData),ASQL),'sql',ASQL);
+    ReturnNormal(AContext,Params,Format,
+                 TBISQL.From(Data.Find(AData),ASQL),'sql',ASQL);
   end;
 
   function DoReturnData(const AData:TDataItem):String;
@@ -806,7 +832,7 @@ procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
            result:='both';
 
         if (result='info') or (result='both') then
-           AContext.ResponseStream:=CursorToBothStream(Cursor)
+           AContext.ResponseStream:=CursorToBothStream(Cursor,Params)
         else
         begin
           if Params.Values['meta']<>'' then
@@ -825,25 +851,11 @@ procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
     end;
   end;
 
-  procedure ReturnAllData;
-  begin
-    if (Params.IndexOf('data')<>-1) or (Params.IndexOf('data=')<>-1) then
-    begin
-      AContext.ContentText:=Data.GetData;
-      DoAddHistory(AContext,'data');
-    end
-    else
-    begin
-      AContext.ContentText:=GetDocument;
-      DoAddHistory(AContext,'UI','/');
-    end;
-  end;
-
   procedure ReturnData(const AData:String);
   var tmp : TDataItem;
       tmpCommand : String;
   begin
-    tmp:=Data.Find(AData);
+    tmp:=Data.Find(AData,AStore);
 
     if tmp=nil then
        tmpCommand:='data'
@@ -853,10 +865,58 @@ procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
     DoAddHistory(AContext,tmpCommand,AData,tmp<>nil);
   end;
 
-var tmpS,
-    Summary,
+var Summary,
     Query,
     SQL : String;
+begin
+  Summary:=Params.Values['summary'];
+
+  if Summary<>'' then
+     ReturnSummary(AData,Summary)
+  else
+  begin
+    Query:=Params.Values['query'];
+
+    if Query<>'' then
+       ReturnQuery(AData,Query)
+    else
+    begin
+      SQL:=Trim(Params.Values['sql']);
+
+      if SQL<>'' then
+         ReturnSQL(AData,SQL)
+      else
+         ReturnData(AData);
+    end;
+  end;
+
+  SetContentType(AContext,Format);
+end;
+
+procedure TBIWebCommon.ProcessData(const AContext: TBIWebContext;
+                                   const Format:String;
+                                   const Params:TStrings);
+  procedure ReturnHistory;
+  begin
+    ReturnNormal(AContext,Params,Format,
+                 Logs.History,'history','',False);
+  end;
+
+  procedure ReturnAllData;
+  begin
+    if (Params.IndexOf('data')<>-1) or (Params.IndexOf('data=')<>-1) then
+    begin
+      AContext.ContentText:=Data.GetData;
+      DoAddHistory(AContext,'data');
+    end
+    else
+    begin
+      AContext.ContentText:=GetDocument(AContext);
+      DoAddHistory(AContext,'UI','/');
+    end;
+  end;
+
+var tmpS : String;
 begin
   if Params.Values['history']<>'' then
      ReturnHistory
@@ -868,30 +928,12 @@ begin
        ReturnAllData
     else
     begin
-      Summary:=Params.Values['summary'];
-
-      if Summary<>'' then
-         ReturnSummary(tmpS,Summary)
-      else
-      begin
-        Query:=Params.Values['query'];
-
-        if Query<>'' then
-           ReturnQuery(tmpS,Query)
-        else
-        begin
-          SQL:=Trim(Params.Values['sql']);
-
-          if SQL<>'' then
-             ReturnSQL(tmpS,SQL)
-          else
-             ReturnData(tmpS);
-        end;
-      end;
+      ProcessSingleData(tmpS,'',AContext,Format,Params);
+      Exit;
     end;
   end;
 
-  SetContentType;
+  SetContentType(AContext,Format);
 end;
 
 class function TBIWebCommon.CheckZip(const AStream:TStream; const Params:TStrings):TStream;
@@ -945,6 +987,7 @@ begin
   end;
 end;
 
+{$IFNDEF NODASHBOARD}
 function TBIWebCommon.ProcessDashboard(const AContext: TBIWebContext):Boolean;
 
   function TitleOrName(const APanel:TCustomBIPanel):String;
@@ -1054,6 +1097,7 @@ begin
        raise Exception.Create('Error: Cannot access Dashboard Template file')
   end;
 end;
+{$ENDIF}
 
 procedure TBIWebCommon.ProcessGet(const AContext: TBIWebContext);
 var Def : String;
@@ -1071,7 +1115,9 @@ begin
     DoAddHistory(AContext,'definition',Def);
   end
   else
+  {$IFNDEF NODASHBOARD}
   if not ProcessDashboard(AContext) then
+  {$ENDIF}
      ProcessData(AContext,Params.Values['format'],Params);
 end;
 

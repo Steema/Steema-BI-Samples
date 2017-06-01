@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.Types, Data.DB,
-  BI.Arrays, BI.Arrays.Strings, BI.Data, BI.DataSource;
+  BI.Arrays, BI.Arrays.Strings, BI.DataItem, BI.DataSource;
 
 const
   CRLF=#13#10;
@@ -24,13 +24,16 @@ type
 
     function AllData:TDataItem;
 
-    function Find(const AData:String):TDataItem;
+    function Find(const AData,AStore:String):TDataItem; overload;
+    function Find(const AData:String):TDataItem; overload;
 
     function GetDataOrigins(const AItems: TDataItems): TStringArray;
     function GetData(const AItems:TDataItems):TStringArray; overload;
 
+    class function GetData(const AStore:String):String; overload;
     function GetData:String; overload;
-    function GetDataArray: TStringArray;
+    class function GetDataArray(const AStore:String): TStringArray; overload;
+    function GetDataArray: TStringArray; overload;
 
     function GetDefinition(const AName:String): String;
 
@@ -156,9 +159,14 @@ begin
       ProcessData(Data[t],t);
 end;
 
+class function TAllData.GetDataArray(const AStore:String): TStringArray;
+begin
+  result:=TStore.AllData(AStore);
+end;
+
 function TAllData.GetDataArray: TStringArray;
 begin
-  result:=TStore.AllData(FStore);
+  result:=GetDataArray(FStore);
 end;
 
 type
@@ -175,13 +183,13 @@ begin
   end;
 end;
 
-function TAllData.GetData: String;
+class function TAllData.GetData(const AStore:String): String;
 var H,t : Integer;
     Data : TStringArray;
 begin
   result:='';
 
-  Data:=GetDataArray;
+  Data:=GetDataArray(AStore);
 
   H:=High(Data);
 
@@ -192,6 +200,11 @@ begin
     if t<H then
        result:=result+CRLF;
   end;
+end;
+
+function TAllData.GetData: String;
+begin
+  result:=GetData(FStore);
 end;
 
 function TAllData.GetData(const AItems: TDataItems): TStringArray;
@@ -297,9 +310,17 @@ begin
   end;
 end;
 
+function TAllData.Find(const AData,AStore:String):TDataItem;
+begin
+  if AStore='' then
+     result:=TStore.OriginToData(nil,FStore,AData)
+  else
+     result:=TStore.OriginToData(nil,AStore,AData);
+end;
+
 function TAllData.Find(const AData:String):TDataItem;
 begin
-  result:=TStore.OriginToData(nil,FStore,AData);
+  result:=Find(AData,'');
 end;
 
 function TAllData.MetaStream(const AData: TDataItem; const Zip:Boolean=False): TStream;

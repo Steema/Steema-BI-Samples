@@ -6,7 +6,7 @@ interface
 // TDataItem class
 
 uses
-  BI.Data;
+  BI.DataItem;
 
 function SimpleColumn:TDataItem;
 function SimpleTable:TDataItem;

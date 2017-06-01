@@ -45,7 +45,7 @@ requires
   FireDACCommon;
 
 contains
-  BI.Data.DB.FireDAC in '..\BI.Data.DB.FireDAC.pas',
-  BI.Data.DB.FireDAC.AllDrivers in '..\BI.Data.DB.FireDAC.AllDrivers.pas';
+  BI.DB.Fire in '..\BI.DB.Fire.pas',
+  BI.DB.Fire.AllDrivers in '..\BI.DB.Fire.AllDrivers.pas';
 
 end.

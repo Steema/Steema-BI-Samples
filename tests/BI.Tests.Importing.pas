@@ -20,21 +20,21 @@ unit BI.Tests.Importing;
 interface
 
 uses
-  BI.Arrays, BI.Data, DUnitX.TestFramework,
+  BI.Arrays, BI.DataItem, DUnitX.TestFramework,
 
   {$IFDEF USE_OXML}
-  BI.Data.XML.OXml,
+  BI.XMLData.OXml,
   {$ELSE}
   {$IFDEF USE_OMNI}
-  BI.Data.XML.Omni,
+  BI.XMLData.Omni,
   {$ENDIF}
   {$ENDIF}
 
   {$IFDEF USE_SUPEROBJECT}
-  BI.Data.JSON.SuperObject,
+  BI.JSON.SuperObject,
   {$ENDIF}
 
-  BI.Data.CSV, BI.Data.XML, BI.Data.ClientDataset, BI.Data.JSON, BI.Data.HTML;
+  BI.CSV, BI.XMLData, BI.ClientDataset, BI.JSON, BI.HTML;
 
 type
   [TestFixture]

@@ -5,9 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Data, BI.Data.RTTI, BI.VCL.Grid,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataItem, BI.RTTI,
   Space_Flights, Vcl.StdCtrls, System.Diagnostics, Vcl.ExtCtrls,
-  BI.VCL.DataControl, BI.Persist;
+  BI.Persist, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TRTTIDemo = class(TForm)
@@ -56,7 +56,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Arrays, Customers, System.Rtti, BI.VCL.DataViewer;
+  BI.Arrays, Customers, System.Rtti, VCLBI.DataViewer;
 
 procedure TRTTIDemo.RefreshGrid;
 begin

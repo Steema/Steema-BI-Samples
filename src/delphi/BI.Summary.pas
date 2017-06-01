@@ -13,7 +13,7 @@ uses
   {$IFNDEF FPC}
   System.Generics.Collections,
   {$ENDIF}
-  BI.Arrays, BI.Data, BI.Expression, BI.Data.Expressions;
+  BI.Arrays, BI.DataItem, BI.Expression, BI.Expressions;
 
 type
   TBaseSummaryPersistent=class(TPersistent)

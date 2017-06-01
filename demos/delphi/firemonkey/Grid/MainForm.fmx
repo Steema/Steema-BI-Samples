@@ -21,6 +21,11 @@ object GridDemoForm: TGridDemoForm
     TabOrder = 0
     TabPosition = PlatformDefault
     OnResize = TabControl1Resize
+    Sizes = (
+      369s
+      454s
+      369s
+      454s)
     object TabOptions: TTabItem
       CustomIcon = <
         item
@@ -40,7 +45,7 @@ object GridDemoForm: TGridDemoForm
         item
         end>
       IsSelected = False
-      Size.Width = 44.000000000000000000
+      Size.Width = 45.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''

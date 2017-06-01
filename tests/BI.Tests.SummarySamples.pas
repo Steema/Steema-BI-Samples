@@ -9,7 +9,7 @@ unit BI.Tests.SummarySamples;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Summary;
+  System.Classes, BI.DataItem, BI.Summary;
 
 type
   TSampleSummaries=class
@@ -44,7 +44,7 @@ var
 implementation
 
 uses
-  BI.Persist, BI.Expression, BI.Data.Expressions;
+  BI.Persist, BI.Expression, BI.Expressions;
 
 function TSampleSummaries.Count:Integer;
 begin

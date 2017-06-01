@@ -242,6 +242,10 @@ object FormSummary: TFormSummary
       TabOrder = 2
       object TabSummary: TTabSheet
         Caption = 'Summary'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
       end
       object TabVizEditor: TTabSheet
         Caption = 'Visualizer'
@@ -378,6 +382,10 @@ object FormSummary: TFormSummary
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -502,8 +510,12 @@ object FormSummary: TFormSummary
           LeftWall.Color = 14745599
           Legend.Font.Name = 'Verdana'
           Legend.Shadow.Transparency = 0
+          Legend.Shadow.Visible = False
+          Legend.Symbol.Shadow.Visible = False
           RightWall.Color = 14745599
           Title.Font.Name = 'Verdana'
+          Title.Text.Strings = (
+            'TBITChart')
           BottomAxis.Axis.Color = 4210752
           BottomAxis.Grid.Color = 11119017
           BottomAxis.LabelsFormat.Font.Name = 'Verdana'

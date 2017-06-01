@@ -11,13 +11,19 @@ type
   TBIApacheContext=class(TBIWebContext)
   public
     procedure Finish;
-    function FormParams: String; override;
 
     class function Process(const BIWeb:TBIWebCommon;
                            const ARequest: TApacheRequest;
                            const AResponse: TApacheResponse):Boolean; static;
 
+    procedure AddCookie(const AName,AValue:String); override;
+    function FormParams: String; override;
+    function GetContentType:String; override;
+    function GetCookie(const AName:String):String; override;
+    function GetStream:TStream; override;
+    function Headers: TStrings; override;
     function Params:TStrings; override;
+    procedure Redirect(const AURL: String); override;
     function PeerIP:String;
     function ResponseSize:Int64; override;
     procedure ReturnFile(const AFile:String); override;

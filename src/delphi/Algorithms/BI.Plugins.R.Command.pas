@@ -19,7 +19,7 @@ unit BI.Plugins.R.Command deprecated;
 interface
 
 uses
-  System.Classes, BI.Arrays, BI.Data, BI.Plugins.R;
+  System.Classes, BI.Arrays, BI.DataItem, BI.Plugins.R;
 
 // The TRCommand class detects if R is installed or not by looking at system
 // Registry or "R_HOME" environmental variable.

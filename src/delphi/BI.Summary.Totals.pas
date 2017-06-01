@@ -9,7 +9,7 @@ unit BI.Summary.Totals;
 interface
 
 uses
-  System.Classes, BI.Data, BI.Summary;
+  System.Classes, BI.DataItem, BI.Summary;
 
 type
   // Creates one TDataItem for each active Group in ASummary with the subtotals

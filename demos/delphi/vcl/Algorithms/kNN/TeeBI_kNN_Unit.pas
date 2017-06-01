@@ -4,12 +4,13 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Data, BI.VCL.Grid, VclTee.TeeGDIPlus,
-  VCLTee.TeEngine, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, BI.VCL.Chart,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataItem, VclTee.TeeGDIPlus,
+  VCLTee.TeEngine, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart,
   Vcl.ComCtrls, Vcl.StdCtrls, VCLTee.Series,
-  BI.VCL.R.Console,
-  BI.Algorithm.Model, BI.DataSource, System.Diagnostics, BI.VCL.DataViewer,
-  BI.VCL.DataControl, BI.VCL.Chart.Plugin;
+  VCLBI.R.Console,
+  BI.Algorithm.Model, BI.DataSource, System.Diagnostics, VCLBI.DataViewer,
+  VCLBI.Chart.Plugin, VCLBI.Chart,
+  VCLBI.DataControl, VCLBI.Grid;
 
 // Dependencies:
 // To use the native R <--> Delphi access, the following libraries are required:
@@ -97,7 +98,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.CSV, System.IOUtils, BI.UI, BI.Algorithm, BI.Data.Tools,
+  BI.CSV, System.IOUtils, BI.UI, BI.Algorithm, BI.Tools,
   BI.Algorithm.Classify, BI.Algorithm.Regression, BI.Persist,
   BI.Plugins.R, BI.Plugins.R.opaR,
 

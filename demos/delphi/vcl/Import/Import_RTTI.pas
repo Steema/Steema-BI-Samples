@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, BI.VCL.Grid, Vcl.ExtCtrls,
-  BI.Data, BI.VCL.DataControl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  BI.DataItem, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFromRTTI = class(TForm)
@@ -27,7 +27,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.RTTI, Customers, Space_Flights;
+  BI.RTTI, Customers, Space_Flights;
 
 { TFromRTTI }
 

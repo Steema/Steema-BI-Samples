@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Data, BI.VCL.DataControl, BI.VCL.Grid,
-  Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataItem,
+  Vcl.StdCtrls, Vcl.ExtCtrls, VCLBI.DataControl, VCLBI.Grid;
 
 type
   TFormGridDetail = class(TForm)
@@ -31,7 +31,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.VCL.Grid.DBGrid;
+  VCLBI.Grid.DBGrid;
 
 procedure TFormGridDetail.FormShow(Sender: TObject);
 begin

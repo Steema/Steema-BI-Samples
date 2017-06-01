@@ -42,6 +42,5 @@ object FormSpeed: TFormSpeed
     Size.Height = 370.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    ReadOnly = False
   end
 end

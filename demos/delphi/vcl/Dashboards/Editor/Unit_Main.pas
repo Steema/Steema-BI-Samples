@@ -6,8 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
 
-  BI.VCL.Editor.Template, BI.Dashboard.HTML,
-  BI.Dashboard, BI.VCL.Dashboard, BI.VCL.Dashboard.Chart, BI.VCL.Editor.Chart;
+  VCLBI.Editor.Template, BI.Dashboard.HTML,
+  BI.Dashboard, VCLBI.Dashboard, VCLBI.Dashboard.Chart, VCLBI.Editor.Chart;
 
 type
   TForm34 = class(TForm)

@@ -46,7 +46,7 @@ uses
   {$ENDIF}
 
   // TeeBI units
-  BI.Data, BI.DataSet, BI.Persist, BI.DataSource, Vcl.ExtCtrls;
+  BI.DataItem, BI.DataSet, BI.Persist, BI.DataSource, Vcl.ExtCtrls;
 
 type
   TDatasetSpeed = class(TForm)

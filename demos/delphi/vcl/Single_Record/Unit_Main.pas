@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.Data, BI.VCL.DataControl, BI.VCL.Grid,
-  BI.VCL.DataSelect, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.DataItem,
+  VCLBI.DataSelect, Vcl.ExtCtrls, VCLBI.DataControl, VCLBI.Grid;
 
 // Example using TSingleRecord class in "manual" mode
 
@@ -35,7 +35,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data.SingleRecord, BI.Persist;
+  BI.SingleRecord, BI.Persist;
 
 // When the current row in BIGrid1 is changed,
 // manually create a single-record view and display it at BIGrid2

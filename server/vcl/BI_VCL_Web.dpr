@@ -6,8 +6,9 @@ uses
   BI.Web.AllData in '..\BI.Web.AllData.pas',
   Unit_Constants in 'Unit_Constants.pas' {FormConstants},
   BI.Web.Common in '..\BI.Web.Common.pas',
+  BI.Web.SingleInstance in '..\BI.Web.SingleInstance.pas',
   BI.Web.IndyContext in '..\BI.Web.IndyContext.pas',
-  BI.Web.SingleInstance in '..\BI.Web.SingleInstance.pas';
+  BI.Web.Server.Indy in '..\BI.Web.Server.Indy.pas';
 
 {$R *.res}
 

@@ -9,7 +9,7 @@ unit BI.Algorithm.Clustering.Scikit;
 interface
 
 uses
-  System.Classes, BI.Plugins.Python, BI.Data;
+  System.Classes, BI.Plugins.Python, BI.DataItem;
 
 type
   TBIScikitClustering=class(TScikitSupervisedModel)

@@ -10,7 +10,7 @@ interface
 
 uses
   System.Classes, System.Types, System.SysUtils,
-  BI.Arrays, BI.Data, BI.Persist, BI.DataSource, BI.Compression;
+  BI.Arrays, BI.DataItem, BI.Persist, BI.DataSource, BI.Compression;
 
 type
   EHttpAbort=class(Exception);
@@ -194,6 +194,8 @@ type
   public
     class function FileFilter:TFileFilters; override;
     class function From(const AURL:String):TDataItem; static;
+    function FromStrings(const URL:String; const S:TStrings):TDataArray;
+    class function StreamFrom(const URL: String): TStream; static;
     function Import(const URL:String):TDataArray;
     class function Supports(const Extension:String):Boolean; override;
   end;

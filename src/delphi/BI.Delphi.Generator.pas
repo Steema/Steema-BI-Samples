@@ -9,7 +9,7 @@ unit BI.Delphi.Generator;
 interface
 
 uses
-  System.Classes, BI.Data;
+  System.Classes, BI.DataItem;
 
 type
   TBIDelphiGenerator=class

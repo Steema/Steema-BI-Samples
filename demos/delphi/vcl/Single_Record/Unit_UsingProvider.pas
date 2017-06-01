@@ -13,8 +13,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BI.VCL.DataControl, BI.VCL.Grid,
-  Vcl.ExtCtrls, BI.VCL.DataSelect, BI.Data.SingleRecord;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.ExtCtrls, VCLBI.DataSelect, BI.SingleRecord, VCLBI.DataControl,
+  VCLBI.Grid;
 
 type
   TSingleRecordProviderDemo = class(TForm)
@@ -41,7 +42,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Data, BI.Persist;
+  BI.DataItem, BI.Persist;
 
 procedure TSingleRecordProviderDemo.SelectedData(Sender: TObject);
 begin

@@ -120,6 +120,10 @@ object FormkNN: TFormkNN
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Iris'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Splitter3: TSplitter
           Left = 0
           Top = 493
@@ -156,6 +160,10 @@ object FormkNN: TFormkNN
       object TabSheet2: TTabSheet
         Caption = 'Normalized'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object BIGrid3: TBIGrid
           Left = 0
           Top = 0
@@ -171,6 +179,10 @@ object FormkNN: TFormkNN
       object TabSheet3: TTabSheet
         Caption = 'Predicted'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object BIGrid4: TBIGrid
           Left = 0
           Top = 0
@@ -228,6 +240,10 @@ object FormkNN: TFormkNN
     TabOrder = 2
     object TabSheet4: TTabSheet
       Caption = 'Chart'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -265,6 +281,10 @@ object FormkNN: TFormkNN
     object TabConsole: TTabSheet
       Caption = 'Console'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
 end

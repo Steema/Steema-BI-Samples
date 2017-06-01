@@ -15,9 +15,10 @@ uses
 
   // TeeBI units used in this example
 
-  BI.Data, BI.Persist, BI.Data.Search, BI.Compare,
-  BI.VCL.Grid, BI.VCL.DataManager,
-  BI.Dataset, BI.DataSource, BI.Arrays, BI.VCL.DataControl;
+  BI.DataItem, BI.Persist, BI.Search, BI.Compare,
+  VCLBI.DataManager,
+  BI.Dataset, BI.DataSource, BI.Arrays, VCLBI.DataControl,
+  VCLBI.Grid;
 
 type
   TFormSearchDemo = class(TForm)
@@ -91,7 +92,7 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.UI, BI.VCL.Grid.DBGrid, System.UITypes;
+  BI.UI, VCLBI.Grid.DBGrid, System.UITypes;
 
 procedure TFormSearchDemo.CBCaseSensitiveClick(Sender: TObject);
 begin

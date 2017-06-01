@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  BI.Data.Workflow, BI.VCL.Editor.Workflow;
+  BI.Workflow, VCLBI.Editor.Workflow, BI.DataItem, BI.Persist;
 
 type
   TFormWorkflow = class(TForm)

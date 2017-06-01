@@ -26,7 +26,7 @@ uses
 
   FMX.Dialogs, FMX.Layouts, FMX.StdCtrls,
 
-  BI.Data, BI.FMX.DataControl, BI.FMX.Grid, BI.Tests.Speed;
+  BI.DataItem, FMXBI.DataControl, FMXBI.Grid, BI.Tests.Speed;
 
 type
   TFormSpeed = class(TForm)

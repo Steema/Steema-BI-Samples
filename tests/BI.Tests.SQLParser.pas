@@ -9,8 +9,8 @@ unit BI.Tests.SQLParser;
 interface
 
 uses
-  BI.Arrays, BI.Data, DUnitX.TestFramework,
-  BI.Data.SQL, BI.DataSource, BI.Persist, BI.Summary;
+  BI.Arrays, BI.DataItem, DUnitX.TestFramework,
+  BI.SQL, BI.DataSource, BI.Persist, BI.Summary;
 
 type
   [TestFixture]

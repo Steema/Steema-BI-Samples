@@ -14,16 +14,12 @@ uses
   Data.DB, Vcl.ExtCtrls, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids,
   Vcl.Menus,
 
-  // Indy Server
-  IdBaseComponent, IdComponent, IdCustomTCPServer, IdCustomHTTPServer,
-  IdHTTPServer, IdContext,
-
   BI.Web.AllData, BI.Web, BI.Web.Common, BI.Persist,
-  BI.VCL.Grid, BI.VCL.DataControl, BI.Web.SingleInstance;
+  VCLBI.Grid, VCLBI.DataControl, BI.Web.SingleInstance,
+  BI.Web.Server.Indy;
 
 type
   TFormBIWeb = class(TForm)
-    Server: TIdHTTPServer;
     StatusBar1: TStatusBar;
     TrayIcon1: TTrayIcon;
     PageControl1: TPageControl;
@@ -67,13 +63,6 @@ type
     BIGrid1: TBIGrid;
     Button3: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure ServerConnect(AContext: TIdContext);
-    procedure ServerDisconnect(AContext: TIdContext);
-    procedure ServerException(AContext: TIdContext; AException: Exception);
-    procedure ServerStatus(ASender: TObject; const AStatus: TIdStatus;
-      const AStatusText: string);
-    procedure ServerCommandGet(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
     procedure FormDestroy(Sender: TObject);
     procedure TrayIcon1Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
@@ -119,12 +108,20 @@ type
     procedure RefreshCount;
     procedure RefreshGrid;
     procedure RefreshMemory;
+
+    procedure ServerConnect(const AContext: TBIWebContext);
+    procedure ServerDisconnect(const AContext: TBIWebContext);
+    procedure ServerException(const AContext: TBIWebContext; const AException: Exception);
+    procedure ServerStatus(const ASender: TObject; const AStatusText: string);
+    procedure ServerCommandGet(const AContext: TBIWebContext);
+
     procedure SetHistoryWidths;
     procedure SetupLogs;
     procedure SetupPublicFolder;
     procedure TryEnableScheduler;
   public
     { Public declarations }
+    Server : THttpServer;
   end;
 
 var
@@ -135,18 +132,18 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Arrays, BI.Data, BI.UI, Unit_Constants, BI.Data.Html, BI.VCL.DataManager,
-  BI.Data.CSV, BI.Data.JSON, BI.Data.XML, BI.Data.Excel,
+  BI.Arrays, BI.DataItem, BI.UI, Unit_Constants, BI.Html, VCLBI.DataManager,
+  BI.CSV, BI.JSON, BI.XMLData, BI.Excel,
 
   {$IFNDEF FPC}
   {$IF CompilerVersion>26}
-  BI.Data.DB.FireDAC,
+  BI.DB.Fire,
   {$ELSE}
-  BI.Data.DB.SqlExpr,
+  BI.DB.SqlExpr,
   {$ENDIF}
   {$ENDIF}
 
-  System.UITypes, BI.VCL.Editor.Stores, BI.Languages.English,
+  System.UITypes, VCLBI.Editor.Stores, BI.Languages.English,
   BI.Web.IndyContext;
 
 procedure TFormBIWeb.Log(const S:String);
@@ -191,8 +188,8 @@ procedure TFormBIWeb.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if CloseFromMenu then
   begin
-    if Server.Active and (Server.Contexts.Count>0) then
-       CanClose:=TUICommon.YesNo(Format(BIMsg_ServerSureToClose,[Server.Contexts.Count]))
+    if Server.Active and (Server.ContextsCount>0) then
+       CanClose:=TUICommon.YesNo(Format(BIMsg_ServerSureToClose,[Server.ContextsCount]))
     else
        CanClose:=True;
   end
@@ -240,7 +237,51 @@ begin
 end;
 
 procedure TFormBIWeb.FormCreate(Sender: TObject);
-var S : String;
+
+  procedure CreateServer;
+  begin
+    Server:=THttpServer.Engine.Create(Self);
+
+    Server.Port:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+
+    Server.OnCommandGet:=ServerCommandGet;
+    Server.OnConnect:=ServerConnect;
+    Server.OnDisconnect:=ServerDisconnect;
+    Server.OnException:=ServerException;
+    Server.OnStatus:=ServerStatus;
+  end;
+
+  procedure CreateHistory;
+  begin
+    History:=TBIWebHistory.Create;
+    History.Name:='History';
+
+    HistoryGrid.BindTo(History);
+
+    SetHistoryWidths;
+  end;
+
+  function DefaultDataStore:String;
+  begin
+    if ParamCount>0 then
+       result:=Trim(ParamStr(1))
+    else
+       result:='';
+
+    if result='' then
+       result:=VCLDefaultStore;
+  end;
+
+  procedure CreateBIWeb;
+  begin
+    BIWeb:=TBIWebCommon.Create;
+    BIWeb.Logs.History:=History;
+    BIWeb.Data:=Data;
+    BIWeb.Logs.AddHistory:=AddHistory;
+
+    BIWeb.Scheduler.Refresh(Data.Store);
+  end;
+
 begin
   TUICommon.LoadPosition(Self,'VCLBIWeb');
 
@@ -251,33 +292,16 @@ begin
   PageControl1.ActivePage:=TabConsole;
 
   UDPort.Position:=TBIWebClient.DefaultPort;
-  Server.DefaultPort:=TBIWebClient.DefaultPort;
+
+  CreateServer;
 
   StatusBar1.Panels.Add;
 
-  if ParamCount>0 then
-     S:=ParamStr(1)
-  else
-     S:='';
+  CreateHistory;
+  CreateAllData(DefaultDataStore);
 
-  if Trim(S)='' then
-     S:=VCLDefaultStore;
+  CreateBIWeb;
 
-  History:=TBIWebHistory.Create;
-  History.Name:='History';
-
-  HistoryGrid.BindTo(History);
-
-  SetHistoryWidths;
-
-  CreateAllData(S);
-
-  BIWeb:=TBIWebCommon.Create;
-  BIWeb.Logs.History:=History;
-  BIWeb.Data:=Data;
-  BIWeb.Logs.AddHistory:=AddHistory;
-
-  BIWeb.Scheduler.Refresh(S);
   BIGrid1.Data:=BIWeb.Scheduler.Data;
 
   Server.Active:=True;
@@ -336,10 +360,21 @@ end;
 procedure TFormBIWeb.CreateAllData(const AStore:String);
 var S : String;
 begin
-  S:=TStore.PathOf(AStore);
+  repeat
+    try
+      S:=TStore.PathOf(AStore);
+      break;
+    except
+      on E:Exception do
+         if TUICommon.YesNo('Error accessing store: '+AStore+'. Configure stores?') then
+            TStoreEditor.Edit(Self)
+         else
+            break;
+    end;
+  until False;
 
   // Protection against self-recursivity:
-  if SameText(S,'WEB:LOCALHOST') or SameText(S,'WEB:LOCALHOST:'+IntToStr(Server.DefaultPort)) then
+  if SameText(S,'WEB:LOCALHOST') or SameText(S,'WEB:LOCALHOST:'+IntToStr(Server.Port)) then
      raise EBIException.Create('Error: Store path cannot be same server localhost');
 
   Data.Free;
@@ -369,7 +404,7 @@ end;
 
 procedure TFormBIWeb.Button3Click(Sender: TObject);
 begin
-  TUICommon.GotoURL(Self,'http://localhost:'+IntToStr(Server.DefaultPort));
+  TUICommon.GotoURL(Self,'http://localhost:'+IntToStr(Server.Port));
 end;
 
 procedure TFormBIWeb.CBActiveClick(Sender: TObject);
@@ -436,9 +471,9 @@ end;
 
 procedure TFormBIWeb.EPortChange(Sender: TObject);
 begin
-  Server.DefaultPort:=UDPort.Position;
+  Server.Port:=UDPort.Position;
 
-  TBIRegistry.WriteInteger('BIWeb','Port',Server.DefaultPort);
+  TBIRegistry.WriteInteger('BIWeb','Port',Server.Port);
 end;
 
 procedure TFormBIWeb.EPublicChange(Sender: TObject);
@@ -459,23 +494,19 @@ begin
 //  Favicon.Bitmap.SaveToStream(result);
 end;
 
-procedure TFormBIWeb.ServerCommandGet(AContext: TIdContext;
-  ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
+procedure TFormBIWeb.ServerCommandGet(const AContext: TBIWebContext);
 begin
-  if SameText(ARequestInfo.Document,'/favicon.ico') then
-  begin
-    AResponseInfo.ContentType:='image/x-icon';
-    AResponseInfo.ContentStream:=FaviconStream; // "data:;base64,iVBORw0KGgo="
-  end
+  if SameText(AContext.GetDocument,'/favicon.ico') then
+     AContext.ReturnIcon(FaviconStream)
   else
   try
     try
-      TBIIndyContext.Process(BIWeb,AContext,ARequestInfo,AResponseInfo);
+      TBIIndyContext.Process(BIWeb,AContext);
     except
       on E:Exception do
       begin
         Log(E.Message);
-        AResponseInfo.ContentText:=E.Message;
+        AContext.SetResponse(E.Message);
       end;
     end;
   finally
@@ -489,7 +520,7 @@ begin
   if Server<>nil then
      TThread.Synchronize(nil,procedure
      begin
-       LConnections.Caption:=IntToStr(Server.Contexts.Count);
+       LConnections.Caption:=IntToStr(Server.ContextsCount);
      end);
 end;
 
@@ -507,25 +538,23 @@ begin
   LMemory.Caption:=TCommonUI.BytesToString(TMemory.Allocated);
 end;
 
-procedure TFormBIWeb.ServerConnect(AContext: TIdContext);
+procedure TFormBIWeb.ServerConnect(const AContext: TBIWebContext);
 begin
   RefreshCount;
 end;
 
-procedure TFormBIWeb.ServerDisconnect(AContext: TIdContext);
+procedure TFormBIWeb.ServerDisconnect(const AContext: TBIWebContext);
 begin
   RefreshCount;
 end;
 
-procedure TFormBIWeb.ServerException(AContext: TIdContext;
-  AException: Exception);
+procedure TFormBIWeb.ServerException(const AContext: TBIWebContext;
+  const AException: Exception);
 begin
-  if ErrorLog<>nil then
-     ErrorLog.Lines.Add(AException.Message);
+  Log(AException.Message);
 end;
 
-procedure TFormBIWeb.ServerStatus(ASender: TObject; const AStatus: TIdStatus;
-  const AStatusText: string);
+procedure TFormBIWeb.ServerStatus(const ASender: TObject; const AStatusText: string);
 begin
   StatusBar1.Panels[0].Text:=AStatusText;
 end;

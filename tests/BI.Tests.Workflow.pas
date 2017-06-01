@@ -5,7 +5,7 @@
 interface
 
 uses
-  BI.Data.Workflow, BI.Data;
+  BI.Workflow, BI.DataItem;
 
 type
  TDataProviderClass=class of TDataProvider;
