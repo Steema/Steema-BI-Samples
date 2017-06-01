@@ -1,0 +1,923 @@
+object DataEditor: TDataEditor
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Data Editor'
+  ClientHeight = 425
+  ClientWidth = 503
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object TabSources: TTabControl
+    Align = Client
+    Size.Width = 503.000000000000000000
+    Size.Height = 425.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 4
+    TabOrder = 0
+    TabPosition = Top
+    OnChange = TabSourcesChange
+    Sizes = (
+      503s
+      399s
+      503s
+      399s
+      503s
+      399s
+      503s
+      399s
+      503s
+      399s)
+    object TabFiles: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 44.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Files'
+      ExplicitSize.cx = 43.000000000000000000
+      ExplicitSize.cy = 24.000000000000000000
+      object TabControlFile: TTabControl
+        Align = Client
+        Size.Width = 503.000000000000000000
+        Size.Height = 399.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 0
+        TabPosition = Top
+        Sizes = (
+          503s
+          373s
+          503s
+          373s)
+        object TabFile: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 74.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Single File'
+          ExplicitSize.cx = 74.000000000000000000
+          ExplicitSize.cy = 24.000000000000000000
+          object Label1: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'File or URL:'
+            TabOrder = 0
+          end
+          object EFile: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 1
+            Position.X = 16.000000000000000000
+            Position.Y = 40.000000000000000000
+            Size.Width = 321.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EFileChange
+            OnChangeTracking = EFileChange
+          end
+          object BSelectFile: TSpeedButton
+            Position.X = 352.000000000000000000
+            Position.Y = 40.000000000000000000
+            Size.Width = 25.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'ellipseseditbutton'
+            Text = 'BSelectFile'
+            OnClick = BSelectFileClick
+          end
+          object LFileMissing: TLabel
+            StyledSettings = [Family, Size, Style]
+            Position.X = 16.000000000000000000
+            Position.Y = 72.000000000000000000
+            Size.Width = 233.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.FontColor = claCrimson
+            Text = 'File does not exist'
+            Visible = False
+            TabOrder = 3
+          end
+        end
+        object TabFolder: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 54.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Folder'
+          ExplicitSize.cx = 54.000000000000000000
+          ExplicitSize.cy = 24.000000000000000000
+          object Label8: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Folder:'
+            TabOrder = 0
+          end
+          object EFolder: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 1
+            Position.X = 16.000000000000000000
+            Position.Y = 40.000000000000000000
+            Size.Width = 377.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EFolderChange
+            OnChangeTracking = EFolderChange
+          end
+          object BSelectFolder: TSpeedButton
+            Position.X = 400.000000000000000000
+            Position.Y = 40.000000000000000000
+            Size.Width = 25.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'ellipseseditbutton'
+            Text = 'BSelectFile'
+            OnClick = BSelectFolderClick
+          end
+          object CBAllFolder: TCheckBox
+            IsChecked = True
+            Position.X = 16.000000000000000000
+            Position.Y = 88.000000000000000000
+            Size.Width = 241.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 3
+            Text = 'All files from folder'
+            OnChange = CBAllFolderChange
+          end
+          object EFileMask: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 4
+            Text = '*.*'
+            Position.X = 16.000000000000000000
+            Position.Y = 120.000000000000000000
+            Size.Width = 100.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EFileMaskChange
+            OnChangeTracking = EFileMaskChange
+          end
+          object CBFileType: TComboBox
+            Items.Strings = (
+              'Custom'
+              'CSV'
+              'Text'
+              'Microsoft Excel'
+              'Embarcadero ClientDataset'
+              'JSON'
+              'XML')
+            ItemIndex = 0
+            Position.X = 128.000000000000000000
+            Position.Y = 120.000000000000000000
+            Size.Width = 161.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 5
+            OnChange = CBFileTypeChange
+          end
+          object CBRecursive: TCheckBox
+            Position.X = 16.000000000000000000
+            Position.Y = 160.000000000000000000
+            Size.Width = 265.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 6
+            Text = 'Recursive subfolders'
+            OnChange = CBRecursiveChange
+          end
+          object Button1: TButton
+            Position.X = 16.000000000000000000
+            Position.Y = 256.000000000000000000
+            Size.Width = 153.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 7
+            Text = 'List of included files...'
+            OnClick = Button1Click
+          end
+          object LFolderMissing: TLabel
+            AutoSize = True
+            StyledSettings = [Family, Size, Style]
+            Position.X = 16.000000000000000000
+            Position.Y = 65.000000000000000000
+            Size.Width = 111.000000000000000000
+            Size.Height = 16.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.FontColor = claLightcoral
+            TextSettings.WordWrap = False
+            Text = 'Folder does not exist'
+            Visible = False
+            TabOrder = 8
+          end
+          object Label11: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 190.000000000000000000
+            Text = 'Exclude mask:'
+            TabOrder = 9
+          end
+          object EExcluded: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 10
+            Position.X = 16.000000000000000000
+            Position.Y = 214.000000000000000000
+            OnChange = EExcludedChange
+            OnChangeTracking = EExcludedChange
+          end
+        end
+      end
+    end
+    object TabDatabase: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 70.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Database'
+      ExplicitSize.cx = 69.000000000000000000
+      ExplicitSize.cy = 24.000000000000000000
+      object TabControlDB: TTabControl
+        Align = Client
+        Size.Width = 503.000000000000000000
+        Size.Height = 399.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 3
+        TabPosition = Top
+        Sizes = (
+          503s
+          373s
+          503s
+          373s)
+        object Connection: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 81.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Connection'
+          ExplicitSize.cx = 80.000000000000000000
+          ExplicitSize.cy = 24.000000000000000000
+          object Label2: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 8.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Driver:'
+            TabOrder = 0
+          end
+          object CBDBDriver: TComboBox
+            Position.X = 16.000000000000000000
+            Position.Y = 32.000000000000000000
+            Size.Width = 209.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            OnChange = CBDBDriverChange
+          end
+          object BDBTest: TButton
+            Enabled = False
+            Position.X = 248.000000000000000000
+            Position.Y = 32.000000000000000000
+            Size.Width = 129.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Text = 'Test Connection...'
+            OnClick = BDBTestClick
+          end
+          object Label4: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 64.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Server:'
+            TabOrder = 3
+          end
+          object EDBServer: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 7
+            Position.X = 16.000000000000000000
+            Position.Y = 88.000000000000000000
+            Size.Width = 209.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EDBServerChange
+            OnChangeTracking = EDBServerChange
+          end
+          object Label3: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 120.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Database:'
+            TabOrder = 9
+          end
+          object EDBDatabase: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 8
+            Position.X = 16.000000000000000000
+            Position.Y = 144.000000000000000000
+            Size.Width = 209.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EDBDatabaseChange
+            OnChangeTracking = EDBDatabaseChange
+          end
+          object Label5: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 184.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'User name:'
+            TabOrder = 11
+          end
+          object EDBUser: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 10
+            Position.X = 16.000000000000000000
+            Position.Y = 208.000000000000000000
+            Size.Width = 209.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EDBUserChange
+            OnChangeTracking = EDBUserChange
+          end
+          object Label6: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 240.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Password:'
+            TabOrder = 13
+          end
+          object EDBPassword: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 12
+            Password = True
+            Position.X = 16.000000000000000000
+            Position.Y = 264.000000000000000000
+            Size.Width = 209.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EDBPasswordChange
+            OnChangeTracking = EDBPasswordChange
+          end
+          object CBLogin: TCheckBox
+            Position.X = 16.000000000000000000
+            Position.Y = 296.000000000000000000
+            Size.Width = 209.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 16
+            Text = 'Login prompt'
+            OnChange = CBLoginChange
+          end
+          object MemoDBTest: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            ReadOnly = True
+            Align = Bottom
+            Position.Y = 323.000000000000000000
+            Size.Width = 503.000000000000000000
+            Size.Height = 50.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 17
+            Visible = False
+            Viewport.Width = 503.000000000000000000
+            Viewport.Height = 50.000000000000000000
+          end
+          object Label16: TLabel
+            Position.X = 248.000000000000000000
+            Position.Y = 64.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Port:'
+            TabOrder = 18
+          end
+          object EDBPort: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 6
+            Position.X = 248.000000000000000000
+            Position.Y = 88.000000000000000000
+            Size.Width = 73.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EDBPortChange
+            OnChangeTracking = EDBPortChange
+          end
+        end
+        object SQL: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 49.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Items'
+          ExplicitSize.cx = 49.000000000000000000
+          ExplicitSize.cy = 24.000000000000000000
+          object TabControlDBItems: TTabControl
+            Align = Client
+            Size.Width = 503.000000000000000000
+            Size.Height = 373.000000000000000000
+            Size.PlatformDefault = False
+            TabIndex = 0
+            TabOrder = 0
+            TabPosition = Top
+            Sizes = (
+              503s
+              347s
+              503s
+              347s)
+            object TabItemAllDB: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = True
+              Size.Width = 34.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'All'
+              ExplicitSize.cx = 33.000000000000000000
+              ExplicitSize.cy = 24.000000000000000000
+              object CBAllItems: TCheckBox
+                IsChecked = True
+                Position.X = 16.000000000000000000
+                Position.Y = 24.000000000000000000
+                Size.Width = 161.000000000000000000
+                Size.Height = 19.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Text = 'All Tables and Views'
+                OnChange = CBAllItemsChange
+              end
+              object EDBInclude: TEdit
+                Touch.InteractiveGestures = [LongTap, DoubleTap]
+                TabOrder = 4
+                Text = '*'
+                Position.X = 16.000000000000000000
+                Position.Y = 72.000000000000000000
+                Enabled = False
+                Size.Width = 100.000000000000000000
+                Size.Height = 22.000000000000000000
+                Size.PlatformDefault = False
+                OnChange = EDBIncludeChange
+                OnChangeTracking = EDBIncludeChange
+              end
+              object LDBExclude: TLabel
+                Enabled = False
+                Position.X = 16.000000000000000000
+                Position.Y = 110.000000000000000000
+                Text = 'Exclude mask:'
+                TabOrder = 5
+              end
+              object EDBExclude: TEdit
+                Touch.InteractiveGestures = [LongTap, DoubleTap]
+                TabOrder = 10
+                Position.X = 16.000000000000000000
+                Position.Y = 134.000000000000000000
+                Enabled = False
+                OnChange = EExcludedChange
+                OnChangeTracking = EExcludedChange
+              end
+              object LDBInclude: TLabel
+                Enabled = False
+                Position.X = 16.000000000000000000
+                Position.Y = 54.000000000000000000
+                Text = 'Include mask:'
+                TabOrder = 11
+              end
+              object Button2: TButton
+                Position.X = 16.000000000000000000
+                Position.Y = 182.000000000000000000
+                Size.Width = 169.000000000000000000
+                Size.Height = 22.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 12
+                Text = 'List of included items...'
+                OnClick = Button2Click
+              end
+              object CBDBSystem: TCheckBox
+                Position.X = 184.000000000000000000
+                Position.Y = 24.000000000000000000
+                TabOrder = 13
+                Text = 'System Items'
+                OnChange = CBDBSystemChange
+              end
+            end
+            object TabSQL: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = False
+              Size.Width = 86.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'Custom SQL'
+              ExplicitSize.cx = 85.000000000000000000
+              ExplicitSize.cy = 24.000000000000000000
+              object MemoSQL: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                Lines.Strings = (
+                  'select * from')
+                OnChange = MemoSQLChange
+                OnChangeTracking = MemoSQLChange
+                Align = Client
+                Size.Width = 503.000000000000000000
+                Size.Height = 347.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 503.000000000000000000
+                Viewport.Height = 347.000000000000000000
+              end
+            end
+          end
+        end
+      end
+    end
+    object TabUnknown: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 71.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Unknown'
+      ExplicitSize.cx = 70.000000000000000000
+      ExplicitSize.cy = 24.000000000000000000
+      object Label7: TLabel
+        Position.X = 16.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 305.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Missing Data definition file'
+        TabOrder = 0
+      end
+    end
+    object TabWeb: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 58.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'BI Web'
+      ExplicitSize.cx = 58.000000000000000000
+      ExplicitSize.cy = 24.000000000000000000
+      object TabWebHost: TTabControl
+        Align = Top
+        Size.Width = 503.000000000000000000
+        Size.Height = 209.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 0
+        TabPosition = PlatformDefault
+        Sizes = (
+          503s
+          183s
+          503s
+          183s)
+        object TabHttpServer: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 54.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Server'
+          ExplicitSize.cx = 53.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object BWebTest: TButton
+            Enabled = False
+            Position.X = 16.000000000000000000
+            Position.Y = 136.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 4
+            Text = 'Test Connection'
+            OnClick = BWebTestClick
+          end
+          object CBZip: TCheckBox
+            Position.X = 136.000000000000000000
+            Position.Y = 93.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 6
+            Text = 'Compression'
+            OnChange = CBZipChange
+          end
+          object EWebServer: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 1
+            Text = 'www.steema.cat'
+            Position.X = 16.000000000000000000
+            Position.Y = 36.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EWebServerChangeTracking
+            OnChangeTracking = EWebServerChangeTracking
+          end
+          object Label10: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 72.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Port:'
+            TabOrder = 7
+          end
+          object Label9: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Host:'
+            TabOrder = 8
+          end
+          object LWebTest: TLabel
+            Position.X = 211.000000000000000000
+            Position.Y = 138.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 9
+          end
+          object NPort: TNumberBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 3
+            Cursor = crIBeam
+            Max = 65535.000000000000000000
+            Value = 15015.000000000000000000
+            Position.X = 16.000000000000000000
+            Position.Y = 92.000000000000000000
+            Size.Width = 100.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = NPortChangeTracking
+            OnChangeTracking = NPortChangeTracking
+          end
+        end
+        object TabHttpProxy: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 50.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Proxy'
+          ExplicitSize.cx = 50.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object Label12: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Host:'
+            TabOrder = 0
+          end
+          object EProxyHost: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 3
+            Position.X = 16.000000000000000000
+            Position.Y = 36.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EProxyHostChange
+            OnChangeTracking = EProxyHostChange
+          end
+          object Label13: TLabel
+            Position.X = 208.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Port:'
+            TabOrder = 4
+          end
+          object ProxyPort: TNumberBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 5
+            Cursor = crIBeam
+            Max = 65535.000000000000000000
+            Value = 15015.000000000000000000
+            Position.X = 208.000000000000000000
+            Position.Y = 36.000000000000000000
+            Size.Width = 100.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = ProxyPortChange
+            OnChangeTracking = ProxyPortChange
+          end
+          object Label14: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 72.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'User name:'
+            TabOrder = 6
+          end
+          object EProxyUser: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 2
+            Position.X = 16.000000000000000000
+            Position.Y = 92.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EProxyUserChange
+            OnChangeTracking = EProxyUserChange
+          end
+          object Label15: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 120.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Password:'
+            TabOrder = 7
+          end
+          object EProxyPassword: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 1
+            Password = True
+            Position.X = 16.000000000000000000
+            Position.Y = 140.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = EProxyPasswordChange
+            OnChangeTracking = EProxyPasswordChange
+            object PasswordEditButton1: TPasswordEditButton
+              CanFocus = False
+              Cursor = crArrow
+              Size.Width = 28.000000000000000000
+              Size.Height = 18.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 0
+            end
+          end
+        end
+      end
+      object LayoutWebData: TLayout
+        Align = Client
+        Size.Width = 503.000000000000000000
+        Size.Height = 190.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object LWebData: TLabel
+          Position.X = 16.000000000000000000
+          Position.Y = 6.000000000000000000
+          Size.Width = 120.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Data:'
+        end
+        object CBWebData: TComboEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 5
+          DropDownCount = 18
+          ItemHeight = 19.000000000000000000
+          ItemIndex = -1
+          Position.X = 16.000000000000000000
+          Position.Y = 25.000000000000000000
+          Size.Width = 177.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          OnChange = CBWebDataChangeTracking
+          OnChangeTracking = CBWebDataChangeTracking
+          OnClick = CBWebDataClick
+        end
+      end
+    end
+    object TabManual: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 60.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Manual'
+      ExplicitSize.cx = 60.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+    end
+  end
+  object OpenFile: TOpenDialog
+    DefaultExt = 'csv'
+    Filter = 
+      'ClientDataSet files|*.cds|CSV files|*.csv|Text files|*.txt|JSON ' +
+      'files|*.json|XML files|*.xml|Microsoft Excel files|*.xls;*.xlsx'
+    Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+    Title = 'Select files to import'
+    Left = 448
+    Top = 32
+  end
+  object LayoutOkCancel: TLayout
+    Align = Bottom
+    Position.Y = 375.000000000000000000
+    Size.Width = 503.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    TabOrder = 2
+    object Layout1: TLayout
+      Align = Right
+      Position.X = 302.000000000000000000
+      Size.Width = 201.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object BOK: TButton
+        Default = True
+        Enabled = False
+        ModalResult = 1
+        Position.X = 9.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'OK'
+      end
+      object BCancel: TButton
+        Cancel = True
+        ModalResult = 2
+        Position.X = 105.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Cancel'
+      end
+    end
+  end
+end

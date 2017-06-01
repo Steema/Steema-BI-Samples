@@ -1,0 +1,196 @@
+object StoreEditor: TStoreEditor
+  Left = 0
+  Top = 0
+  Caption = 'Store Manager'
+  ClientHeight = 480
+  ClientWidth = 640
+  Position = OwnerFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Layout1: TLayout
+    Align = Top
+    Size.Width = 640.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Button1: TButton
+      Position.X = 16.000000000000000000
+      Position.Y = 16.000000000000000000
+      TabOrder = 0
+      Text = 'Add...'
+      OnClick = Button1Click
+    end
+    object BRemove: TButton
+      Enabled = False
+      Position.X = 120.000000000000000000
+      Position.Y = 16.000000000000000000
+      TabOrder = 1
+      Text = 'Remove'
+      OnClick = BRemoveClick
+    end
+  end
+  object LayoutButtons: TLayout
+    Align = Bottom
+    Position.Y = 430.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object BRename: TButton
+      Enabled = False
+      Position.X = 16.000000000000000000
+      Position.Y = 16.000000000000000000
+      TabOrder = 0
+      Text = 'Rename...'
+      OnClick = BRenameClick
+    end
+    object Layout2: TLayout
+      Align = Right
+      Position.X = 520.000000000000000000
+      Size.Width = 120.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object Button2: TButton
+        Default = True
+        ModalResult = 8
+        Position.X = 24.000000000000000000
+        Position.Y = 16.000000000000000000
+        TabOrder = 1
+        Text = 'Close'
+      end
+    end
+    object CBDefault: TCheckBox
+      Enabled = False
+      Position.X = 120.000000000000000000
+      Position.Y = 18.000000000000000000
+      TabOrder = 2
+      Text = 'Default'
+      OnChange = CBDefaultChange
+    end
+  end
+  object LBStores: TListBox
+    Align = Left
+    Position.Y = 50.000000000000000000
+    Size.Width = 200.000000000000000000
+    Size.Height = 380.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = LBStoresChange
+    Viewport.Width = 196.000000000000000000
+    Viewport.Height = 376.000000000000000000
+  end
+  object TabControl1: TTabControl
+    Align = Client
+    Size.Width = 440.000000000000000000
+    Size.Height = 380.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 3
+    TabPosition = PlatformDefault
+    Sizes = (
+      440s
+      354s
+      440s
+      354s)
+    object TabFolder: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 54.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Folder'
+      ExplicitSize.cx = 54.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object Label8: TLabel
+        Position.X = 16.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 120.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Folder:'
+        TabOrder = 0
+      end
+      object EFolder: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 1
+        Position.X = 16.000000000000000000
+        Position.Y = 40.000000000000000000
+        Size.Width = 377.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = EFolderChange
+        OnChangeTracking = EFolderChange
+      end
+      object BSelectFolder: TSpeedButton
+        Position.X = 400.000000000000000000
+        Position.Y = 40.000000000000000000
+        Size.Width = 25.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'ellipseseditbutton'
+        Text = 'BSelectFile'
+        OnClick = BSelectFolderClick
+      end
+      object LBadFolder: TLabel
+        AutoSize = True
+        StyledSettings = [Family, Size, Style]
+        Position.X = 16.000000000000000000
+        Position.Y = 70.000000000000000000
+        Size.Width = 111.000000000000000000
+        Size.Height = 16.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.FontColor = claLightcoral
+        TextSettings.WordWrap = False
+        Text = 'Folder does not exist'
+        Visible = False
+        TabOrder = 3
+      end
+    end
+    object TabWeb: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 45.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Web'
+      ExplicitSize.cx = 44.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 304
+    Top = 224
+    object MenuItem1: TMenuItem
+      Text = 'Folder'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Text = 'BI Web'
+      OnClick = MenuItem2Click
+    end
+  end
+  object LabelEmpty: TLabel
+    Position.X = 216.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 377.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Click the Add button to create a new Store'
+  end
+end

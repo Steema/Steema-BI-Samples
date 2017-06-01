@@ -37,3 +37,7 @@ demos/experiments/speed/FDMemTable_Sqlite_Queries/OSX32/
 demos/delphi/firemonkey/Speed/OSX32/
 *.~html
 *.lps
+demos/delphi/FMXLinux/Export/PDF/Linux64/
+demos/delphi/FMXLinux/Grid/Linux64/
+demos/delphi/FMXLinux/Query/Summary/Linux64/
+demos/delphi/FMXLinux/Speed/Linux64/

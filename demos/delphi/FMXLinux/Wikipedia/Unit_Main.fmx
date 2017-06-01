@@ -1,0 +1,143 @@
+object FormWiki: TFormWiki
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI - Wikipedia Search'
+  ClientHeight = 631
+  ClientWidth = 929
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnDestroy = FormDestroy
+  DesignerMasterStyle = 0
+  object TabControl1: TTabControl
+    Align = Client
+    Size.Width = 929.000000000000000000
+    Size.Height = 555.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = PlatformDefault
+    Sizes = (
+      929s
+      529s
+      929s
+      529s)
+    object TabItem1: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 45.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Data'
+      ExplicitSize.cx = 45.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object BIGrid1: TBIGrid
+        Align = Client
+        Size.Width = 929.000000000000000000
+        Size.Height = 529.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        OnDataChange = BIGrid1DataChange
+      end
+    end
+    object TabChart: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 49.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Chart'
+      ExplicitSize.cx = 49.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object BIChart1: TBIChart
+        Align = Client
+        Padding.Top = 24.000000000000000000
+        Size.Width = 929.000000000000000000
+        Size.Height = 529.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object BITChart1: TBITChart
+          Foot.Font.StyleExt = {00040000000200000004000000}
+          Legend.Shadow.Visible = False
+          Legend.Symbol.Shadow.Visible = False
+          Legend.Title.Font.StyleExt = {00070000000000000004000000}
+          SubFoot.Font.StyleExt = {00040000000200000004000000}
+          Title.Text.Strings = (
+            'TBITChart')
+          Zoom.Brush.Kind = None
+          Zoom.Pen.Fill.Color = claSilver
+          Size.Width = 929.000000000000000000
+          Size.Height = 505.000000000000000000
+          Size.PlatformDefault = False
+          ColorPaletteIndex = 9
+        end
+      end
+    end
+  end
+  object Layout1: TLayout
+    Align = Top
+    Size.Width = 929.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object Label1: TLabel
+      Position.X = 16.000000000000000000
+      Position.Y = 16.000000000000000000
+      Text = '&Search:'
+    end
+    object ComboEdit1: TComboEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 1
+      DropDownCount = 28
+      ItemHeight = 19.000000000000000000
+      Items.Strings = (
+        'List of mountains by elevation'
+        'List of USA cities'
+        'List of tallest buildings'
+        'https://en.wikipedia.org/wiki/ISO_3166-2:ID')
+      ItemIndex = 0
+      Text = 'List of mountains by elevation'
+      Position.X = 65.000000000000000000
+      Position.Y = 13.000000000000000000
+      Size.Width = 449.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      OnKeyUp = ComboEdit1KeyUp
+    end
+    object Button1: TButton
+      Position.X = 528.000000000000000000
+      Position.Y = 12.000000000000000000
+      TabOrder = 2
+      Text = '&Go !'
+      OnClick = Button1Click
+    end
+  end
+  object Layout2: TLayout
+    Align = Bottom
+    Position.Y = 605.000000000000000000
+    Size.Width = 929.000000000000000000
+    Size.Height = 26.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object LabelURL: TLabel
+      Align = Client
+      Cursor = crHandPoint
+      StyledSettings = [Family, Size]
+      HitTest = True
+      Size.Width = 929.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.StyleExt = {04040000000000000004000000}
+      TextSettings.FontColor = claNavy
+      OnClick = LabelURLClick
+    end
+  end
+end

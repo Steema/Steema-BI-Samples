@@ -1,0 +1,175 @@
+object REST_BIWeb: TREST_BIWeb
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI Using REST components with BIWeb server'
+  ClientHeight = 627
+  ClientWidth = 785
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Grid1: TGrid
+    Align = Client
+    ClipChildren = True
+    Size.Width = 785.000000000000000000
+    Size.Height = 577.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    RowCount = 0
+    RowHeight = 21.000000000000000000
+    Viewport.Width = 781.000000000000000000
+    Viewport.Height = 552.000000000000000000
+  end
+  object Layout1: TLayout
+    Align = Top
+    Size.Width = 785.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 23
+    object Label1: TLabel
+      Position.X = 13.000000000000000000
+      Position.Y = 19.000000000000000000
+      Size.Width = 79.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'BIWeb URL:'
+    end
+    object Edit1: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 15
+      Position.X = 96.000000000000000000
+      Position.Y = 16.000000000000000000
+      Size.Width = 497.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      OnChangeTracking = Edit1ChangeTracking
+    end
+    object Button1: TButton
+      Enabled = False
+      Position.X = 608.000000000000000000
+      Position.Y = 17.000000000000000000
+      TabOrder = 16
+      Text = 'Refresh'
+      OnClick = Button1Click
+    end
+  end
+  object RESTClient1: TRESTClient
+    Accept = 'application/json, text/plain; q=0.9, text/html;q=0.8,'
+    AcceptCharset = 'UTF-8, *;q=0.8'
+    BaseURL = 'http://steema.cat:15015/?data=sqlite_demo|customers&format=.json'
+    Params = <>
+    HandleRedirects = True
+    RaiseExceptionOn500 = False
+    Left = 216
+    Top = 232
+  end
+  object RESTRequest1: TRESTRequest
+    Client = RESTClient1
+    Params = <>
+    Response = RESTResponse1
+    SynchronizedEvents = False
+    Left = 304
+    Top = 232
+  end
+  object RESTResponse1: TRESTResponse
+    ContentType = 'application/json'
+    Left = 392
+    Top = 232
+  end
+  object RESTResponseDataSetAdapter1: TRESTResponseDataSetAdapter
+    Active = True
+    Dataset = FDMemTable1
+    FieldDefs = <>
+    Response = RESTResponse1
+    Left = 536
+    Top = 232
+  end
+  object FDMemTable1: TFDMemTable
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'CustomerID'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'CompanyName'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'ContactName'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'ContactTitle'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'Address'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'City'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'Region'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'PostalCode'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'Country'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'Phone'
+        DataType = ftWideString
+        Size = 255
+      end
+      item
+        Name = 'Fax'
+        DataType = ftWideString
+        Size = 255
+      end>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    StoreDefs = True
+    Left = 680
+    Top = 232
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = FDMemTable1
+    ScopeMappings = <>
+    Left = 128
+    Top = 232
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 48
+    Top = 232
+    object LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      GridControl = Grid1
+      Columns = <>
+    end
+  end
+end

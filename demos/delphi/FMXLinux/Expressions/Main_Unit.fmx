@@ -1,0 +1,285 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI Expression Tests'
+  ClientHeight = 600
+  ClientWidth = 947
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  DesignerMasterStyle = 0
+  object TabControl1: TTabControl
+    Align = Client
+    Size.Width = 393.000000000000000000
+    Size.Height = 600.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 11
+    TabPosition = PlatformDefault
+    Sizes = (
+      393s
+      574s
+      393s
+      574s)
+    object TabTest: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 41.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Test'
+      ExplicitSize.cx = 41.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object ListBox1: TListBox
+        Align = Client
+        Size.Width = 393.000000000000000000
+        Size.Height = 420.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 8
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        OnChange = ListBox1Change
+        Viewport.Width = 389.000000000000000000
+        Viewport.Height = 416.000000000000000000
+      end
+      object Memo1: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Align = Bottom
+        Position.Y = 461.000000000000000000
+        Size.Width = 393.000000000000000000
+        Size.Height = 113.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 9
+        Viewport.Width = 389.000000000000000000
+        Viewport.Height = 109.000000000000000000
+      end
+      object Layout1: TLayout
+        Align = Top
+        Size.Width = 393.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 14
+        object BTestAll: TButton
+          Position.X = 16.000000000000000000
+          Position.Y = 8.000000000000000000
+          Size.Width = 65.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 9
+          Text = 'Test All'
+          OnClick = BTestAllClick
+        end
+        object Button8: TButton
+          Position.X = 104.000000000000000000
+          Position.Y = 8.000000000000000000
+          Size.Width = 80.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 15
+          Text = 'Benchmark'
+          OnClick = Button8Click
+        end
+        object CBMultiCPU: TCheckBox
+          Position.X = 296.000000000000000000
+          Position.Y = 10.000000000000000000
+          Size.Width = 88.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 16
+          Text = 'Multi-CPU'
+        end
+        object CBBench: TComboBox
+          Items.Strings = (
+            'Evaluate'
+            'Parse'
+            'Both')
+          ItemIndex = 0
+          Position.X = 200.000000000000000000
+          Position.Y = 8.000000000000000000
+          Size.Width = 81.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 17
+        end
+      end
+    end
+    object TabItem2: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 51.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Other'
+      ExplicitSize.cx = 69.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object BExampleFormula: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 22.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 21
+        Text = 'x:= (3*2) + Sqr(4) - 7'
+        OnClick = BExampleFormulaClick
+      end
+      object Button2: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 56.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
+        Text = 'Logical'
+        OnClick = Button2Click
+      end
+      object Button3: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 125.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 8
+        Text = 'Animals Size>7 and Name<>'#39'Ocelot'#39
+        OnClick = Button3Click
+      end
+      object Button4: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 90.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 4
+        Text = 'X in ABCXYZ'
+        OnClick = Button4Click
+      end
+      object Edit1: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 1
+        Position.X = 24.000000000000000000
+        Position.Y = 269.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = Edit1Change
+        OnChangeTracking = Edit1Change
+      end
+      object BEvaluate: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 301.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Evaluate'
+        OnClick = BEvaluateClick
+      end
+      object Button5: TButton
+        Enabled = False
+        Position.X = 176.000000000000000000
+        Position.Y = 301.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 10
+        Text = '&Edit...'
+        OnClick = Button5Click
+      end
+      object LabelResult: TLabel
+        Position.X = 24.000000000000000000
+        Position.Y = 333.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = '?'
+        TabOrder = 22
+      end
+      object Button1: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 159.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        Text = 'RTTI Expression'
+        OnClick = Button1Click
+      end
+      object Button6: TButton
+        Position.X = 24.000000000000000000
+        Position.Y = 194.000000000000000000
+        Size.Width = 233.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 6
+        Text = 'If Expression then A else B'
+        OnClick = Button6Click
+      end
+    end
+  end
+  object Layout2: TLayout
+    Align = Right
+    Position.X = 402.000000000000000000
+    Size.Width = 545.000000000000000000
+    Size.Height = 600.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 12
+    object TreeView1: TTreeView
+      Align = Client
+      Size.Width = 545.000000000000000000
+      Size.Height = 550.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnChange = TreeView1Change
+      Viewport.Width = 541.000000000000000000
+      Viewport.Height = 546.000000000000000000
+    end
+    object Layout3: TLayout
+      Align = Top
+      Size.Width = 545.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object LNodeObject: TLabel
+        Position.X = 16.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 504.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+  end
+  object Splitter1: TSplitter
+    Align = Right
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Position.X = 393.000000000000000000
+    Size.Width = 9.000000000000000000
+    Size.Height = 600.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object FDMemTable1: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvPersistent, rvSilentMode]
+    ResourceOptions.Persistent = True
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 456
+    Top = 288
+  end
+end
