@@ -3,7 +3,7 @@ object Form17: TForm17
   Top = 0
   Caption = 'TeeBI Firemonkey - Simple Summary Example'
   ClientHeight = 480
-  ClientWidth = 640
+  ClientWidth = 426
   Position = OwnerFormCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -12,25 +12,28 @@ object Form17: TForm17
   DesignerMasterStyle = 0
   object BIGrid1: TBIGrid
     Align = Client
-    Size.Width = 640.000000000000000000
+    Size.Width = 426.000000000000000000
     Size.Height = 430.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
   end
   object Layout1: TLayout
     Align = Top
-    Size.Width = 640.000000000000000000
+    Size.Width = 426.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object Button1: TButton
-      Position.X = 280.000000000000000000
-      Position.Y = 16.000000000000000000
-      Size.Width = 217.000000000000000000
-      Size.Height = 22.000000000000000000
+      Align = Client
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Size.Width = 406.000000000000000000
+      Size.Height = 30.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      Text = 'Histogram of Customer Name'
+      Text = 'Show Histogram of Customer Name grouped by its Customer Name'
       OnClick = Button1Click
     end
   end

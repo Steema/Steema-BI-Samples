@@ -37,7 +37,7 @@ implementation
 {$R *.fmx}
 
 uses
-  BI.Persist, BI.DataSource;
+  BI.Persist, BI.DataSource, FMXBI.Grid.Grid;
 
 procedure TFormHistogramText.FormCreate(Sender: TObject);
 var Summary : TSummary;
@@ -48,12 +48,18 @@ begin
   Summary:=TSummary.Create(Self);
   Summary.AddMeasure(Demo['"Order Details"']['Quantity'],TAggregate.Sum);
 
+    // Assign a name for Field,which will appear at the Column Header
+  Summary.Measures[0].Name := 'Sum of Quantity of Orders';
+
   ByName:=Summary.AddGroupBy(Demo['Customers']['CompanyName']);
   ByName.Layout:=TGroupByLayout.Rows;
 
   ByName.Histogram.Active:=True;
 
   BIGrid1.Data:=TDataItem.Create(Summary);
+
+  // Accessing Grid properties and methods
+  (BIGrid1.Plugin.GetObject as TBIFMXGrid).Grid.Columns[1].Width := 150;
 end;
 
 end.

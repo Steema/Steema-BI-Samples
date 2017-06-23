@@ -2,8 +2,9 @@ object FormHistogramText: TFormHistogramText
   Left = 0
   Top = 0
   Caption = 'Histogram by Text'
-  ClientHeight = 480
-  ClientWidth = 640
+  ClientHeight = 214
+  ClientWidth = 282
+  Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,8 +12,8 @@ object FormHistogramText: TFormHistogramText
   DesignerMasterStyle = 0
   object BIGrid1: TBIGrid
     Align = Client
-    Size.Width = 640.000000000000000000
-    Size.Height = 480.000000000000000000
+    Size.Width = 282.000000000000000000
+    Size.Height = 214.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
   end

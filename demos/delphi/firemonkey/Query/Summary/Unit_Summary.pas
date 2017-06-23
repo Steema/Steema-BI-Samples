@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
-  FMX.Types, FMX.Controls, FMX.Forms, 
+  FMX.Types, FMX.Controls, FMX.Forms,
 
   {$IF CompilerVersion<=27}
   {$DEFINE HASFMX20}
@@ -14,7 +14,7 @@ uses
   FMX.Graphics, FMX.Controls.Presentation,
   {$ENDIF}
 
-  FMX.Dialogs, FMX.Layouts,
+  FMX.Dialogs, FMX.Layouts, FMX.Grid,
   FMXBI.Grid, BI.DataItem, BI.Summary, FMX.StdCtrls,
   FMXBI.DataControl;
 
@@ -28,6 +28,7 @@ type
   private
     { Private declarations }
     Demo : TDataItem;
+    function Grid:TGrid;
   public
     { Public declarations }
   end;
@@ -40,7 +41,7 @@ implementation
 {$R *.fmx}
 
 uses
-  BI.Persist, BI.DataSource, Unit_Histogram_Text;
+  BI.Persist, BI.DataSource, Unit_Histogram_Text, FMXBI.Grid.Grid;
 
 procedure TForm17.Button1Click(Sender: TObject);
 begin
@@ -54,7 +55,7 @@ end;
 
 procedure TForm17.FormCreate(Sender: TObject);
 var Summary : TSummary;
-    ByEmployee : TGroupBy;
+    ByCustomer : TGroupBy;
     ByCompany : TGroupBy;
 begin
   // Load data
@@ -66,12 +67,16 @@ begin
   // Add Sum of Quantity
   Summary.AddMeasure(Demo['"Order Details"']['Quantity'],TAggregate.Sum);
 
-  // Add "By EmployeeID"
-  ByEmployee:=Summary.AddGroupBy(Demo['Orders']['EmployeeID']);
-  ByEmployee.Layout:=TGroupByLayout.Rows; // <-- optional
+  // Assign a name for Field,which will appear at the Column Header
+  Summary.Measures[0].Name := 'Sum of Quantity of Orders';
 
-  // Add "By CompanyName"
+  // Add "By CustomerID"
+  ByCustomer:=Summary.AddGroupBy(Demo['Orders']['CustomerID']);
+  ByCustomer.Layout:=TGroupByLayout.Rows; // <-- optional
+
+  // Add "By CompanyName" to show grouped by Shippers Company
   ByCompany:=Summary.AddGroupBy(Demo['Shippers']['CompanyName']);
+  ByCompany.Name := 'Shippers';
 
   // NOTE: Delphi 10.1 Berlin Firemonkey Grid is capable of displaying
   // sub-tables, thus TGroupByLayout.Columns is supported
@@ -82,7 +87,19 @@ begin
   BIGrid1.Data:=Summary.NewData;
 
   // Tell grid to not display cells with duplicate content
-  BIGrid1.Duplicates(BIGrid1.Data['EmployeeID'],True);
+  BIGrid1.Duplicates(BIGrid1.Data['CustomerID'],True);
+
+  // Accessing Grid properties and methods
+  Grid.Columns[0].Width := Grid.Columns[0].Width + 25;
+  Grid.Columns[1].Width := Grid.Columns[0].Width + 25;
+  Grid.Columns[2].Width := 150;
 end;
 
+function TForm17.Grid: TGrid;
+begin
+  if BIGrid1.Plugin.GetObject is TBIFMXGrid then
+     result:=(BIGrid1.Plugin.GetObject as TBIFMXGrid).Grid
+  else
+     result:=nil;
+end;
 end.
