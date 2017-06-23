@@ -2,8 +2,8 @@ object FormSpeed: TFormSpeed
   Left = 0
   Top = 0
   Caption = 'TeeBI - Speed Test'
-  ClientHeight = 411
-  ClientWidth = 796
+  ClientHeight = 380
+  ClientWidth = 815
   Position = OwnerFormCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -13,7 +13,7 @@ object FormSpeed: TFormSpeed
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Top
-    Size.Width = 796.000000000000000000
+    Size.Width = 815.000000000000000000
     Size.Height = 41.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
@@ -38,9 +38,44 @@ object FormSpeed: TFormSpeed
   end
   object BIGrid1: TBIGrid
     Align = Client
-    Size.Width = 796.000000000000000000
-    Size.Height = 370.000000000000000000
+    Size.Width = 815.000000000000000000
+    Size.Height = 339.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
+  end
+  object Rectangle1: TRectangle
+    Align = Center
+    Fill.Color = claGray
+    Size.Width = 100.000000000000000000
+    Size.Height = 100.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    Visible = False
+    XRadius = 10.000000000000000000
+    YRadius = 10.000000000000000000
+    object AniIndicator1: TAniIndicator
+      Align = Center
+      StyleLookup = 'aniindicatorstyle'
+      Size.Width = 65.000000000000000000
+      Size.Height = 72.000000000000000000
+      Size.PlatformDefault = False
+      Style = Circular
+    end
+    object Label1: TLabel
+      Align = Bottom
+      StyledSettings = [Family, Size]
+      Margins.Left = 3.000000000000000000
+      Margins.Bottom = 3.000000000000000000
+      Position.X = 3.000000000000000000
+      Position.Y = 80.000000000000000000
+      Size.Width = 97.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.FontColor = claWhite
+      TextSettings.HorzAlign = Center
+      Text = 'Working...'
+      TabOrder = 1
+    end
   end
 end

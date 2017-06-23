@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Speed Benchmark Tests                      }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2017 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit MainForm;
@@ -26,7 +26,7 @@ uses
 
   FMX.Dialogs, FMX.Layouts, FMX.StdCtrls,
 
-  BI.DataItem, FMXBI.DataControl, FMXBI.Grid, BI.Tests.Speed;
+  BI.DataItem, FMXBI.DataControl, FMXBI.Grid, BI.Tests.Speed, FMX.Objects;
 
 type
   TFormSpeed = class(TForm)
@@ -34,6 +34,9 @@ type
     BRun: TButton;
     BIGrid1: TBIGrid;
     LTotal: TLabel;
+    AniIndicator1: TAniIndicator;
+    Rectangle1: TRectangle;
+    Label1: TLabel;
     procedure BRunClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -57,20 +60,34 @@ uses
 
 procedure TFormSpeed.BRunClick(Sender: TObject);
 var t1 : TStopwatch;
+    MyThread: TThread;
 begin
   BRun.Enabled:=False;
+  Rectangle1.Visible:=True;
+  AniIndicator1.Enabled:=True;
+
   try
     // Clear results
     Speed.Clear;
 
     t1:=TStopwatch.StartNew;
 
-    Speed.Run;
+    MyThread := TThread.CreateAnonymousThread(procedure begin
+      BRun.Enabled:=False;
 
-    LTotal.Text:='Total time: '+t1.ElapsedMilliseconds.ToString+' msec';
+      Speed.Run;
 
-    // Refresh results at Grid
-    BIGrid1.RefreshData;
+      LTotal.Text:='Total time: '+t1.ElapsedMilliseconds.ToString+' msec';
+
+      // Refresh results at Grid
+      BIGrid1.RefreshData;
+
+      Rectangle1.Visible:=False;
+      AniIndicator1.Enabled:=False;
+    end);
+
+    MyThread.Start;
+
   finally
     BRun.Enabled:=True;
   end;
