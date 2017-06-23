@@ -32,7 +32,6 @@ object MainPDF: TMainPDF
       Size.PlatformDefault = False
       TabOrder = 3
       Text = 'Auto Fit'
-      OnChange = BCreatePDFClick
     end
     object CBPageNumbers: TCheckBox
       IsChecked = True
@@ -43,7 +42,6 @@ object MainPDF: TMainPDF
       Size.PlatformDefault = False
       TabOrder = 2
       Text = 'Page Numbers'
-      OnChange = BCreatePDFClick
     end
     object CBGridLines: TCheckBox
       IsChecked = True
@@ -54,7 +52,6 @@ object MainPDF: TMainPDF
       Size.PlatformDefault = False
       TabOrder = 1
       Text = 'Grid Lines'
-      OnChange = BCreatePDFClick
     end
     object CBHeaderBack: TCheckBox
       IsChecked = True
@@ -65,7 +62,6 @@ object MainPDF: TMainPDF
       Size.PlatformDefault = False
       TabOrder = 4
       Text = 'Fill Header'
-      OnChange = BCreatePDFClick
     end
     object CBAlternate: TCheckBox
       Position.X = 552.000000000000000000
@@ -75,7 +71,6 @@ object MainPDF: TMainPDF
       Size.PlatformDefault = False
       TabOrder = 5
       Text = 'Alternate Fill'
-      OnChange = BCreatePDFClick
     end
     object CBAlign: TComboBox
       Items.Strings = (
@@ -84,9 +79,8 @@ object MainPDF: TMainPDF
         'Right')
       ItemIndex = 1
       Position.X = 680.000000000000000000
-      Position.Y = 16.000000000000000000
+      Position.Y = 14.000000000000000000
       TabOrder = 6
-      OnChange = BCreatePDFClick
     end
   end
   object TabControl1: TTabControl
@@ -94,7 +88,7 @@ object MainPDF: TMainPDF
     Size.Width = 1016.000000000000000000
     Size.Height = 626.000000000000000000
     Size.PlatformDefault = False
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     TabPosition = PlatformDefault
     Sizes = (
@@ -106,13 +100,14 @@ object MainPDF: TMainPDF
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 43.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
       Text = 'Grid'
+      OnClick = TabGridClick
       ExplicitSize.cx = 42.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
       object BIGrid1: TBIGrid
@@ -127,7 +122,7 @@ object MainPDF: TMainPDF
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 41.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False

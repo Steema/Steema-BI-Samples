@@ -65,6 +65,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure BCreatePDFClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure TabGridClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -141,10 +142,17 @@ begin
   PDF.GridLines.Vertical.Visible:=CBGridLines.IsChecked;
 end;
 
+procedure TMainPDF.TabGridClick(Sender: TObject);
+begin
+  Layout1.Enabled := true;
+end;
+
 procedure TMainPDF.BCreatePDFClick(Sender: TObject);
 var tmp : TBIPDFExport;
     tmpFile : String;
 begin
+  Layout1.Enabled := false;
+
   // Create a PDF Export object
   tmp:=TBIPDFExport.Create;
   try
@@ -171,6 +179,7 @@ begin
 
     // Show PDF in web browser control
     WebBrowserPDF.Navigate(tmpFile);
+    TabControl1.ActiveTab := TabPDF;
   finally
     tmp.Free;
   end;
