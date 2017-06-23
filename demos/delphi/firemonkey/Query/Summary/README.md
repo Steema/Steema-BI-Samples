@@ -44,6 +44,6 @@ Here we can see a small part of the demo, where we get the data create a Sumamry
   Grid.Columns[2].Width := 150;
   ```
 
-![screenshot](https://raw.githubusercontent.com/Steema/BI/master/demos/delphi/firemonkey/Query/Summary/img/Summary.png "TeeBI Summary")
+![screenshot](https://raw.githubusercontent.com/Steema/BI/master/demos/delphi/firemonkey/Query/Summary/img/Summary.jpg "TeeBI Summary")
 
 
