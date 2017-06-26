@@ -39,7 +39,6 @@ A simple class to implement in-memory database complex structures to provide:
 - Supported development environments: 
 
   *  Embarcadero RAD Studio 10.2 Tokyo, and from Studio XE4 and up (Delphi and C++)
-  *  Visual Studio (.NET)
   *  Lazarus / FreePascal
   
 ### Getting started
