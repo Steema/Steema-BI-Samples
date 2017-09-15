@@ -47,7 +47,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - [Documentation](https://github.com/Steema/BI/wiki)
 
-- [API Reference](http://docs.steebi.com/vclfmx/docs/Docs/API_Reference/Doc/Html)
+- [API Reference](http://teechart.net/docs/teebi/lib/index.htm)
 
 - [Examples and Tutorials](https://github.com/Steema/BI/tree/master/demos)
 
