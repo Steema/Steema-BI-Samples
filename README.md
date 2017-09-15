@@ -1,4 +1,4 @@
-# Tee BI
+# TeeBI
 <www.steebi.com>
 
 ### Datamining, Visualization, Machine-Learning, Big data
