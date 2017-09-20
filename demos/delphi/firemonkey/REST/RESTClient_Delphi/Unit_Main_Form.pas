@@ -81,4 +81,8 @@ begin
   Edit1.Text:='http://steema.cat:15015/?data=sqlite_demo|customers';
 end;
 
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.

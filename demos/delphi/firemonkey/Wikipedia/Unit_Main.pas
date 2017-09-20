@@ -192,4 +192,8 @@ begin
   LabelURL.Text:=URL;
 end;
 
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.

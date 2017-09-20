@@ -179,5 +179,8 @@ begin
     LabelTime.Caption:='Time: '+t1.ElapsedMilliseconds.ToString+' msec';
   end;
 end;
-
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.

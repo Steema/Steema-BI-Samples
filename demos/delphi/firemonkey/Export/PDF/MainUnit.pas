@@ -201,4 +201,8 @@ begin
      Close;
 end;
 
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.

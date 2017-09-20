@@ -291,6 +291,11 @@ end;
 procedure TRDatasetsDemo.FillModels;
 begin
   TAllModels.AllModels(LModel.Items);
+  //Workaround
+  LModel.Items.Delete(LModel.Items.Count-8);
+  LModel.Items.Delete(LModel.Items.Count-4);
+  LModel.Items.Delete(LModel.Items.Count-3);
+  LModel.Items.Delete(LModel.Items.Count-1);
 end;
 
 procedure TRDatasetsDemo.SelectDefaultDatas;
@@ -408,5 +413,9 @@ procedure TRDatasetsDemo.LModelChange(Sender: TObject);
 begin
   EnableFit;
 end;
-
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.
+

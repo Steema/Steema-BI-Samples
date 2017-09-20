@@ -89,4 +89,9 @@ begin
      IManager.LayoutSources.Width:=TabControl1.Width*0.5;
 end;
 
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
+
 end.

@@ -268,5 +268,8 @@ begin
     tmp.Free;
   end;
 end;
-
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.

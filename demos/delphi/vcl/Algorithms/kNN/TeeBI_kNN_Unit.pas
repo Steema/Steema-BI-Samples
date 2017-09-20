@@ -311,8 +311,9 @@ begin
   // Visualization
   BIGrid4.BindTo(Model.Predicted);
   BIGrid5.BindTo(Model.Predicted.Confusion);
-
+  BIChart1.RefreshData;
   LCorrect.Caption:=IntToStr(Model.Predicted.Correct)+' of '+Model.Predicted.Count.ToString;
+
 end;
 
 procedure TFormkNN.FormCreate(Sender: TObject);
@@ -326,7 +327,14 @@ begin
 
   // Add all registered Model classes to CBModel combobox
   TAllModels.AllModels(CBModel.Items);
+
   CBModel.ItemIndex:=CBModel.Items.IndexOfObject(TObject(TBINearestNeighbour));
+
+  //Workaround
+  CBModel.Items.Delete(CBModel.Items.Count-9);
+  CBModel.Items.Delete(CBModel.Items.Count-8);
+  CBModel.Items.Delete(CBModel.Items.Count-3);
+  CBModel.Items.Delete(CBModel.Items.Count-1);
 
   SetupData;
   FitAndPredict;
@@ -343,5 +351,8 @@ begin
 
   Model.Free;
 end;
-
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.
