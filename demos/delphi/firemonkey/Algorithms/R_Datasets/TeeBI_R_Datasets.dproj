@@ -308,6 +308,15 @@
         <DCCReference Include="Unit_BI_Datasets.pas">
             <Form>RDatasetsDemo</Form>
         </DCCReference>
+        <DCCReference Include="..\..\..\..\..\..\Sources\Algorithms\BI.Plugins.R.Command.pas"/>
+        <DCCReference Include="..\..\..\..\..\..\Sources\Algorithms\BI.Plugins.R.pas"/>
+        <DCCReference Include="..\..\..\..\..\..\Sources\Algorithms\BI.Plugins.R.opaR.pas"/>
+        <DCCReference Include="..\..\..\..\..\..\Sources\FMX\FMXBI.R.Console.pas">
+            <Form>BIRConsole</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="..\..\..\..\..\..\Sources\Algorithms\BI.Plugins.Python.pas"/>
+        <DCCReference Include="..\..\..\..\..\..\Sources\Algorithms\BI.Plugins.Python.Engine.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

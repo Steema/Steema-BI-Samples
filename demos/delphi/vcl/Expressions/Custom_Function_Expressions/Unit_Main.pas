@@ -141,4 +141,8 @@ begin
   BIGrid2.Data.Free;
 end;
 
+initialization
+ReportMemoryLeaksOnShutdown := True;
+finalization
+CheckSynchronize;
 end.
