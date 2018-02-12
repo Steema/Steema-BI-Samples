@@ -1,12 +1,8 @@
-# TeeBI
-[Home Page](https://www.steema.com/product/teebi)
+# [TeeBI](https://www.steema.com/product/teebi)
 
-### Datamining, Visualization, Machine-Learning, Big data
+### [Download latest version](https://www.steema.com/downloads/teebi)
 
-[Download latest version](https://www.steema.com/downloads/teebi)
-
-[Release Notes](https://www.steema.com/version_info/teebi) (What's new)
-
+## Datamining, Visualization, Machine-Learning, Big data
  
 ### What is TeeBI ?
 
@@ -53,6 +49,10 @@ A simple class to implement in-memory database complex structures to provide:
 
 ### Links
 
+- [Website](https://www.steema.com/product/teebi)
+
+- [Release Notes](https://www.steema.com/version_info/teebi) (What's new?)
+
 - [TeeBI Google+ Community](https://plus.google.com/u/0/communities/117324086536146457211)
-- Website: <http://www.steebi.com>
-- [TeeGrid Control](https://github.com/Steema/TeeGrid)
+
+- [TeeGrid Control](https://www.steema.com/product/gridvcl)
