@@ -1,11 +1,11 @@
 # TeeBI
-<www.steebi.com>
+[Home Page](https://www.steema.com/product/teebi)
 
 ### Datamining, Visualization, Machine-Learning, Big data
 
-[Download latest version](http://www.steebi.com/files/code/beta/vcl_fmx/) (Beta 18, March-28th 2017)
+[Download latest version](https://www.steema.com/downloads/teebi)
 
-[Release Notes](https://github.com/Steema/BI/blob/master/docs/releasenotes.md) (What's new in beta 18)
+[Release Notes](https://www.steema.com/version_info/teebi) (What's new)
 
  
 ### What is TeeBI ?
@@ -43,13 +43,13 @@ A simple class to implement in-memory database complex structures to provide:
   
 ### Getting started
 
-- [Installing](https://github.com/Steema/BI/wiki/Installing-TeeBI)
+- [Installing](http://teechart.net/docs/teebi/tutorials/Installing-TeeBI)
 
-- [Documentation](https://github.com/Steema/BI/wiki)
+- [Documentation](http://teechart.net/docs/teebi/tutorials/index.html)
 
-- [API Reference](http://teechart.net/docs/teebi/lib/index.htm)
+- [API Reference](http://teechart.net/docs/TeeBIVCLReference.htm)
 
-- [Examples and Tutorials](https://github.com/Steema/BI/tree/master/demos)
+- [Examples](https://github.com/Steema/BI/tree/master/demos)
 
 ### Links
 
