@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Example of a custom function Expression    }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2018 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Expression.Custom;

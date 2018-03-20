@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Speed test TBIDataset vs FireDAC           }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2018 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit Unit_BIDataSet_vs_FireDAC;
