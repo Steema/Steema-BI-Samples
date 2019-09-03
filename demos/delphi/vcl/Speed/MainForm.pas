@@ -21,10 +21,12 @@ type
     BExport: TButton;
     Label1: TLabel;
     LTotal: TLabel;
+    CheckBox1: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure BExportClick(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -74,6 +76,11 @@ begin
  finally
     Screen.Cursor:=crDefault;
   end;
+end;
+
+procedure TFormSpeed.CheckBox1Click(Sender: TObject);
+begin
+  Speed.Parallel_SQL:=CheckBox1.Checked
 end;
 
 procedure TFormSpeed.FormCreate(Sender: TObject);

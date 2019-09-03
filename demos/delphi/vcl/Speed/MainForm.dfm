@@ -57,6 +57,16 @@ object FormSpeed: TFormSpeed
       TabOrder = 1
       OnClick = BExportClick
     end
+    object CheckBox1: TCheckBox
+      Left = 584
+      Top = 12
+      Width = 137
+      Height = 17
+      Caption = 'Use multiple CPUs'
+      TabOrder = 2
+      Visible = False
+      OnClick = CheckBox1Click
+    end
   end
   object BIGrid1: TBIGrid
     Left = 0
