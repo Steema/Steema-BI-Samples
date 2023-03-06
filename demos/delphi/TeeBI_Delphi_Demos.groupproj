@@ -36,9 +36,6 @@
         <Projects Include="vcl\TeeChart\Import Series\TeeBI_Import_TeeChart_Series.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="vcl\Query\Select_Queries\TeeBI_Select_Queries.dproj">
-            <Dependencies/>
-        </Projects>
         <Projects Include="vcl\Filter\BIGrid_Filter\BIGrid_Filter.dproj">
             <Dependencies/>
         </Projects>
@@ -155,15 +152,6 @@
     <Target Name="TeeBI_Import_TeeChart_Series:Make">
         <MSBuild Projects="vcl\TeeChart\Import Series\TeeBI_Import_TeeChart_Series.dproj" Targets="Make"/>
     </Target>
-    <Target Name="TeeBI_Select_Queries">
-        <MSBuild Projects="vcl\Query\Select_Queries\TeeBI_Select_Queries.dproj"/>
-    </Target>
-    <Target Name="TeeBI_Select_Queries:Clean">
-        <MSBuild Projects="vcl\Query\Select_Queries\TeeBI_Select_Queries.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="TeeBI_Select_Queries:Make">
-        <MSBuild Projects="vcl\Query\Select_Queries\TeeBI_Select_Queries.dproj" Targets="Make"/>
-    </Target>
     <Target Name="BIGrid_Filter">
         <MSBuild Projects="vcl\Filter\BIGrid_Filter\BIGrid_Filter.dproj"/>
     </Target>
@@ -192,13 +180,13 @@
         <MSBuild Projects="vcl\Grid\Gridify\TeeBI_Gridify_Table.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX;BIDataSet_Speed;MasterDetail_BIDataSet;TeeBI_Export;TeeBI_PDF_Export;TeeBI_Expressions_Test;TeeBI_ORM_RTTI_Example;TeeBI_Import_TeeChart_Series;TeeBI_Select_Queries;BIGrid_Filter;Summary_Rows_Columns;TeeBI_Gridify_Table"/>
+        <CallTarget Targets="TeeBI_Import_Demo;TeeBI_DataSearch_Demo;TeeBI_Speed;TeeBI_Grid_Demo_FMX;BIDataSet_Speed;MasterDetail_BIDataSet;TeeBI_Export;TeeBI_PDF_Export;TeeBI_Expressions_Test;TeeBI_ORM_RTTI_Example;TeeBI_Import_TeeChart_Series;BIGrid_Filter;Summary_Rows_Columns;TeeBI_Gridify_Table"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean;BIDataSet_Speed:Clean;MasterDetail_BIDataSet:Clean;TeeBI_Export:Clean;TeeBI_PDF_Export:Clean;TeeBI_Expressions_Test:Clean;TeeBI_ORM_RTTI_Example:Clean;TeeBI_Import_TeeChart_Series:Clean;TeeBI_Select_Queries:Clean;BIGrid_Filter:Clean;Summary_Rows_Columns:Clean;TeeBI_Gridify_Table:Clean"/>
+        <CallTarget Targets="TeeBI_Import_Demo:Clean;TeeBI_DataSearch_Demo:Clean;TeeBI_Speed:Clean;TeeBI_Grid_Demo_FMX:Clean;BIDataSet_Speed:Clean;MasterDetail_BIDataSet:Clean;TeeBI_Export:Clean;TeeBI_PDF_Export:Clean;TeeBI_Expressions_Test:Clean;TeeBI_ORM_RTTI_Example:Clean;TeeBI_Import_TeeChart_Series:Clean;BIGrid_Filter:Clean;Summary_Rows_Columns:Clean;TeeBI_Gridify_Table:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make;BIDataSet_Speed:Make;MasterDetail_BIDataSet:Make;TeeBI_Export:Make;TeeBI_PDF_Export:Make;TeeBI_Expressions_Test:Make;TeeBI_ORM_RTTI_Example:Make;TeeBI_Import_TeeChart_Series:Make;TeeBI_Select_Queries:Make;BIGrid_Filter:Make;Summary_Rows_Columns:Make;TeeBI_Gridify_Table:Make"/>
+        <CallTarget Targets="TeeBI_Import_Demo:Make;TeeBI_DataSearch_Demo:Make;TeeBI_Speed:Make;TeeBI_Grid_Demo_FMX:Make;BIDataSet_Speed:Make;MasterDetail_BIDataSet:Make;TeeBI_Export:Make;TeeBI_PDF_Export:Make;TeeBI_Expressions_Test:Make;TeeBI_ORM_RTTI_Example:Make;TeeBI_Import_TeeChart_Series:Make;BIGrid_Filter:Make;Summary_Rows_Columns:Make;TeeBI_Gridify_Table:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
