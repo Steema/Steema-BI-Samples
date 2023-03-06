@@ -41,3 +41,11 @@ demos/delphi/FMXLinux/Export/PDF/Linux64/
 demos/delphi/FMXLinux/Grid/Linux64/
 demos/delphi/FMXLinux/Query/Summary/Linux64/
 demos/delphi/FMXLinux/Speed/Linux64/
+demos/delphi/firemonkey/Speed/Linux64/
+demos/delphi/firemonkey/Speed/TeeBI_Speed_FMX.deployproj
+demos/delphi/firemonkey/Query/Summary/TeeBI_FMX_Summary.deployproj
+demos/delphi/firemonkey/Query/Summary/Linux64/
+demos/delphi/firemonkey/Grid/TeeBI_Grid_Demo_FMX.deployproj
+demos/delphi/firemonkey/Grid/Linux64/
+demos/delphi/firemonkey/Expressions/TeeBI_Expressions_Test.deployproj
+demos/delphi/firemonkey/Expressions/Linux64/
