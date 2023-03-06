@@ -1,7 +1,7 @@
 program TeeBI_Speed;
 
 uses
-  //FastMM4,
+  //FastMM5,
   //nxReplacementMemoryManager,
   Vcl.Forms,
   MainForm in 'MainForm.pas' {FormSpeed},
