@@ -20,11 +20,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids and more)
 
-- Interactive [Dashboards](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Dashboard_VCL.png) rendered to screen (desktop and mobile) and HTML Web pages
-
 - Data [export](https://github.com/Steema/BI/wiki/exporting) (csv,pdf,html,xml,excel,json), comparisons and manipulations
-
-- [Machine-learning](https://github.com/Steema/BI/wiki/machine-learning) and [statistics](https://github.com/Steema/BI/wiki/statistics) (native data pass to R Language and Python Scikit)
 
 - Big-data ready, billions of cells supported
 
@@ -32,7 +28,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Supported development environments: 
 
-  *  Embarcadero RAD Studio 11.3 Alexandria, and from Studio XE4 and up (Delphi and C++)
+  *  Embarcadero RAD Studio Crete 12.3, and from Studio XE4 and up (Delphi and C++)
   *  Lazarus / FreePascal
   
 ### Getting started
@@ -49,3 +45,11 @@ A simple class to implement in-memory database complex structures to provide:
 
 - [TeeChart VCL/FMX](https://www.steema.com/product/vcl)
 - [TeeGrid Control](https://www.steema.com/product/gridvcl)
+
+### Deprecated
+
+- The following features have been marked as obsolete / incompatible, and moved to a separate folder outside the product:
+
+- [Machine-learning](https://github.com/Steema/BI/wiki/machine-learning) and [statistics](https://github.com/Steema/BI/wiki/statistics) (native data pass to R Language and Python Scikit)
+
+- Interactive [Dashboards](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Dashboard_VCL.png) rendered to screen (desktop and mobile) and HTML Web pages
