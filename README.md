@@ -14,7 +14,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
-- Geographic database (Countries, States, Provinces...) to automatically create summary queries and TeeChart world maps
+- Geographic database (Countries, States, Provinces...) to automatically create summary queries and TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
 
 - Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams)
 
@@ -48,8 +48,8 @@ A simple class to implement in-memory database complex structures to provide:
 
 ### Deprecated
 
-- The following features have been marked as obsolete / incompatible, and moved to a separate folder outside the product:
+The following features have been marked as obsolete / incompatible, and moved to a separate folder outside the product:
 
-- [Machine-learning](https://github.com/Steema/BI/wiki/machine-learning) and [statistics](https://github.com/Steema/BI/wiki/statistics) (native data pass to R Language and Python Scikit)
+- [Machine-learning](https://github.com/Steema/BI/wiki/machine-learning) (native data pass to R Language and Python Scikit)
 
 - Interactive [Dashboards](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Dashboard_VCL.png) rendered to screen (desktop and mobile) and HTML Web pages
