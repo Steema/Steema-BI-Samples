@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Web Server (VCL and Firemonkey)            }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Web.AllData;
@@ -22,7 +22,8 @@ type
   public
     Constructor Create(const AStore:String='');
 
-    function AllData:TDataItem;
+    function AllData:TDataItem; overload;
+    class function AllData(const AStore:String):TDataItem; overload; static;
 
     function Find(const AData,AStore:String):TDataItem; overload;
     function Find(const AData:String):TDataItem; overload;
@@ -41,6 +42,9 @@ type
     function MetaStream(const AData:TDataItem; const Zip:Boolean=False):TStream; overload;
 
     property Store:String read FStore;
+  end;
+
+  TAllDataInfo=class(TDataItem)
   end;
 
 implementation
@@ -76,7 +80,7 @@ begin
     result:=False;
 end;
 
-function TAllData.AllData: TDataItem;
+class function TAllData.AllData(const AStore:String):TDataItem;
 var
   tmpRemote: Boolean;
   tmpSizeItem,
@@ -101,7 +105,7 @@ var
     else
     begin
       // Data Last DateTime modified, and Data Size
-      tmpPath:=TStore.FullPath(FStore,tmp);
+      tmpPath:=TStore.FullPath(AStore,tmp);
 
       if GetFileSizeAndDate(tmpPath+TPersistence.Extension,
                             tmpPath+TDataPersistence.Extension,
@@ -118,7 +122,7 @@ var
        result.Items[5].Missing[AIndex]:=True;
 
     // Load Data structure info
-    Data:=TStore.Load(FStore,tmp,function(const Sender:TObject; const Text:String):Boolean
+    Data:=TStore.Load(AStore,tmp,function(const Sender:TObject; const Text:String):Boolean
       begin
         tmpStatus.TextData[AIndex]:=Text;
         result:=True;
@@ -138,8 +142,8 @@ var
 var t : Integer;
     Data : TStringArray;
 begin
-  result:=TDataItem.Create(True);
-  result.Name:=FStore;
+  result:=TAllDataInfo.Create(True);
+  result.Name:=AStore;
 
   result.Items.Add('Name',dkText);
   result.Items.Add('Data',dkInt32);
@@ -149,14 +153,19 @@ begin
   result.Items.Add('Modified',dkDateTime);
   tmpStatus:=result.Items.Add('Status',dkText);
 
-  Data:=GetDataArray;
+  Data:=GetDataArray(AStore);
 
   result.Resize(Data.Count);
 
-  tmpRemote:=TStore.IsRemote(FStore);
+  tmpRemote:=TStore.IsRemote(AStore);
 
   for t:=0 to High(Data) do
       ProcessData(Data[t],t);
+end;
+
+function TAllData.AllData: TDataItem;
+begin
+  result:=AllData(FStore);
 end;
 
 class function TAllData.GetDataArray(const AStore:String): TStringArray;

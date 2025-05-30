@@ -19,6 +19,7 @@ object BIWebMain: TBIWebMain
     Size.Width = 625.000000000000000000
     Size.Height = 81.000000000000000000
     Size.PlatformDefault = False
+    TabOrder = 0
     object Label1: TLabel
       Position.X = 24.000000000000000000
       Position.Y = 16.000000000000000000
@@ -50,6 +51,7 @@ object BIWebMain: TBIWebMain
       Size.PlatformDefault = False
       TabOrder = 0
       Text = 'Data Manager...'
+      TextSettings.Trimming = None
       OnClick = Button1Click
     end
     object Label2: TLabel
@@ -132,6 +134,7 @@ object BIWebMain: TBIWebMain
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = True
       Size.Width = 63.000000000000000000
       Size.Height = 26.000000000000000000
@@ -149,14 +152,15 @@ object BIWebMain: TBIWebMain
         Size.Height = 294.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        Viewport.Width = 625.000000000000000000
-        Viewport.Height = 294.000000000000000000
+        Viewport.Width = 621.000000000000000000
+        Viewport.Height = 290.000000000000000000
       end
     end
     object TabHistory: TTabItem
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 58.000000000000000000
       Size.Height = 26.000000000000000000
@@ -190,6 +194,7 @@ object BIWebMain: TBIWebMain
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 63.000000000000000000
       Size.Height = 26.000000000000000000
@@ -199,143 +204,216 @@ object BIWebMain: TBIWebMain
       Text = 'Settings'
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 50.000000000000000000
-      object Button2: TButton
-        Position.X = 16.000000000000000000
-        Position.Y = 48.000000000000000000
-        Size.Width = 121.000000000000000000
-        Size.Height = 22.000000000000000000
+      object Settings: TTabControl
+        Align = Client
+        Size.Width = 625.000000000000000000
+        Size.Height = 294.000000000000000000
         Size.PlatformDefault = False
+        TabIndex = 2
         TabOrder = 0
-        Text = 'Check for updates'
-        OnClick = Button2Click
-      end
-      object CBAutoUpdate: TCheckBox
-        IsChecked = True
-        Position.X = 16.000000000000000000
-        Position.Y = 16.000000000000000000
-        Size.Width = 233.000000000000000000
-        Size.Height = 19.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 1
-        Text = 'Automatically check for updates'
-        OnChange = CBAutoUpdateChange
-      end
-      object LVersion: TLabel
-        Position.X = 16.000000000000000000
-        Position.Y = 97.000000000000000000
-        Size.Width = 120.000000000000000000
-        Size.Height = 17.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Version'
-        TabOrder = 2
-      end
-      object CBStartMin: TCheckBox
-        IsChecked = True
-        Position.X = 16.000000000000000000
-        Position.Y = 144.000000000000000000
-        Size.Width = 120.000000000000000000
-        Size.Height = 19.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 3
-        Text = 'Start minimized'
-        OnChange = CBStartMinChange
-      end
-      object BStatus: TButton
-        Position.X = 264.000000000000000000
-        Position.Y = 48.000000000000000000
-        Size.Width = 121.000000000000000000
-        Size.Height = 22.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 4
-        Text = 'Memory Status...'
-        OnClick = BStatusClick
-      end
-      object Label3: TLabel
-        Position.X = 16.000000000000000000
-        Position.Y = 214.000000000000000000
-        Size.Width = 120.000000000000000000
-        Size.Height = 17.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Memory:'
-        TabOrder = 5
-      end
-      object LMemory: TLabel
-        Position.X = 16.000000000000000000
-        Position.Y = 232.000000000000000000
-        Size.Width = 120.000000000000000000
-        Size.Height = 17.000000000000000000
-        Size.PlatformDefault = False
-        Text = '0'
-        TabOrder = 6
-      end
-      object GroupBox1: TGroupBox
-        Position.X = 264.000000000000000000
-        Position.Y = 94.000000000000000000
-        Size.Width = 125.000000000000000000
-        Size.Height = 115.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Logs:'
-        TabOrder = 8
-        object CBLogs: TCheckBox
-          IsChecked = True
-          Position.X = 14.000000000000000000
-          Position.Y = 29.000000000000000000
-          Size.Width = 97.000000000000000000
-          Size.Height = 19.000000000000000000
+        TabPosition = PlatformDefault
+        Sizes = (
+          625s
+          268s
+          625s
+          268s
+          625s
+          268s)
+        object TabVersion: TTabItem
+          CustomIcon = <
+            item
+            end>
+          TextSettings.Trimming = None
+          IsSelected = False
+          Size.Width = 59.000000000000000000
+          Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
+          StyleLookup = ''
           TabOrder = 0
-          Text = 'Persist'
-          OnChange = CBLogsChange
+          Text = 'Version'
+          ExplicitSize.cx = 59.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object CBAutoUpdate: TCheckBox
+            IsChecked = True
+            Position.X = 15.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 233.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Text = 'Automatically check for updates'
+            OnChange = CBAutoUpdateChange
+          end
+          object Button2: TButton
+            Position.X = 16.000000000000000000
+            Position.Y = 48.000000000000000000
+            Size.Width = 121.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Check for updates'
+            TextSettings.Trimming = None
+            OnClick = Button2Click
+          end
+          object LVersion: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 97.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Version'
+            TabOrder = 2
+          end
         end
-        object Label4: TLabel
-          Position.X = 13.000000000000000000
-          Position.Y = 56.000000000000000000
-          Size.Width = 89.000000000000000000
-          Size.Height = 17.000000000000000000
+        object TabMemory: TTabItem
+          CustomIcon = <
+            item
+            end>
+          TextSettings.Trimming = None
+          IsSelected = False
+          Size.Width = 65.000000000000000000
+          Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
-          Text = 'Store:'
-        end
-        object CBLogStore: TComboBox
-          Position.X = 12.000000000000000000
-          Position.Y = 75.000000000000000000
-          TabOrder = 2
-          OnChange = CBLogStoreChange
-        end
-      end
-      object GroupBox2: TGroupBox
-        Position.X = 424.000000000000000000
-        Position.Y = 94.000000000000000000
-        Size.Width = 125.000000000000000000
-        Size.Height = 115.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Public Folder:'
-        TabOrder = 7
-        object CBPublic: TCheckBox
-          IsChecked = True
-          Position.X = 14.000000000000000000
-          Position.Y = 29.000000000000000000
-          Size.Width = 97.000000000000000000
-          Size.Height = 19.000000000000000000
-          Size.PlatformDefault = False
+          StyleLookup = ''
           TabOrder = 0
-          Text = 'Enabled'
-          OnChange = CBPublicChange
+          Text = 'Memory'
+          ExplicitSize.cx = 65.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object BStatus: TButton
+            Position.X = 24.000000000000000000
+            Position.Y = 24.000000000000000000
+            Size.Width = 81.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Text = '&Status...'
+            TextSettings.Trimming = None
+            OnClick = BStatusClick
+          end
+          object Label3: TLabel
+            Position.X = 25.000000000000000000
+            Position.Y = 70.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Memory:'
+            TabOrder = 2
+          end
+          object LMemory: TLabel
+            Position.X = 25.000000000000000000
+            Position.Y = 86.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = '0'
+            TabOrder = 3
+          end
         end
-        object Label5: TLabel
-          Position.X = 13.000000000000000000
-          Position.Y = 56.000000000000000000
-          Size.Width = 89.000000000000000000
-          Size.Height = 17.000000000000000000
+        object TabGeneral: TTabItem
+          CustomIcon = <
+            item
+            end>
+          TextSettings.Trimming = None
+          IsSelected = True
+          Size.Width = 61.000000000000000000
+          Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
-          Text = 'Path:'
-        end
-        object EPublic: TEdit
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 3
-          Text = '.\Public'
-          Position.X = 13.000000000000000000
-          Position.Y = 75.000000000000000000
-          OnChange = EPublicChange
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'General'
+          ExplicitSize.cx = 61.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object GroupBox1: TGroupBox
+            Position.X = 12.000000000000000000
+            Position.Y = 14.000000000000000000
+            Size.Width = 125.000000000000000000
+            Size.Height = 115.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Logs:'
+            TabOrder = 3
+            object CBLogs: TCheckBox
+              IsChecked = True
+              Position.X = 14.000000000000000000
+              Position.Y = 29.000000000000000000
+              Size.Width = 97.000000000000000000
+              Size.Height = 19.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 0
+              Text = 'Persist'
+              OnChange = CBLogsChange
+            end
+            object Label4: TLabel
+              Position.X = 13.000000000000000000
+              Position.Y = 56.000000000000000000
+              Size.Width = 89.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Store:'
+            end
+            object CBLogStore: TComboBox
+              Position.X = 12.000000000000000000
+              Position.Y = 75.000000000000000000
+              TabOrder = 2
+              OnChange = CBLogStoreChange
+            end
+          end
+          object CBStartMin: TCheckBox
+            IsChecked = True
+            Position.X = 17.000000000000000000
+            Position.Y = 144.000000000000000000
+            Size.Width = 120.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Text = 'Start minimized'
+            OnChange = CBStartMinChange
+          end
+          object GroupBox2: TGroupBox
+            Position.X = 156.000000000000000000
+            Position.Y = 14.000000000000000000
+            Size.Width = 125.000000000000000000
+            Size.Height = 115.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Public Folder:'
+            TabOrder = 0
+            object CBPublic: TCheckBox
+              IsChecked = True
+              Position.X = 14.000000000000000000
+              Position.Y = 29.000000000000000000
+              Size.Width = 97.000000000000000000
+              Size.Height = 19.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 0
+              Text = 'Enabled'
+              OnChange = CBPublicChange
+            end
+            object Label5: TLabel
+              Position.X = 13.000000000000000000
+              Position.Y = 56.000000000000000000
+              Size.Width = 89.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Path:'
+            end
+            object EPublic: TEdit
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              TabOrder = 3
+              Text = '.\Public'
+              Position.X = 13.000000000000000000
+              Position.Y = 75.000000000000000000
+              OnChange = EPublicChange
+            end
+          end
+          object CBRunStart: TCheckBox
+            Position.X = 16.000000000000000000
+            Position.Y = 168.000000000000000000
+            Size.Width = 249.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 4
+            Text = '&Run when system starts'
+            OnChange = CBRunStartChange
+          end
         end
       end
     end
@@ -343,6 +421,7 @@ object BIWebMain: TBIWebMain
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 73.000000000000000000
       Size.Height = 26.000000000000000000
@@ -380,8 +459,8 @@ object BIWebMain: TBIWebMain
     end
   end
   object PopupMenu1: TPopupMenu
-    Left = 536
-    Top = 136
+    Left = 560
+    Top = 128
     object MenuShow: TMenuItem
       Text = 'Show...'
       OnClick = MenuShowClick
@@ -396,13 +475,18 @@ object BIWebMain: TBIWebMain
     Interval = 10000
     OnTimer = Timer1Timer
     Left = 480
-    Top = 120
+    Top = 128
   end
   object TimerScheduler: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerSchedulerTimer
-    Left = 416
+    Left = 384
+    Top = 128
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 256
     Top = 128
   end
 end

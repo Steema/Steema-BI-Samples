@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Indy implementation of abstract Web Server }
-{  Copyright (c) 2015-2017 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Web.IndyContext;
@@ -11,16 +11,16 @@ interface
 uses
   System.Classes,
   IdContext, IdCustomHTTPServer,
-  BI.Web.Common;
+  BI.Web.Context, BI.Web.Common;
 
 type
-  TBIIndyContext=class(TBIWebContext)
+  TBIIndyContext=class(TWebContext)
   private
     function IContext:TIdContext;
   public
     Constructor Create(const AContext:TIdContext);
 
-    procedure AddCookie(const AName,AValue:String); override;
+    procedure AddCookie(const AHost,AName,AValue:String); override;
 
     procedure Finish;
     function FormParams: String; override;
@@ -31,10 +31,11 @@ type
     function Headers: TStrings; override;
 
     class procedure Process(const BIWeb:TBIWebCommon;
-                            const AContext:TBIWebContext); static;
+                            const AContext:TWebContext); static;
 
     function Params:TStrings; override;
     function PeerIP:String;
+    function Post(const AURL:String; const AParams:TStrings):String; override;
     procedure Redirect(const AURL: String); override;
     function ResponseSize:Int64; override;
     procedure ReturnFile(const AFile:String); override;
@@ -47,7 +48,7 @@ type
 implementation
 
 uses
-  IdSSL, IdCookie, IdURI,
+  IdSSL, IdCookie, IdURI, IdHttp,
   BI.DataSource;
 
 { TBIIndyContext }
@@ -90,6 +91,17 @@ end;
 function TBIIndyContext.PeerIP: String;
 begin
   result:=IContext.Connection.Socket.Binding.PeerIP;
+end;
+
+function TBIIndyContext.Post(const AURL: String; const AParams: TStrings): String;
+var HTTP: TIdHTTP;
+begin
+  HTTP:=TIdHTTP.Create(nil);
+  try
+    result:=HTTP.Post(AURL,AParams);
+  finally
+    HTTP.Free;
+  end;
 end;
 
 function TBIIndyContext.ResponseSize: Int64;
@@ -140,7 +152,7 @@ begin
 end;
 
 class procedure TBIIndyContext.Process(const BIWeb:TBIWebCommon;
-                                       const AContext:TBIWebContext);
+                                       const AContext:TWebContext);
 begin
   if AContext.GetDocument<>'/' then
      BIWeb.ProcessFile(AContext.GetDocument,AContext)
@@ -180,10 +192,10 @@ begin
   result:=TIdHTTPRequestInfo(RequestInfo).PostStream;
 end;
 
-procedure TBIIndyContext.AddCookie(const AName,AValue:String);
+procedure TBIIndyContext.AddCookie(const AHost,AName,AValue:String);
 var URI : TIdURI;
 begin
-  URI:=TIdURI.Create('http://localhost');
+  URI:=TIdURI.Create(AHost);
   try
     TIdHTTPResponseInfo(ResponseInfo).Cookies.AddServerCookie(AName+'='+AValue,URI);
   finally

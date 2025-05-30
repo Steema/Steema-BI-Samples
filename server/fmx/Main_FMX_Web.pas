@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Web Server (Firemonkey)                    }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit Main_FMX_Web;
@@ -43,8 +43,13 @@ uses
   FMX.StdCtrls, FMX.Layouts, FMX.Memo, FMX.Objects, FMX.ListBox,
   FMXBI.DataManager, FMX.Edit, FMX.TabControl,
   FMX.Menus, BI.Web, FMX.ListView.Types, FMX.ListView,
-  BI.Web.Common, BI.Web.SingleInstance,
-  FMXBI.Grid, FMXBI.DataControl, BI.Web.Server.Indy;
+
+  BI.Web.Common, BI.Web.SingleInstance, BI.Web.Context,
+
+  FMXBI.Grid, FMXBI.DataControl, BI.Web.Server.Indy,
+
+  FireDAC.UI.Intf,
+  FireDAC.FMXUI.Wait, FireDAC.Stan.Intf, FireDAC.Comp.UI, FMX.Memo.Types;
 
 type
   TBIWebMain = class(TForm)
@@ -61,34 +66,40 @@ type
     TabHistory: TTabItem;
     TabSettings: TTabItem;
     ErrorLog: TMemo;
-    Button2: TButton;
-    CBAutoUpdate: TCheckBox;
     Layout2: TLayout;
     CBAutoScroll: TCheckBox;
-    LVersion: TLabel;
     PopupMenu1: TPopupMenu;
     MenuExit: TMenuItem;
     Timer1: TTimer;
-    CBStartMin: TCheckBox;
     MenuShow: TMenuItem;
     Favicon: TImage;
-    BStatus: TButton;
     TabSchedule: TTabItem;
-    Label3: TLabel;
-    LMemory: TLabel;
     Favicon16: TImage;
-    GroupBox1: TGroupBox;
-    CBLogs: TCheckBox;
-    Label4: TLabel;
-    CBLogStore: TComboBox;
-    GroupBox2: TGroupBox;
-    CBPublic: TCheckBox;
-    Label5: TLabel;
-    EPublic: TEdit;
     Layout3: TLayout;
     CBScheduler: TCheckBox;
     BIGrid1: TBIGrid;
     TimerScheduler: TTimer;
+    Settings: TTabControl;
+    TabVersion: TTabItem;
+    CBAutoUpdate: TCheckBox;
+    Button2: TButton;
+    LVersion: TLabel;
+    TabMemory: TTabItem;
+    BStatus: TButton;
+    Label3: TLabel;
+    LMemory: TLabel;
+    TabGeneral: TTabItem;
+    GroupBox1: TGroupBox;
+    CBLogs: TCheckBox;
+    Label4: TLabel;
+    CBLogStore: TComboBox;
+    CBStartMin: TCheckBox;
+    GroupBox2: TGroupBox;
+    CBPublic: TCheckBox;
+    Label5: TLabel;
+    EPublic: TEdit;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    CBRunStart: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -115,6 +126,7 @@ type
     procedure EPublicChange(Sender: TObject);
     procedure CBSchedulerChange(Sender: TObject);
     procedure TimerSchedulerTimer(Sender: TObject);
+    procedure CBRunStartChange(Sender: TObject);
   private
     { Private declarations }
     Data : TAllData;
@@ -129,7 +141,7 @@ type
     TrayIcon : TnTrayIcon;
     {$ENDIF}
 
-    procedure AddHistory(const AContext:TBIWebContext;
+    procedure AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -147,11 +159,11 @@ type
     procedure RefreshGrid;
     procedure RefreshMemory;
 
-    procedure ServerConnect(const AContext: TBIWebContext);
-    procedure ServerDisconnect(const AContext: TBIWebContext);
-    procedure ServerException(const AContext: TBIWebContext; const AException: Exception);
+    procedure ServerConnect(const AContext: TWebContext);
+    procedure ServerDisconnect(const AContext: TWebContext);
+    procedure ServerException(const AContext: TWebContext; const AException: Exception);
     procedure ServerStatus(const ASender: TObject; const AStatusText: string);
-    procedure ServerCommandGet(const AContext: TBIWebContext);
+    procedure ServerCommandGet(const AContext: TWebContext);
 
     procedure SetupLogs;
     procedure SetupPublicFolder;
@@ -160,12 +172,12 @@ type
     BIWeb : TBIWebCommon;
   public
     { Public declarations }
+
     Server : THttpServer;
   end;
 
 var
   BIWebMain: TBIWebMain;
-  BIWebCommonClass : TBIWebCommonClass;
 
 implementation
 
@@ -175,6 +187,7 @@ uses
   {$IFDEF MSWINDOWS}
   FMX.Platform,
   {$ENDIF}
+
   BI.Arrays, BI.DataItem, BI.Persist, System.IOUtils, BI.UI,
   BI.CSV, BI.Html, BI.JSON, BI.ClientDataset,
   BI.XMLData, BI.DB,
@@ -187,8 +200,12 @@ uses
   {$ENDIF}
   {$ENDIF}
 
+  {$IFDEF MSWINDOWS}
+  System.Win.Registry,
+  {$ENDIF}
+
   FMXBI.Status,
-  BI.Languages.English, BI.Languages.Spanish,
+  BI.Languages.English, BI.Languages.Spanish, BI.Web.Modules.Default,
   FMXTee.Procs, FMXBI.Editor.Stores, BI.Web.IndyContext;
 
 procedure AppOnTaskbar(const AMainForm : TForm; const Hide:Boolean);
@@ -246,7 +263,7 @@ end;
 procedure TBIWebMain.EPublicChange(Sender: TObject);
 begin
   BIWeb.PublicFolder.Path:=EPublic.Text;
-  TBIRegistry.WriteString('BIWeb','PublicFolder',BIWeb.PublicFolder.Path);
+  TBIWebConfig.WriteString('PublicFolder',BIWeb.PublicFolder.Path);
 end;
 
 procedure TBIWebMain.Button1Click(Sender: TObject);
@@ -290,18 +307,18 @@ end;
 
 procedure TBIWebMain.CBAutoUpdateChange(Sender: TObject);
 begin
-  TBIRegistry.WriteBoolean('BIWeb','AutoUpdate',CBAutoUpdate.IsChecked);
+  TBIWebConfig.WriteBoolean('AutoUpdate',CBAutoUpdate.IsChecked);
 end;
 
 procedure TBIWebMain.CBStartMinChange(Sender: TObject);
 begin
-  TBIRegistry.WriteBoolean('BIWeb','Minimized',CBStartMin.IsChecked);
+  TBIWebConfig.WriteBoolean('Minimized',CBStartMin.IsChecked);
 end;
 
 procedure TBIWebMain.CBLogsChange(Sender: TObject);
 begin
   BIWeb.Logs.Persist:=CBLogs.IsChecked;
-  TBIRegistry.WriteBoolean('BIWeb','LogPersist',CBLogs.IsChecked);
+  TBIWebConfig.WriteBoolean('LogPersist',CBLogs.IsChecked);
 
   if CBLogs.IsChecked then
      BIWeb.Logs.TrySave;
@@ -314,7 +331,7 @@ begin
   else
      BIWeb.Logs.Store:=CBLogStore.Selected.Text;
 
-  TBIRegistry.WriteString('BIWeb','LogStore',BIWeb.Logs.Store);
+  TBIWebConfig.WriteString('LogStore',BIWeb.Logs.Store);
 
   if CBLogs.IsChecked then
      BIWeb.Logs.TrySave;
@@ -323,7 +340,62 @@ end;
 procedure TBIWebMain.CBPublicChange(Sender: TObject);
 begin
   BIWeb.PublicFolder.Enabled:=CBPublic.IsChecked;
-  TBIRegistry.WriteBoolean('BIWeb','PublicEnabled',BIWeb.PublicFolder.Enabled);
+  TBIWebConfig.WriteBoolean('PublicEnabled',BIWeb.PublicFolder.Enabled);
+end;
+
+const
+  RunSystemKey='Software\Microsoft\Windows\CurrentVersion\Run';
+
+function ExeUpper:String;
+begin
+  result:=UpperCase(Trim(ParamStr(0)));
+end;
+
+function CurrentRunSystem:Boolean;
+begin
+  {$IFDEF MSWINDOWS}
+  with TRegistry.Create(KEY_READ) do
+  try
+    if OpenKeyReadOnly(RunSystemKey) then
+       result:=ValueExists(ExeUpper)
+    else
+       result:=False
+  finally
+    Free;
+  end
+  {$ELSE}
+  result:=False;
+  {$ENDIF}
+end;
+
+function FullCommandLine:String;
+var t : Integer;
+begin
+  result:='"'+ParamStr(0)+'"';
+
+  for t:=1 to ParamCount do
+      result:=result+' '+ParamStr(t);
+end;
+
+procedure ChangeRunSystem(const RunStart:Boolean);
+begin
+  if CurrentRunSystem<>RunStart then
+
+  {$IFDEF MSWINDOWS}
+  with TRegistry.Create do
+  try
+    if OpenKey(RunSystemKey,True) then
+       WriteString(ExeUpper,FullCommandLine);
+  finally
+    Free;
+  end
+  {$ENDIF}
+end;
+
+procedure TBIWebMain.CBRunStartChange(Sender: TObject);
+begin
+  TBIWebConfig.WriteBoolean('RunSystem',CBRunStart.IsChecked);
+  ChangeRunSystem(CBRunStart.IsChecked);
 end;
 
 procedure TBIWebMain.TryEnableScheduler;
@@ -334,7 +406,7 @@ end;
 
 procedure TBIWebMain.CBSchedulerChange(Sender: TObject);
 begin
-  TBIRegistry.WriteBoolean('BIWeb','Scheduler',CBScheduler.IsChecked);
+  TBIWebConfig.WriteBoolean('Scheduler',CBScheduler.IsChecked);
   TryEnableScheduler;
 end;
 
@@ -358,7 +430,7 @@ end;
 
 procedure TBIWebMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  TUICommon.SavePosition(Self,'FMXBIWeb');
+  TUICommon.SavePosition(Self,TBIWebConfig.Key,'MainForm');
 end;
 
 procedure TBIWebMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -408,7 +480,7 @@ procedure TBIWebMain.FormCreate(Sender: TObject);
   begin
     Server:=THttpServer.Engine.Create(Self);
 
-    Server.Port:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+    Server.Port:=TBIWebCommon.ServerPort;
 
     Server.OnCommandGet:=ServerCommandGet;
     Server.OnConnect:=ServerConnect;
@@ -419,16 +491,16 @@ procedure TBIWebMain.FormCreate(Sender: TObject);
 
   procedure CreateBIWeb;
   begin
-    BIWeb:=BIWebCommonClass.Create;
-    BIWeb.Data:=Data;
+    BIWeb:=TBIWebCommon.Create;
+    TDefaultModule(BIWeb.DefaultModule).Data:=Data;
 
     BIWeb.Logs.History:=History;
     BIWeb.Logs.AddHistory:=AddHistory;
 
     BIWeb.Scheduler.Refresh(Data.Store);
 
-    BIWeb.Logs.Persist:=TBIRegistry.ReadBoolean('BIWeb','LogPersist',True);
-    BIWeb.Logs.Store:=TBIRegistry.ReadString('BIWeb','LogStore','');
+    BIWeb.Logs.Persist:=TBIWebConfig.ReadBoolean('LogPersist',True);
+    BIWeb.Logs.Store:=TBIWebConfig.ReadString('LogStore');
   end;
 
   procedure CreateHistory;
@@ -442,17 +514,14 @@ procedure TBIWebMain.FormCreate(Sender: TObject);
 
   function DefaultDataStore:String;
   begin
-    if ParamCount>0 then
-       result:=Trim(ParamStr(1))
-    else
-       result:='';
+    result:=TBIWebConfig.CommandLine('S');
 
     if result='' then
        result:=FMXDefaultStore;
   end;
 
 begin
-  TUICommon.LoadPosition(Self,'FMXBIWeb');
+  TUICommon.LoadPosition(Self,TBIWebConfig.Key,'MainForm');
 
   FirstTime:=True;
 
@@ -467,6 +536,10 @@ begin
 
   CreateAllData(DefaultDataStore);
   CreateBIWeb;
+
+  BIWeb.AddUI(Settings);
+
+  BIWeb.SetupModules;
 
   Server.Active:=True;
 
@@ -511,15 +584,18 @@ begin
 
   AppOnTaskbar(Self,True);
 
-  CBAutoUpdate.IsChecked:=TBIRegistry.ReadBoolean('BIWeb','AutoUpdate', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
-  CBStartMin.IsChecked:=TBIRegistry.ReadBoolean('BIWeb','Minimized', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
+  CBAutoUpdate.IsChecked:=TBIWebConfig.ReadBoolean('AutoUpdate', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
+  CBStartMin.IsChecked:=TBIWebConfig.ReadBoolean('Minimized', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
+
+  CBRunStart.IsChecked:=TBIWebConfig.ReadBoolean('RunSystem',True);
+  ChangeRunSystem(CBRunStart.IsChecked);
 
   SetupLogs;
   SetupPublicFolder;
 
   Timer1.Enabled:=CBAutoUpdate.IsChecked;
 
-  CBScheduler.IsChecked:=TBIRegistry.ReadBoolean('BIWeb','Scheduler',False);
+  CBScheduler.IsChecked:=TBIWebConfig.ReadBoolean('Scheduler',False);
   TryEnableScheduler;
 end;
 
@@ -583,7 +659,7 @@ procedure TBIWebMain.NumberBox1ChangeTracking(Sender: TObject);
 begin
   Server.Port:=Round(NumberBox1.Value);
 
-  TBIRegistry.WriteInteger('BIWeb','Port',Server.Port);
+  TBIWebConfig.WriteInteger('Port',Server.Port);
 end;
 
 procedure TBIWebMain.RefreshCount;
@@ -612,7 +688,7 @@ begin
      end);
 end;
 
-procedure TBIWebMain.AddHistory(const AContext:TBIWebContext;
+procedure TBIWebMain.AddHistory(const AContext:TWebContext;
                                 const Command:String;
                                 const Tag:String;
                                 const Success:Boolean;
@@ -647,7 +723,7 @@ begin
   TUICommon.GotoURL(nil,LocalHost);
 end;
 
-procedure TBIWebMain.ServerCommandGet(const AContext: TBIWebContext);
+procedure TBIWebMain.ServerCommandGet(const AContext: TWebContext);
 begin
   if SameText(AContext.GetDocument,'/favicon.ico') then
      AContext.ReturnIcon(FaviconStream)
@@ -668,19 +744,19 @@ begin
   end;
 end;
 
-procedure TBIWebMain.ServerConnect(const AContext: TBIWebContext);
+procedure TBIWebMain.ServerConnect(const AContext: TWebContext);
 begin
   if Visible then
      RefreshCount;
 end;
 
-procedure TBIWebMain.ServerDisconnect(const AContext: TBIWebContext);
+procedure TBIWebMain.ServerDisconnect(const AContext: TWebContext);
 begin
   if Visible then
      RefreshCount;
 end;
 
-procedure TBIWebMain.ServerException(const AContext: TBIWebContext; const AException: Exception);
+procedure TBIWebMain.ServerException(const AContext: TWebContext; const AException: Exception);
 begin
   Log(AException.Message);
 end;
@@ -694,6 +770,9 @@ procedure TBIWebMain.TabControl1Change(Sender: TObject);
 begin
   if TabControl1.ActiveTab=TabSettings then
      RefreshMemory;
+
+  if BIWeb<>nil then
+     BIWeb.RefreshUI(TabControl1.ActiveTab);
 end;
 
 procedure TBIWebMain.Timer1Timer(Sender: TObject);
@@ -707,6 +786,4 @@ begin
   BIWeb.Scheduler.Process;
 end;
 
-initialization
-  BIWebCommonClass:=TBIWebCommon;
 end.

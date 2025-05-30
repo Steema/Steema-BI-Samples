@@ -10,12 +10,10 @@ object FormBIWeb: TFormBIWeb
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
@@ -29,7 +27,7 @@ object FormBIWeb: TFormBIWeb
     Top = 51
     Width = 591
     Height = 277
-    ActivePage = TabConsole
+    ActivePage = TabSettings
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
@@ -86,132 +84,162 @@ object FormBIWeb: TFormBIWeb
     object TabSettings: TTabSheet
       Caption = 'Settings'
       ImageIndex = 2
-      object Label1: TLabel
-        Left = 12
-        Top = 44
-        Width = 42
-        Height = 13
-        Caption = 'Memory:'
-      end
-      object LMemory: TLabel
-        Left = 12
-        Top = 63
-        Width = 6
-        Height = 13
-        Caption = '0'
-      end
-      object LVersion: TLabel
-        Left = 12
-        Top = 12
-        Width = 35
-        Height = 13
-        Caption = 'Version'
-      end
-      object CBStartMin: TCheckBox
-        Left = 12
-        Top = 92
-        Width = 145
-        Height = 17
-        Caption = 'Start &Minimized'
+      object PageSettings: TPageControl
+        Left = 0
+        Top = 0
+        Width = 583
+        Height = 249
+        ActivePage = TabMemory
+        Align = alClient
         TabOrder = 0
-        OnClick = CBStartMinClick
-      end
-      object GroupBox1: TGroupBox
-        Left = 188
-        Top = 12
-        Width = 135
-        Height = 94
-        Caption = 'Logs:'
-        TabOrder = 1
-        object Label4: TLabel
-          Left = 10
-          Top = 41
-          Width = 30
-          Height = 13
-          Caption = 'Store:'
+        object TabVersion: TTabSheet
+          Caption = 'Version'
+          object LVersion: TLabel
+            Left = 15
+            Top = 90
+            Width = 35
+            Height = 13
+            Caption = 'Version'
+          end
+          object CBAutoUpdate: TCheckBox
+            Left = 15
+            Top = 10
+            Width = 207
+            Height = 17
+            Caption = 'Automatically check for updates'
+            TabOrder = 0
+            OnClick = CBAutoUpdateClick
+          end
+          object Button2: TButton
+            Left = 15
+            Top = 39
+            Width = 127
+            Height = 25
+            Caption = 'Check for updates'
+            TabOrder = 1
+            OnClick = Button2Click
+          end
         end
-        object CBLogs: TCheckBox
-          Left = 10
-          Top = 18
-          Width = 97
-          Height = 17
-          Caption = 'Persist'
-          Checked = True
-          State = cbChecked
-          TabOrder = 0
-          OnClick = CBLogsClick
+        object TabMemory: TTabSheet
+          Caption = 'Memory'
+          ImageIndex = 1
+          object LMemory: TLabel
+            Left = 12
+            Top = 63
+            Width = 6
+            Height = 13
+            Caption = '0'
+          end
+          object Label1: TLabel
+            Left = 12
+            Top = 44
+            Width = 42
+            Height = 13
+            Caption = 'Memory:'
+          end
+          object Button4: TButton
+            Left = 12
+            Top = 12
+            Width = 75
+            Height = 25
+            Caption = '&Status...'
+            Enabled = False
+            TabOrder = 0
+            OnClick = Button4Click
+          end
         end
-        object CBLogStore: TComboBox
-          Left = 10
-          Top = 60
-          Width = 113
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 1
-          OnChange = CBLogStoreChange
+        object TabGeneral: TTabSheet
+          Caption = 'General'
+          ImageIndex = 2
+          object GroupBox1: TGroupBox
+            Left = 3
+            Top = 18
+            Width = 135
+            Height = 94
+            Caption = 'Logs:'
+            TabOrder = 0
+            object Label4: TLabel
+              Left = 10
+              Top = 41
+              Width = 30
+              Height = 13
+              Caption = 'Store:'
+            end
+            object CBLogs: TCheckBox
+              Left = 10
+              Top = 18
+              Width = 97
+              Height = 17
+              Caption = 'Persist'
+              Checked = True
+              State = cbChecked
+              TabOrder = 0
+              OnClick = CBLogsClick
+            end
+            object CBLogStore: TComboBox
+              Left = 10
+              Top = 60
+              Width = 113
+              Height = 21
+              Style = csDropDownList
+              TabOrder = 1
+              OnChange = CBLogStoreChange
+            end
+          end
+          object GroupBox2: TGroupBox
+            Left = 156
+            Top = 18
+            Width = 173
+            Height = 94
+            Caption = 'Public &Folder:'
+            TabOrder = 1
+            object Label5: TLabel
+              Left = 16
+              Top = 42
+              Width = 26
+              Height = 13
+              Caption = '&Path:'
+            end
+            object CBPublic: TCheckBox
+              Left = 9
+              Top = 19
+              Width = 97
+              Height = 17
+              Caption = '&Enable'
+              Checked = True
+              State = cbChecked
+              TabOrder = 0
+              OnClick = CBPublicClick
+            end
+            object EPublic: TEdit
+              Left = 8
+              Top = 45
+              Width = 153
+              Height = 21
+              TabOrder = 1
+              Text = '.\Public'
+              OnChange = EPublicChange
+            end
+          end
+          object CBStartMin: TCheckBox
+            Left = 13
+            Top = 123
+            Width = 145
+            Height = 17
+            Caption = 'Start &Minimized'
+            TabOrder = 2
+            OnClick = CBStartMinClick
+          end
+          object Button3: TButton
+            Left = 13
+            Top = 155
+            Width = 75
+            Height = 25
+            Caption = '&Home...'
+            TabOrder = 3
+            OnClick = Button3Click
+          end
         end
-      end
-      object GroupBox2: TGroupBox
-        Left = 12
-        Top = 129
-        Width = 173
-        Height = 78
-        Caption = 'Public &Folder:'
-        TabOrder = 2
-        object Label5: TLabel
-          Left = 16
-          Top = 42
-          Width = 26
-          Height = 13
-          Caption = '&Path:'
-        end
-        object CBPublic: TCheckBox
-          Left = 9
-          Top = 19
-          Width = 97
-          Height = 17
-          Caption = '&Enable'
-          Checked = True
-          State = cbChecked
-          TabOrder = 0
-          OnClick = CBPublicClick
-        end
-        object EPublic: TEdit
-          Left = 8
-          Top = 45
-          Width = 153
-          Height = 21
-          TabOrder = 1
-          Text = '.\Public'
-          OnChange = EPublicChange
-        end
-      end
-      object CBAutoUpdate: TCheckBox
-        Left = 214
-        Top = 148
-        Width = 207
-        Height = 17
-        Caption = 'Automatically check for updates'
-        TabOrder = 3
-        OnClick = CBAutoUpdateClick
-      end
-      object Button2: TButton
-        Left = 214
-        Top = 171
-        Width = 127
-        Height = 25
-        Caption = 'Check for updates'
-        TabOrder = 4
-        OnClick = Button2Click
-      end
-      object Button3: TButton
-        Left = 12
-        Top = 214
-        Width = 75
-        Height = 25
-        Caption = '&Home...'
-        TabOrder = 5
-        OnClick = Button3Click
       end
     end
     object TabScheduler: TTabSheet

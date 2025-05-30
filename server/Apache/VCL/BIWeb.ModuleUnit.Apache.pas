@@ -3,7 +3,9 @@ unit BIWeb.ModuleUnit.Apache;
 interface
 
 uses System.SysUtils, System.Classes, Web.ApacheHTTP, Web.HttpApp,
-     BI.Web, BI.Web.Common, BI.Web.ApacheContext, BI.Web.AllData, BI.Persist;
+     BI.Web,
+     BI.Web.Context, BI.Web.Common, BI.Web.ApacheContext, BI.
+     Web.AllData, BI.Persist;
 
 type
   TWebModule1 = class(TWebModule)
@@ -17,7 +19,7 @@ type
     Data : TAllData;
     History : TBIWebHistory;
 
-    procedure AddHistory(const AContext:TBIWebContext;
+    procedure AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -42,7 +44,7 @@ begin
   Handled:=TBIApacheContext.Process(BIWeb,TApacheRequest(Request),TApacheResponse(Response));
 end;
 
-procedure TWebModule1.AddHistory(const AContext:TBIWebContext;
+procedure TWebModule1.AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;

@@ -1,15 +1,22 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  HTTP Web Server using Indy                 }
+{                                             }
+{  Copyright (c) 2015-2025 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.Web.Server.Indy;
 
 interface
 
 uses
   {System.}Classes, {System.}SysUtils,
-  BI.Web.Common;
+  BI.Web.Context;
 
 type
-  THttpServerCommandEvent=procedure(const AContext: TBIWebContext) of object;
-  THttpServerConnectEvent=procedure(const AContext: TBIWebContext) of object;
-  THttpServerExceptionEvent=procedure(const AContext: TBIWebContext; const AException: Exception) of object;
+  THttpServerCommandEvent=procedure(const AContext: TWebContext) of object;
+  THttpServerConnectEvent=procedure(const AContext: TWebContext) of object;
+  THttpServerExceptionEvent=procedure(const AContext: TWebContext; const AException: Exception) of object;
   THttpServerStatusEvent=procedure(const ASender: TObject; const AStatusText: string) of object;
 
   THttpServerClass=class of THttpServer;
@@ -99,7 +106,7 @@ begin
 end;
 
 procedure TIndyHttpServer.ServerConnect(AContext: TIdContext);
-var tmp : TBIWebContext;
+var tmp : TWebContext;
 begin
   if Assigned(FConnect) then
   begin
@@ -113,7 +120,7 @@ begin
 end;
 
 procedure TIndyHttpServer.ServerDisconnect(AContext: TIdContext);
-var tmp : TBIWebContext;
+var tmp : TWebContext;
 begin
   if Assigned(FDisconnect) then
   begin
@@ -128,7 +135,7 @@ end;
 
 procedure TIndyHttpServer.ServerException(AContext: TIdContext;
   AException: Exception);
-var tmp : TBIWebContext;
+var tmp : TWebContext;
 begin
   if Assigned(FException) then
   begin
@@ -150,7 +157,7 @@ end;
 
 procedure TIndyHttpServer.ServerCommandGet(AContext: TIdContext;
     ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
-var tmp : TBIWebContext;
+var tmp : TWebContext;
 begin
   if Assigned(FCommandGet) then
   begin

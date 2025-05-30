@@ -5,10 +5,11 @@ interface
 uses
   System.Classes,
   Web.ApacheHTTP,
+  BI.Web.Context,
   BI.Web.Common;
 
 type
-  TBIApacheContext=class(TBIWebContext)
+  TBIApacheContext=class(TWebContext)
   public
     procedure Finish;
 

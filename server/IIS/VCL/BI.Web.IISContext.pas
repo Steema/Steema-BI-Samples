@@ -1,3 +1,10 @@
+{*********************************************}
+{  TeeBI Software Library                     }
+{  Microsoft IIS implementation of abstract   }
+{  Web Server                                 }
+{  Copyright (c) 2015-2025 by Steema Software }
+{  All Rights Reserved                        }
+{*********************************************}
 unit BI.Web.IISContext;
 
 interface
@@ -5,10 +12,11 @@ interface
 uses
   System.Classes,
   Web.HTTPApp,
+  BI.Web.Context,
   BI.Web.Common;
 
 type
-  TBIIISContext=class(TBIWebContext)
+  TBIIISContext=class(TWebContext)
   public
     procedure Finish;
 

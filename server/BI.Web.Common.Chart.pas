@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Web Server TeeChart (VCL and Firemonkey)   }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit BI.Web.Common.Chart;
@@ -42,13 +42,13 @@ uses
 
   {$ENDIF}
 
-  BI.DataSource, BI.Web.Common,
+  BI.DataSource, BI.Web.Common, BI.Web.Context,
   System.UITypes;
 
 type
   TBIWebCommonChart=record
   private
-    Context : TBIWebContext;
+    Context : TWebContext;
     Cursor  : TDataCursor;
     Params  : TStrings;
 
@@ -70,7 +70,7 @@ type
 
     class procedure GetWidthHeight(const Params:TStrings; out AWidth,AHeight:Integer); static;
   public
-    class function ExportChart(const AContext:TBIWebContext;
+    class function ExportChart(const AContext:TWebContext;
                                const ACursor:TDataCursor;
                                const AParams:TStrings;
                                const AFormat:String):Boolean; static;
@@ -303,7 +303,7 @@ begin
      result:=False;
 end;
 
-class function TBIWebCommonChart.ExportChart(const AContext:TBIWebContext;
+class function TBIWebCommonChart.ExportChart(const AContext:TWebContext;
                                const ACursor:TDataCursor;
                                const AParams:TStrings;
                                const AFormat:String):Boolean;

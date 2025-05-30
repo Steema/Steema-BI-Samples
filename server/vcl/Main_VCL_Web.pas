@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Web Server (VCL)                           }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit Main_VCL_Web;
@@ -14,7 +14,7 @@ uses
   Data.DB, Vcl.ExtCtrls, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids,
   Vcl.Menus,
 
-  BI.Web.AllData, BI.Web, BI.Web.Common, BI.Persist,
+  BI.Web.AllData, BI.Web, BI.Web.Common, BI.Persist, BI.Web.Context,
   VCLBI.Grid, VCLBI.DataControl, BI.Web.SingleInstance,
   BI.Web.Server.Indy;
 
@@ -27,8 +27,6 @@ type
     ErrorLog: TMemo;
     TabSheet2: TTabSheet;
     TabSettings: TTabSheet;
-    Label1: TLabel;
-    LMemory: TLabel;
     Panel1: TPanel;
     CBAutoScroll: TCheckBox;
     Panel2: TPanel;
@@ -39,28 +37,35 @@ type
     Label3: TLabel;
     EPort: TEdit;
     UDPort: TUpDown;
-    LVersion: TLabel;
     HistoryGrid: TBIGrid;
     PopupMenu1: TPopupMenu;
     Show1: TMenuItem;
     Exit1: TMenuItem;
-    CBStartMin: TCheckBox;
-    GroupBox1: TGroupBox;
-    CBLogs: TCheckBox;
-    Label4: TLabel;
-    CBLogStore: TComboBox;
-    GroupBox2: TGroupBox;
-    CBPublic: TCheckBox;
-    Label5: TLabel;
-    EPublic: TEdit;
-    CBAutoUpdate: TCheckBox;
-    Button2: TButton;
     Timer1: TTimer;
     TabScheduler: TTabSheet;
     Panel3: TPanel;
     CBScheduler: TCheckBox;
     TimerScheduler: TTimer;
     BIGrid1: TBIGrid;
+    PageSettings: TPageControl;
+    TabVersion: TTabSheet;
+    LVersion: TLabel;
+    CBAutoUpdate: TCheckBox;
+    Button2: TButton;
+    TabMemory: TTabSheet;
+    LMemory: TLabel;
+    Label1: TLabel;
+    Button4: TButton;
+    TabGeneral: TTabSheet;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    CBLogs: TCheckBox;
+    CBLogStore: TComboBox;
+    GroupBox2: TGroupBox;
+    Label5: TLabel;
+    CBPublic: TCheckBox;
+    EPublic: TEdit;
+    CBStartMin: TCheckBox;
     Button3: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -85,6 +90,7 @@ type
     procedure CBSchedulerClick(Sender: TObject);
     procedure TimerSchedulerTimer(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
     Data : TAllData;
@@ -95,7 +101,7 @@ type
     CloseFromMenu,
     FirstTime : Boolean;
 
-    procedure AddHistory(const AContext:TBIWebContext;
+    procedure AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -104,16 +110,17 @@ type
     procedure CheckForUpdates;
     procedure CreateAllData(const AStore:String);
     function FaviconStream:TStream;
+    function LocalHost:String;
     procedure Log(const S:String);
     procedure RefreshCount;
     procedure RefreshGrid;
     procedure RefreshMemory;
 
-    procedure ServerConnect(const AContext: TBIWebContext);
-    procedure ServerDisconnect(const AContext: TBIWebContext);
-    procedure ServerException(const AContext: TBIWebContext; const AException: Exception);
+    procedure ServerConnect(const AContext: TWebContext);
+    procedure ServerDisconnect(const AContext: TWebContext);
+    procedure ServerException(const AContext: TWebContext; const AException: Exception);
     procedure ServerStatus(const ASender: TObject; const AStatusText: string);
-    procedure ServerCommandGet(const AContext: TBIWebContext);
+    procedure ServerCommandGet(const AContext: TWebContext);
 
     procedure SetHistoryWidths;
     procedure SetupLogs;
@@ -133,6 +140,8 @@ implementation
 
 uses
   BI.Arrays, BI.DataItem, BI.UI, Unit_Constants, BI.Html, VCLBI.DataManager,
+  BI.Web.Modules.Default,
+
   BI.CSV, BI.JSON, BI.XMLData, BI.Excel,
 
   {$IFNDEF FPC}
@@ -160,7 +169,7 @@ begin
      RefreshMemory;
 end;
 
-procedure TFormBIWeb.AddHistory(const AContext:TBIWebContext;
+procedure TFormBIWeb.AddHistory(const AContext:TWebContext;
                           const Command, Tag: String; const Success: Boolean;
                           const Millisec:Integer; const Size:Int64);
 var tmpNow : TDateTime;
@@ -181,7 +190,7 @@ end;
 
 procedure TFormBIWeb.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  TUICommon.SavePosition(Self,'VCLBIWeb');
+  TUICommon.SavePosition(Self,TBIWebConfig.Key,'MainForm');
 end;
 
 procedure TFormBIWeb.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -242,7 +251,7 @@ procedure TFormBIWeb.FormCreate(Sender: TObject);
   begin
     Server:=THttpServer.Engine.Create(Self);
 
-    Server.Port:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+    Server.Port:=TBIWebConfig.ReadInteger('Port',TBIWebClient.DefaultPort);
 
     Server.OnCommandGet:=ServerCommandGet;
     Server.OnConnect:=ServerConnect;
@@ -263,10 +272,7 @@ procedure TFormBIWeb.FormCreate(Sender: TObject);
 
   function DefaultDataStore:String;
   begin
-    if ParamCount>0 then
-       result:=Trim(ParamStr(1))
-    else
-       result:='';
+    result:=TBIWebConfig.CommandLine('S');
 
     if result='' then
        result:=VCLDefaultStore;
@@ -275,15 +281,16 @@ procedure TFormBIWeb.FormCreate(Sender: TObject);
   procedure CreateBIWeb;
   begin
     BIWeb:=TBIWebCommon.Create;
+    TDefaultModule(BIWeb.DefaultModule).Data:=Data;
+
     BIWeb.Logs.History:=History;
-    BIWeb.Data:=Data;
     BIWeb.Logs.AddHistory:=AddHistory;
 
     BIWeb.Scheduler.Refresh(Data.Store);
   end;
 
 begin
-  TUICommon.LoadPosition(Self,'VCLBIWeb');
+  TUICommon.LoadPosition(Self,TBIWebConfig.Key,'MainForm');
 
   FirstTime:=True;
 
@@ -308,8 +315,8 @@ begin
 
   CBActive.Checked:=Server.Active;
 
-  CBAutoUpdate.Checked:=TBIRegistry.ReadBoolean('BIWeb','AutoUpdate', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
-  CBStartMin.Checked:=TBIRegistry.ReadBoolean('BIWeb','Minimized', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
+  CBAutoUpdate.Checked:=TBIWebConfig.ReadBoolean('AutoUpdate', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
+  CBStartMin.Checked:=TBIWebConfig.ReadBoolean('Minimized', {$IFDEF MSWINDOWS}True{$ELSE}False{$ENDIF});
 
   SetupLogs;
   SetupPublicFolder;
@@ -337,10 +344,10 @@ end;
 
 procedure TFormBIWeb.SetupLogs;
 begin
-  BIWeb.Logs.Persist:=TBIRegistry.ReadBoolean('BIWeb','LogPersist',True);
-  CBLogs.Checked:=BIWeb.Logs.Persist;
+  BIWeb.Logs.Persist:=TBIWebConfig.ReadBoolean('LogPersist',True);
+  BIWeb.Logs.Store:=TBIWebConfig.ReadString('LogStore');
 
-  BIWeb.Logs.Store:=TBIRegistry.ReadString('BIWeb','LogStore','');
+  CBLogs.Checked:=BIWeb.Logs.Persist;
 
   CBLogStore.Clear;
   TStores.AllTo(CBLogStore.Items);
@@ -402,9 +409,19 @@ begin
   CheckForUpdates;
 end;
 
+function TFormBIWeb.LocalHost:String;
+begin
+  result:='http://localhost:'+IntToStr(Server.Port);
+end;
+
 procedure TFormBIWeb.Button3Click(Sender: TObject);
 begin
-  TUICommon.GotoURL(Self,'http://localhost:'+IntToStr(Server.Port));
+  TUICommon.GotoURL(Self,LocalHost);
+end;
+
+procedure TFormBIWeb.Button4Click(Sender: TObject);
+begin
+//  TStoreStatus.View(Self);
 end;
 
 procedure TFormBIWeb.CBActiveClick(Sender: TObject);
@@ -494,7 +511,7 @@ begin
 //  Favicon.Bitmap.SaveToStream(result);
 end;
 
-procedure TFormBIWeb.ServerCommandGet(const AContext: TBIWebContext);
+procedure TFormBIWeb.ServerCommandGet(const AContext: TWebContext);
 begin
   if SameText(AContext.GetDocument,'/favicon.ico') then
      AContext.ReturnIcon(FaviconStream)
@@ -538,17 +555,17 @@ begin
   LMemory.Caption:=TCommonUI.BytesToString(TMemory.Allocated);
 end;
 
-procedure TFormBIWeb.ServerConnect(const AContext: TBIWebContext);
+procedure TFormBIWeb.ServerConnect(const AContext: TWebContext);
 begin
   RefreshCount;
 end;
 
-procedure TFormBIWeb.ServerDisconnect(const AContext: TBIWebContext);
+procedure TFormBIWeb.ServerDisconnect(const AContext: TWebContext);
 begin
   RefreshCount;
 end;
 
-procedure TFormBIWeb.ServerException(const AContext: TBIWebContext;
+procedure TFormBIWeb.ServerException(const AContext: TWebContext;
   const AException: Exception);
 begin
   Log(AException.Message);

@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Web Server for Linux                       }
-{  Copyright (c) 2015-2017 by Steema Software }
+{  Copyright (c) 2015-2018 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 program BI_Linux_Web;
@@ -11,29 +11,42 @@ program BI_Linux_Web;
 {$R *.res}
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Variants,
   System.SyncObjs,
-
   BI.Web,
   BI.Web.AllData in '..\BI.Web.AllData.pas',
   BI.Web.Common in '..\BI.Web.Common.pas',
   BI.Web.IndyContext in '..\BI.Web.IndyContext.pas',
-
-  BI.Arrays, BI.DataItem, BI.Persist, System.IOUtils, BI.UI,
-  BI.CSV, BI.Html, BI.JSON, BI.ClientDataset,
-  BI.XMLData, BI.DB,
-
+  BI.Arrays,
+  BI.DataItem,
+  BI.Persist,
+  System.IOUtils,
+  BI.UI,
+  BI.CSV,
+  BI.Html,
+  BI.JSON,
+  BI.ClientDataset,
+  BI.XMLData,
+  BI.DB,
   {$IFNDEF FPC}
   {$IF CompilerVersion>26}
   BI.DB.Fire,
   {$ELSE}
   BI.DB.SqlExpr,
-  {$ENDIF}
-  {$ENDIF}
-
+  {$ENDIF }
+  {$ENDIF }
   BI.Web.Server.Indy in '..\BI.Web.Server.Indy.pas',
-
-  BI.Languages.English, BI.Languages.Spanish;
+  BI.Languages.English,
+  BI.Languages.Spanish,
+  BI.Web.Context in '..\BI.Web.Context.pas',
+  BI.Web.Logs in '..\BI.Web.Logs.pas',
+  BI.Web.Modules in '..\BI.Web.Modules.pas',
+  BI.Web.Scheduler in '..\BI.Web.Scheduler.pas',
+  BI.Web.Modules.Default in '..\BI.Web.Modules.Default.pas';
 
 type
   TBIWebMain=class(TComponent)
@@ -47,7 +60,7 @@ type
 
     FLog : Boolean;
 
-    procedure AddHistory(const AContext:TBIWebContext;
+    procedure AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -65,11 +78,11 @@ type
 
     procedure SetupLogs;
 
-    procedure ServerConnect(const AContext: TBIWebContext);
-    procedure ServerDisconnect(const AContext: TBIWebContext);
-    procedure ServerException(const AContext: TBIWebContext; const AException: Exception);
+    procedure ServerConnect(const AContext: TWebContext);
+    procedure ServerDisconnect(const AContext: TWebContext);
+    procedure ServerException(const AContext: TWebContext; const AException: Exception);
     procedure ServerStatus(const ASender: TObject; const AStatusText: string);
-    procedure ServerCommandGet(const AContext: TBIWebContext);
+    procedure ServerCommandGet(const AContext: TWebContext);
 
     procedure Show;
     procedure ShowAddresses;
@@ -89,7 +102,7 @@ Constructor TBIWebMain.Create;
   begin
     Server:=THttpServer.Engine.Create(Self);
 
-    Server.Port:=TBIRegistry.ReadInteger('BIWeb','Port',TBIWebClient.DefaultPort);
+    Server.Port:=TBIWebConfig.ReadInteger('Port',TBIWebClient.DefaultPort);
 
     Server.OnCommandGet:=ServerCommandGet;
     Server.OnConnect:=ServerConnect;
@@ -173,7 +186,7 @@ begin
   CreateAllData(S);
 
   BIWeb:=TBIWebCommon.Create;
-  BIWeb.Data:=Data;
+  TDefaultModule(BIWeb.DefaultModule).Data:=Data;
 
   BIWeb.Logs.History:=History;
   BIWeb.Logs.AddHistory:=AddHistory;
@@ -189,8 +202,8 @@ end;
 
 procedure TBIWebMain.SetupLogs;
 begin
-  BIWeb.Logs.Persist:=TBIRegistry.ReadBoolean('BIWeb','LogPersist',True);
-  BIWeb.Logs.Store:=TBIRegistry.ReadString('BIWeb','LogStore','');
+  BIWeb.Logs.Persist:=TBIWebConfig.ReadBoolean('LogPersist',True);
+  BIWeb.Logs.Store:=TBIWebConfig.ReadString('LogStore');
 end;
 
 procedure TBIWebMain.Log(const S:String);
@@ -199,7 +212,7 @@ begin
      WriteLn(S);
 end;
 
-procedure TBIWebMain.AddHistory(const AContext:TBIWebContext;
+procedure TBIWebMain.AddHistory(const AContext:TWebContext;
                                 const Command:String;
                                 const Tag:String;
                                 const Success:Boolean;
@@ -221,7 +234,7 @@ begin
      Log(DateTimeToStr(Now)+' '+IP+' '+Command+' '+Tag);
 end;
 
-procedure TBIWebMain.ServerCommandGet(const AContext: TBIWebContext);
+procedure TBIWebMain.ServerCommandGet(const AContext: TWebContext);
 
   {
   function Parameters:String;
@@ -251,17 +264,17 @@ begin
   end;
 end;
 
-procedure TBIWebMain.ServerConnect(const AContext: TBIWebContext);
+procedure TBIWebMain.ServerConnect(const AContext: TWebContext);
 begin
 //  Log('Connected Client: '+AContext.Binding.IP);
 end;
 
-procedure TBIWebMain.ServerDisconnect(const AContext: TBIWebContext);
+procedure TBIWebMain.ServerDisconnect(const AContext: TWebContext);
 begin
 //  Log('Disconnected Client: '+AContext.Binding.IP);
 end;
 
-procedure TBIWebMain.ServerException(const AContext: TBIWebContext;
+procedure TBIWebMain.ServerException(const AContext: TWebContext;
   const AException: Exception);
 begin
   Log(AException.Message);

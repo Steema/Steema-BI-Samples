@@ -17,7 +17,7 @@ type
     Data : TAllData;
     History : TBIWebHistory;
 
-    procedure AddHistory(const AContext:TBIWebContext;
+    procedure AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;
@@ -42,7 +42,7 @@ begin
   Handled:=TBIIISContext.Process(BIWeb,Request,Response);
 end;
 
-procedure TWebModule1.AddHistory(const AContext:TBIWebContext;
+procedure TWebModule1.AddHistory(const AContext:TWebContext;
                          const Command:String;
                          const Tag:String;
                          const Success:Boolean;

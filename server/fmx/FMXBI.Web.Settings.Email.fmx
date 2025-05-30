@@ -1,0 +1,112 @@
+object EmailSettings: TEmailSettings
+  Left = 0
+  Top = 0
+  Caption = 'Email Settings'
+  ClientHeight = 197
+  ClientWidth = 370
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Label7: TLabel
+    FocusControl = EServerName
+    Position.X = 8.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Server Name:'
+    TabOrder = 9
+  end
+  object EServerName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 10
+    Position.X = 104.000000000000000000
+    Position.Y = 14.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChangeTracking = EServerNameChangeTracking
+  end
+  object Label8: TLabel
+    FocusControl = EEmailFrom
+    Position.X = 8.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Email From:'
+    TabOrder = 4
+  end
+  object EEmailFrom: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 8
+    Position.X = 104.000000000000000000
+    Position.Y = 46.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChangeTracking = EEmailFromChangeTracking
+  end
+  object Label9: TLabel
+    FocusControl = ESMTPHost
+    Position.X = 8.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'SMTP Host:'
+    TabOrder = 2
+  end
+  object ESMTPHost: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 7
+    Position.X = 104.000000000000000000
+    Position.Y = 78.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChangeTracking = ESMTPHostChangeTracking
+  end
+  object Label10: TLabel
+    FocusControl = ESMTPUser
+    Position.X = 8.000000000000000000
+    Position.Y = 112.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'SMTP User:'
+    TabOrder = 1
+  end
+  object ESMTPUser: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 6
+    Position.X = 104.000000000000000000
+    Position.Y = 110.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChangeTracking = ESMTPUserChangeTracking
+  end
+  object Label11: TLabel
+    FocusControl = ESMTPPassword
+    Position.X = 8.000000000000000000
+    Position.Y = 144.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'SMTP Password:'
+    TabOrder = 0
+  end
+  object ESMTPPassword: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Password = True
+    Position.X = 104.000000000000000000
+    Position.Y = 142.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChangeTracking = ESMTPPasswordChangeTracking
+  end
+end
