@@ -16,11 +16,11 @@ A simple class to implement in-memory database complex structures to provide:
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
-- Geographic database (Countries, States, Provinces...) to automatically create summary queries and TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
+- Geographic database (Countries, States, Provinces...) to automatically create summary geo queries, TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
 
-- Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams)
+- Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams of raw arrays)
 
-- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids and more)
+- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids, optional TeeGrid and more)
 
 - Data [export](https://github.com/Steema/BI/wiki/exporting) (csv,pdf,html,xml,excel,json), comparisons and manipulations
 
@@ -30,7 +30,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Supported development environments: 
 
-  *  Embarcadero RAD Studio Crete 12.3, and from Studio XE4 and up (Delphi and C++)
+  *  Embarcadero RAD Studio Athens 12.3, and from Studio XE4 and up (Delphi and C++)
   *  Lazarus / FreePascal
   
 ### Getting started
