@@ -1,5 +1,7 @@
 # TeeBI
 
+![TeeBI Gridify and Colorize](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Gridify_colored.png)
+
 ## Datamining, Visualization, Machine-Learning, Big data
  
 ### What is TeeBI ?
