@@ -1,7 +1,13 @@
 # TeeBI Release Notes
 -------------------
 
-## 28th-March-2017 Beta 18
+## 30th-May-2025 Pre-release
+
+- Support for RAD Studio 12.3 Athens
+- Full sources released in this repo
+- Note: Coming soon, automatic recompilation of packages using TeeBIRecompile.exe tool
+  
+##  28th-March-2017 Beta 18
 
 - Support for RAD Studio XE 10.2 Tokyo
 
