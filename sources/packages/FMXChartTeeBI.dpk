@@ -1,0 +1,48 @@
+package FMXChartTeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE FMX}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'FMX TeeChart Lite for TeeBI '}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  FMXTeeBI,
+  fmx,
+  FMXTee,
+  FMXTeeUI;
+
+contains
+  FMXBI.Chart in '..\FMX\FMXBI.Chart.pas',
+  FMXBI.Chart.Plugin in '..\FMX\FMXBI.Chart.Plugin.pas',
+  FMXBI.Chart.Source in '..\FMX\FMXBI.Chart.Source.pas',
+  FMXBI.Visualizer.Chart in '..\FMX\FMXBI.Visualizer.Chart.pas',
+  FMXBI.Editor.Visualizer.Chart in '..\FMX\FMXBI.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
+  FMXBI.Editor.Chart.Source in '..\FMX\FMXBI.Editor.Chart.Source.pas' {BISourceEditor};
+
+end.

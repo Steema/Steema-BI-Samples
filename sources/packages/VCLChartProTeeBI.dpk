@@ -1,0 +1,61 @@
+package VCLChartProTeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE TEEPRO}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'VCL TeeChart for TeeBI'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  teebi,
+  VCLTeeBI,
+  TeePro929,
+  TeeUI929,
+  Tee929,
+  TeeGL929,
+  TeeWorld929,
+  TeeImage929,
+  TeeLanguage929,
+  TeeTree2D29Tee9;
+
+contains
+  VCLBI.Chart in '..\VCL\VCLBI.Chart.pas',
+  VCLBI.Chart.Financial in '..\VCL\VCLBI.Chart.Financial.pas',
+  VCLBI.Chart.Geo in '..\VCL\VCLBI.Chart.Geo.pas',
+  VCLBI.Chart.Plugin in '..\VCL\VCLBI.Chart.Plugin.pas',
+  VCLBI.Chart.Source in '..\VCL\VCLBI.Chart.Source.pas',
+  VCLBI.Chart.ThreeD in '..\VCL\VCLBI.Chart.ThreeD.pas',
+  VCLBI.PDF in '..\VCL\VCLBI.PDF.pas',
+  VCLBI.LinkDiagram in '..\VCL\VCLBI.LinkDiagram.pas' {DataDiagram},
+  VCLBI.Visualizer.Chart in '..\VCL\VCLBI.Visualizer.Chart.pas',
+  VCLBI.Editor.Visualizer.Chart in '..\VCL\VCLBI.Editor.Visualizer.Chart.pas' {ChartVisualizerEditor},
+  VCLBI.Editor.Chart in '..\VCL\VCLBI.Editor.Chart.pas' {BIChartEditor},
+  VCLBI.Editor.Chart.Source in '..\VCL\VCLBI.Editor.Chart.Source.pas' {BISourceEditor},
+  VCLBI.Editor.ControlTree in '..\VCL\VCLBI.Editor.ControlTree.pas';
+
+end.

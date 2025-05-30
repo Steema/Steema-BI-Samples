@@ -1,0 +1,194 @@
+object BIControlTree: TBIControlTree
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI Control Tree'
+  ClientHeight = 480
+  ClientWidth = 669
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object TreeView1: TTreeView
+    Align = Client
+    Size.Width = 395.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnChange = TreeView1Change
+    Viewport.Width = 391.000000000000000000
+    Viewport.Height = 476.000000000000000000
+  end
+  object Panel1: TLayout
+    Align = Right
+    Position.X = 395.000000000000000000
+    Size.Width = 274.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object CBVisible: TCheckBox
+      Position.X = 8.000000000000000000
+      Position.Y = 240.000000000000000000
+      TabOrder = 0
+      Text = 'Visible'
+      OnChange = CBVisibleChange
+    end
+    object RGAlign: TListBox
+      Position.X = 8.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 129.000000000000000000
+      Size.Height = 201.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      DisableFocusEffect = True
+      Items.Strings = (
+        'None'
+        'Top'
+        'Left'
+        'Right'
+        'Bottom'
+        'MostTop'
+        'MostBottom'
+        'MostLeft'
+        'MostRight'
+        'Client'
+        'Contents'
+        'Center'
+        'VertCenter'
+        'HorzCenter'
+        'Horizontal'
+        'Vertical'
+        'Scale'
+        'Fit'
+        'FitLeft'
+        'FitRight')
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      OnChange = RGAlignChange
+      Viewport.Width = 109.000000000000000000
+      Viewport.Height = 197.000000000000000000
+    end
+    object Label1: TLabel
+      Position.X = 9.000000000000000000
+      Position.Y = 5.000000000000000000
+      Text = 'Align:'
+    end
+    object BEditChart: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 272.000000000000000000
+      Size.Width = 97.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Edit Chart...'
+      OnClick = BEditChartClick
+    end
+    object ColorPanel1: TColorPanel
+      Color = claWhite
+      Position.X = 8.000000000000000000
+      Position.Y = 320.000000000000000000
+      Size.Width = 185.000000000000000000
+      Size.Height = 129.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Visible = False
+      OnChange = ColorPanel1Change
+    end
+    object Label2: TLabel
+      AutoSize = True
+      Position.X = 160.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 23.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.WordWrap = False
+      Text = 'Left:'
+    end
+    object SBLeft: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 9
+      Cursor = crIBeam
+      Max = 50000.000000000000000000
+      Position.X = 160.000000000000000000
+      Position.Y = 40.000000000000000000
+    end
+    object Label3: TLabel
+      AutoSize = True
+      Position.X = 160.000000000000000000
+      Position.Y = 72.000000000000000000
+      Size.Width = 22.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.WordWrap = False
+      Text = 'Top:'
+    end
+    object SBTop: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 8
+      Cursor = crIBeam
+      Max = 50000.000000000000000000
+      Position.X = 160.000000000000000000
+      Position.Y = 88.000000000000000000
+    end
+    object Label4: TLabel
+      AutoSize = True
+      Position.X = 160.000000000000000000
+      Position.Y = 120.000000000000000000
+      Size.Width = 35.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.WordWrap = False
+      Text = 'Width:'
+    end
+    object SBWidth: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 7
+      Cursor = crIBeam
+      Max = 50000.000000000000000000
+      Position.X = 160.000000000000000000
+      Position.Y = 136.000000000000000000
+    end
+    object Label5: TLabel
+      AutoSize = True
+      Position.X = 160.000000000000000000
+      Position.Y = 168.000000000000000000
+      Size.Width = 39.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.WordWrap = False
+      Text = 'Height:'
+    end
+    object SBHeight: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 6
+      Cursor = crIBeam
+      Max = 50000.000000000000000000
+      Position.X = 160.000000000000000000
+      Position.Y = 184.000000000000000000
+    end
+    object CBOpacity: TComboTrackBar
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 13
+      Cursor = crIBeam
+      DecimalDigits = 3
+      KeyboardType = NumberPad
+      Position.X = 160.000000000000000000
+      Position.Y = 240.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      OnChangeTracking = CBOpacityChangeTracking
+    end
+    object Label6: TLabel
+      AutoSize = True
+      Position.X = 160.000000000000000000
+      Position.Y = 224.000000000000000000
+      Size.Width = 44.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.WordWrap = False
+      Text = 'Opacity:'
+    end
+  end
+end

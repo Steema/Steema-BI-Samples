@@ -1,0 +1,81 @@
+object BIRConsole: TBIRConsole
+  Left = 0
+  Top = 0
+  Caption = 'R Console'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Layout1: TLayout
+    Align = Top
+    Size.Width = 640.000000000000000000
+    Size.Height = 36.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object Button1: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      TabOrder = 0
+      Text = 'Clear'
+      OnClick = Button1Click
+    end
+  end
+  object Layout2: TLayout
+    Align = Bottom
+    Position.Y = 445.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 35.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Layout3: TLayout
+      Align = Right
+      Position.X = 559.000000000000000000
+      Size.Width = 81.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object BGo: TButton
+        Enabled = False
+        Position.X = 8.000000000000000000
+        Position.Y = 7.000000000000000000
+        Size.Width = 64.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Go'
+        OnClick = BGoClick
+      end
+    end
+    object EStatement: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Client
+      TabOrder = 1
+      Padding.Left = 4.000000000000000000
+      Padding.Top = 4.000000000000000000
+      Padding.Right = 4.000000000000000000
+      Padding.Bottom = 4.000000000000000000
+      Margins.Left = 4.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 4.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 551.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      OnChangeTracking = EStatementChangeTracking
+      OnKeyUp = EStatementKeyUp
+    end
+  end
+  object Memo: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 409.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Viewport.Width = 636.000000000000000000
+    Viewport.Height = 405.000000000000000000
+  end
+end

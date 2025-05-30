@@ -1,0 +1,61 @@
+package FMXTeeBI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE FMX}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Tee BI Firemonkey Runtime'}
+{$RUNONLY}
+
+
+requires
+  rtl,
+  dbrtl,
+  fmx,
+  bindengine,
+  bindcomp,
+  bindcompfmx,
+  FireDACTeeBI,
+  TeeBI;
+
+contains
+  FMXBI.DataControl in '..\FMX\FMXBI.DataControl.pas',
+  FMXBI.Grid.Grid in '..\FMX\FMXBI.Grid.Grid.pas',
+  FMXBI.Grid in '..\FMX\FMXBI.Grid.pas',
+  FMXBI.GridForm in '..\FMX\FMXBI.GridForm.pas' {BIGridForm},
+  FMXBI.DataViewer in '..\FMX\FMXBI.DataViewer.pas' {DataViewer},
+  FMXBI.DataManager in '..\FMX\FMXBI.DataManager.pas' {DataManager},
+  FMXBI.Editor.Column in '..\FMX\FMXBI.Editor.Column.pas' {ColumnEditor},
+  FMXBI.Editor.Data in '..\FMX\FMXBI.Editor.Data.pas' {DataEditor},
+  FMXBI.Editor.Grid in '..\FMX\FMXBI.Editor.Grid.pas' {BIGridEditor},
+  FMXBI.Editor.Items in '..\FMX\FMXBI.Editor.Items.pas' {ItemsEditor},
+  FMXBI.Editor.Stores in '..\FMX\FMXBI.Editor.Stores.pas' {StoreEditor},
+  FMXBI.Editor.Visualizer in '..\FMX\FMXBI.Editor.Visualizer.pas' {VisualizerEditor},
+  FMXBI.Status in '..\FMX\FMXBI.Status.pas' {StoreStatus},
+  FMXBI.Visualizer in '..\FMX\FMXBI.Visualizer.pas',
+  FMXBI.Tree in '..\FMX\FMXBI.Tree.pas',
+  FMXBI.Tree.TreeView in '..\FMX\FMXBI.Tree.TreeView.pas';
+
+end.

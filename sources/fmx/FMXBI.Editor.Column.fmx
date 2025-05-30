@@ -1,0 +1,65 @@
+object ColumnEditor: TColumnEditor
+  Left = 0
+  Top = 0
+  Caption = 'Column Editor'
+  ClientHeight = 249
+  ClientWidth = 338
+  Position = OwnerFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 313.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Label1'
+  end
+  object Label2: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 305.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Label2'
+  end
+  object Label3: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 72.000000000000000000
+    Text = 'Convert to:'
+  end
+  object CBKind: TComboBox
+    Position.X = 16.000000000000000000
+    Position.Y = 96.000000000000000000
+    Size.Width = 177.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    OnChange = CBKindChange
+  end
+  object Button1: TButton
+    Enabled = False
+    Position.X = 208.000000000000000000
+    Position.Y = 96.000000000000000000
+    TabOrder = 4
+    Text = 'Convert'
+    OnClick = Button1Click
+  end
+  object Label4: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 152.000000000000000000
+    Text = 'Master:'
+  end
+  object CBMaster: TComboBox
+    Position.X = 16.000000000000000000
+    Position.Y = 176.000000000000000000
+    Size.Width = 233.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    OnChange = CBMasterChange
+  end
+end
