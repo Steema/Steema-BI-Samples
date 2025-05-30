@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TExpression tests and examples             }
-{  Copyright (c) 2015-2018 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit Main_Unit;
@@ -42,7 +42,8 @@ uses
   BI.Summary, BI.DataItem, BI.DB.Dataset, Data.DB, Datasnap.DBClient,
   BI.DB,
 
-  BI.ClientDataSet, FMX.ListBox, FMX.Memo, System.Math, FMX.TabControl;
+  BI.ClientDataSet, FMX.ListBox, FMX.Memo, System.Math, FMX.TabControl,
+  FMX.Memo.Types;
 
 type
   TFormMain = class(TForm)

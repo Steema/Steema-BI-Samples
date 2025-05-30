@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  Export Demo                                }
-{  Copyright (c) 2015-2018 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit Unit_Main;
@@ -35,7 +35,7 @@ uses
   VCLBI.PDF,
   {$ENDIF}
 
-  ShDocVW, Clipbrd, ShellAPI, VCLBI.DataControl, VCLBI.Grid;
+  ShDocVW, Clipbrd, ShellAPI, VCLBI.DataControl, VCLBI.Grid, Vcl.Buttons;
 
 type
   TExportDemo = class(TForm)

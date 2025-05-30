@@ -2,6 +2,12 @@ unit Unit35;
 
 interface
 
+{
+  Comparing the speed of FireDAC local SQL datasets
+    vs
+  in-memory TeeBI structures.
+}
+
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
@@ -12,7 +18,8 @@ uses
   FireDAC.UI.Intf, FireDAC.FMXUI.Wait, FireDAC.Comp.UI, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
   FireDAC.Stan.ExprFuncs, System.Rtti, FMX.Grid.Style,
-  FMX.Controls.Presentation, FMX.ScrollBox, FMX.Grid, FMX.Memo;
+  FMX.Controls.Presentation, FMX.ScrollBox, FMX.Grid, FMX.Memo, FMX.Memo.Types,
+  FireDAC.Phys.SQLiteWrapper.Stat;
 
 type
   TLocalSQLvsBI = class(TForm)

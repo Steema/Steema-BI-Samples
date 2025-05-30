@@ -28,6 +28,7 @@ object FormMain: TFormMain
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = True
       Size.Width = 41.000000000000000000
       Size.Height = 26.000000000000000000
@@ -77,6 +78,7 @@ object FormMain: TFormMain
           Size.PlatformDefault = False
           TabOrder = 9
           Text = 'Test All'
+          TextSettings.Trimming = None
           OnClick = BTestAllClick
         end
         object Button8: TButton
@@ -87,6 +89,7 @@ object FormMain: TFormMain
           Size.PlatformDefault = False
           TabOrder = 15
           Text = 'Benchmark'
+          TextSettings.Trimming = None
           OnClick = Button8Click
         end
         object CBMultiCPU: TCheckBox
@@ -117,6 +120,7 @@ object FormMain: TFormMain
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 51.000000000000000000
       Size.Height = 26.000000000000000000
@@ -134,6 +138,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 21
         Text = 'x:= (3*2) + Sqr(4) - 7'
+        TextSettings.Trimming = None
         OnClick = BExampleFormulaClick
       end
       object Button2: TButton
@@ -144,6 +149,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 5
         Text = 'Logical'
+        TextSettings.Trimming = None
         OnClick = Button2Click
       end
       object Button3: TButton
@@ -154,6 +160,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 8
         Text = 'Animals Size>7 and Name<>'#39'Ocelot'#39
+        TextSettings.Trimming = None
         OnClick = Button3Click
       end
       object Button4: TButton
@@ -164,6 +171,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 4
         Text = 'X in ABCXYZ'
+        TextSettings.Trimming = None
         OnClick = Button4Click
       end
       object Edit1: TEdit
@@ -185,6 +193,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 2
         Text = 'Evaluate'
+        TextSettings.Trimming = None
         OnClick = BEvaluateClick
       end
       object Button5: TButton
@@ -196,6 +205,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 10
         Text = '&Edit...'
+        TextSettings.Trimming = None
         OnClick = Button5Click
       end
       object LabelResult: TLabel
@@ -215,6 +225,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 7
         Text = 'RTTI Expression'
+        TextSettings.Trimming = None
         OnClick = Button1Click
       end
       object Button6: TButton
@@ -225,6 +236,7 @@ object FormMain: TFormMain
         Size.PlatformDefault = False
         TabOrder = 6
         Text = 'If Expression then A else B'
+        TextSettings.Trimming = None
         OnClick = Button6Click
       end
     end
