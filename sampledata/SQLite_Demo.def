@@ -1,0 +1,8 @@
+Kind=DB
+DBLogin=FALSE
+Parallel=True
+DBDriver=SQLite
+DBDatabase=.\fddemo.sdb
+ExcludeMask=FDQA*
+DBALL=FALSE
+RefreshPeriod=1

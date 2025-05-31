@@ -1,0 +1,7 @@
+Kind=FILE
+FileName=mongo_restaurants.json
+FORMAT=ARRAY
+AllFiles=TRUE
+Recursive=TRUE
+RefreshPeriod=1
+Parallel=True

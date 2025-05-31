@@ -1,0 +1,8 @@
+// Master = Detail
+
+:GEO|Countries|Name=Customers|Country
+:GEO|Countries|Name=Employees|Country
+:GEO|Countries|Name=Orders|ShipCountry
+:GEO|Countries|Name=Suppliers|Country
+
+

@@ -1,0 +1,8 @@
+Kind=FILE
+AllFiles=TRUE
+Recursive=TRUE
+FileName=Animals.cds
+Parallel=True
+AutoRefresh=TRUE
+RefreshPeriod=1
+FTPPort=21

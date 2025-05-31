@@ -1,0 +1,6 @@
+Kind=FILE
+Folder=MovieDB
+AllFiles=TRUE
+Recursive=TRUE
+Parallel=False
+RefreshPeriod=1

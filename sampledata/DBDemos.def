@@ -1,0 +1,7 @@
+Kind=DB
+DBALL=TRUE
+DBDriver=MSAcc
+DBDatabase=dbdemos.mdb
+DBLogin=TRUE
+Parallel=True
+RefreshPeriod=1

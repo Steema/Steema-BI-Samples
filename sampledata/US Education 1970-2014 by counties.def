@@ -1,0 +1,4 @@
+Kind=FILE
+FileName=Other\USA_Counties_Education.xls
+Parallel=True
+ExcelHeaderCount=5
