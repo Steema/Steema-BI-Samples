@@ -194,7 +194,6 @@
         <DCCReference Include="TeeWorld929.dcp"/>
         <DCCReference Include="TeeImage929.dcp"/>
         <DCCReference Include="TeeLanguage929.dcp"/>
-        <DCCReference Include="TeeTree2D29Tee9.dcp"/>
         <DCCReference Include="..\VCL\VCLBI.Chart.pas"/>
         <DCCReference Include="..\VCL\VCLBI.Chart.Financial.pas"/>
         <DCCReference Include="..\VCL\VCLBI.Chart.Geo.pas"/>
