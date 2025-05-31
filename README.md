@@ -35,7 +35,7 @@ A simple class to implement in-memory database complex structures to provide:
   
 ### Getting started
 
-- [Installing](https://steema.com/docs/teebi/tutorials/Installing-TeeBI)
+- [Installer Tool](https://github.com/Steema/BI/tree/master/install) and [Installing info](https://steema.com/docs/teebi/tutorials/Installing-TeeBI)
 
 - [Documentation](https://steema.com/docs/teebi/tutorials/index.html)
 
