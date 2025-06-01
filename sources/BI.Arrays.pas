@@ -870,57 +870,152 @@ end;
 
 procedure TSingleArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc);
 
-  procedure PrivateSort(const l,r:TInteger);
-  var i : TInteger;
-      j : TInteger;
-      x : TInteger;
-  begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+const
+  SortThreshold = 16;
 
-    while i<j do
+  procedure SingleInsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var i, j, currentIndexToInsert: TInteger;
+  begin
+    if IsAscending then
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] > Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] < Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end;
+  end;
+
+  procedure SingleHeapify_WithSwap(CurrentIndex, CurrentCount, LBoundary: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
+  begin
+    RootToHeapify := CurrentIndex;
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
+
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end;
+
+    if RootToHeapify <> CurrentIndex then
+    begin
+      CurrentSwap(LBoundary + CurrentIndex, LBoundary + RootToHeapify);
+      SingleHeapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure SingleHeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit;
+
+    for i := (HeapSize div 2) - 1 downto 0 do
+      SingleHeapify_WithSwap(i, HeapSize, L, IsAscending, CurrentSwap);
+
+    for i := HeapSize - 1 downto 1 do
+    begin
+      CurrentSwap(L, L + i);
+      SingleHeapify_WithSwap(0, i, L, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer);
+  var
+      pivotValue : Single;
+      i, j, pivotIndex : TInteger;
+      N, MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+    if N <= 1 then Exit;
+
+    if N > 0 then
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0;
+
+    if Depth > MaxDepthAllowed then
+    begin
+      SingleHeapSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    if N <= SortThreshold then
+    begin
+      SingleInsertionSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1;
+    pivotValue := Self[pivotIndex];
+
+    while i <= j do
     begin
       if Ascending then
       begin
-        while Self[i]<Self[x] do inc(i);
-        while Self[x]<Self[j] do dec(j);
+        while Self[i] < pivotValue do Inc(i);
+        while Self[j] > pivotValue do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Self[i]>Self[x] do inc(i);
-        while Self[x]>Self[j] do dec(j);
+        while Self[i] > pivotValue do Inc(i);
+        while Self[j] < pivotValue do Dec(j);
       end;
 
-      if i<j then
+      if i <= j then
       begin
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
-
-        if i=x then
-           x:=j
-        else
-        if j=x then
-           x:=i;
-      end;
-
-      if i<=j then
-      begin
-        inc(i);
-        dec(j)
+        if i <> j then
+          Swap(i, j);
+        Inc(i);
+        Dec(j);
       end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    if l < j then
+       PrivateSort(l, j, Depth + 1);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then
+       PrivateSort(i, r, Depth + 1);
   end;
 
 begin
   if Count>1 then
-     PrivateSort(0,Count-1);
+     PrivateSort(0,Count-1, 0);
 end;
 
 procedure TSingleArrayHelper.Sort(const FromIndex, ToIndex: TInteger;
@@ -1460,57 +1555,152 @@ end;
 
 procedure TDoubleArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc);
 
-  procedure PrivateSort(const l,r:TInteger);
-  var i : TInteger;
-      j : TInteger;
-      x : TInteger;
-  begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+const
+  SortThreshold = 16;
 
-    while i<j do
+  procedure DoubleInsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var i, j, currentIndexToInsert: TInteger;
+  begin
+    if IsAscending then
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] > Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] < Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end;
+  end;
+
+  procedure DoubleHeapify_WithSwap(CurrentIndex, CurrentCount, LBoundary: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
+  begin
+    RootToHeapify := CurrentIndex;
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
+
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end;
+
+    if RootToHeapify <> CurrentIndex then
+    begin
+      CurrentSwap(LBoundary + CurrentIndex, LBoundary + RootToHeapify);
+      DoubleHeapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure DoubleHeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit;
+
+    for i := (HeapSize div 2) - 1 downto 0 do
+      DoubleHeapify_WithSwap(i, HeapSize, L, IsAscending, CurrentSwap);
+
+    for i := HeapSize - 1 downto 1 do
+    begin
+      CurrentSwap(L, L + i);
+      DoubleHeapify_WithSwap(0, i, L, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer);
+  var
+      pivotValue : Double;
+      i, j, pivotIndex : TInteger;
+      N, MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+    if N <= 1 then Exit;
+
+    if N > 0 then
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0;
+
+    if Depth > MaxDepthAllowed then
+    begin
+      DoubleHeapSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    if N <= SortThreshold then
+    begin
+      DoubleInsertionSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1;
+    pivotValue := Self[pivotIndex];
+
+    while i <= j do
     begin
       if Ascending then
       begin
-        while Self[i]<Self[x] do inc(i);
-        while Self[x]<Self[j] do dec(j);
+        while Self[i] < pivotValue do Inc(i);
+        while Self[j] > pivotValue do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Self[i]>Self[x] do inc(i);
-        while Self[x]>Self[j] do dec(j);
+        while Self[i] > pivotValue do Inc(i);
+        while Self[j] < pivotValue do Dec(j);
       end;
 
-      if i<j then
+      if i <= j then
       begin
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
-
-        if i=x then
-           x:=j
-        else
-        if j=x then
-           x:=i;
-      end;
-
-      if i<=j then
-      begin
-        inc(i);
-        dec(j)
+        if i <> j then
+          Swap(i, j);
+        Inc(i);
+        Dec(j);
       end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    if l < j then
+       PrivateSort(l, j, Depth + 1);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then
+       PrivateSort(i, r, Depth + 1);
   end;
 
 begin
   if Count>1 then
-     PrivateSort(0,Count-1);
+     PrivateSort(0,Count-1, 0);
 end;
 
 
@@ -1919,7 +2109,8 @@ begin
     if result.Sorted<>Ascending then
     begin
       tmp:=Copy;
-      tmp.Sort;
+      tmp.Sort; // This calls the Sort(Ascending, Swap) overload.
+                // If CPUX86 is defined, this will be our new IntroSort with Self.Swap.
     end
     else
       tmp:=Self;
@@ -2010,62 +2201,157 @@ end;
 
 procedure TExtendedArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc);
 
-  procedure PrivateSort(const l,r:TInteger);
-  var i : TInteger;
-      j : TInteger;
-      x : TInteger;
-  begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+const
+  SortThreshold = 16;
 
-    while i<j do
+  procedure ExtendedInsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var i, j, currentIndexToInsert: TInteger;
+  begin
+    if IsAscending then
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] > Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] < Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end;
+  end;
+
+  procedure ExtendedHeapify_WithSwap(CurrentIndex, CurrentCount, LBoundary: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
+  begin
+    RootToHeapify := CurrentIndex;
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
+
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end;
+
+    if RootToHeapify <> CurrentIndex then
+    begin
+      CurrentSwap(LBoundary + CurrentIndex, LBoundary + RootToHeapify);
+      ExtendedHeapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure ExtendedHeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit;
+
+    for i := (HeapSize div 2) - 1 downto 0 do
+      ExtendedHeapify_WithSwap(i, HeapSize, L, IsAscending, CurrentSwap);
+
+    for i := HeapSize - 1 downto 1 do
+    begin
+      CurrentSwap(L, L + i);
+      ExtendedHeapify_WithSwap(0, i, L, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer);
+  var
+      pivotValue : Extended;
+      i, j, pivotIndex : TInteger;
+      N, MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+    if N <= 1 then Exit;
+
+    if N > 0 then
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0;
+
+    if Depth > MaxDepthAllowed then
+    begin
+      ExtendedHeapSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    if N <= SortThreshold then
+    begin
+      ExtendedInsertionSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1;
+    pivotValue := Self[pivotIndex];
+
+    while i <= j do
     begin
       if Ascending then
       begin
-        while Self[i]<Self[x] do inc(i);
-        while Self[x]<Self[j] do dec(j);
+        while Self[i] < pivotValue do Inc(i);
+        while Self[j] > pivotValue do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Self[i]>Self[x] do inc(i);
-        while Self[x]>Self[j] do dec(j);
+        while Self[i] > pivotValue do Inc(i);
+        while Self[j] < pivotValue do Dec(j);
       end;
 
-      if i<j then
+      if i <= j then
       begin
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
-
-        if i=x then
-           x:=j
-        else
-        if j=x then
-           x:=i;
-      end;
-
-      if i<=j then
-      begin
-        inc(i);
-        dec(j)
+        if i <> j then
+          Swap(i, j); // This is the TSwapProc parameter
+        Inc(i);
+        Dec(j);
       end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    if l < j then
+       PrivateSort(l, j, Depth + 1);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then
+       PrivateSort(i, r, Depth + 1);
   end;
 
 begin
   if Count>1 then
-     PrivateSort(0,Count-1);
+     PrivateSort(0,Count-1, 0);
 end;
 
 procedure TExtendedArrayHelper.Sort(const Ascending: Boolean=True);
 begin
-  Sort(Ascending,Swap);
+  Sort(Ascending,Swap); // This now calls the new IntroSort with Self.Swap
 end;
 
 function TExtendedArrayHelper.Distribution(const Mean,StdDeviation:Extended; const Exponent:Integer):Extended;
@@ -2889,69 +3175,180 @@ begin
            Inc(t);
 end;
 
-procedure TInt32ArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc);
+procedure TInt32ArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc); // Overload with TSwapProc
 
-  procedure PrivateSort(const l,r:TInteger);
-  var tmp : Int32;
-      i : TInteger;
-      j : TInteger;
-      x : TInteger;
+  // IntroSort Implementation for TInt32ArrayHelper with TSwapProc
+
+  procedure InsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const SwapProc: TSwapProc);
+  var i, j, currentIndexToInsert: TInteger;
   begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+    if IsAscending then
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        // While element at j is greater than the element we're trying to insert (at currentIndexToInsert)
+        while (j >= L) and (Self[j] > Self[currentIndexToInsert]) do
+        begin
+          SwapProc(j, currentIndexToInsert); // Swap them
+          currentIndexToInsert := j; // The element to insert has now moved to index j
+          Dec(j);
+        end;
+      end;
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        // While element at j is less than the element we're trying to insert
+        while (j >= L) and (Self[j] < Self[currentIndexToInsert]) do
+        begin
+          SwapProc(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end;
+  end;
 
-    tmp:=Self[x];
+  procedure Heapify_WithSwap(CurrentIndex, CurrentCount, LBoundary, RBoundary: TInteger; IsAscending: Boolean; const SwapProc: TSwapProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
+  begin
+    RootToHeapify := CurrentIndex; // This is the relative index within the current heap part LBoundary..RBoundary
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
 
-    while i<j do
+    // Determine the largest/smallest element among root, left child, right child
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end;
+
+    // If root is not the largest/smallest, swap with largest/smallest and heapify the affected sub-tree
+    if RootToHeapify <> CurrentIndex then
+    begin
+      SwapProc(LBoundary + CurrentIndex, LBoundary + RootToHeapify); // Use absolute indices for swap
+      Heapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, RBoundary, IsAscending, SwapProc);
+    end;
+  end;
+
+  procedure HeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const SwapProc: TSwapProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit; // Already sorted or empty
+
+    // Build heap (rearrange array). Iterate from the last non-leaf node up to the root.
+    // Indices are relative to the start of the L..R partition for heap logic.
+    for i := (HeapSize div 2) - 1 downto 0 do
+      Heapify_WithSwap(i, HeapSize, L, R, IsAscending, SwapProc);
+
+    // One by one extract an element from heap
+    for i := HeapSize - 1 downto 1 do // Iterate from the end of the heap
+    begin
+      // Move current root (Self[L], the largest/smallest) to the end of the current heap segment (Self[L+i])
+      SwapProc(L, L + i);
+      // Call heapify on the reduced heap (size i). Root is index 0 relative to L.
+      Heapify_WithSwap(0, i, L, R, IsAscending, SwapProc);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer); // Added Depth parameter
+  var
+      pivotValue : Int32; // Stores the value of the pivot element
+      i : TInteger;       // Left scan index
+      j : TInteger;       // Right scan index
+      pivotIndex : TInteger; // Index of the pivot element
+      N : TInteger;
+      MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+
+    if N <= 1 then Exit; // Already sorted or empty partition
+
+    // Calculate max recursion depth: 2 * Floor(Log2(N))
+    // Handle N=0 or N=1 for Log2 if it occurs, though N > 1 here.
+    if N > 0 then // Ensure N is positive for Log2
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0; // Should not happen if N > 1 check is effective
+
+    // Fallback to HeapSort if recursion depth limit is exceeded
+    if Depth > MaxDepthAllowed then
+    begin
+      HeapSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    // Fallback to InsertionSort for small partitions
+    if N <= SortThreshold then
+    begin
+      InsertionSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    // QuickSort partition logic
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1; // Simple pivot selection, consider Median-of-Three
+    pivotValue := Self[pivotIndex];
+
+    while i <= j do // Changed from i < j to i <= j for correct partitioning
     begin
       if Ascending then
       begin
-        while Self[i]<tmp do inc(i);
-        while tmp<Self[j] do dec(j);
+        while Self[i] < pivotValue do Inc(i);
+        while pivotValue < Self[j] do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Self[i]>tmp do inc(i);
-        while tmp>Self[j] do dec(j);
+        while Self[i] > pivotValue do Inc(i);
+        while pivotValue > Self[j] do Dec(j);
       end;
 
-      if i<j then
+      if i <= j then // If pointers haven't crossed or met
       begin
-        // Call to "Swap" is very slow (30% more)
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
+        if i <> j then // Avoid swapping element with itself
+            Swap(i, j); // Use the provided Swap procedure (parameter)
 
-        if i=x then
-        begin
-          x:=j;
-          tmp:=Self[x];
-        end
-        else
-        if j=x then
-        begin
-          x:=i;
-          tmp:=Self[x];
-        end;
-      end;
+        // Crucial: if pivot was swapped, update its index.
+        // This was a source of error in original code if pivotValue was not used consistently.
+        // However, since we stored pivotValue, we don't need to track pivotIndex as rigorously
+        // for value comparison, but it's good practice if we were to change pivotIndex.
+        // For this implementation, pivotValue is fixed for the partition step.
+        // The original code had `tmp := Self[x]` updates if x was swapped, which is not needed if pivotValue is used.
 
-      if i<=j then
-      begin
-        inc(i);
-        dec(j)
+        Inc(i);
+        Dec(j);
       end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    // Recursive calls for sub-partitions
+    if l < j then // If left partition exists
+       PrivateSort(l, j, Depth + 1);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then // If right partition exists
+       PrivateSort(i, r, Depth + 1);
   end;
 
 begin
-  if Count>1 then
-     PrivateSort(0,Count-1);
+  if Count > 1 then
+     PrivateSort(0, Count - 1, 0); // Initial call with depth 0
 end;
 
 {.$DEFINE FASTSWAP} // No gain
@@ -2968,54 +3365,53 @@ end;
 
 // Duplicate code (not possible to use generics here),
 // with the only difference is no Swap procedure is called (this is 35% faster)
-procedure TInt32ArrayHelper.Sort(const FromIndex, ToIndex: TInteger;
+procedure TInt32ArrayHelper.Sort(const FromIndex, ToIndex: TInteger; // This is the existing overload, should remain unchanged
   const Ascending: Boolean);
 
-  procedure PrivateSort(const l,r:TInteger);
+  procedure PrivateSort(const l,r:TInteger); // This is the PrivateSort for the overload WITHOUT TSwapProc
   var
       P : PInteger;
 
       {$IFNDEF FASTSWAP}
       Temp : Int32;
       {$ENDIF}
-      tmp : Int32;
+      tmpValue : Int32; // Renamed tmp to tmpValue to avoid conflict with pivot tmp in the other PrivateSort
       i : TInteger;
       j : TInteger;
-      x : TInteger;
+      pivotIdx : TInteger; // Renamed x to pivotIdx
   begin
     P:=Pointer(Self);
 
     if r-l<=SortThreshold then
     begin
-      // Insertion Sort
-
+      // Insertion Sort - This is for the non-SwapProc version, uses direct assignment
       if Ascending then
          for i:=L+1 to R do
          begin
-           tmp:=P[i];
+           tmpValue:=P[i];
            j:=Pred(i);
 
-           while (j>=L) and (P[j]>tmp) do
+           while (j>=L) and (P[j]>tmpValue) do
            begin
              P[j+1]:=P[j];
              Dec(j);
            end;
 
-           P[j+1]:=tmp;
+           P[j+1]:=tmpValue;
          end
       else
          for i:=L+1 to R do
          begin
-           tmp:=P[i];
+           tmpValue:=P[i];
            j:=Pred(i);
 
-           while (j>=L) and (P[j]<tmp) do
+           while (j>=L) and (P[j]<tmpValue) do
            begin
              P[j+1]:=P[j];
              Dec(j);
            end;
 
-           P[j+1]:=tmp;
+           P[j+1]:=tmpValue;
          end;
 
       Exit;
@@ -3023,21 +3419,23 @@ procedure TInt32ArrayHelper.Sort(const FromIndex, ToIndex: TInteger;
 
     i:=l;
     j:=r;
-    x:=(i+j) shr 1; // median3 ?
+    pivotIdx:=(i+j) shr 1; // median3 ?
 
-    tmp:=P[x];
+    tmpValue:=P[pivotIdx]; // Pivot value
 
+    // In this version of PrivateSort (without TSwapProc), the loop condition is i<j
+    // and pivot update logic is slightly different. Keep it as is for this specific sort method.
     while i<j do
     begin
       if Ascending then
       begin
-        while P[i]<tmp do inc(i);
-        while tmp<P[j] do dec(j);
+        while P[i]<tmpValue do inc(i);
+        while tmpValue<P[j] do dec(j);
       end
       else
       begin
-        while P[i]>tmp do inc(i);
-        while tmp>P[j] do dec(j);
+        while P[i]>tmpValue do inc(i);
+        while tmpValue<P[j] do dec(j);
       end;
 
       if i<j then
@@ -3050,20 +3448,31 @@ procedure TInt32ArrayHelper.Sort(const FromIndex, ToIndex: TInteger;
         P[j]:=Temp;
         {$ENDIF}
 
-        if i=x then
+        // If the pivot element itself was moved, its index `pivotIdx` needs to be updated.
+        // And because `tmpValue` holds the *value* of the pivot, if the original pivot element
+        // is moved, `tmpValue` still holds the correct comparison value.
+        // The original logic here updated `tmpValue` if the pivot *element* was part of the swap
+        // and its *index* changed. This is subtle.
+        // If `P[pivotIdx]` is swapped, then `tmpValue` (which was `P[pivotIdx]` before swap)
+        // needs to be compared against the new values at P[i] and P[j].
+        // The original code:
+        // if i=pivotIdx then pivotIdx:=j; tmpValue:=P[pivotIdx];
+        // else if j=pivotIdx then pivotIdx:=i; tmpValue:=P[pivotIdx];
+        // This re-reads tmpValue from the new pivot position. Let's keep this behavior for this specific sort.
+        if i=pivotIdx then
         begin
-          x:=j;
-          tmp:=P[x];
+          pivotIdx:=j;
+          tmpValue:=P[pivotIdx];
         end
         else
-        if j=x then
+        if j=pivotIdx then
         begin
-          x:=i;
-          tmp:=P[x];
+          pivotIdx:=i;
+          tmpValue:=P[pivotIdx];
         end;
       end;
 
-      if i<=j then
+      if i<=j then // This condition ensures progress even if i or j lands on the pivot
       begin
         inc(i);
         dec(j)
@@ -3658,57 +4067,152 @@ end;
 
 procedure TInt64ArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc);
 
-  procedure PrivateSort(const l,r:TInteger);
-  var i : TInteger;
-      j : TInteger;
-      x : TInteger;
-  begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+const
+  SortThreshold = 16;
 
-    while i<j do
+  procedure Int64InsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var i, j, currentIndexToInsert: TInteger;
+  begin
+    if IsAscending then
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] > Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] < Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end;
+  end;
+
+  procedure Int64Heapify_WithSwap(CurrentIndex, CurrentCount, LBoundary: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
+  begin
+    RootToHeapify := CurrentIndex;
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
+
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end;
+
+    if RootToHeapify <> CurrentIndex then
+    begin
+      CurrentSwap(LBoundary + CurrentIndex, LBoundary + RootToHeapify);
+      Int64Heapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure Int64HeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit;
+
+    for i := (HeapSize div 2) - 1 downto 0 do
+      Int64Heapify_WithSwap(i, HeapSize, L, IsAscending, CurrentSwap);
+
+    for i := HeapSize - 1 downto 1 do
+    begin
+      CurrentSwap(L, L + i);
+      Int64Heapify_WithSwap(0, i, L, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer);
+  var
+      pivotValue : Int64;
+      i, j, pivotIndex : TInteger;
+      N, MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+    if N <= 1 then Exit;
+
+    if N > 0 then
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0;
+
+    if Depth > MaxDepthAllowed then
+    begin
+      Int64HeapSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    if N <= SortThreshold then
+    begin
+      Int64InsertionSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1;
+    pivotValue := Self[pivotIndex];
+
+    while i <= j do
     begin
       if Ascending then
       begin
-        while Self[i]<Self[x] do inc(i);
-        while Self[x]<Self[j] do dec(j);
+        while Self[i] < pivotValue do Inc(i);
+        while Self[j] > pivotValue do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Self[i]>Self[x] do inc(i);
-        while Self[x]>Self[j] do dec(j);
+        while Self[i] > pivotValue do Inc(i);
+        while Self[j] < pivotValue do Dec(j);
       end;
 
-      if i<j then
+      if i <= j then
       begin
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
-
-        if i=x then
-           x:=j
-        else
-        if j=x then
-           x:=i;
-      end;
-
-      if i<=j then
-      begin
-        inc(i);
-        dec(j)
+        if i <> j then
+          Swap(i, j);
+        Inc(i);
+        Dec(j);
       end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    if l < j then
+       PrivateSort(l, j, Depth + 1);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then
+       PrivateSort(i, r, Depth + 1);
   end;
 
 begin
   if Count>1 then
-     PrivateSort(0,Count-1);
+     PrivateSort(0,Count-1, 0);
 end;
 
 // Duplicate code (not possible to use generics here),
@@ -4515,78 +5019,160 @@ end;
 
 procedure TTextArrayHelper.Sort(const Ascending,IgnoreCase: Boolean; const Swap:TSwapProc);
 var
-  Compare : TCompareProc;
+  CompareFunc : TCompareProc; // Renamed from Compare to CompareFunc for clarity
 
-  procedure PrivateSort(const l,r:TInteger);
-  var i : TInteger;
-      j : TInteger;
-      x : TInteger;
+const
+  SortThreshold = 16; // Threshold for switching to InsertionSort
 
-    procedure Check;
+  procedure TextInsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc; CurrentCompareFunc: TCompareProc);
+  var i, j, currentIndexToInsert: TInteger;
+  begin
+    if IsAscending then
     begin
-      if i<j then
+      for i := L + 1 to R do
       begin
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
-
-        if i=x then
-           x:=j
-        else
-        if j=x then
-           x:=i;
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (CurrentCompareFunc(Self[j], Self[currentIndexToInsert]) > 0) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
       end;
-
-      if i<=j then
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
       begin
-        Inc(i);
-        Dec(j)
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (CurrentCompareFunc(Self[j], Self[currentIndexToInsert]) < 0) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
       end;
     end;
+  end;
 
+  procedure TextHeapify_WithSwap(CurrentIndex, CurrentCount, LBoundary: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc; CurrentCompareFunc: TCompareProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
   begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+    RootToHeapify := CurrentIndex;
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
 
-    while i<j do
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (CurrentCompareFunc(Self[LBoundary + LeftChild], Self[LBoundary + RootToHeapify]) > 0) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (CurrentCompareFunc(Self[LBoundary + RightChild], Self[LBoundary + RootToHeapify]) > 0) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (CurrentCompareFunc(Self[LBoundary + LeftChild], Self[LBoundary + RootToHeapify]) < 0) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (CurrentCompareFunc(Self[LBoundary + RightChild], Self[LBoundary + RootToHeapify]) < 0) then
+        RootToHeapify := RightChild;
+    end;
+
+    if RootToHeapify <> CurrentIndex then
+    begin
+      CurrentSwap(LBoundary + CurrentIndex, LBoundary + RootToHeapify);
+      TextHeapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, IsAscending, CurrentSwap, CurrentCompareFunc);
+    end;
+  end;
+
+  procedure TextHeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc; CurrentCompareFunc: TCompareProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit;
+
+    for i := (HeapSize div 2) - 1 downto 0 do
+      TextHeapify_WithSwap(i, HeapSize, L, IsAscending, CurrentSwap, CurrentCompareFunc);
+
+    for i := HeapSize - 1 downto 1 do
+    begin
+      CurrentSwap(L, L + i);
+      TextHeapify_WithSwap(0, i, L, IsAscending, CurrentSwap, CurrentCompareFunc);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer; CurrentCompareFunc: TCompareProc);
+  var
+      pivotValue : String;
+      i, j, pivotIndex : TInteger;
+      N, MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+    if N <= 1 then Exit;
+
+    if N > 0 then
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0;
+
+    if Depth > MaxDepthAllowed then
+    begin
+      TextHeapSort_WithSwap(l, r, Ascending, Swap, CurrentCompareFunc);
+      Exit;
+    end;
+
+    if N <= SortThreshold then
+    begin
+      TextInsertionSort_WithSwap(l, r, Ascending, Swap, CurrentCompareFunc);
+      Exit;
+    end;
+
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1;
+    pivotValue := Self[pivotIndex]; // Pivot value is of type String
+
+    while i <= j do
     begin
       if Ascending then
       begin
-        while Compare(Self[i],Self[x])<0 do
-              Inc(i);
-
-        while Compare(Self[x],Self[j])<0 do
-              Dec(j);
+        while CurrentCompareFunc(Self[i], pivotValue) < 0 do Inc(i);
+        while CurrentCompareFunc(Self[j], pivotValue) > 0 do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Compare(Self[i],Self[x])>0 do
-              Inc(i);
-
-        while Compare(Self[x],Self[j])>0 do
-              Dec(j);
+        while CurrentCompareFunc(Self[i], pivotValue) > 0 do Inc(i);
+        while CurrentCompareFunc(Self[j], pivotValue) < 0 do Dec(j);
       end;
 
-      // Local method to reduce pressure on CPU registers
-      Check;
+      if i <= j then
+      begin
+        if i <> j then
+          Swap(i, j); // Use the main Sort's Swap parameter
+        Inc(i);
+        Dec(j);
+      end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    if l < j then
+       PrivateSort(l, j, Depth + 1, CurrentCompareFunc);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then
+       PrivateSort(i, r, Depth + 1, CurrentCompareFunc);
   end;
 
 begin
-  if Count>1 then
+  if Count > 1 then
   begin
     if IgnoreCase then
-       Compare:=CompareText
+       CompareFunc := CompareText // System.SysUtils.CompareText
     else
-       Compare:=CompareStr;
+       CompareFunc := CompareStr; // System.SysUtils.CompareStr
 
-    PrivateSort(0,Count-1);
+    PrivateSort(0, Count - 1, 0, CompareFunc); // Pass CompareFunc
   end;
 end;
 
@@ -4916,57 +5502,152 @@ end;
 
 procedure TDateTimeArrayHelper.Sort(const Ascending:Boolean; const Swap:TSwapProc);
 
-  procedure PrivateSort(const l,r:TInteger);
-  var i : TInteger;
-      j : TInteger;
-      x : TInteger;
-  begin
-    i:=l;
-    j:=r;
-    x:=(i+j) shr 1;
+const
+  SortThreshold = 16;
 
-    while i<j do
+  procedure DateTimeInsertionSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var i, j, currentIndexToInsert: TInteger;
+  begin
+    if IsAscending then
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] > Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end
+    else // Descending
+    begin
+      for i := L + 1 to R do
+      begin
+        currentIndexToInsert := i;
+        j := i - 1;
+        while (j >= L) and (Self[j] < Self[currentIndexToInsert]) do
+        begin
+          CurrentSwap(j, currentIndexToInsert);
+          currentIndexToInsert := j;
+          Dec(j);
+        end;
+      end;
+    end;
+  end;
+
+  procedure DateTimeHeapify_WithSwap(CurrentIndex, CurrentCount, LBoundary: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    RootToHeapify, LeftChild, RightChild: TInteger;
+  begin
+    RootToHeapify := CurrentIndex;
+    LeftChild := 2 * CurrentIndex + 1;
+    RightChild := 2 * CurrentIndex + 2;
+
+    if IsAscending then
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] > Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end
+    else // Descending
+    begin
+      if (LeftChild < CurrentCount) and (Self[LBoundary + LeftChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := LeftChild;
+      if (RightChild < CurrentCount) and (Self[LBoundary + RightChild] < Self[LBoundary + RootToHeapify]) then
+        RootToHeapify := RightChild;
+    end;
+
+    if RootToHeapify <> CurrentIndex then
+    begin
+      CurrentSwap(LBoundary + CurrentIndex, LBoundary + RootToHeapify);
+      DateTimeHeapify_WithSwap(RootToHeapify, CurrentCount, LBoundary, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure DateTimeHeapSort_WithSwap(L, R: TInteger; IsAscending: Boolean; const CurrentSwap: TSwapProc);
+  var
+    i, HeapSize: TInteger;
+  begin
+    HeapSize := R - L + 1;
+    if HeapSize < 2 then Exit;
+
+    for i := (HeapSize div 2) - 1 downto 0 do
+      DateTimeHeapify_WithSwap(i, HeapSize, L, IsAscending, CurrentSwap);
+
+    for i := HeapSize - 1 downto 1 do
+    begin
+      CurrentSwap(L, L + i);
+      DateTimeHeapify_WithSwap(0, i, L, IsAscending, CurrentSwap);
+    end;
+  end;
+
+  procedure PrivateSort(const l,r:TInteger; Depth: Integer);
+  var
+      pivotValue : TDateTime;
+      i, j, pivotIndex : TInteger;
+      N, MaxDepthAllowed : TInteger;
+  begin
+    N := r - l + 1;
+    if N <= 1 then Exit;
+
+    if N > 0 then
+      MaxDepthAllowed := 2 * Trunc(System.Math.Log2(N))
+    else
+      MaxDepthAllowed := 0;
+
+    if Depth > MaxDepthAllowed then
+    begin
+      DateTimeHeapSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    if N <= SortThreshold then
+    begin
+      DateTimeInsertionSort_WithSwap(l, r, Ascending, Swap);
+      Exit;
+    end;
+
+    i := l;
+    j := r;
+    pivotIndex := (l + j) shr 1;
+    pivotValue := Self[pivotIndex];
+
+    while i <= j do
     begin
       if Ascending then
       begin
-        while Self[i]<Self[x] do inc(i);
-        while Self[x]<Self[j] do dec(j);
+        while Self[i] < pivotValue do Inc(i);
+        while Self[j] > pivotValue do Dec(j);
       end
-      else
+      else // Descending
       begin
-        while Self[i]>Self[x] do inc(i);
-        while Self[x]>Self[j] do dec(j);
+        while Self[i] > pivotValue do Inc(i);
+        while Self[j] < pivotValue do Dec(j);
       end;
 
-      if i<j then
+      if i <= j then
       begin
-        {$IFDEF XE5BUG}Self.{$ENDIF}Swap(i,j);
-
-        if i=x then
-           x:=j
-        else
-        if j=x then
-           x:=i;
-      end;
-
-      if i<=j then
-      begin
-        inc(i);
-        dec(j)
+        if i <> j then
+          Swap(i, j);
+        Inc(i);
+        Dec(j);
       end;
     end;
 
-    // Potential parallelization
-    if l<j then
-       PrivateSort(l,j);
+    if l < j then
+       PrivateSort(l, j, Depth + 1);
 
-    if i<r then
-       PrivateSort(i,r);
+    if i < r then
+       PrivateSort(i, r, Depth + 1);
   end;
 
 begin
   if Count>1 then
-     PrivateSort(0,Count-1);
+     PrivateSort(0,Count-1, 0);
 end;
 
 procedure TDateTimeArrayHelper.Sort(const Ascending: Boolean);

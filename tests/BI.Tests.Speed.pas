@@ -37,10 +37,15 @@ type
     procedure Run;
   end;
 
+  TNamePattern = (npRandom, npSorted, npReverseSorted, npDuplicateCycle);
+  TIDPattern = (ipSequential, ipReverse, ipRandom);
+  TSalaryPattern = (spConstant, spRandom);
+  TDateTimePattern = (dpRandom, dpConstant); // Added for optional DateTime
+
 implementation
 
 uses
-  System.Classes, System.Threading, SyncObjs,
+  System.Classes, System.Threading, SyncObjs, System.Math, // Added System.Math
 
   BI.DataSource, BI.Summary, System.Diagnostics,
   BI.Expressions, BI.DataSet, Data.DB, BI.Persist;
@@ -229,7 +234,10 @@ const
   Quantity_RandomDelete=10000;
 
 var PersonsStream : TMemoryStream;
+    NumTestRecords: Integer = 100000; // For new specific sort tests
 begin
+  Randomize; // Called once at the beginning of Run
+
   Bench('Create and Destroy Table (3 columns)',Times_CreateDestroy, procedure
     var Data : TDataItem;
         t : Integer;
@@ -262,9 +270,9 @@ begin
       for t:=0 to Quantity_Add-1 do
       begin
         // Fill row
-        Persons[0].Int32Data[t]:=t;
+        Persons[0].Int32Data[t]:=Quantity_Add - 1 - t; // Reverse order IDs
         Persons[1].TextData[t]:=SampleNames[t mod High(SampleNames)];
-        Persons[2].SingleData[t]:=456.789;
+        Persons[2].SingleData[t]:=System.Random * 100000; // Random salaries
       end;
     end);
 
@@ -336,7 +344,87 @@ begin
       end;
     end);
 
-  Bench('Sorting '+Persons.Count.ToString+' rows',Times_to_Sort, procedure
+  // --- New Specific Sorting Benchmarks ---
+  var TestData: TDataItem;
+
+  // Text Sorting Scenarios
+  TestData := CreatePersonsVariant('RandomText', NumTestRecords, npRandom, ipSequential, spConstant, dpConstant); // dpConstant for this set
+  try
+    Bench('Sort ' + IntToStr(NumTestRecords) + ' Random Names', Times_to_Sort, procedure
+    var i: Integer;
+    begin
+      for i := 1 to Times_to_Sort do
+        TestData.SortBy(TestData['Name']);
+    end);
+  finally
+    TestData.Free;
+  end;
+
+  TestData := CreatePersonsVariant('SortedText', NumTestRecords, npSorted, ipSequential, spConstant, dpConstant);
+  try
+    Bench('Sort ' + IntToStr(NumTestRecords) + ' Sorted Names', Times_to_Sort, procedure
+    var i: Integer;
+    begin
+      for i := 1 to Times_to_Sort do
+        TestData.SortBy(TestData['Name']);
+    end);
+  finally
+    TestData.Free;
+  end;
+
+  TestData := CreatePersonsVariant('ReverseText', NumTestRecords, npReverseSorted, ipSequential, spConstant, dpConstant);
+  try
+    Bench('Sort ' + IntToStr(NumTestRecords) + ' Reverse Sorted Names', Times_to_Sort, procedure
+    var i: Integer;
+    begin
+      for i := 1 to Times_to_Sort do
+        TestData.SortBy(TestData['Name']);
+    end);
+  finally
+    TestData.Free;
+  end;
+
+  // Using the main 'Persons' table for duplicate name sort.
+  // Its 'Name' field is already populated with SampleNames (duplicates)
+  // Its 'ID' is reverse, 'Salary' is random due to earlier modification.
+  Bench('Sort ' + Persons.Count.ToString + ' Duplicate Names (Original Table)', Times_to_Sort, procedure
+  var i: Integer;
+  begin
+    for i := 1 to Times_to_Sort do
+      Persons.SortBy(Persons['Name']);
+  end);
+
+  // Integer Sorting Scenario (using main Persons table with modified ID population - reverse sorted)
+  Bench('Sort ' + Persons.Count.ToString + ' Reverse IDs (Original Table)', Times_to_Sort, procedure
+  var i: Integer;
+  begin
+    for i := 1 to Times_to_Sort do
+      Persons.SortBy(Persons['ID']); // ID is already reverse sorted
+  end);
+
+  // Float Sorting Scenario (using main Persons table with modified Salary population - random)
+  Bench('Sort ' + Persons.Count.ToString + ' Random Salaries (Original Table)', Times_to_Sort, procedure
+  var i: Integer;
+  begin
+    for i := 1 to Times_to_Sort do
+      Persons.SortBy(Persons['Salary']);
+  end);
+
+  // DateTime Sorting Scenario
+  TestData := CreatePersonsVariant('RandomDateTime', NumTestRecords, npRandom, ipSequential, spConstant, dpRandom); // Using dpRandom for BirthDate
+  try
+    Bench('Sort ' + IntToStr(NumTestRecords) + ' Random BirthDates', Times_to_Sort, procedure
+    var i: Integer;
+    begin
+      for i := 1 to Times_to_Sort do
+        TestData.SortBy(TestData['BirthDate']);
+    end);
+  finally
+    TestData.Free;
+  end;
+  // --- End of New Specific Sorting Benchmarks ---
+
+  Bench('Sorting '+Persons.Count.ToString+' rows (Original Combined)',Times_to_Sort, procedure // Renamed slightly for clarity
     var t : Integer;
     begin
       for t:=1 to Times_to_Sort do
@@ -392,6 +480,50 @@ begin
   end;
 
   Persons.Free;
+end;
+
+function TBISpeedTest.CreatePersonsVariant(const NameSuffix: String; NumRecords: Integer; NamePattern: TNamePattern; IDPattern: TIDPattern; SalaryPattern: TSalaryPattern; DateTimePattern: TDateTimePattern = dpRandom): TDataItem;
+var
+  t: Integer;
+  SampleNames:Array[0..5] of String=('Sam','Jane','Peter','Carla','Alex','Julie'); // Local for this function
+begin
+  result := TDataItem.Create(True);
+  result.Items.Add('ID', TDataKind.dkInt32);
+  result.Items.Add('Name', TDataKind.dkText);
+  result.Items.Add('Salary', TDataKind.dkSingle);
+  result.Items.Add('BirthDate', TDataKind.dkDateTime); // Added BirthDate column
+
+  result.Resize(NumRecords);
+
+  for t := 0 to NumRecords - 1 do
+  begin
+    // ID Pattern
+    case IDPattern of
+      ipSequential: result[0].Int32Data[t] := t;
+      ipReverse:    result[0].Int32Data[t] := NumRecords - 1 - t;
+      ipRandom:     result[0].Int32Data[t] := Random(NumRecords * 5); // Allow some duplicates, range can be adjusted
+    end;
+
+    // Name Pattern
+    case NamePattern of
+      npRandom:         result[1].TextData[t] := NameSuffix + '_Rnd' + IntToStr(Random(NumRecords*10)); // Increased randomness pool
+      npSorted:         result[1].TextData[t] := NameSuffix + '_' + Format('%.6d', [t]);
+      npReverseSorted:  result[1].TextData[t] := NameSuffix + '_' + Format('%.6d', [NumRecords - 1 - t]);
+      npDuplicateCycle: result[1].TextData[t] := SampleNames[t mod Length(SampleNames)];
+    end;
+
+    // Salary Pattern
+    case SalaryPattern of
+      spConstant: result[2].SingleData[t] := 1234.56 + IntToSingle(t mod 100); // Slight variation for spConstant
+      spRandom:   result[2].SingleData[t] := System.Random * 100000.0;
+    end;
+
+    // DateTime Pattern
+    case DateTimePattern of
+      dpRandom:   result[3].DateTimeData[t] := Now - Random(365 * 60) - Random(24*60*60*1000) + (System.Random / 1000.0); // Random date in last 60 years, random time
+      dpConstant: result[3].DateTimeData[t] := EncodeDate(2000, 1, 1) + EncodeTime(12,0,0,0);
+    end;
+  end;
 end;
 
 end.
