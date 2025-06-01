@@ -5,7 +5,7 @@
 
 - Support for RAD Studio 12.3 Athens
 - Full sources released in this repo
-- Note: Coming soon, automatic recompilation of packages using TeeBIRecompile.exe tool
+- Automatic recompilation and installation of packages using TeeBIRecompile.exe tool
   
 ##  28th-March-2017 Beta 18
 
