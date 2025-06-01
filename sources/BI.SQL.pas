@@ -1189,6 +1189,8 @@ var
 
   Offset,
   Limit : TInteger;
+  TopValue: TInteger;      // Added for TOP clause
+  TopIsPercent: Boolean;  // Added for TOP clause
 
   Having,
   Where : String;
@@ -1222,20 +1224,27 @@ var
       if Optional('having') then
          Having:=GetExpression
       else
-      if Optional('limit') then
+      // Check for TOP first
+      if Optional('top') then
       begin
-        Limit:=StrToInt(GetExpression);
-
-        if Limit<=0 then
+        TopValue := StrToInt(GetExpression);
+        if TopValue < 0 then
+          DoError('TOP value must be a non-negative integer');
+        TopIsPercent := Optional('percent');
+        // If TOP is used, previous Limit value is irrelevant for Max records.
+        Limit := 0;
+      end
+      else if Optional('limit') then // Only parse LIMIT if TOP was not found
+      begin
+        Limit := StrToInt(GetExpression);
+        if Limit <= 0 then
            DoError('Limit must be a positive number greater than zero');
       end
-      else
-      if Optional('offset') then
+      else if Optional('offset') then // OFFSET is part of the chain
       begin
-        Offset:=StrToInt(GetExpression);
-
-        if Offset<=0 then
-           DoError('Offset must be a positive number greater than zero');
+        Offset := StrToInt(GetExpression);
+        if Offset < 0 then // Allow OFFSET 0
+           DoError('Offset must be a non-negative number');
       end
       else
       begin
@@ -1391,11 +1400,21 @@ var
     if Where<>'' then
        ASelect.Filter:=ParseWhere(tmpData,Where);
 
-    if Limit>0 then
-       ASelect.Max:=Limit;
+    // New logic for TOP and LIMIT:
+    if TopValue <> -1 then // TOP clause was parsed
+    begin
+      ASelect.Max := TopValue;
+      // ASelect.TopIsPercent := TopIsPercent; // This will be handled in the TDataSelect modification subtask
+    end
+    else if Limit > 0 then // TOP was not parsed, but LIMIT was
+    begin
+      ASelect.Max := Limit;
+    end;
+    // If neither TOP nor LIMIT is specified, ASelect.Max remains its default (0, meaning all records)
 
-    if Offset>0 then
-       ASelect.Start:=Offset;
+    if Offset >= 0 then // Allow Offset 0. Error for Offset < 0 is already handled in ParseText.
+       ASelect.Start := Offset;
+    // If Offset was not specified or invalid, ASelect.Start remains default (0)
 
     result:=True;
   end;
@@ -1433,6 +1452,8 @@ begin
 
   Offset:=0;
   Limit:=0;
+  TopValue := -1;         // Initialize TOP clause variables
+  TopIsPercent := False;
 
   tmpSum:=nil;
   tmpFrom:=nil;

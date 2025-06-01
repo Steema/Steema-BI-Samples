@@ -252,6 +252,7 @@ type
     FDistinct : Boolean;
     FFilter : TBIFilter;
     FMax : Int64;
+    FTopIsPercent: Boolean; // Added for TOP N PERCENT
     FMeasures: TQueryMeasures;
     FOnError : TErrorProc;
     FRemoveMissing : TRemoveMissing;
@@ -343,6 +344,7 @@ begin
 
   FDimensions:=TQueryDimensions.Create(Self);
   FMeasures:=TQueryMeasures.Create(Self);
+  FTopIsPercent := False; // Initialize FTopIsPercent
 
   FFilter:=TBIFilter.Create;
   TBIFilterAccess(FFilter).IChanged:=DoChanged;
@@ -462,6 +464,10 @@ function TBIQuery.CreateProvider:TDataProvider;
     result:=TSummary.Create(nil);
     result.RemoveMissing:=FRemoveMissing;
 
+    // Pass TOP N / PERCENT parameters
+    result.FTopValue := Self.FMax; // Self is TBIQuery
+    result.FTopIsPercent := Self.FTopIsPercent;
+
     AddDimensions(result);
     AddMeasures(result);
 
@@ -480,6 +486,7 @@ function TBIQuery.CreateProvider:TDataProvider;
     result:=TDataSelect.Create(nil);
     result.Distinct:=FDistinct;
     result.Max:=FMax;;
+    result.TopIsPercent:=FTopIsPercent; // Pass FTopIsPercent to TDataSelect
     result.Start:=FStart;
 
     for t:=0 to Dimensions.Count-1 do
@@ -639,6 +646,7 @@ procedure TBIQuery.Assign(Source: TPersistent);
       RemoveMissing:=AQuery.RemoveMissing;
       FDistinct:=AQuery.Distinct;
       FMax:=AQuery.MaxRows;
+          FTopIsPercent:=AQuery.FTopIsPercent; // Assign FTopIsPercent
       FStart:=AQuery.StartRow;
 
       SortBy:=AQuery.SortBy;
@@ -670,6 +678,7 @@ procedure TBIQuery.Assign(Source: TPersistent);
 
     FDistinct:=ASelect.Distinct;
     FMax:=ASelect.Max;
+    FTopIsPercent:=ASelect.TopIsPercent; // Assign FTopIsPercent from TDataSelect
     FStart:=ASelect.Start;
 
     for t:=0 to ASelect.Items.Count-1 do
@@ -727,6 +736,7 @@ begin
 
   FDistinct:=False;
   FMax:=0;
+  FTopIsPercent:=False; // Reset FTopIsPercent
   FStart:=0;
 end;
 

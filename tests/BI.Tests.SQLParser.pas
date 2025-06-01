@@ -10,11 +10,13 @@ interface
 
 uses
   BI.Arrays, BI.DataItem, DUnitX.TestFramework,
-  BI.SQL, BI.DataSource, BI.Persist, BI.Summary;
+  BI.SQL, BI.DataSource, BI.Persist, BI.Summary, BI.Query, System.SysUtils; // Added BI.Query and System.SysUtils
 
 type
   [TestFixture]
   TSQLParser_Test=class(TObject)
+  private
+    function GetSelectProviderFromSQL(SQL: String): TDataSelect; // Helper function
   public
     [Setup]
     procedure Setup;
@@ -30,6 +32,23 @@ type
 
     [Test]
     procedure ParseAll;
+
+    [Test]
+    procedure TestParse_TopNAbsolute;
+    [Test]
+    procedure TestParse_TopNPercent;
+    [Test]
+    procedure TestParse_TopN_WithOffset;
+    [Test]
+    procedure TestParse_LimitAndOffset_WithoutTop;
+    [Test]
+    procedure TestParse_TopTakesPrecedenceOverLimit;
+    [Test]
+    procedure TestParse_InvalidTop_Negative;
+    [Test]
+    procedure TestParse_InvalidTop_NoValue;
+    [Test]
+    procedure TestParse_InvalidTop_PercentNoValue;
   end;
 
 implementation
@@ -38,6 +57,19 @@ uses
   BI.Tests.SummarySamples, BI.Tests.SelectSamples;
 
 { TSQLParser_Test }
+
+function TSQLParser_Test.GetSelectProviderFromSQL(SQL: String): TDataSelect;
+var
+  Provider: TDataProvider;
+begin
+  Provider := TBISQL.ProviderFrom(Samples.Demo, SQL);
+  if Provider = nil then
+    Assert.Fail('TBISQL.ProviderFrom returned nil for SQL: ' + SQL);
+  if not (Provider is TDataSelect) then
+    Assert.Fail('Expected TDataSelect provider for: ' + SQL + ' but got ' + Provider.ClassName);
+  Result := Provider as TDataSelect;
+  // Caller is responsible for freeing the Provider (which is Result).
+end;
 
 procedure TSQLParser_Test.Setup;
 begin
@@ -177,6 +209,130 @@ procedure TSQLParser_Test.ParseAll;
 begin
   ParseAllSelect;
   ParseAllSummary;
+end;
+
+procedure TSQLParser_Test.TestParse_TopNAbsolute;
+var
+  Query: TDataSelect;
+begin
+  Query := GetSelectProviderFromSQL('SELECT TOP 10 Name FROM Customers');
+  try
+    Assert.AreEqual(10, Query.Max, 'Max value for TOP 10');
+    Assert.IsFalse(Query.TopIsPercent, 'TopIsPercent should be false for TOP 10');
+  finally
+    Query.Free;
+  end;
+end;
+
+procedure TSQLParser_Test.TestParse_TopNPercent;
+var
+  Query: TDataSelect;
+begin
+  Query := GetSelectProviderFromSQL('SELECT TOP 50 PERCENT Name FROM Customers');
+  try
+    Assert.AreEqual(50, Query.Max, 'Max value for TOP 50 PERCENT');
+    Assert.IsTrue(Query.TopIsPercent, 'TopIsPercent should be true for TOP 50 PERCENT');
+  finally
+    Query.Free;
+  end;
+end;
+
+procedure TSQLParser_Test.TestParse_TopN_WithOffset;
+var
+  Query: TDataSelect;
+begin
+  Query := GetSelectProviderFromSQL('SELECT TOP 5 Name FROM Customers OFFSET 3');
+  try
+    Assert.AreEqual(5, Query.Max, 'Max value for TOP 5 OFFSET 3');
+    Assert.IsFalse(Query.TopIsPercent, 'TopIsPercent should be false for TOP 5 OFFSET 3');
+    Assert.AreEqual(3, Query.Start, 'Start value for TOP 5 OFFSET 3');
+  finally
+    Query.Free;
+  end;
+end;
+
+procedure TSQLParser_Test.TestParse_LimitAndOffset_WithoutTop;
+var
+  Query: TDataSelect;
+begin
+  Query := GetSelectProviderFromSQL('SELECT Name FROM Customers LIMIT 7 OFFSET 2');
+  try
+    Assert.AreEqual(7, Query.Max, 'Max value for LIMIT 7 OFFSET 2');
+    Assert.IsFalse(Query.TopIsPercent, 'TopIsPercent should be false for LIMIT 7 OFFSET 2');
+    Assert.AreEqual(2, Query.Start, 'Start value for LIMIT 7 OFFSET 2');
+  finally
+    Query.Free;
+  end;
+end;
+
+procedure TSQLParser_Test.TestParse_TopTakesPrecedenceOverLimit;
+var
+  Query: TDataSelect;
+begin
+  // TSQLParser.ParseText logic:
+  // if Optional('top') then ... TopValue := ...; Limit := 0; // Limit variable in parser is reset
+  // else if Optional('limit') then ... Limit := ...
+  // Then in TSQLParser.CreateSelect:
+  // if TopValue <> -1 then ASelect.Max := TopValue else if Limit > 0 then ASelect.Max := Limit;
+
+  Query := GetSelectProviderFromSQL('SELECT TOP 15 Name FROM Customers LIMIT 7 OFFSET 1');
+  try
+    Assert.AreEqual(15, Query.Max, 'Max value for TOP 15 with LIMIT 7'); // TopValue should be used
+    Assert.IsFalse(Query.TopIsPercent, 'TopIsPercent for TOP 15 with LIMIT 7');
+    Assert.AreEqual(1, Query.Start, 'Start value for TOP 15 with LIMIT 7');
+  finally
+    Query.Free;
+  end;
+
+  // If LIMIT appears before TOP in an unusual SQL query:
+  Query := GetSelectProviderFromSQL('SELECT Name FROM Customers LIMIT 7 TOP 15 OFFSET 1');
+  try
+    // The parser processes clauses sequentially. 'LIMIT 7' sets Limit=7. 'TOP 15' then sets TopValue=15 and resets internal Limit to 0.
+    // So TopValue=15 takes precedence.
+    Assert.AreEqual(15, Query.Max, 'Max value for LIMIT 7 TOP 15');
+    Assert.IsFalse(Query.TopIsPercent, 'TopIsPercent for LIMIT 7 TOP 15');
+    Assert.AreEqual(1, Query.Start, 'Start value for LIMIT 7 TOP 15');
+  finally
+    Query.Free;
+  end;
+end;
+
+procedure TSQLParser_Test.TestParse_InvalidTop_Negative;
+var
+  Provider: TDataProvider;
+begin
+  Assert.WillRaiseWithMessage(
+    procedure
+    begin
+      Provider := TBISQL.ProviderFrom(Samples.Demo, 'SELECT TOP -1 Name FROM Customers');
+      if Provider <> nil then Provider.Free;
+    end,
+    'TOP value must be a non-negative integer');
+end;
+
+procedure TSQLParser_Test.TestParse_InvalidTop_NoValue;
+var
+  Provider: TDataProvider;
+begin
+  // StrToInt('') raises EConvertError. ESQLParser should wrap this.
+  Assert.WillRaiseMatching(
+    procedure
+    begin
+      Provider := TBISQL.ProviderFrom(Samples.Demo, 'SELECT TOP Name FROM Customers');
+      if Provider <> nil then Provider.Free;
+    end, EConvertError); // Or check for ESQLParser if it specifically wraps EConvertError
+end;
+
+procedure TSQLParser_Test.TestParse_InvalidTop_PercentNoValue;
+var
+  Provider: TDataProvider;
+begin
+  Assert.WillRaiseMatching(
+    procedure
+    begin
+      Provider := TBISQL.ProviderFrom(Samples.Demo, 'SELECT TOP PERCENT Name FROM Customers');
+      if Provider <> nil then Provider.Free;
+    end, EConvertError);
 end;
 
 initialization

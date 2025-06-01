@@ -377,7 +377,7 @@ type
   TDataSelect=class(TDataCursor)
   private
     FDistinct : Boolean;
-
+    // TopIsPercent: Boolean; // Made public as per refined plan for simplicity like Max, Start
     procedure AddItem(const AResult,AItem:TDataItem; const AName:String);
     procedure AddItems(const AData: TDataItem);
     function FoundLast(const AResult:TDataItem; const ACount:TInteger):Boolean;
@@ -394,6 +394,8 @@ type
     function ToString:String; override;
 
     property Distinct:Boolean read FDistinct write FDistinct default False;
+  public // Added TopIsPercent here
+    TopIsPercent: Boolean;
   end;
 
   // Simple method to Clone a TDataItem, using a temporary memory stream or
@@ -2187,6 +2189,7 @@ begin
 
   // Limit
   Max:=0;
+  TopIsPercent:=False; // Initialize TopIsPercent
 
   {$IFNDEF AUTOREFCOUNT}
   FFilter.Free;
@@ -3229,7 +3232,10 @@ end;
 procedure TDataSelect.Assign(Source:TPersistent);
 begin
   if Source is TDataSelect then
-     FDistinct:=TDataSelect(Source).Distinct;
+  begin
+    FDistinct:=TDataSelect(Source).Distinct;
+    TopIsPercent:=TDataSelect(Source).TopIsPercent; // Assign TopIsPercent
+  end;
 
   inherited;
 end;
@@ -3374,14 +3380,18 @@ var
              Inc(tmpPos); // Increment real counter
 
           // Top max (if not sorted)
-          if (not HasSort) and (Max>0) then
-             if tmpPos>=Max then
+          // Apply break only if Max is absolute and condition met
+          if (not HasSort) and (not TopIsPercent) and (Max > 0) then
+             if tmpPos >= Max then
                 break;
+          // If TopIsPercent is true, we collect all relevant rows first, then truncate after the loop.
         end;
       end;
     end;
 
-    // Reset Count to exact real counter
+    // Reset Count to exact real counter (tmpPos might be larger than final if TopIsPercent applies)
+    // The final resizing considering TopIsPercent will happen *after* this LoopMain finishes
+    // and after SortBy (if any)
     AData.Resize(tmpPos);
   end;
 
@@ -3511,13 +3521,54 @@ begin
         begin
           SortBy.SortData(AData);
 
-          if Start>0 then
-             AData.Delete(0,Start);
+          if Start>0 then // Apply Offset
+          begin
+            if AData.Count > Start then
+              AData.Delete(0,Start)
+            else
+              AData.Resize(0); // Offset is beyond the number of rows
+          end;
 
-          // Top max after sorting:
-          if Max>0 then
-             if AData.Count>Max then
-                AData.Resize(Max);
+          // Apply TOP N or TOP N PERCENT after sorting and offset
+          if Max > 0 then // Max holds N (either count or percentage)
+          begin
+            declare
+              EffectiveMaxRows: Int64;
+            begin
+              if TopIsPercent then
+              begin
+                if AData.Count > 0 then
+                  EffectiveMaxRows := (Int64(AData.Count) * Max) div 100 // Use Int64 for intermediate calc
+                else
+                  EffectiveMaxRows := 0;
+              end
+              else // Absolute Max
+                EffectiveMaxRows := Max;
+
+              if AData.Count > EffectiveMaxRows then
+                 AData.Resize(EffectiveMaxRows);
+            end;
+          end;
+        end
+        else // Not HasSort
+        begin
+          // For non-sorted queries, truncation for TOP N PERCENT happens after LoopMain.
+          // LoopMain has already applied absolute Max if not TopIsPercent.
+          // AData.Count at this point is tmpPos from LoopMain.
+          if TopIsPercent and (Max > 0) then
+          begin
+            declare
+              EffectiveMaxRows: Int64;
+            begin
+              if AData.Count > 0 then // AData.Count is effectively tmpPos here
+                EffectiveMaxRows := (Int64(AData.Count) * Max) div 100
+              else
+                EffectiveMaxRows := 0;
+
+              if AData.Count > EffectiveMaxRows then
+                AData.Resize(EffectiveMaxRows);
+            end;
+          end;
         end;
 
       finally

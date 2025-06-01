@@ -399,6 +399,9 @@ type
   // Returns a data structure from measures and dimensions.
   // This is similar to an SQL select query.
   TSummary=class(TDataProvider)
+  public // Made public for direct access from TBIQuery as per plan
+    FTopValue: Int64;
+    FTopIsPercent: Boolean;
   private
     FDescription : String;
     FFilter : TExpression;
@@ -1234,6 +1237,8 @@ begin
   inherited;
   FUseFilter:=True;
   FRemove:=TRemoveMissing.Create;
+  FTopValue := 0;
+  FTopIsPercent := False;
 end;
 
 Destructor TSummary.Destroy;
@@ -1260,6 +1265,9 @@ begin
 
   FFilter.Free;
   FFilter:=nil;
+
+  FTopValue := 0;        // Reset TopValue
+  FTopIsPercent := False; // Reset TopIsPercent
 
   FHaving.Free;
   FHaving:=nil;
@@ -1456,6 +1464,9 @@ begin
     Having:=Summary.FHaving;
 
     SortBy:=Summary.SortBy;
+
+    Self.FTopValue := Summary.FTopValue;         // Assign TopValue
+    Self.FTopIsPercent := Summary.FTopIsPercent; // Assign TopIsPercent
   end;
 
   inherited;
@@ -1972,6 +1983,29 @@ procedure TSummary.Calculate(const AData:TDataItem);
 
     if SortBy.ActiveCount>0 then
        SortBy.SortData(AResult);
+
+      // Apply TOP N [PERCENT] logic after sorting
+      if Self.FTopValue > 0 then // FTopValue holds N from TOP N or LIMIT N
+      begin
+        declare // Using declare block for local variable as per Delphi style
+          EffectiveMaxRows: Int64;
+        begin
+          if Self.FTopIsPercent then
+          begin
+            if AResult.Count > 0 then
+              EffectiveMaxRows := (AResult.Count * Self.FTopValue) div 100
+            else
+              EffectiveMaxRows := 0;
+          end
+          else // Absolute TOP N
+          begin
+            EffectiveMaxRows := Self.FTopValue;
+          end;
+
+          if AResult.Count > EffectiveMaxRows then
+            AResult.Resize(EffectiveMaxRows);
+        end;
+      end;
 
     AResult.History.Times.Calculating:=t1.ElapsedMilliseconds;
     AResult.History.Times.Total:=AResult.History.Times.Calculating;
