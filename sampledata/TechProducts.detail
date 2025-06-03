@@ -1,0 +1,4 @@
+:GEO|Countries|ISO-3166-Num=Lookup_Country|ISO_Num
+:GEO|Countries|ISO-3166-A2=Lookup_Country|Country_code_A2
+:GEO|USA|Code=Lookup_Customers|State_code
+:GEO|USA|Name=Lookup_Customers|State_name

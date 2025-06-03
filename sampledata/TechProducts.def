@@ -1,0 +1,5 @@
+Kind=FILE
+FileName=TechProductsLtd.mdb
+Parallel=False
+DBViews=True
+FTPPort=21
