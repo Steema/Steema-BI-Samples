@@ -361,6 +361,10 @@ var i : TLoopInteger;
 
     tmpPos : TNativeInteger;
     tmpExists : Boolean;
+
+    {$IFNDEF ARRAYINSERT}
+    L : Integer;
+    {$ENDIF}
 begin
   tmpKind:=KindOf;
 
