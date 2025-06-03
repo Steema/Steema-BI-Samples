@@ -10,23 +10,26 @@ A simple class to implement in-memory database complex structures to provide:
 
 - [Ultra fast](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Speed) speed (every column or field is a simple array)
 
-- [Import data](https://github.com/Steema/BI/wiki/importing) from files, databases, objects (ORM) in one or few lines of code
+- Big-data ready, billions of cells supported
 
-- Automatic relationships between columns (master-detail), indexes and foreign keys
+- Multi-platform (Windows, Mac OSX, Android, iOS, Linux and more), for VCL, Firemonkey, Delphi and C++
+
+- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids, optional TeeGrid and more)
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
 - Geographic database (Countries, States, Provinces...) to automatically create summary geo queries, TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
 
+  ![](https://raw.github.com/Steema/BI/master/docs/img/geo_chart_usa_counties.png)
+
+
 - Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams of raw arrays)
 
-- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids, optional TeeGrid and more)
+- Automatic relationships between columns (master-detail), indexes and foreign keys
 
-- Data [export](https://github.com/Steema/BI/wiki/exporting) (csv,pdf,html,xml,excel,json), comparisons and manipulations
+- [Import data](https://github.com/Steema/BI/wiki/importing) from files, databases, objects (ORM) in one or few lines of code
 
-- Big-data ready, billions of cells supported
-
-- Multi-platform (Windows, Mac OSX, Android, iOS, Linux and more)
+- [Export data](https://github.com/Steema/BI/wiki/exporting) (to csv,pdf,html,xml,excel,json), comparisons and manipulations
 
 - Supported development environments: 
 
