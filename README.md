@@ -14,7 +14,7 @@ A simple class to implement in-memory database complex structures to provide:
 
 - Multi-platform (Windows, Mac OSX, Android, iOS, Linux and more), for VCL, Firemonkey, Delphi and C++
 
-- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids, optional TeeGrid and more)
+- Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids, optional [TeeGrid](https://github.com/Steema/TeeGrid-VCL-FMX-Samples) and more)
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
