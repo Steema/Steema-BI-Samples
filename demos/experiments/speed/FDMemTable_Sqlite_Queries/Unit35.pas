@@ -55,7 +55,7 @@ uses
 const
   SampleNames:Array[0..5] of String=('Sam','Jane','Peter','Carla','Alex','Julie');
 
-  Row_Quantity=100000;
+  Row_Quantity=1000000;
 
 procedure TLocalSQLvsBI.TestFireDAC;
 var t : Integer;
