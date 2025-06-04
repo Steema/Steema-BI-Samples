@@ -4,13 +4,21 @@
   
 This tool:
 
-- Detects the supported Delphi / C++ RAD Studio IDEs
-- Checks if you have TeeChart installed, Lite, Standard or Pro versions
-- Enables selecting and recompiling plaftorms
-     Warning: For Mac and iOS, sdks should be present
-- Installs the design-time DCLxxx packages
-- Copies the runtime *.bpl packages to Windows\Syswow64 and System32
-- Sets the appropiate paths to source code (Search, Library and Browsing paths)
+- Detects the supported Delphi / C++ RAD Studio IDEs installed in your system.
+
+- For each ide, it checks if you have TeeChart installed, and if its the
+  Lite, Standard and/or Pro versions.
+
+- Enables selecting and recompiling plaftorms.
+  Warning: For Mac and iOS, Linux, RAD sdks should be already present.
+
+- Recompiles the TeeBI packages from the packages\Temp subfolder.
+
+- Installs the design-time DCLVCLxxx and DCLFMXxxx compiled packages.
+
+- Copies the runtime *.bpl packages to Windows\Syswow64 and/or System32 folders.
+
+- Sets the appropiate paths to enable compiling projects (Search, Library and Browsing paths)
 
 Note:
 
