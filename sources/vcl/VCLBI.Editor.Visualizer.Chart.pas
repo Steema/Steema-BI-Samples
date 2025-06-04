@@ -75,7 +75,7 @@ type
     VizUI : TBIChartComposerUI;
 
     IChartEditor : TBIChartEditor;
-    VizEditor : TVisualizerEditor;
+    // unused: VizEditor : TVisualizerEditor;
 
     procedure ChangeRender(const AIndex:Integer);
     // DEPRECATED: procedure ShowGroupSettings(const AGroup:TGroup);
