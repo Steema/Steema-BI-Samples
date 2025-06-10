@@ -15,7 +15,7 @@ type
   THTMLHelper=class
   public
     const
-      PureCSS='<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+      PureCSS='<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">';
 
     class function AlphaColorToColor(const AColor:TAlphaColor):TColor; static;
   end;
