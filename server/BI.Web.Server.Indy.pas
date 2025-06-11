@@ -54,18 +54,27 @@ implementation
 
 uses
   IdBaseComponent, IdComponent, IdCustomTCPServer, IdCustomHTTPServer,
-  IdHTTPServer, IdContext, BI.Web.IndyContext, IdStack;
+  IdHTTPServer, IdContext, BI.Web.IndyContext, IdStack,
+  IdSSLOpenSSLHeaders, IdServerIOHandlerSSLOpenSSL; // Added SSL units
 
 type
   TIndyHttpServer=class(THttpServer)
   private
     Server: TIdHTTPServer;
+    FSSLEnabled: Boolean;
+    FSSLCertFile: string;
+    FSSLKeyFile: string;
+    FSSLPassword: string;
+    FSSLPort: Integer;
+    FIOHandler: TIdServerIOHandlerSSLOpenSSL;
 
     function GetActive: Boolean; override;
     procedure SetActive(const Value: Boolean); override;
 
     function GetPort: Integer; override;
     procedure SetPort(const Value: Integer); override;
+    function GetSSLPort: Integer;
+    procedure SetSSLPort(const Value: Integer);
 
     procedure ServerConnect(AContext: TIdContext);
     procedure ServerCommandGet(AContext: TIdContext;
@@ -80,6 +89,13 @@ type
 
     function ContextsCount: Integer; override;
     function GetAddresses:TStrings; override;
+
+  public // Added public keyword for properties
+    property SSLEnabled: Boolean read FSSLEnabled write FSSLEnabled;
+    property SSLCertFile: string read FSSLCertFile write FSSLCertFile;
+    property SSLKeyFile: string read FSSLKeyFile write FSSLKeyFile;
+    property SSLPassword: string read FSSLPassword write FSSLPassword;
+    property SSLPort: Integer read GetSSLPort write SetSSLPort;
   end;
 
 { TIndyHttpServer }
@@ -87,6 +103,9 @@ type
 Constructor TIndyHttpServer.Create(AOwner: TComponent);
 begin
   inherited;
+
+  FIOHandler := TIdServerIOHandlerSSLOpenSSL.Create(Self); // Initialize FIOHandler
+  FSSLPort := 15443; // Default SSL port
 
   Server:=TIdHTTPServer.Create(Self);
   Server.DefaultPort:=15015;
@@ -209,12 +228,51 @@ end;
 
 procedure TIndyHttpServer.SetActive(const Value: Boolean);
 begin
-  Server.Active:=Value;
+  if Value then
+  begin
+    if FSSLEnabled then
+    begin
+      Server.IOHandler := FIOHandler;
+      FIOHandler.SSLOptions.CertFile := FSSLCertFile;
+      FIOHandler.SSLOptions.KeyFile := FSSLKeyFile;
+      if FSSLPassword <> '' then
+        FIOHandler.SSLOptions.Password := FSSLPassword;
+      FIOHandler.SSLOptions.Method := sslvTLSv1_2; // Or a more current version if available
+      FIOHandler.SSLOptions.Mode := sslmServer;
+
+      if (FSSLPort > 0) and (FSSLPort <> Port) then
+        Server.DefaultPort := FSSLPort
+      else
+        Server.DefaultPort := Port; // Fallback to non-SSL port if SSLPort is not set
+
+      Server.Bindings.Clear;
+      Server.Bindings.Add.Port := Server.DefaultPort;
+      // Note: Consider adding IP binding configuration here if necessary
+    end
+    else
+    begin
+      Server.IOHandler := nil;
+      Server.DefaultPort := Port; // Ensure non-SSL port is used
+      Server.Bindings.Clear;
+      Server.Bindings.Add.Port := Server.DefaultPort;
+    end;
+  end;
+  Server.Active := Value;
 end;
 
 procedure TIndyHttpServer.SetPort(const Value: Integer);
 begin
   Server.DefaultPort:=Value;
+end;
+
+function TIndyHttpServer.GetSSLPort: Integer;
+begin
+  result := FSSLPort;
+end;
+
+procedure TIndyHttpServer.SetSSLPort(const Value: Integer);
+begin
+  FSSLPort := Value;
 end;
 
 { THttpServer }

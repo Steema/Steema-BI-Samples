@@ -67,6 +67,24 @@ type
     EPublic: TEdit;
     CBStartMin: TCheckBox;
     Button3: TButton;
+
+    // SSL Components
+    TabSSL: TTabSheet;
+    GBSSL: TGroupBox;
+    CBSSLEnabled: TCheckBox;
+    LSSLPort: TLabel;
+    ESSLPort: TEdit;
+    UDSSLPort: TUpDown;
+    LSSLCertFile: TLabel;
+    ESSLCertFile: TEdit;
+    BtnBrowseCert: TButton;
+    LSSLKeyFile: TLabel;
+    ESSLKeyFile: TEdit;
+    BtnBrowseKey: TButton;
+    LSSLPassword: TLabel;
+    ESSLPassword: TEdit;
+    OpenDialogSSL: TOpenDialog;
+
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure TrayIcon1Click(Sender: TObject);
@@ -91,6 +109,15 @@ type
     procedure TimerSchedulerTimer(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+
+    // SSL Event Handlers
+    procedure CBSSLEnabledClick(Sender: TObject);
+    procedure ESSLPortChange(Sender: TObject);
+    procedure ESSLCertFileChange(Sender: TObject);
+    procedure ESSLKeyFileChange(Sender: TObject);
+    procedure ESSLPasswordChange(Sender: TObject);
+    procedure BtnBrowseCertClick(Sender: TObject);
+    procedure BtnBrowseKeyClick(Sender: TObject);
   private
     { Private declarations }
     Data : TAllData;
@@ -126,6 +153,7 @@ type
     procedure SetupLogs;
     procedure SetupPublicFolder;
     procedure TryEnableScheduler;
+    procedure ApplySSLSettingsToControls(Enabled: Boolean); // Helper procedure for SSL UI
   public
     { Public declarations }
     Server : THttpServer;
@@ -153,7 +181,7 @@ uses
   {$ENDIF}
 
   System.UITypes, VCLBI.Editor.Stores, BI.Languages.English,
-  BI.Web.IndyContext;
+  BI.Web.IndyContext, IdSSLOpenSSLHeaders; // Added IdSSLOpenSSLHeaders
 
 procedure TFormBIWeb.Log(const S:String);
 begin
@@ -298,7 +326,7 @@ begin
 
   PageControl1.ActivePage:=TabConsole;
 
-  UDPort.Position:=TBIWebClient.DefaultPort;
+  // UDPort.Position will be set after Server.Port is loaded.
 
   CreateServer;
 
@@ -311,6 +339,23 @@ begin
 
   BIGrid1.Data:=BIWeb.Scheduler.Data;
 
+  // Load SSL Settings before server activation
+  Server.SSLEnabled := TBIWebConfig.ReadBoolean('SSLEnabled', False);
+  Server.SSLPort := TBIWebConfig.ReadInteger('SSLPort', 15443);
+  Server.SSLCertFile := TBIWebConfig.ReadString('SSLCertFile', '');
+  Server.SSLKeyFile := TBIWebConfig.ReadString('SSLKeyFile', '');
+  Server.SSLPassword := TBIWebConfig.ReadString('SSLPassword', ''); // Consider security
+
+  // Update UI with loaded SSL settings
+  CBSSLEnabled.Checked := Server.SSLEnabled;
+  ESSLPort.Text := IntToStr(Server.SSLPort); // ESSLPort.OnChange will fire here if text changes
+  UDSSLPort.Position := Server.SSLPort;     // This might also trigger ESSLPort.OnChange if associate updates Text
+  ESSLCertFile.Text := Server.SSLCertFile;
+  ESSLKeyFile.Text := Server.SSLKeyFile;
+  ESSLPassword.Text := Server.SSLPassword;
+
+  ApplySSLSettingsToControls(Server.SSLEnabled); // Set initial state of SSL controls
+
   Server.Active:=True;
 
   CBActive.Checked:=Server.Active;
@@ -321,12 +366,35 @@ begin
   SetupLogs;
   SetupPublicFolder;
 
+  EPort.Text := IntToStr(Server.Port); // Set EPort text
+  UDPort.Position := Server.Port;     // Set UDPort position from loaded Server.Port
+
   Log('Started: '+DateTimeToStr(Now));
 
   Timer1.Enabled:=CBAutoUpdate.Checked;
 
   CBScheduler.Checked:=TBIRegistry.ReadBoolean('BIWeb','Scheduler',False);
   TryEnableScheduler;
+
+  // Load OpenSSL libraries
+  // IdOpenSSLSetLibPath('.'); // Optionally set path if DLLs are in a specific subfolder. Default search paths are usually sufficient.
+  if not LoadOpenSSLLibrary then // LoadOpenSSLLibrary is from IdSSLOpenSSLHeaders
+  begin
+    // Check if SSL is enabled or was intended to be used
+    if Server.SSLEnabled then // Or CBSSLEnabled.Checked which should be in sync
+    begin
+      Log('Warning: Failed to load OpenSSL libraries (e.g., libeay32.dll, ssleay32.dll or libcrypto-*.dll, libssl-*.dll). SSL/HTTPS functionality may be unavailable. Please ensure these files are in the application directory or system path.');
+      ShowMessage('Warning: Failed to load OpenSSL libraries (e.g., libeay32.dll, ssleay32.dll or libcrypto-*.dll, libssl-*.dll). SSL/HTTPS functionality may be unavailable. Please ensure these files are in the application directory or system path.');
+    end
+    else
+    begin
+      Log('Info: OpenSSL libraries (e.g., libeay32.dll, ssleay32.dll or libcrypto-*.dll, libssl-*.dll) not found or failed to load. SSL/HTTPS will be unavailable unless manually configured and libraries are present.');
+    end;
+  end
+  else
+  begin
+    Log('Info: OpenSSL libraries loaded successfully.');
+  end;
 
   if FirstTime then
   begin
@@ -426,8 +494,33 @@ end;
 
 procedure TFormBIWeb.CBActiveClick(Sender: TObject);
 begin
-  Server.Active:=CBActive.Checked;
-  EPort.Enabled:=not Server.Active;
+  if CBActive.Checked then
+  begin
+    // Apply current UI settings to Server properties before activating
+    Server.SSLEnabled := CBSSLEnabled.Checked;
+    Server.SSLPort := UDSSLPort.Position;
+    Server.SSLCertFile := ESSLCertFile.Text;
+    Server.SSLKeyFile := ESSLKeyFile.Text;
+    Server.SSLPassword := ESSLPassword.Text;
+    Server.Port := UDPort.Position; // Ensure non-SSL port is also up-to-date
+  end;
+
+  Server.Active := CBActive.Checked;
+  EPort.Enabled := not Server.Active;
+  UDPort.Enabled := not Server.Active; // Also disable/enable the UpDown for non-SSL port
+
+  // Disable SSL configuration if server is active and SSL is enabled,
+  // or enable if server is inactive.
+  // More granular enabling/disabling is handled by ApplySSLSettingsToControls
+  if Server.Active and Server.SSLEnabled then
+  begin
+    // Optionally, disable further SSL changes while server is running with SSL.
+    // For now, we allow changes, and they will trigger a server restart.
+  end;
+
+  // Ensure SSL controls reflect the correct state based on CBSSLEnabled,
+  // especially if activating the server without SSL.
+  ApplySSLSettingsToControls(CBSSLEnabled.Checked);
 end;
 
 procedure TFormBIWeb.CBAutoScrollClick(Sender: TObject);
@@ -489,8 +582,7 @@ end;
 procedure TFormBIWeb.EPortChange(Sender: TObject);
 begin
   Server.Port:=UDPort.Position;
-
-  TBIRegistry.WriteInteger('BIWeb','Port',Server.Port);
+  TBIWebConfig.WriteInteger('Port',Server.Port); // Changed to TBIWebConfig
 end;
 
 procedure TFormBIWeb.EPublicChange(Sender: TObject);
@@ -603,6 +695,160 @@ end;
 procedure TFormBIWeb.TrayIcon1Click(Sender: TObject);
 begin
   Show;
+end;
+
+{ SSL Event Handlers }
+
+procedure TFormBIWeb.ApplySSLSettingsToControls(Enabled: Boolean);
+begin
+  ESSLPort.Enabled := Enabled;
+  UDSSLPort.Enabled := Enabled;
+  LSSLPort.Enabled := Enabled;
+  ESSLCertFile.Enabled := Enabled;
+  LSSLCertFile.Enabled := Enabled;
+  BtnBrowseCert.Enabled := Enabled;
+  ESSLKeyFile.Enabled := Enabled;
+  LSSLKeyFile.Enabled := Enabled;
+  BtnBrowseKey.Enabled := Enabled;
+  ESSLPassword.Enabled := Enabled;
+  LSSLPassword.Enabled := Enabled;
+end;
+
+procedure TFormBIWeb.CBSSLEnabledClick(Sender: TObject);
+var RestartServer: Boolean;
+begin
+  Server.SSLEnabled := CBSSLEnabled.Checked;
+  ApplySSLSettingsToControls(Server.SSLEnabled);
+  TBIWebConfig.WriteBoolean('SSLEnabled', Server.SSLEnabled);
+
+  RestartServer := Server.Active;
+  if RestartServer then
+  begin
+    Server.Active := False;
+    // Update CBActive in case server failed to stop, though Active setter should handle it
+    CBActive.Checked := Server.Active;
+    Application.ProcessMessages; // Allow server to shut down
+    Server.Active := True;
+    CBActive.Checked := Server.Active;
+  end;
+end;
+
+procedure TFormBIWeb.ESSLPortChange(Sender: TObject);
+var
+  NewPort: Integer;
+  RestartServer: Boolean;
+begin
+  NewPort := UDSSLPort.Position; // ESSLPort.Text should match this due to association
+
+  if NewPort <> Server.SSLPort then // Compare the new validated position with current server state
+  begin
+    Server.SSLPort := NewPort;
+    TBIWebConfig.WriteInteger('SSLPort', Server.SSLPort);
+
+    // Update ESSLPort.Text if it's not already in sync (e.g., if changed via UDSSLPort directly)
+    // This check helps prevent recursive calls if Text property change itself triggers OnChange.
+    if ESSLPort.Text <> IntToStr(NewPort) then
+    begin
+        ESSLPort.OnChange := nil; // Temporarily disable handler
+        try
+            ESSLPort.Text := IntToStr(NewPort);
+        finally
+            ESSLPort.OnChange := ESSLPortChange; // Restore handler
+        end;
+    end;
+
+    RestartServer := Server.Active and Server.SSLEnabled;
+    if RestartServer then
+    begin
+      Server.Active := False;
+      CBActive.Checked := Server.Active;
+      Application.ProcessMessages;
+      Server.Active := True;
+      CBActive.Checked := Server.Active;
+    end;
+  end;
+end;
+
+procedure TFormBIWeb.ESSLCertFileChange(Sender: TObject);
+var RestartServer: Boolean;
+begin
+  if ESSLCertFile.Text <> Server.SSLCertFile then
+  begin
+    Server.SSLCertFile := ESSLCertFile.Text;
+    TBIWebConfig.WriteString('SSLCertFile', Server.SSLCertFile);
+
+    RestartServer := Server.Active and Server.SSLEnabled;
+    if RestartServer then
+    begin
+      Server.Active := False;
+      CBActive.Checked := Server.Active;
+      Application.ProcessMessages;
+      Server.Active := True;
+      CBActive.Checked := Server.Active;
+    end;
+  end;
+end;
+
+procedure TFormBIWeb.ESSLKeyFileChange(Sender: TObject);
+var RestartServer: Boolean;
+begin
+  if ESSLKeyFile.Text <> Server.SSLKeyFile then
+  begin
+    Server.SSLKeyFile := ESSLKeyFile.Text;
+    TBIWebConfig.WriteString('SSLKeyFile', Server.SSLKeyFile);
+
+    RestartServer := Server.Active and Server.SSLEnabled;
+    if RestartServer then
+    begin
+      Server.Active := False;
+      CBActive.Checked := Server.Active;
+      Application.ProcessMessages;
+      Server.Active := True;
+      CBActive.Checked := Server.Active;
+    end;
+  end;
+end;
+
+procedure TFormBIWeb.ESSLPasswordChange(Sender: TObject);
+var RestartServer: Boolean;
+begin
+  if ESSLPassword.Text <> Server.SSLPassword then
+  begin
+    Server.SSLPassword := ESSLPassword.Text;
+    TBIWebConfig.WriteString('SSLPassword', Server.SSLPassword); // Consider security
+
+    RestartServer := Server.Active and Server.SSLEnabled;
+    if RestartServer then
+    begin
+      Server.Active := False;
+      CBActive.Checked := Server.Active;
+      Application.ProcessMessages;
+      Server.Active := True;
+      CBActive.Checked := Server.Active;
+    end;
+  end;
+end;
+
+procedure TFormBIWeb.BtnBrowseCertClick(Sender: TObject);
+begin
+  OpenDialogSSL.Title := 'Select Certificate File';
+  OpenDialogSSL.Filter := 'Certificate files (*.pem;*.crt)|*.pem;*.crt|All files (*.*)|*.*';
+  if OpenDialogSSL.Execute then
+  begin
+    ESSLCertFile.Text := OpenDialogSSL.FileName;
+    // ESSLCertFileChange will be triggered by setting the Text property
+  end;
+end;
+
+procedure TFormBIWeb.BtnBrowseKeyClick(Sender: TObject);
+begin
+  OpenDialogSSL.Title := 'Select Key File';
+  OpenDialogSSL.Filter := 'Key files (*.key)|*.key|All files (*.*)|*.*';
+  if OpenDialogSSL.Execute then
+  begin
+    ESSLKeyFile.Text := OpenDialogSSL.FileName;
+    // ESSLKeyFileChange will be triggered by setting the Text property
+  end;
 end;
 
 end.

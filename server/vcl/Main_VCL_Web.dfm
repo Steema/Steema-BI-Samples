@@ -240,6 +240,118 @@ object FormBIWeb: TFormBIWeb
             OnClick = Button3Click
           end
         end
+        object TabSSL: TTabSheet // New TabSheet for SSL Settings
+          Caption = 'SSL/HTTPS'
+          ImageIndex = 3 // Assign an appropriate ImageIndex if available
+          object GBSSL: TGroupBox
+            Left = 8
+            Top = 8
+            Width = 400 // Adjust width as needed
+            Height = 230 // Adjust height as needed
+            Caption = 'SSL/HTTPS Settings'
+            TabOrder = 0
+            object CBSSLEnabled: TCheckBox
+              Left = 16
+              Top = 24
+              Width = 150
+              Height = 17
+              Caption = 'Enable SSL/HTTPS'
+              TabOrder = 0
+              OnClick = CBSSLEnabledClick
+            end
+            object LSSLPort: TLabel
+              Left = 16
+              Top = 56
+              Width = 70
+              Height = 13
+              Caption = 'SSL Port:'
+            end
+            object ESSLPort: TEdit
+              Left = 96
+              Top = 52
+              Width = 60
+              Height = 21
+              TabOrder = 1
+              Text = '15443'
+              OnChange = ESSLPortChange
+            end
+            object UDSSLPort: TUpDown
+              Left = 156 // ESSLPort.Left + ESSLPort.Width
+              Top = 52
+              Width = 15
+              Height = 21
+              Associate = ESSLPort
+              Min = 1
+              Max = 65535
+              Position = 15443
+              TabOrder = 2
+            end
+            object LSSLCertFile: TLabel
+              Left = 16
+              Top = 88
+              Width = 100
+              Height = 13
+              Caption = 'Certificate File:'
+            end
+            object ESSLCertFile: TEdit
+              Left = 16
+              Top = 104
+              Width = 300
+              Height = 21
+              TabOrder = 3
+              OnChange = ESSLCertFileChange
+            end
+            object BtnBrowseCert: TButton
+              Left = 320
+              Top = 103
+              Width = 75
+              Height = 23
+              Caption = 'Browse...'
+              TabOrder = 4
+              OnClick = BtnBrowseCertClick
+            end
+            object LSSLKeyFile: TLabel
+              Left = 16
+              Top = 136
+              Width = 100
+              Height = 13
+              Caption = 'Key File:'
+            end
+            object ESSLKeyFile: TEdit
+              Left = 16
+              Top = 152
+              Width = 300
+              Height = 21
+              TabOrder = 5
+              OnChange = ESSLKeyFileChange
+            end
+            object BtnBrowseKey: TButton
+              Left = 320
+              Top = 151
+              Width = 75
+              Height = 23
+              Caption = 'Browse...'
+              TabOrder = 6
+              OnClick = BtnBrowseKeyClick
+            end
+            object LSSLPassword: TLabel
+              Left = 16
+              Top = 184
+              Width = 150 // Adjusted width to fit caption
+              Height = 13
+              Caption = 'SSL Password (optional):'
+            end
+            object ESSLPassword: TEdit
+              Left = 16
+              Top = 200
+              Width = 300
+              Height = 21
+              PasswordChar = '*'
+              TabOrder = 7
+              OnChange = ESSLPasswordChange
+            end
+          end
+        end
       end
     end
     object TabScheduler: TTabSheet
@@ -911,5 +1023,13 @@ object FormBIWeb: TFormBIWeb
     OnTimer = TimerSchedulerTimer
     Left = 320
     Top = 200
+  end
+  object OpenDialogSSL: TOpenDialog
+    Filter =
+      'Certificate files (*.pem, *.crt)|*.pem;*.crt|Key files (*.key)' +
+      '|*.key|All files (*.*)|*.*'
+    Title = 'Select SSL File'
+    Left = 400 // Positioned near other non-visual components
+    Top = 128
   end
 end
