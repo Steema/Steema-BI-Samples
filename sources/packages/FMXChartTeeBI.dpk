@@ -28,7 +28,7 @@ package FMXChartTeeBI;
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'FMX TeeChart Lite for TeeBI '}
 {$RUNONLY}
-{$IMPLICITBUILD OFF}
+{$IMPLICITBUILD ON}
 
 requires
   rtl,

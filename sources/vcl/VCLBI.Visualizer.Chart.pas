@@ -608,8 +608,10 @@ begin
         ASeries.ColorEachPoint:=True;
 end;
 
+{$IFDEF TEEPRO}
 type
   TCustomStackSeriesAccess=class(TCustomStackSeries);
+{$ENDIF}
 
 procedure TGroupChart.Finished;
 
@@ -941,10 +943,14 @@ begin
         TAreaSeries(ASeries).MultiArea:=TMultiArea.maStacked
   else
   if ASeries is TCustomSeries then
-     if AStack=TAutoStackSeries.Yes100 then
-        TCustomStackSeriesAccess(ASeries).Stacked:=TCustomSeriesStack.cssStack100
-     else
-        TCustomStackSeriesAccess(ASeries).Stacked:=TCustomSeriesStack.cssStack;
+  begin
+    {$IFDEF TEEPRO}
+    if AStack=TAutoStackSeries.Yes100 then
+       TCustomStackSeriesAccess(ASeries).Stacked:=TCustomSeriesStack.cssStack100
+    else
+       TCustomStackSeriesAccess(ASeries).Stacked:=TCustomSeriesStack.cssStack;
+    {$ENDIF}
+  end;
 
   for tmp in AChart.SeriesList do
       tmp.Marks.Hide;
@@ -960,7 +966,11 @@ begin
      TAreaSeries(ASeries).MultiArea:=TMultiArea.maNone
   else
   if ASeries is TCustomSeries then
-     TCustomStackSeriesAccess(ASeries).Stacked:=TCustomSeriesStack.cssNone;
+  begin
+    {$IFDEF TEEPRO}
+    TCustomStackSeriesAccess(ASeries).Stacked:=TCustomSeriesStack.cssNone;
+    {$ENDIF}
+  end;
 
   if IParent.Options.Marks then
      for tmp in Chart.Chart.SeriesList do

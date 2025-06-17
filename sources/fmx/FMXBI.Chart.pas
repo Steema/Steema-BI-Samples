@@ -1889,8 +1889,10 @@ begin
     inherited;
 end;
 
+{$IFDEF TEEPRO}
 type
   TCustomSeriesAccess=class(TCustomStackSeries);
+{$ENDIF}
 
 procedure TBIChartOptions.Finish;
 
@@ -1943,9 +1945,9 @@ begin
   for tmp in IChart.Chart.SeriesList do
       if tmp is TCustomSeries then
       begin
+        {$IFDEF TEEPRO}
         TCustomSeriesAccess(tmp).Stacked:=CustomSeriesStack;
 
-        {$IFDEF TEEPRO}
         if (tmp is TAreaSeries) and
            (TCustomSeriesAccess(tmp).Stacked<>cssStack) and
            (TCustomSeriesAccess(tmp).Stacked<>cssStack100) then
