@@ -10,11 +10,9 @@ object FormSummary: TFormSummary
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   WindowState = wsMaximized
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 297
@@ -242,18 +240,10 @@ object FormSummary: TFormSummary
       TabOrder = 2
       object TabSummary: TTabSheet
         Caption = 'Summary'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabVizEditor: TTabSheet
         Caption = 'Visualizer'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
     end
   end
@@ -268,10 +258,6 @@ object FormSummary: TFormSummary
     OnChange = PageControl1Change
     object TabGrid: TTabSheet
       Caption = 'Grid'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object SplitterChart: TSplitter
         Left = 0
         Top = 508
@@ -300,10 +286,6 @@ object FormSummary: TFormSummary
     object TabTree: TTabSheet
       Caption = 'Tree'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 275
@@ -336,10 +318,6 @@ object FormSummary: TFormSummary
     object TabVisualizer: TTabSheet
       Caption = 'Visualizer'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -382,10 +360,6 @@ object FormSummary: TFormSummary
     object TabSQL: TTabSheet
       Caption = 'SQL'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -440,6 +414,8 @@ object FormSummary: TFormSummary
         Align = alTop
         TabOrder = 1
         OnChange = MemoSQLChange
+        ExplicitLeft = -1
+        ExplicitTop = 59
       end
       object BIGridSQL: TBIGrid
         Left = 0
@@ -456,10 +432,6 @@ object FormSummary: TFormSummary
     object TabTotals: TTabSheet
       Caption = 'Totals'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 258
@@ -507,44 +479,44 @@ object FormSummary: TFormSummary
           Gradient.EndColor = clWhite
           Gradient.MidColor = 15395562
           Gradient.StartColor = 15395562
-          LeftWall.Color = 14745599
+          LeftWall.Color = clLightyellow
           Legend.Font.Name = 'Verdana'
           Legend.Shadow.Transparency = 0
           Legend.Shadow.Visible = False
           Legend.Symbol.Shadow.Visible = False
-          RightWall.Color = 14745599
+          RightWall.Color = clLightyellow
           Title.Font.Name = 'Verdana'
           Title.Text.Strings = (
             'TBITChart')
           BottomAxis.Axis.Color = 4210752
-          BottomAxis.Grid.Color = 11119017
+          BottomAxis.Grid.Color = clDarkgray
           BottomAxis.LabelsFormat.Font.Name = 'Verdana'
-          BottomAxis.TicksInner.Color = 11119017
+          BottomAxis.TicksInner.Color = clDarkgray
           BottomAxis.Title.Font.Name = 'Verdana'
           DepthAxis.Axis.Color = 4210752
-          DepthAxis.Grid.Color = 11119017
+          DepthAxis.Grid.Color = clDarkgray
           DepthAxis.LabelsFormat.Font.Name = 'Verdana'
-          DepthAxis.TicksInner.Color = 11119017
+          DepthAxis.TicksInner.Color = clDarkgray
           DepthAxis.Title.Font.Name = 'Verdana'
           DepthTopAxis.Axis.Color = 4210752
-          DepthTopAxis.Grid.Color = 11119017
+          DepthTopAxis.Grid.Color = clDarkgray
           DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
-          DepthTopAxis.TicksInner.Color = 11119017
+          DepthTopAxis.TicksInner.Color = clDarkgray
           DepthTopAxis.Title.Font.Name = 'Verdana'
           LeftAxis.Axis.Color = 4210752
-          LeftAxis.Grid.Color = 11119017
+          LeftAxis.Grid.Color = clDarkgray
           LeftAxis.LabelsFormat.Font.Name = 'Verdana'
-          LeftAxis.TicksInner.Color = 11119017
+          LeftAxis.TicksInner.Color = clDarkgray
           LeftAxis.Title.Font.Name = 'Verdana'
           RightAxis.Axis.Color = 4210752
-          RightAxis.Grid.Color = 11119017
+          RightAxis.Grid.Color = clDarkgray
           RightAxis.LabelsFormat.Font.Name = 'Verdana'
-          RightAxis.TicksInner.Color = 11119017
+          RightAxis.TicksInner.Color = clDarkgray
           RightAxis.Title.Font.Name = 'Verdana'
           TopAxis.Axis.Color = 4210752
-          TopAxis.Grid.Color = 11119017
+          TopAxis.Grid.Color = clDarkgray
           TopAxis.LabelsFormat.Font.Name = 'Verdana'
-          TopAxis.TicksInner.Color = 11119017
+          TopAxis.TicksInner.Color = clDarkgray
           TopAxis.Title.Font.Name = 'Verdana'
           TabOrder = 0
           DefaultCanvas = 'TGDIPlusCanvas'
