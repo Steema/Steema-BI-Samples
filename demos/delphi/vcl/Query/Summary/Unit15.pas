@@ -6,7 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
   BI.DataItem, BI.Summary, Data.DB, Vcl.CheckLst, System.Types,
-  BI.Expression, VCLBI.LinkDiagram, VCLBI.Chart,
+  BI.Expression,
+
+  VCLBI.Chart,
   VCLBI.Editor.Summary, VCLBI.Editor.Grid, Vcl.Grids,
   BI.ClientDataset, VCLBI.DataControl, VCLBI.Grid;
 
@@ -26,7 +28,6 @@ type
     Splitter2: TSplitter;
     TabTree: TTabSheet;
     TreeView1: TTreeView;
-    Button3: TButton;
     TreeView2: TTreeView;
     Splitter3: TSplitter;
     Splitter4: TSplitter;
@@ -54,7 +55,6 @@ type
     procedure CBStyleChange(Sender: TObject);
     procedure CBStoreChange(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure EQuarterChange(Sender: TObject);
     procedure CBChartClick(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -155,11 +155,6 @@ begin
   end;
 
   Caption:='Time: '+IntToStr(t1.ElapsedMilliseconds)+' msec';
-end;
-
-procedure TForm15.Button3Click(Sender: TObject);
-begin
-  TDataDiagram.Show(Self,Samples.Demo);
 end;
 
 procedure TForm15.Button4Click(Sender: TObject);

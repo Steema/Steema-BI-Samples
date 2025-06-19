@@ -26,10 +26,6 @@ uses
   {$ENDIF}
   {$ENDIF}
 
-  {$IFDEF TEEPRO}
-  VCLBI.LinkDiagram, // <-- this unit uses TeeTree control ("Pro" version)
-  {$ENDIF}
-
   VCLBI.Chart,
   VCLBI.Editor.Summary, VCLBI.Editor.BIGrid, Vcl.Grids,
   BI.ClientDataset, System.UITypes,
@@ -55,7 +51,6 @@ type
     CBStyle: TComboBox;
     TabTree: TTabSheet;
     TreeView1: TTreeView;
-    BDiagram: TButton;
     TreeView2: TTreeView;
     Splitter3: TSplitter;
     Splitter4: TSplitter;
@@ -114,7 +109,6 @@ type
     procedure CBStyleChange(Sender: TObject);
     procedure CBStoreChange(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
-    procedure BDiagramClick(Sender: TObject);
     procedure EQuarterChange(Sender: TObject);
     procedure CBChartClick(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -212,10 +206,6 @@ begin
   CBStyle.ItemIndex:=0;
 
   (BIGrid1.Plugin.GetObject as TBIDBGrid).OnDblClick:=GridClick;
-
-  {$IFNDEF TEEPRO}
-  BDiagram.Visible:=False;
-  {$ENDIF}
 end;
 
 procedure TFormSummary.GridClick(Sender: TObject);
@@ -371,13 +361,6 @@ end;
 procedure TFormSummary.BEditChartClick(Sender: TObject);
 begin
   TBIChartEditor.Edit(Self, Chart);
-end;
-
-procedure TFormSummary.BDiagramClick(Sender: TObject);
-begin
-  {$IFDEF TEEPRO}
-  TDataDiagram.Show(Self,Samples.Demo);
-  {$ENDIF}
 end;
 
 procedure TFormSummary.Button4Click(Sender: TObject);

@@ -58,22 +58,13 @@ object FormSummary: TFormSummary
       TabOrder = 2
       OnClick = Button2Click
     end
-    object BDiagram: TButton
-      Left = 654
-      Top = 6
-      Width = 131
-      Height = 25
-      Caption = 'SQLite Diagramm...'
-      TabOrder = 3
-      OnClick = BDiagramClick
-    end
     object CBChart: TCheckBox
       Left = 568
       Top = 10
       Width = 57
       Height = 17
       Caption = 'Chart'
-      TabOrder = 4
+      TabOrder = 3
       OnClick = CBChartClick
     end
     object CBStore: TComboBox
@@ -82,7 +73,7 @@ object FormSummary: TFormSummary
       Width = 163
       Height = 21
       Style = csDropDownList
-      TabOrder = 5
+      TabOrder = 4
       OnChange = CBStoreChange
     end
     object Button4: TButton
@@ -91,7 +82,7 @@ object FormSummary: TFormSummary
       Width = 75
       Height = 25
       Caption = 'Manage...'
-      TabOrder = 6
+      TabOrder = 5
       OnClick = Button4Click
     end
     object Button5: TButton
@@ -100,7 +91,7 @@ object FormSummary: TFormSummary
       Width = 96
       Height = 25
       Caption = 'Data Manager...'
-      TabOrder = 7
+      TabOrder = 6
       OnClick = Button5Click
     end
     object Button6: TButton
@@ -109,7 +100,7 @@ object FormSummary: TFormSummary
       Width = 75
       Height = 25
       Caption = 'Grid...'
-      TabOrder = 8
+      TabOrder = 7
       OnClick = Button6Click
     end
     object BEditChart: TButton
@@ -119,7 +110,7 @@ object FormSummary: TFormSummary
       Height = 25
       Caption = 'Edit Chart'
       Enabled = False
-      TabOrder = 9
+      TabOrder = 8
       OnClick = BEditChartClick
     end
   end
@@ -414,8 +405,6 @@ object FormSummary: TFormSummary
         Align = alTop
         TabOrder = 1
         OnChange = MemoSQLChange
-        ExplicitLeft = -1
-        ExplicitTop = 59
       end
       object BIGridSQL: TBIGrid
         Left = 0

@@ -10,11 +10,9 @@ object Form15: TForm15
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   WindowState = wsMaximized
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 297
@@ -60,22 +58,13 @@ object Form15: TForm15
       TabOrder = 2
       OnClick = Button2Click
     end
-    object Button3: TButton
-      Left = 654
-      Top = 6
-      Width = 131
-      Height = 25
-      Caption = 'SQLite Diagramm...'
-      TabOrder = 3
-      OnClick = Button3Click
-    end
     object CBChart: TCheckBox
       Left = 568
       Top = 10
       Width = 57
       Height = 17
       Caption = 'Chart'
-      TabOrder = 4
+      TabOrder = 3
       OnClick = CBChartClick
     end
     object CBStore: TComboBox
@@ -84,7 +73,7 @@ object Form15: TForm15
       Width = 163
       Height = 21
       Style = csDropDownList
-      TabOrder = 5
+      TabOrder = 4
       OnChange = CBStoreChange
     end
     object Button4: TButton
@@ -93,7 +82,7 @@ object Form15: TForm15
       Width = 75
       Height = 25
       Caption = 'Manage...'
-      TabOrder = 6
+      TabOrder = 5
       OnClick = Button4Click
     end
     object Button5: TButton
@@ -102,7 +91,7 @@ object Form15: TForm15
       Width = 96
       Height = 25
       Caption = 'Data Manager...'
-      TabOrder = 7
+      TabOrder = 6
       OnClick = Button5Click
     end
     object Button6: TButton
@@ -111,7 +100,7 @@ object Form15: TForm15
       Width = 75
       Height = 25
       Caption = 'Grid...'
-      TabOrder = 8
+      TabOrder = 7
       OnClick = Button6Click
     end
   end
@@ -122,7 +111,6 @@ object Form15: TForm15
     Height = 539
     Align = alLeft
     TabOrder = 1
-    ExplicitLeft = 1
     object Splitter4: TSplitter
       Left = 1
       Top = 329
@@ -175,8 +163,6 @@ object Form15: TForm15
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = -1
-      ExplicitTop = 449
       object Label1: TLabel
         Left = 9
         Top = 0
@@ -229,10 +215,6 @@ object Form15: TForm15
     OnChange = PageControl1Change
     object TabGrid: TTabSheet
       Caption = 'Grid'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 508
@@ -269,10 +251,6 @@ object Form15: TForm15
     object TabTree: TTabSheet
       Caption = 'Tree'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 275
