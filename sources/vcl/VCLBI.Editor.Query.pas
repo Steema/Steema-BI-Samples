@@ -116,6 +116,7 @@ type
     Panel8: TPanel;
     SBColUp: TSpeedButton;
     SBColDown: TSpeedButton;
+    Label8: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ListRowsDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -160,6 +161,7 @@ type
     procedure EStartChange(Sender: TObject);
     procedure PagePreviewChange(Sender: TObject);
     procedure CBPreviewClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
 
@@ -265,6 +267,9 @@ implementation
 uses
   System.Types, VCLBI.Component,
   BI.Arrays, BI.Expressions, VCLBI.Editor.Expression, BI.SQL;
+
+const
+  RegistryQueryEditor='QueryEditor';
 
 { TBIQueryEditor }
 
@@ -593,6 +598,11 @@ begin
          (Sender<>IFilter);
 end;
 
+procedure TBIQueryEditor.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  TUICommon.SavePosition(Self,RegistryQueryEditor);
+end;
+
 procedure TBIQueryEditor.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if IModified then
@@ -635,6 +645,8 @@ end;
 
 procedure TBIQueryEditor.FormShow(Sender: TObject);
 begin
+  TUICommon.LoadPosition(Self,RegistryQueryEditor);
+
   if PanelSelector.Visible then
      ShowSelector(True);
 

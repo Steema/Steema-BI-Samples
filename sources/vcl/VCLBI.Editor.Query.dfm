@@ -10,12 +10,11 @@ object BIQueryEditor: TBIQueryEditor
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object SplitterSelector: TSplitter
     Left = 257
@@ -44,26 +43,14 @@ object BIQueryEditor: TBIQueryEditor
       OnChange = PageDataChange
       object TabData: TTabSheet
         Caption = 'Data'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabFilter: TTabSheet
         Caption = 'Filter'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabSort: TTabSheet
         Caption = 'Sort'
         ImageIndex = 2
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
     end
   end
@@ -111,11 +98,17 @@ object BIQueryEditor: TBIQueryEditor
           BevelOuter = bvNone
           TabOrder = 0
           object Label2: TLabel
-            Left = 8
-            Top = 14
-            Width = 26
-            Height = 13
+            Left = 4
+            Top = 5
+            Width = 34
+            Height = 14
             Caption = 'Rows'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
           object BDeleteRow: TButton
             Left = 51
@@ -160,11 +153,11 @@ object BIQueryEditor: TBIQueryEditor
           Top = 42
           Width = 183
           Height = 106
-          OnClickCheck = ListRowsClickCheck
           Align = alClient
-          ItemHeight = 13
+          ItemHeight = 17
           TabOrder = 1
           OnClick = ListRowsClick
+          OnClickCheck = ListRowsClickCheck
           OnDragDrop = ListRowsDragDrop
           OnDragOver = ListRowsDragOver
         end
@@ -244,7 +237,6 @@ object BIQueryEditor: TBIQueryEditor
           Align = alLeft
           Alignment = taRightJustify
           BevelOuter = bvNone
-          Caption = 'Columns:   '
           TabOrder = 0
           object SBSwap: TSpeedButton
             Left = 51
@@ -313,6 +305,8 @@ object BIQueryEditor: TBIQueryEditor
             Align = alRight
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitLeft = 112
+            ExplicitTop = -4
             object SBColUp: TSpeedButton
               Left = 8
               Top = 6
@@ -323,13 +317,26 @@ object BIQueryEditor: TBIQueryEditor
               OnClick = SBColUpClick
             end
             object SBColDown: TSpeedButton
-              Left = 36
+              Left = 37
               Top = 6
               Width = 23
               Height = 22
               Caption = 'v'
               Enabled = False
               OnClick = SBColDownClick
+            end
+            object Label8: TLabel
+              Left = 9
+              Top = 34
+              Width = 52
+              Height = 14
+              Caption = 'Columns'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
             end
           end
         end
@@ -338,11 +345,11 @@ object BIQueryEditor: TBIQueryEditor
           Top = 1
           Width = 339
           Height = 73
-          OnClickCheck = ListRowsClickCheck
           Align = alClient
-          ItemHeight = 13
+          ItemHeight = 17
           TabOrder = 1
           OnClick = ListColumnsClick
+          OnClickCheck = ListRowsClickCheck
         end
         object Panel7: TPanel
           Left = 523
@@ -392,11 +399,17 @@ object BIQueryEditor: TBIQueryEditor
           ParentBackground = False
           TabOrder = 0
           object Label1: TLabel
-            Left = 10
-            Top = 14
-            Width = 46
-            Height = 13
+            Left = 5
+            Top = 5
+            Width = 57
+            Height = 14
             Caption = 'Measures'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
           object SBMeasureUp: TSpeedButton
             Left = 125
@@ -432,11 +445,11 @@ object BIQueryEditor: TBIQueryEditor
           Top = 42
           Width = 181
           Height = 194
-          OnClickCheck = ListRowsClickCheck
           Align = alClient
-          ItemHeight = 13
+          ItemHeight = 17
           TabOrder = 1
           OnClick = ListMeasuresClick
+          OnClickCheck = ListRowsClickCheck
           OnDragOver = ListMeasuresDragOver
         end
         object Panel5: TPanel
@@ -452,16 +465,12 @@ object BIQueryEditor: TBIQueryEditor
             Top = 0
             Width = 274
             Height = 194
-            ActivePage = TabItemData
+            ActivePage = TabItem
             Align = alClient
             TabOrder = 0
             Visible = False
             object TabItem: TTabSheet
               Caption = 'Options'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Label3: TLabel
                 Left = 9
                 Top = 4
@@ -525,10 +534,6 @@ object BIQueryEditor: TBIQueryEditor
             object TabMeasureOptions: TTabSheet
               Caption = 'Options'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object PageMeasures: TPageControl
                 Left = 0
                 Top = 0
@@ -539,10 +544,6 @@ object BIQueryEditor: TBIQueryEditor
                 TabOrder = 0
                 object TabMeasure: TTabSheet
                   Caption = 'Aggregate'
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object CBAggregate: TComboBox
                     Left = 8
                     Top = 14
@@ -575,10 +576,6 @@ object BIQueryEditor: TBIQueryEditor
                 object TabCalc: TTabSheet
                   Caption = 'Calculation'
                   ImageIndex = 3
-                  ExplicitLeft = 0
-                  ExplicitTop = 0
-                  ExplicitWidth = 0
-                  ExplicitHeight = 0
                   object RGRunning: TRadioGroup
                     Left = 135
                     Top = 3
@@ -623,10 +620,6 @@ object BIQueryEditor: TBIQueryEditor
             object TabItemData: TTabSheet
               Caption = 'Data'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object SpeedButton1: TSpeedButton
                 Left = 231
                 Top = 22
@@ -691,10 +684,6 @@ object BIQueryEditor: TBIQueryEditor
       OnChange = PagePreviewChange
       object TabGrid: TTabSheet
         Caption = 'Grid'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object BIGrid1: TBIGrid
           Left = 0
           Top = 0
@@ -710,18 +699,10 @@ object BIQueryEditor: TBIQueryEditor
       object TabChart: TTabSheet
         Caption = 'Chart'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
       end
       object TabSQL: TTabSheet
         Caption = 'SQL'
         ImageIndex = 2
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object MemoSQL: TMemo
           Left = 0
           Top = 0

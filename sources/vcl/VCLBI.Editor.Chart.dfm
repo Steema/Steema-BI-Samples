@@ -1,20 +1,19 @@
 object BIChartEditor: TBIChartEditor
   Left = 210
   Top = 198
-  Width = 507
-  Height = 436
   ActiveControl = BOK
   Caption = 'BIChart Editor'
+  ClientHeight = 397
+  ClientWidth = 491
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
@@ -86,7 +85,6 @@ object BIChartEditor: TBIChartEditor
               Width = 97
               Height = 21
               Style = csDropDownList
-              ItemHeight = 13
               ItemIndex = 0
               TabOrder = 1
               Text = 'Automatic'
@@ -106,7 +104,6 @@ object BIChartEditor: TBIChartEditor
               Width = 97
               Height = 21
               Style = csDropDownList
-              ItemHeight = 13
               ItemIndex = 0
               TabOrder = 2
               Text = 'Automatic'
@@ -160,7 +157,6 @@ object BIChartEditor: TBIChartEditor
                 Width = 121
                 Height = 21
                 Style = csDropDownList
-                ItemHeight = 0
                 TabOrder = 0
                 OnChange = CBX2DChange
               end
@@ -170,7 +166,6 @@ object BIChartEditor: TBIChartEditor
                 Width = 121
                 Height = 21
                 Style = csDropDownList
-                ItemHeight = 0
                 TabOrder = 1
                 OnChange = CBTextChange
               end
@@ -180,7 +175,6 @@ object BIChartEditor: TBIChartEditor
                 Width = 121
                 Height = 21
                 Style = csDropDownList
-                ItemHeight = 0
                 TabOrder = 2
               end
             end
@@ -394,7 +388,6 @@ object BIChartEditor: TBIChartEditor
               Width = 121
               Height = 21
               Style = csDropDownList
-              ItemHeight = 13
               TabOrder = 0
               OnChange = CBXChange
             end
@@ -404,7 +397,6 @@ object BIChartEditor: TBIChartEditor
               Width = 121
               Height = 21
               Style = csDropDownList
-              ItemHeight = 13
               TabOrder = 1
               OnChange = CBYChange
             end
@@ -414,7 +406,6 @@ object BIChartEditor: TBIChartEditor
               Width = 121
               Height = 21
               Style = csDropDownList
-              ItemHeight = 13
               TabOrder = 2
               OnChange = CBZChange
             end
@@ -526,7 +517,6 @@ object BIChartEditor: TBIChartEditor
             Width = 121
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
             TabOrder = 0
             OnChange = CBOpenChange
           end
@@ -546,7 +536,6 @@ object BIChartEditor: TBIChartEditor
             Width = 121
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
             TabOrder = 2
             OnChange = CBCloseChange
           end
@@ -556,7 +545,6 @@ object BIChartEditor: TBIChartEditor
             Width = 121
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
             TabOrder = 3
             OnChange = CBHighChange
           end
@@ -566,7 +554,6 @@ object BIChartEditor: TBIChartEditor
             Width = 121
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
             TabOrder = 4
             OnChange = CBLowChange
           end
@@ -589,7 +576,6 @@ object BIChartEditor: TBIChartEditor
             Width = 121
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
             TabOrder = 6
             OnChange = CBVolumeChange
           end
@@ -638,7 +624,6 @@ object BIChartEditor: TBIChartEditor
               Height = 21
               Style = csDropDownList
               Enabled = False
-              ItemHeight = 0
               TabOrder = 1
               OnChange = CBMapChange
             end

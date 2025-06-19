@@ -30,6 +30,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure CBShowItemsChange(Sender: TObject);
     procedure CBColorizeClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
 
@@ -56,6 +57,9 @@ implementation
 
 uses
   VCLBI.Editor.Grid; // <-- plugin editor
+
+const
+  RegistryGridEditor='GridEditor';
 
 procedure TBIGridEditor.BAltColorClick(Sender: TObject);
 var tmp : TColor;
@@ -122,8 +126,15 @@ begin
   TUICommon.AddForm(result,AParent);
 end;
 
+procedure TBIGridEditor.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  TUICommon.SavePosition(Self,RegistryGridEditor);
+end;
+
 procedure TBIGridEditor.FormShow(Sender: TObject);
 begin
+  TUICommon.LoadPosition(Self,RegistryGridEditor);
+
   TabPlugin.TabVisible:=PluginClass<>nil;
 end;
 

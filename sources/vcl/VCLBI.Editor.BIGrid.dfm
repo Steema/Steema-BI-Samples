@@ -10,9 +10,8 @@ object BIGridEditor: TBIGridEditor
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
+  OnClose = FormClose
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
@@ -25,10 +24,6 @@ object BIGridEditor: TBIGridEditor
     OnChange = PageControl1Change
     object TabBIGrid: TTabSheet
       Caption = 'Options'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 16
         Top = 200
@@ -117,10 +112,6 @@ object BIGridEditor: TBIGridEditor
       Caption = 'Plugin'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
 end

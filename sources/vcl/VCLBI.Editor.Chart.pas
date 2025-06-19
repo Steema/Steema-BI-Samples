@@ -167,6 +167,7 @@ type
     procedure CBMap3DClick(Sender: TObject);
     procedure CBMapChange(Sender: TObject);
     procedure LBFinancialClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
 
@@ -244,6 +245,9 @@ uses
 type
   TBIChartAccess=class(TBIChart);
   TBITChartAccess=class(TBITChart);
+
+const
+  RegistryChartEditor='ChartEditor';
 
 procedure TBIChartEditor.Button1Click(Sender: TObject);
 var tmp : TDataItem;
@@ -492,6 +496,11 @@ begin
   TUICommon.AddForm(result,AParent);
 end;
 
+procedure TBIChartEditor.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  TUICommon.SavePosition(Self,RegistryChartEditor);
+end;
+
 procedure TBIChartEditor.FormCreate(Sender: TObject);
 begin
   IChanging:=True;
@@ -622,6 +631,8 @@ procedure TBIChartEditor.FormShow(Sender: TObject);
 begin
   ResetEditor;
   RefreshData(Chart.Options.Items);
+
+  TUICommon.LoadPosition(Self,RegistryChartEditor);
 
   IChanging:=False;
 end;
