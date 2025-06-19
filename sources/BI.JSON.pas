@@ -148,6 +148,8 @@ procedure TBIJSON.DoAppend(const Index:TInteger; const Data:TDataItem);
 
       for t:=0 to Col.Count-2 do
           Col.Int64Data[t]:=Col.Int32Data[t];
+
+      Col.Int32Data:=nil;
     end;
 
     procedure ChangeToDouble;
@@ -160,11 +162,19 @@ procedure TBIJSON.DoAppend(const Index:TInteger; const Data:TDataItem);
       Col.Resize(Col.Count);
 
       if tmp=TDataKind.dkInt32 then
-         for t:=0 to Col.Count-2 do
-             Col.DoubleData[t]:=Col.Int32Data[t]
+      begin
+        for t:=0 to Col.Count-2 do
+            Col.DoubleData[t]:=Col.Int32Data[t];
+
+        Col.Int32Data:=nil;
+      end
       else
-         for t:=0 to Col.Count-2 do
-             Col.DoubleData[t]:=Col.Int64Data[t];
+      begin
+        for t:=0 to Col.Count-2 do
+            Col.DoubleData[t]:=Col.Int64Data[t];
+
+        Col.Int64Data:=nil;
+      end;
     end;
 
   var
@@ -175,12 +185,16 @@ procedure TBIJSON.DoAppend(const Index:TInteger; const Data:TDataItem);
     begin
       if TryStrToInt64(tmpS,tmpInt64) then
       begin
-        ChangeToInt64;
+        if Col.Kind<>TDataKind.dkInt64 then
+           ChangeToInt64;
+
         Col.Int64Data[Index]:=tmpInt64;
       end
       else
       begin
-        ChangeToDouble;
+        if Col.Kind<>TDataKind.dkDouble then
+           ChangeToDouble;
+
         Col.DoubleData[Index]:=JSON.AsDouble;
       end;
     end;
