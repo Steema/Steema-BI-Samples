@@ -2428,7 +2428,7 @@ begin
   TryRename(TStore.FullPath(AStore,AOld+TPersistence.Extension));
   TryRename(TStore.FullPath(AStore,AOld+TDataPersistence.Extension));
 
-  // Pending extensions: .diagramm, .detail, .queries
+  // Pending extensions: .detail, .queries
 
   // Rename sub-folder
 

@@ -142,9 +142,6 @@ type
     property OnUpdateData:TNotifyEvent read FOnUpdateData write FOnUpdateData;
   end;
 
-  // See global TUICommon.Diagram property
-  TDiagramEvent=procedure(const AOwner:TComponent; const AData:TDataItem);
-
   // Helper methods for VCL:
   TUICommon=record
   public
@@ -155,9 +152,6 @@ type
       AlignTop=TAlign.alTop;
       AlignRight=TAlign.alRight;
       AlignBottom=TAlign.alBottom;
-
-    // This event is initialized by VCLBI.LinkDiagram unit (when used).
-    class var Diagram : TDiagramEvent;
 
     class procedure AddForm(const AForm: TCustomForm; const AParent: TWinControl); static;
     class function AutoTest:Boolean; static;

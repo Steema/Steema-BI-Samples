@@ -14,7 +14,6 @@ object DataViewer: TDataViewer
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 213
@@ -56,22 +55,13 @@ object DataViewer: TDataViewer
       TabOrder = 0
       OnClick = CBViewDataClick
     end
-    object BDiagram: TButton
-      Left = 720
-      Top = 10
-      Width = 75
-      Height = 25
-      Caption = '&Diagram...'
-      TabOrder = 1
-      OnClick = BDiagramClick
-    end
     object Button2: TButton
       Left = 840
       Top = 10
       Width = 97
       Height = 25
       Caption = 'View &Cache...'
-      TabOrder = 2
+      TabOrder = 1
       OnClick = Button2Click
     end
     object CBView: TComboBox
@@ -81,7 +71,7 @@ object DataViewer: TDataViewer
       Height = 21
       Style = csDropDownList
       ItemIndex = 0
-      TabOrder = 3
+      TabOrder = 2
       Text = 'Data'
       OnChange = CBViewChange
       Items.Strings = (

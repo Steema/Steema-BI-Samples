@@ -16,7 +16,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB,
   Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, BI.DataItem, Vcl.StdCtrls, BI.Arrays,
   VCLBI.Grid, Vcl.Menus, BI.DataSet, Vcl.ComCtrls, Vcl.DBCtrls,
-  VCLBI.DataControl;
+  VCLBI.DataControl, Vcl.Buttons;
 
 type
   TDataViewer = class(TForm)
@@ -32,7 +32,6 @@ type
     DataTotals: TStringGrid;
     PopupMenu1: TPopupMenu;
     View1: TMenuItem;
-    BDiagram: TButton;
     ItemsGrid: TBIGrid;
     Button2: TButton;
     PanelData: TPanel;
@@ -58,7 +57,6 @@ type
     procedure CBViewDataClick(Sender: TObject);
     procedure View1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure BDiagramClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button2Click(Sender: TObject);
     procedure CBViewChange(Sender: TObject);
@@ -288,9 +286,6 @@ procedure TDataViewer.FormCreate(Sender: TObject);
 begin
   PanelData.Visible:=False;
   SplitterData.Visible:=False;
-
-  if not Assigned(TUICommon.Diagram) then
-     BDiagram.Visible:=False;
 end;
 
 procedure TDataViewer.FormDestroy(Sender: TObject);
@@ -401,12 +396,6 @@ begin
      Sender.AsInteger:=Ord(tmp)
   else
      raise EBIException.Create('Error: Wrong data kind: '+Text);
-end;
-
-procedure TDataViewer.BDiagramClick(Sender: TObject);
-begin
-  if Assigned(TUICommon.Diagram) then
-     TUICommon.Diagram(Self,FData);
 end;
 
 procedure TDataViewer.FillData(const AData:TDataItem);
