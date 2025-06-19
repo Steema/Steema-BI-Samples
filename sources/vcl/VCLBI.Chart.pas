@@ -134,10 +134,25 @@ type
 
     IChart : TBIChart;
 
+    ISeries2D,
+    ISeries3D : TChartSeriesClass;
+
     procedure Finish;
     procedure FinishViewDimensions;
     function GetSeries2D: TChartSeriesClass;
     function GetSeries3D: TChartSeriesClass;
+
+    procedure InitAllMarksVisible;
+    procedure InitChartDimensions;
+    procedure InitChartLegend;
+    procedure InitChartMarks;
+    procedure InitSeries2D;
+    procedure InitSeries3D;
+
+    function Loading:Boolean;
+
+    procedure Loaded;
+
     procedure SetDimensions(const Value: TBIChartDimensions);
     procedure SetDirection(const Value: TBIChartDirection);
     procedure SetItems(const Value: TBIChartItems);
@@ -146,9 +161,9 @@ type
     procedure SetMode(const Value: TBIChartMode);
     procedure SetSeries2D(const Value: TChartSeriesClass);
     procedure SetSeries3D(const Value: TChartSeriesClass);
+    procedure SetSeriesDirection(const Value: TBISeriesDirection);
     procedure SetStacked(const Value: TBIChartStacked);
     procedure SetXYZMode(const Value: TBIChart3DMode);
-    procedure SetSeriesDirection(const Value: TBISeriesDirection);
   public
     Constructor Create(const AChart:TBIChart);
     Destructor Destroy; override;
@@ -835,6 +850,8 @@ end;
 procedure TBIChart.Loaded;
 var tmp : TDataArray;
 begin
+  Options.Loaded;
+
   if Data<>nil then
   begin
     SetLength(tmp,1);
@@ -1896,79 +1913,84 @@ type
 
 procedure TBIChartOptions.Finish;
 
-  function CustomSeriesStack:TCustomSeriesStack;
-  begin
-    case FStacked of
-       TBIChartStacked.Yes: result:=TCustomSeriesStack.cssStack;
-TBIChartStacked.Stacked100: result:=TCustomSeriesStack.cssStack100;
-     TBIChartStacked.Side,
-   TBIChartStacked.SideAll: result:=TCustomSeriesStack.cssOverlap;
-    else
-      {TBIChartStacked.No:}
-      result:=TCustomSeriesStack.cssNone;
+  procedure InitAllSeries;
+
+    function CustomSeriesStack:TCustomSeriesStack;
+    begin
+      case FStacked of
+         TBIChartStacked.Yes: result:=TCustomSeriesStack.cssStack;
+  TBIChartStacked.Stacked100: result:=TCustomSeriesStack.cssStack100;
+       TBIChartStacked.Side,
+     TBIChartStacked.SideAll: result:=TCustomSeriesStack.cssOverlap;
+      else
+        {TBIChartStacked.No:}
+        result:=TCustomSeriesStack.cssNone;
+      end;
     end;
+
+    function CustomBarStack:TMultiBar;
+    begin
+      case FStacked of
+          TBIChartStacked.No: result:=TMultiBar.mbNone;
+         TBIChartStacked.Yes: result:=TMultiBar.mbStacked;
+  TBIChartStacked.Stacked100: result:=TMultiBar.mbStacked100;
+        TBIChartStacked.Side: result:=TMultiBar.mbSide;
+     TBIChartStacked.SideAll: result:=TMultiBar.mbSideAll;
+   TBIChartStacked.SelfStack: result:=TMultiBar.mbSelfStack;
+      else
+        result:=TMultiBar.mbSide;
+      end;
+    end;
+
+    function PieStack:TMultiPie;
+    begin
+      case FStacked of
+          TBIChartStacked.No: result:=TMultiPie.mpDisabled;
+
+         {$IFDEF TEEPRO}
+         TBIChartStacked.Yes: result:=TMultiPie.mpConcentric;
+         {$ENDIF}
+      else
+         result:=TMultiPie.mpAutomatic;
+      end;
+    end;
+
+  var tmp : TChartSeries;
+  begin
+    for tmp in IChart.Chart.SeriesList do
+        if tmp is TCustomSeries then
+        begin
+          {$IFDEF TEEPRO}
+          TCustomStackSeriesAccess(tmp).Stacked:=CustomSeriesStack;
+
+          if (tmp is TAreaSeries) and
+             (TCustomStackSeriesAccess(tmp).Stacked<>cssStack) and
+             (TCustomStackSeriesAccess(tmp).Stacked<>cssStack100) then
+               tmp.Transparency:=20;
+          {$ENDIF}
+
+          // Lots of points? Make them single or small "dots"
+          if tmp.Count>(IChart.Chart.Width {$IFDEF FMX}*0.5{$ELSE}div 2{$ENDIF}) then
+             TCustomSeries(tmp).Pointer.Style:=TSeriesPointerStyle.psSmallDot;
+        end
+        else
+        if tmp is TCustomBarSeries then
+           TCustomBarSeries(tmp).MultiBar:=CustomBarStack
+        else
+        if tmp is TPieSeries then
+           TPieSeries(tmp).MultiPie:=PieStack
+        {$IFDEF TEEPRO}
+        else
+          TThreeDChart.FinishSeries(IChart.Chart,tmp,FStacked)
+        {$ENDIF}
+        ;
   end;
 
-  function CustomBarStack:TMultiBar;
-  begin
-    case FStacked of
-        TBIChartStacked.No: result:=TMultiBar.mbNone;
-       TBIChartStacked.Yes: result:=TMultiBar.mbStacked;
-TBIChartStacked.Stacked100: result:=TMultiBar.mbStacked100;
-      TBIChartStacked.Side: result:=TMultiBar.mbSide;
-   TBIChartStacked.SideAll: result:=TMultiBar.mbSideAll;
- TBIChartStacked.SelfStack: result:=TMultiBar.mbSelfStack;
-    else
-      result:=TMultiBar.mbSide;
-    end;
-  end;
-
-  function PieStack:TMultiPie;
-  begin
-    case FStacked of
-        TBIChartStacked.No: result:=TMultiPie.mpDisabled;
-
-       {$IFDEF TEEPRO}
-       TBIChartStacked.Yes: result:=TMultiPie.mpConcentric;
-       {$ENDIF}
-    else
-       result:=TMultiPie.mpAutomatic;
-    end;
-  end;
-
-var tmp : TChartSeries;
 begin
   if FMarks<>TBIChartMarks.Automatic then
-     for tmp in IChart.Chart.SeriesList do
-         tmp.Marks.Visible:=FMarks=TBIChartMarks.Show;
+     InitAllMarksVisible;
 
-  for tmp in IChart.Chart.SeriesList do
-      if tmp is TCustomSeries then
-      begin
-        {$IFDEF TEEPRO}
-        TCustomStackSeriesAccess(tmp).Stacked:=CustomSeriesStack;
-
-        if (tmp is TAreaSeries) and
-           (TCustomStackSeriesAccess(tmp).Stacked<>cssStack) and
-           (TCustomStackSeriesAccess(tmp).Stacked<>cssStack100) then
-             tmp.Transparency:=20;
-        {$ENDIF}
-
-        // Lots of points? Make them single or small "dots"
-        if tmp.Count>(IChart.Chart.Width {$IFDEF FMX}*0.5{$ELSE}div 2{$ENDIF}) then
-           TCustomSeries(tmp).Pointer.Style:=TSeriesPointerStyle.psSmallDot;
-      end
-      else
-      if tmp is TCustomBarSeries then
-         TCustomBarSeries(tmp).MultiBar:=CustomBarStack
-      else
-      if tmp is TPieSeries then
-         TPieSeries(tmp).MultiPie:=PieStack
-      {$IFDEF TEEPRO}
-      else
-        TThreeDChart.FinishSeries(IChart.Chart,tmp,FStacked)
-      {$ENDIF}
-      ;
+  InitAllSeries;
 
   FinishViewDimensions;
 end;
@@ -1988,26 +2010,62 @@ begin
   result:=IChart.Chart.Series3D;
 end;
 
+// This is needed to avoid setting IChart properties while loading or reading
+// a TBIChart from a stream or form file.
+function TBIChartOptions.Loading: Boolean;
+begin
+  result:=(csReading in IChart.ComponentState) or
+          (csLoading in IChart.ComponentState);
+end;
+
+// Prepare IChart *before* series and data are added
+procedure TBIChartOptions.Loaded;
+begin
+  if FDimensions=TBIChartDimensions.View2D then
+  begin
+    IChart.Chart.View3D:=False;
+  end
+  else
+  if FDimensions<>TBIChartDimensions.Automatic then
+  begin
+    IChart.Chart.View3D:=True;
+    IChart.Chart.View3DOptions.Orthogonal:=FDimensions=TBIChartDimensions.Orthogonal;
+  end;
+
+  if FLegend<>TBIChartLegend.Automatic then
+     IChart.Chart.Legend.Visible:=FLegend=TBIChartLegend.Show;
+
+  IChart.Chart.Series2D:=ISeries2D;
+  IChart.Chart.Series3D:=ISeries3D;
+end;
+
+procedure TBIChartOptions.InitChartDimensions;
+begin
+  if FDimensions=TBIChartDimensions.View2D then
+  begin
+    IChart.Chart.View3D:=False;
+    FinishViewDimensions;
+  end
+  else
+  if FDimensions<>TBIChartDimensions.Automatic then
+  begin
+    IChart.Chart.View3D:=True;
+    IChart.Chart.View3DOptions.Orthogonal:=FDimensions=TBIChartDimensions.Orthogonal;
+    FinishViewDimensions;
+  end
+  else
+  // Automatic
+    IChart.DirectRefresh;
+end;
+
 procedure TBIChartOptions.SetDimensions(const Value: TBIChartDimensions);
 begin
   if FDimensions<>Value then
   begin
     FDimensions:=Value;
 
-    if FDimensions=TBIChartDimensions.View2D then
-    begin
-      IChart.Chart.View3D:=False;
-      FinishViewDimensions;
-    end
-    else
-    if FDimensions<>TBIChartDimensions.Automatic then
-    begin
-      IChart.Chart.View3D:=True;
-      IChart.Chart.View3DOptions.Orthogonal:=FDimensions=TBIChartDimensions.Orthogonal;
-      FinishViewDimensions;
-    end
-    else
-      IChart.DirectRefresh;
+    if not Loading then
+       InitChartDimensions;
   end;
 end;
 
@@ -2016,7 +2074,9 @@ begin
   if FDirection<>Value then
   begin
     FDirection:=Value;
-    IChart.DirectRefresh;
+
+    if not Loading then
+       IChart.DirectRefresh;
   end;
 end;
 
@@ -2025,31 +2085,48 @@ begin
   Items.Assign(Value);
 end;
 
+procedure TBIChartOptions.InitChartLegend;
+begin
+  if FLegend=TBIChartLegend.Automatic then
+     IChart.DirectRefresh
+  else
+     IChart.Chart.Legend.Visible:=FLegend=TBIChartLegend.Show;
+end;
+
 procedure TBIChartOptions.SetLegend(const Value: TBIChartLegend);
 begin
   if FLegend<>Value then
   begin
     FLegend:=Value;
 
-    if FLegend=TBIChartLegend.Automatic then
-       IChart.DirectRefresh
-    else
-       IChart.Chart.Legend.Visible:=FLegend=TBIChartLegend.Show;
+    if not Loading then
+       InitChartLegend;
   end;
 end;
 
-procedure TBIChartOptions.SetMarks(const Value: TBIChartMarks);
+procedure TBIChartOptions.InitAllMarksVisible;
 var tmp : TChartSeries;
+begin
+  for tmp in IChart.Chart.SeriesList do
+      tmp.Marks.Visible:=FMarks=TBIChartMarks.Show;
+end;
+
+procedure TBIChartOptions.InitChartMarks;
+begin
+  if FMarks=TBIChartMarks.Automatic then
+     IChart.DirectRefresh
+  else
+     InitAllMarksVisible;
+end;
+
+procedure TBIChartOptions.SetMarks(const Value: TBIChartMarks);
 begin
   if FMarks<>Value then
   begin
     FMarks:=Value;
 
-    if FMarks=TBIChartMarks.Automatic then
-       IChart.DirectRefresh
-    else
-    for tmp in IChart.Chart.SeriesList do
-        tmp.Marks.Visible:=FMarks=TBIChartMarks.Show;
+    if not Loading then
+       InitChartMarks;
   end;
 end;
 
@@ -2058,27 +2135,45 @@ begin
   if FMode<>Value then
   begin
     FMode:=Value;
+
+    if not Loading then
+       IChart.DirectRefresh;
+  end;
+end;
+
+procedure TBIChartOptions.InitSeries2D;
+begin
+  if IChart.Chart.Series2D<>ISeries2D then
+  begin
+    IChart.Chart.Series2D:=ISeries2D;
     IChart.DirectRefresh;
   end;
 end;
 
 procedure TBIChartOptions.SetSeries2D(const Value: TChartSeriesClass);
 begin
-  if IChart.Chart.Series2D<>Value then
-  begin
-    IChart.Chart.Series2D:=Value;
-    IChart.DirectRefresh;
-  end;
+  ISeries2D:=Value;
+
+  if not Loading then
+     InitSeries2D;
+end;
+
+procedure TBIChartOptions.InitSeries3D;
+begin
+  {$IFDEF TEEPRO}
+  if TThreeDChart.SetSeries3D(IChart.Chart,ISeries3D) then
+     IChart.DirectRefresh;
+  {$ELSE}
+  IChart.Chart.Series3D:=ISeries3D;
+  {$ENDIF}
 end;
 
 procedure TBIChartOptions.SetSeries3D(const Value: TChartSeriesClass);
 begin
-  {$IFDEF TEEPRO}
-  if TThreeDChart.SetSeries3D(IChart.Chart,Value) then
-     IChart.DirectRefresh;
-  {$ELSE}
-  IChart.Chart.Series3D:=Value;
-  {$ENDIF}
+  ISeries3D:=Value;
+
+  if not Loading then
+     InitSeries3D;
 end;
 
 procedure TBIChartOptions.SetSeriesDirection(const Value: TBISeriesDirection);
@@ -2086,7 +2181,9 @@ begin
   if FSeriesDirection<>Value then
   begin
     FSeriesDirection:=Value;
-    IChart.DirectRefresh;
+
+    if not Loading then
+       IChart.DirectRefresh;
   end;
 end;
 
@@ -2096,9 +2193,10 @@ begin
   begin
     FStacked:=Value;
 
-    // Pending: try to change to new stacked if <> automatic, without
-    // forcing call to DirectRefresh
-    IChart.DirectRefresh;
+    if not Loading then
+       // Pending: try to change to new stacked if <> automatic, without
+       // forcing call to DirectRefresh
+       IChart.DirectRefresh;
   end;
 end;
 
@@ -2107,7 +2205,9 @@ begin
   if FXYZMode<>Value then
   begin
     FXYZMode:=Value;
-    IChart.DirectRefresh;
+
+    if not Loading then
+       IChart.DirectRefresh;
   end;
 end;
 
