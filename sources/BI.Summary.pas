@@ -1744,7 +1744,7 @@ function TSummary.BySameParent(const ABy:TGroupBy):TGroupBy;
 var t : Integer;
 begin
   for t:=0 to High(ActiveBy) do
-      if ActiveBy[t]=ABy then
+      if (ActiveBy[t]=ABy) or (ABy.FData=nil) then // Assert ! FData=nil
          break
       else
       // Pending: Use THops to determine if by[t] is the same as by[tt]
