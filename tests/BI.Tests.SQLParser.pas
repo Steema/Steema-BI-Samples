@@ -29,6 +29,8 @@ type
     procedure SimpleWhere;
 
     [Test]
+    procedure Summary;
+    [Test]
     procedure ParseAll;
   end;
 
@@ -94,6 +96,49 @@ begin
 
     Assert.AreEqual(Data[0].TextData[0],'Thuringer Rostbratwurst');
     Assert.AreEqual(Data[0].TextData[1],'Cote de Blaye');
+  finally
+    Data.Free;
+  end;
+end;
+
+procedure TSQLParser_Test.Summary;
+var Data : TDataItem;
+    SQL : String;
+    Sum : TSummary;
+
+    tmp : TDataItem;
+begin
+  Sum:=Samples.CreateSummary(nil,7);
+  try
+    SQL:=TBISQL.From(Sum);
+    Data:=TBISQL.From(Samples.Demo,SQL);
+  finally
+    Sum.Free;
+  end;
+
+  try
+    Assert.IsNotNull(Data);
+
+    Data.Load(Data.AsTable);
+
+    Assert.AreEqual<Int64>(Data.Count,168);
+    Assert.AreEqual(Data[0].Name,'Country');
+    Assert.AreEqual<TDataKind>(Data[0].Kind,TDataKind.dkText);
+    Assert.AreEqual<String>(Data[0].TextData[100],'Norway');
+
+    Assert.AreEqual<Int64>(Data.Items.Count,3);
+    Assert.AreEqual<Int64>(Data.Items[2].Count,168);
+    Assert.AreEqual<Int64>(Data.Items[2].Items.Count,1);
+    Assert.AreEqual(Data.Items[2].Items[0].Name,'CompanyName');
+
+    Assert.AreEqual<Int64>(Data.Items[2].Items[0].Items.Count,29);
+
+    tmp:=Data.Items[2].Items[0].Items[14];
+
+    Assert.AreEqual(tmp.Name,'Ma Maison');
+    Assert.AreEqual<TDataKind>(tmp.Kind,TDataKind.dkDouble);
+    Assert.AreEqual<Int64>(tmp.Count,168);
+    Assert.AreEqual<Double>(tmp.DoubleData[117],20);
   finally
     Data.Free;
   end;

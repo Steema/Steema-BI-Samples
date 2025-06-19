@@ -1,6 +1,6 @@
 program TeeBI_Tests;
 
-{$IF CompilerVersion<>32}
+{$IF CompilerVersion<>37}
 {$DEFINE USECONSOLE}
 
 {.$DEFINE TESTINSIGHT}
@@ -99,6 +99,13 @@ begin
       System.Readln;
     end;
     {$ENDIF}
+
+    if DebugHook<>0 then
+    begin
+      System.Writeln('Press enter key to finish');
+      System.Readln;
+    end;
+
   except
     on E: Exception do
       System.Writeln(E.ClassName, ': ', E.Message);
