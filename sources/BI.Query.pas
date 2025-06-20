@@ -614,7 +614,7 @@ begin
        Assign(tmp.Provider);
 
   finally
-    TDataAccess(tmp).KeepProvider:=True;
+    //TDataAccess(tmp).KeepProvider:=True; <--- why? (mem leak)
     tmp.Free;
   end;
 end;
