@@ -413,17 +413,19 @@ end;
 type
   TDataItemAccess=class(TDataItem);
 
+// Destroy data to avoid memory leak
 procedure TDataComponent.TryFreeData;
 
   function ItemsToDelete:TDataArray;
   var tmpItems : TDataArray;
 
-    function ExistsParent(const AData:TDataItem):Boolean;
+    function ExistsOrParent(const AData:TDataItem):Boolean;
     var t : Integer;
     begin
       for t:=0 to High(tmpItems) do
-          if AData.IsChildOf(tmpItems[t]) then
-             Exit(True);
+          if (tmpItems[t]=AData) or  // already in the array
+             AData.IsChildOf(tmpItems[t]) then  // already as a child (recurvise)
+               Exit(True);
 
       result:=False;
     end;
@@ -442,8 +444,8 @@ procedure TDataComponent.TryFreeData;
       begin
         tmpData:=TDataItem(tmp.Data);
 
-        if TDataItemAccess(tmpData).GetProvider=nil then
-           if not ExistsParent(tmpData) then
+        if TDataItemAccess(tmpData).GetProvider=nil then // <-- Problem: Provider=nil does not mean it should be destroyed !
+           if not ExistsOrParent(tmpData) then
               tmpItems.Add(tmpData);
       end;
 
@@ -455,7 +457,7 @@ procedure TDataComponent.TryFreeData;
 
 begin
   // Now delete all root items
-  ItemsToDelete.FreeAll;
+  // WRONG: ItemsToDelete.FreeAll;
 end;
 
 procedure TDataComponent.FormClose(Sender: TObject; var Action: TCloseAction);
