@@ -2378,8 +2378,15 @@ begin
   end;
 
   if Token<>'' then
-     GuessToken;
- 
+     if tmp=nil then
+        GuessToken
+     else
+     begin
+       tmp.Free;
+       tmp:=nil;
+       DoError(Start-Length(Token),'Wrong syntax, extra token');
+     end;
+
   result:=tmp
 end;
 

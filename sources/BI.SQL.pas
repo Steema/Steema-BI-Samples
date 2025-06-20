@@ -1159,7 +1159,10 @@ var
     if tmp=nil then
     begin
       if tmpExp=nil then
-         result:=nil
+      begin
+        DoError('Cannot find data: '+S);
+        result:=nil;
+      end
       else
          result:=tmpSum.AddGroupBy(tmpExp);
     end
