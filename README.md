@@ -6,7 +6,7 @@
  
 ### What is TeeBI ?
 
-A simple class to implement in-memory database complex structures to provide:
+A simple class to implement in-memory database complex structures, to provide:
 
 - [Ultra fast](https://github.com/Steema/BI/tree/master/demos/delphi/vcl/Speed) speed (every column or field is a simple array)
 
@@ -45,6 +45,8 @@ A simple class to implement in-memory database complex structures to provide:
 - [API Reference](https://steema.com/docs/TeeBIVCLReference.htm)
 
 - [Examples](https://github.com/Steema/BI/tree/master/demos)
+
+- [Screenshots](https://github.com/Steema/TeeBI/blob/master/docs/img/readme.md)
 
 ### Related
 
