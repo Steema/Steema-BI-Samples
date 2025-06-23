@@ -728,6 +728,10 @@ begin
       begin
         Items:=TStringArray.Split(S,TCommonUI.CRLF);
 
+        // Silently exit in case of missing Steema.cat configuration
+        if Items.Count<3 then
+           Exit;
+
         V.Major:=StrToInt(Items[0]);
         V.Minor:=StrToInt(Items[1]);
         V.URL:=Items[2];
