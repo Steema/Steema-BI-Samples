@@ -1,3 +1,7 @@
+## How to install TeeBI?
+
+First clone this repository and extract the TeeBIRecompile.zip content.
+
 ## Automatic tool to recompile and install TeeBI packages
 
 - TeeBIRecompile.exe
@@ -23,3 +27,6 @@ This tool:
 Note:
 
 It should be run in Administrator mode due to copying files to Windows subfolders.
+
+![](https://github.com/Steema/TeeBI/blob/master/docs/img/teebirecompile.png)
+
