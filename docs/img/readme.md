@@ -105,6 +105,12 @@ Connect a TeeBI data item to a TeeChart series:
 
 ![](https://github.com/Steema/TeeBI/blob/master/docs/img/Connect_TeeChart_to_TeeBI_Data.png)
 
+## Statistical, Financial Functions
+
+All functions available in TeeChart can be used and applied to any TeeBI DataItem data, outside charts too:
+
+![](https://github.com/Steema/TeeBI/blob/master/docs/img/teebichart_functions.jpg)
+
 ## Geographical charts
 
 TeeChart "Pro" version includes many world maps of polygons, like USA States or Counties:
