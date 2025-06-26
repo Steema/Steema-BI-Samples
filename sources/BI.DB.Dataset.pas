@@ -185,6 +185,13 @@ begin
      ftString : result:=dkText;
 
      ftAutoInc,
+
+     {$IFNDEF FPC}
+     {$IF CompilerVersion>36}
+     ftLargeUint,
+     {$ENDIF}
+     {$ENDIF}
+
      ftLargeint : result:=dkInt64;
 
      {$IFNDEF FPC}
@@ -400,7 +407,7 @@ begin
 
   case AData.Kind  of
          dkInt32: AFields.Add(s,ftInteger);
-         dkInt64: AFields.Add(s,ftLargeint);
+         dkInt64: AFields.Add(s,ftLargeint);  // option: ftLargeUint
         dkSingle: AFields.Add(s,{$IFDEF FPC}ftFloat{$ELSE}ftSingle{$ENDIF});
         dkDouble: AFields.Add(s,ftFloat);
       dkExtended: AFields.Add(s,{$IFDEF FPC}ftFloat{$ELSE}ftExtended{$ENDIF});
