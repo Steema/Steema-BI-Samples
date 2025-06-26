@@ -1806,6 +1806,9 @@ end;
 function TBIChartItems.CanGeoGraphic:Boolean;
 begin
   {$IFDEF TEEPRO}
+  if TStore.DefaultName='' then // <-- Registry is not configured, so exit
+     Exit(False);
+
   if (X=nil) and (Y.Count>0) then
      result:=TGeoChart.Guess(Y[0],Text,FGeoContext)
   else
