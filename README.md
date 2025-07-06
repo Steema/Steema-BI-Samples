@@ -48,6 +48,48 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - [Screenshots](https://github.com/Steema/TeeBI/blob/master/docs/img/readme.md)
 
+### Example code
+
+```pascal
+uses BI.DataItem, BI.CSV;
+
+var Data1 : TDataItem;
+Data1 := TBICSV.FromFile( 'mydata.csv' );  // also From TStrings, String etc
+
+// other importing methods:
+Data1 := TBIDB.From( SQLConnection1 ); // loads all tables in one line of code
+Data1 := TBJson.From ...
+Data1 := TBIXML.From ... // import different formats
+
+// from arrays, TCollection, custom Records (via RTTI):
+Data1 : TTypeProvider<TCustomer>.Create(Self, MyArrayOfCustomers).Data; 
+
+// import from components with automatic detection:
+Data1 := TComponentImporter.From(Self, Memo1.Lines);
+Data1 := TComponentImporter.From(Self, DataSource1);
+
+// importing from any URL, automatic detection of content format:
+Data1 := TBIURLSource.From('https://www.mysite.com/get/mydata?param=123');
+
+// queries, including group by, sort, expressions, having, sub-select, distinct, date operators etc
+Data1 := TBISQL.From( Data2, 'sum(Amount) where (Customer=123) and (Product<456) group by Country, Year');
+Data1 := TBISQL.From( Data2, 'ProductName, UnitPrice where UnitPrice > select Average(UnitPrice)');
+Data1 := TBISQL.From( Movies, 'top 100 offset 15000 year, length');
+
+// visualizing
+BIGrid1.Data := Data1;
+BIChart1.Data := Data1;
+
+BIGrid2.Data := Data1['Products']; // sub-tables
+
+// importing data from a standard TeeChart Series:
+Data1 := TChartData.From(Series1);
+
+```
+#### Online grids and charts from remote queries using BIWeb Server:
+[http://steema.cat:15015/?data=SQLite_demo&format=.jpg](http://steema.cat:15015/?data=SQLite_demo|%22Order%20Details%22&format=.jpg&summary=sum(Quantity);Shippers.ShipperID)
+
+
 ### Related
 
 - [TeeChart VCL/FMX](https://www.steema.com/product/vcl)
