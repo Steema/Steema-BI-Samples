@@ -1,4 +1,5 @@
 # TeeBI
+### Telegram forums: [https://t.me/steema_bi](https://t.me/steema_bi)
 
 ![TeeBI Gridify and Colorize](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Gridify_colored.png)
 
@@ -51,14 +52,14 @@ A simple class to implement in-memory database complex structures, to provide:
 ### Example code
 
 ```pascal
-uses BI.DataItem, BI.CSV;
+uses BI.DataItem, BI.CSV, BI.Db, BI.Xml, BI.Json;
 
 var Data1 : TDataItem;
 Data1 := TBICSV.FromFile( 'mydata.csv' );  // also From TStrings, String etc
 
 // other importing methods:
 Data1 := TBIDB.From( SQLConnection1 ); // loads all tables in one line of code
-Data1 := TBJson.From ...
+Data1 := TBIJson.From ...
 Data1 := TBIXML.From ... // import different formats
 
 // from arrays, TCollection, custom Records (via RTTI):
