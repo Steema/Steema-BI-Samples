@@ -26,6 +26,7 @@ object FormWiki: TFormWiki
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = True
       Size.Width = 45.000000000000000000
       Size.Height = 26.000000000000000000
@@ -48,6 +49,7 @@ object FormWiki: TFormWiki
       CustomIcon = <
         item
         end>
+      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 49.000000000000000000
       Size.Height = 26.000000000000000000
@@ -117,6 +119,7 @@ object FormWiki: TFormWiki
       Position.Y = 12.000000000000000000
       TabOrder = 2
       Text = '&Go !'
+      TextSettings.Trimming = None
       OnClick = Button1Click
     end
   end
@@ -132,7 +135,8 @@ object FormWiki: TFormWiki
       Cursor = crHandPoint
       StyledSettings = [Family, Size]
       HitTest = True
-      Size.Width = 929.000000000000000000
+      Margins.Left = 10.000000000000000000
+      Size.Width = 919.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.StyleExt = {04040000000000000004000000}

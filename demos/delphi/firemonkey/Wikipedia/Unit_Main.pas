@@ -25,7 +25,8 @@ uses
   FMXBI.DataControl, FMXBI.Grid,
 
   // TeeChart and BIChart
-  FMXTee.Engine, FMXTee.Procs, FMXTee.Chart, FMXBI.Chart.Plugin, FMXBI.Chart;
+  FMXTee.Engine, FMXTee.Procs, FMXTee.Chart, FMXBI.Chart.Plugin, FMXBI.Chart,
+  FMX.Memo.Types, FMX.ScrollBox, FMX.Memo;
 
 type
   TFormWiki = class(TForm)
@@ -63,6 +64,9 @@ var
 implementation
 
 {$R *.fmx}
+
+uses
+  Fmx.Platform, BI.Html.Parser;
 
 procedure TFormWiki.ComboEdit1KeyUp(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
@@ -103,6 +107,19 @@ begin
   result:=TBIURLSource.From(URL);
 end;
 
+// Changes the mouse cursor
+procedure SetCursor(const ACursor:TCursor);
+var _Cursor: IFMXCursorService;
+begin
+  if TPlatformServices.Current.SupportsPlatformService(IFMXCursorService) then
+  begin
+    _Cursor:=TPlatformServices.Current.GetPlatformService(IFMXCursorService) as IFMXCursorService;
+
+    if Assigned(_Cursor) then
+       _Cursor.SetCursor(ACursor);
+  end;
+end;
+
 // Call Wikipedia online search
 procedure TFormWiki.Search(const Query:String);
 var tmp : String;
@@ -133,6 +150,7 @@ procedure TFormWiki.Beautify(const Data: TDataItem);
 var t : Integer;
     tmp : TDataItem;
 begin
+  if Data<>nil then
   if not Data.AsTable then
      for t:=0 to Data.Items.Count-1 do
      begin
@@ -166,10 +184,15 @@ begin
 
     LabelURL.Text:='';
 
-    if TCommonUI.IsURL(tmp) then
-       LoadData(tmp)  // <-- direct load
-    else
-       Search(tmp);   // <-- Search Wikipedia !
+    SetCursor(crHourGlass);
+    try
+      if TCommonUI.IsURL(tmp) then
+         LoadData(tmp)  // <-- direct load
+      else
+         Search(tmp);   // <-- Search Wikipedia !
+    finally
+      SetCursor(crDefault);
+    end;
   end;
 end;
 
@@ -193,7 +216,7 @@ begin
 end;
 
 initialization
-ReportMemoryLeaksOnShutdown := True;
+  ReportMemoryLeaksOnShutdown := True;
 finalization
-CheckSynchronize;
+  CheckSynchronize;
 end.
