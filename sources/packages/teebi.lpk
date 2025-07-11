@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <PathDelim Value="\"/>
     <Name Value="teebi"/>
     <Type Value="RunAndDesignTime"/>
@@ -37,9 +37,11 @@ http://www.steema.com/licensing/vcl"/>
     <Files Count="1">
       <Item1>
         <Filename Value="..\Lazarus\TeeBI_Lazarus.pas"/>
+        <HasRegisterProc Value="True"/>
         <UnitName Value="TeeBI_Lazarus"/>
       </Item1>
     </Files>
+    <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="3">
       <Item1>
         <PackageName Value="IDEIntf"/>
