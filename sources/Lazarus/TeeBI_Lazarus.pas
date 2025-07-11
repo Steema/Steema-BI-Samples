@@ -1,0 +1,64 @@
+unit TeeBI_Lazarus;
+interface
+procedure Register;
+implementation
+uses
+  TeeBIRegister,
+  BI.Arrays,
+  BI.Arrays.Strings,
+  BI.CollectionItem,
+  BI.Compare,
+  BI.Compression,
+  BI.Convert,
+  BI.CSV,
+  BI.DataItem,
+  BI.Dataset,
+  BI.DataSource,
+  BI.DB.Dataset,
+  BI.DB,
+  BI.Email.Indy,
+  BI.Expression.DateTime,
+  BI.Expression.Filter,
+  BI.Expression,
+  BI.Expressions,
+  BI.FPC,
+  BI.Geographic,
+  BI.Grid.Plugin,
+  BI.Gridify,
+  BI.GuessLinks,
+  BI.Html,
+  BI.Info,
+  BI.JSON.FPC,
+  BI.JSON,
+  BI.Languages.English,
+  BI.Languages.Spanish,
+  BI.MapReduce,
+  BI.Merge,
+  BI.Persist,
+  BI.Query,
+  BI.Rank,
+  BI.Search,
+  BI.SingleRecord,
+  BI.SQL,
+  BI.SqlDB,
+  BI.Store.Component,
+  BI.Streams,
+  BI.Summary,
+  BI.Summary.Persist,
+  BI.Summary.Totals,
+  BI.Tools,
+  BI.UI.Colors,
+  BI.UI,
+  BI.Verify,
+  BI.Web.FPC,
+  BI.Web.Html,
+  BI.Web,
+  BI.XMLData.FPC,
+  BI.XMLData;
+
+procedure Register;
+begin
+  TeeBIRegister.Register;
+end;
+
+end.
