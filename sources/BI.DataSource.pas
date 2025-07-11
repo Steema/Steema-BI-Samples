@@ -440,7 +440,7 @@ type
     class function TryConvert(const Value:String; out AFloat:Double;
                                     const Settings:TFormatSettings):Boolean; overload; static;
 
-    {$IFNDEF FPC} // No Extended in Lazarus 64bit
+    {$IF NOT DEFINED(FPC) OR DEFINED(FPC_HAS_TYPE_EXTENDED)} // No Extended in Lazarus 64bit in Windows
     class function TryConvert(const Value:String; out AFloat:Extended;
                                     const Settings:TFormatSettings):Boolean; overload; static;
     {$ENDIF}
@@ -1451,7 +1451,7 @@ begin
   end;
 end;
 
-{$IFNDEF FPC}
+{$IF NOT DEFINED(FPC) OR DEFINED(FPC_HAS_TYPE_EXTENDED)} // No Extended in Lazarus 64bit in Windows
 class function TStringToFloat.TryConvert(const Value:String; out AFloat:Extended;
                                          const Settings:TFormatSettings):Boolean;
 var tmp : String;
