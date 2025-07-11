@@ -9,7 +9,12 @@ unit BI.Web.Html;
 interface
 
 uses
-  System.UITypes;
+  {$IFDEF FPC}
+  BI.FPC
+  {$ELSE}
+  {System.}UITypes
+  {$ENDIF}
+  ;
 
 type
   THTMLHelper=class

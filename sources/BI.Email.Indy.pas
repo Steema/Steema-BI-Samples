@@ -1,3 +1,5 @@
+// Note: Not available for Lazarus yet.
+// This small class is used to send an email, using Indy SMTP components.
 unit BI.Email.Indy;
 
 interface
@@ -17,15 +19,24 @@ type
 implementation
 
 uses
-  {System.}Classes, {System.}SysUtils,
+  {System.}Classes,
 
+  {$IFNDEF FPC}
   IdSMTP, IdMessage, IdText,
 
   //IdMessageBuilder,
 
-  IdSSLOpenSSL, IdExplicitTLSClientServerBase;
+  IdSSLOpenSSL, IdExplicitTLSClientServerBase,
+  {$ENDIF}
+
+  {System.}SysUtils;
 
 procedure TBIEmailIndy.Send(const AUser,AEmail,ASubject,ATextContent,AHtmlContent:String);
+{$IFDEF FPC}
+begin
+  raise Exception.Create('Indy idSmtp not supported in Lazarus, yet');
+end;
+{$ELSE}
 var SMTP : TIdSMTP;
     Msg : TIdMessage;
 //    tmpBuilder : TIdCustomMessageBuilder;
@@ -116,6 +127,7 @@ begin
     SMTP.Free;
   end;
 end;
+{$ENDIF}
 
 class function TBIEmailIndy.ValidAddress(const Email:String):Boolean;
 var tmp : String;
