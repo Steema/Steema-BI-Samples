@@ -77,6 +77,9 @@ begin
   BIQuery1.Parse(Data1, 'Sum(Stock) group by Category, Color');
 
   RefreshQuery;
+
+  BIChart1.Chart.Axes.Bottom.Texts.Angle:=90;
+  BIChart1.Chart.View3D:=False;
 end;
 
 // Cleanup memory

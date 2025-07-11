@@ -45,6 +45,8 @@ object MainForm: TMainForm
       Legend.Shadow.Visible = False
       Legend.Symbol.Shadow.Visible = False
       Legend.Visible = False
+      Title.Text.Strings = (
+        'TBITChart')
       View3D = True
       TabOrder = 0
       DefaultCanvas = 'TGDIPlusCanvas'
