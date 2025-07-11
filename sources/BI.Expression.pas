@@ -1794,8 +1794,10 @@ class function TExpression.DoError(const APos:Integer; const AMessage:String):Bo
 begin
   raise EExpressionParse.Create(APos,AMessage);
 
+  {$IFNDEF FPC}
   {$IF CompilerVersion<35}
   result:=False; // <-- to skip warning
+  {$ENDIF}
   {$ENDIF}
 end;
 
@@ -2971,7 +2973,7 @@ begin
   if L=1 then
   begin
     {$IFDEF FPC}
-    tmp:=TExpression(NativeInt(AParameters[0]));
+    tmp:=TExpression(Integer(AParameters[0]));     // NativeInt conversion is not allowed in Lazarus 4.0.4
     Create(tmp);
     {$ELSE}
     Create(AParameters[0]);

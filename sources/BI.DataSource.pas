@@ -440,8 +440,10 @@ type
     class function TryConvert(const Value:String; out AFloat:Double;
                                     const Settings:TFormatSettings):Boolean; overload; static;
 
+    {$IFNDEF FPC} // No Extended in Lazarus 64bit
     class function TryConvert(const Value:String; out AFloat:Extended;
                                     const Settings:TFormatSettings):Boolean; overload; static;
+    {$ENDIF}
 
     class function TryConvert(const Value:String):Boolean; overload; static; inline;
   end;
@@ -1449,6 +1451,7 @@ begin
   end;
 end;
 
+{$IFNDEF FPC}
 class function TStringToFloat.TryConvert(const Value:String; out AFloat:Extended;
                                          const Settings:TFormatSettings):Boolean;
 var tmp : String;
@@ -1470,6 +1473,7 @@ begin
        result:=TryStrToFloat(RemoveCurrency(tmp),AFloat,Settings);
   end;
 end;
+{$ENDIF}
 
 class function TStringToFloat.TryConvert(const Value:String):Boolean;
 var Dummy : Double;

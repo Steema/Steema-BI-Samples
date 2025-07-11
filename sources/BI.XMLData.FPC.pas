@@ -138,7 +138,7 @@ begin
 end;
 
 class function TFPCXML.Normalize(const S: String): String;
-var tmp : WideString;
+var tmp : XMLString;
 begin
   tmp:=S;
   NormalizeSpaces(tmp);

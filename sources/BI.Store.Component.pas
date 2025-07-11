@@ -485,7 +485,7 @@ type
   private
     Importer : TComponentImporter;
   protected
-    procedure DataEvent(Event: TDataEvent; Info: NativeInt); override;
+    procedure DataEvent(Event: TDataEvent; Info: {$IFDEF FPC}Ptrint{$ELSE}NativeInt{$ENDIF}); override;
   end;
 
 procedure TComponentImporter.SetSource(const Value: TComponent);
@@ -603,7 +603,7 @@ end;
 
 { TBIDataLink }
 
-procedure TBIDataLink.DataEvent(Event: TDataEvent; Info: NativeInt);
+procedure TBIDataLink.DataEvent(Event: TDataEvent; Info: {$IFDEF FPC}Ptrint{$ELSE}NativeInt{$ENDIF});
 begin
   inherited;
 
