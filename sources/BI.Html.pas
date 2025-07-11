@@ -34,12 +34,22 @@ uses
   BI.XMLData;
 
 type
+  THTMLEngine=class(TXmlEngine)
+  public
+    Constructor CreateParser; virtual; abstract;
+  end;
+
+  THTMLEngineClass=class of THTMLEngine;
+
   TBIHTML=class(TBITextSource)
   private
-    function GetTable(const Xml:TXmlEngine):TDataItem;
-    class function GetTables(const Xml:TXmlEngine):TDataArray; static;
-    class function TryFindID(const Xml:TXmlEngine):String; static;
+    function GetTable(const xml:TXmlEngine):TDataItem;
+    class function GetTables(const xml:TXmlEngine):TDataArray; static;
+    class function TryFindID(const xml:TXmlEngine):String; static;
   public
+    class var
+      EngineClass : THTMLEngineClass;
+
     class function FileFilter: TFileFilters; override;
     function Import(const Strings:TStrings):TDataArray; override;
     class function Supports(const Extension:String):Boolean; override;
@@ -107,7 +117,7 @@ uses
 
 { TBIHTML }
 
-class function TBIHTML.TryFindID(const Xml:TXmlEngine):String;
+class function TBIHTML.TryFindID(const xml:TXmlEngine):String;
 begin
   result:=xml.GetAttribute('id');
 
@@ -146,8 +156,9 @@ end;
 function HTMLTrim(const S:String):String;
 const
   NBSP=#160;
+  NBSP2='&nbsp;';
 begin
-  result:=Trim(S);
+  result:=Trim(S).Replace(NBSP2,'');
 
   while Copy(result,1,1)=NBSP do
       Delete(result,1,1);
@@ -159,7 +170,7 @@ end;
 type
   TDataItemAccess=class(TDataItem);
 
-function TBIHTML.GetTable(const Xml:TXmlEngine):TDataItem;
+function TBIHTML.GetTable(const xml:TXmlEngine):TDataItem;
 {$IFDEF HAS_NETENCODING}
 var
   Encoding : TNetEncoding;
@@ -356,7 +367,7 @@ begin
   end;
 end;
 
-class function TBIHTML.GetTables(const Xml:TXmlEngine):TDataArray;
+class function TBIHTML.GetTables(const xml:TXmlEngine):TDataArray;
 var
   Tables : TDataArray;
   HTML : TBIHTML;
@@ -393,9 +404,8 @@ begin
   end;
 end;
 
-type
-  TBIXMLAccess=class(TBIXML);
-
+{type
+  TBIXMLAccess=class(TBIXML);}
 
 function TBIHTML.Import(const Strings: TStrings): TDataArray;
 
@@ -427,18 +437,24 @@ function TBIHTML.Import(const Strings: TStrings): TDataArray;
     end;
   end;
 
-var tmp : TBIXML;
+var tmp : TXmlEngine;
 begin
   result:=nil;
 
   if Strings.Count>0 then
   begin
-    FixDocType;
+    if EngineClass=nil then
+    begin
+      FixDocType;
 
-    tmp:=TBIXML.Create;
+      tmp:=TBIXML.CreateParser;
+    end
+    else
+      tmp:=EngineClass.CreateParser;
+
     try
       if tmp.Parse(Strings.Text) then
-         result:=GetTables(TBIXMLAccess(tmp).XML);
+         result:=GetTables(tmp);
     finally
       tmp.Free;
     end;
@@ -1028,6 +1044,8 @@ begin
 end;
 
 initialization
+  TBIHTML.EngineClass:=nil;
+
   TBIFileImporters.RegisterClass(TBIHTML);
   TBIExporters.RegisterClass(TBIHTMLExport);
 finalization

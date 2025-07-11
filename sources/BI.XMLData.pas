@@ -53,6 +53,7 @@ type
     procedure LoadFromFile(const Filename: String); virtual; abstract;
     function Name:String; virtual; abstract;
     procedure Parent; virtual; abstract;
+    function Parse(const Text:String):Boolean; virtual;
     procedure Root; virtual; abstract;
     function Text:String; virtual; abstract;
   end;
@@ -72,6 +73,8 @@ type
 
     Constructor CreateEngine(const AEngine:TXmlEngine);
     Destructor Destroy; override;
+
+    class function CreateParser:TXmlEngine; static;
 
     class function FileFilter: TFileFilters; override;
     function Import(const Folder:String; Recursive:Boolean=False):TDataArray; overload;
@@ -118,6 +121,14 @@ uses
   System.Character,
   {$ENDIF}
   BI.Languages.English;
+
+{ TXmlEngine }
+
+function TXmlEngine.Parse(const Text:String):Boolean;
+begin
+  FromString(Text);
+  result:=IsValid;
+end;
 
 { TBIXML }
 
@@ -420,17 +431,20 @@ begin
   ResetParentCount(Col);
 end;
 
+class function TBIXML.CreateParser:TXmlEngine;
+begin
+  if EngineClass=nil then
+     result:={$IFDEF FPC}TFPCXML{$ELSE}TMsXML{$ENDIF}.Create(nil)
+  else
+     result:=EngineClass.Create(nil);
+end;
+
 function TBIXML.Parse(const Text:String): Boolean;
 begin
   if Xml=nil then
-     if EngineClass=nil then
-        Xml:={$IFDEF FPC}TFPCXML{$ELSE}TMsXML{$ENDIF}.Create(nil)
-     else
-        Xml:=EngineClass.Create(nil);
+     Xml:=CreateParser;
 
-  Xml.FromString(Text);
-
-  result:=Xml.IsValid;
+ result:=Xml.Parse(Text);
 end;
 
 function TBIXML.ImportText(const Text:String): TDataItem;
