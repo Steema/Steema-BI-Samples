@@ -28,5 +28,15 @@ Note:
 
 It should be run in Administrator mode due to copying files to Windows subfolders.
 
+### Lazarus v4 FreePascal 3.2.2
+
+- Units are copied to sources\Lazarus folder before compiling the TeeBI.lpk Lazarus package.
+
+- Unit names are renamed, replacing "." dots with "_" underscores.
+
+- Some units not compatible or not ported to Lazarus yet, are not copied.
+  
+- When rebuilding the TeeBI package inside Lazarus, the "Sources" path might be necessary to add at ide Options
+  
 ![](https://github.com/Steema/TeeBI/blob/master/docs/img/teebirecompile.png)
 
