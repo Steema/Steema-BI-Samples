@@ -1,0 +1,144 @@
+object Form_AI_Demo: TForm_AI_Demo
+  Left = 0
+  Top = 0
+  Caption = 'TeeBI AI Agent Demo (Google Gemini)'
+  ClientHeight = 498
+  ClientWidth = 803
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Layout1: TLayout
+    Align = Client
+    Size.Width = 803.000000000000000000
+    Size.Height = 366.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object BIGrid1: TBIGrid
+      Align = Client
+      Size.Width = 392.000000000000000000
+      Size.Height = 366.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+    end
+    object Splitter1: TSplitter
+      Align = Right
+      Cursor = crHSplit
+      MinSize = 20.000000000000000000
+      Position.X = 392.000000000000000000
+      Size.Width = 11.000000000000000000
+      Size.Height = 366.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object BIChart1: TBIChart
+      Align = Right
+      Padding.Top = 24.000000000000000000
+      Position.X = 403.000000000000000000
+      Size.Width = 400.000000000000000000
+      Size.Height = 366.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      object BITChart1: TBITChart
+        Foot.Font.StyleExt = {00040000000200000004000000}
+        Legend.Shadow.Visible = False
+        Legend.Symbol.Shadow.Visible = False
+        Legend.Title.Font.StyleExt = {00070000000000000004000000}
+        SubFoot.Font.StyleExt = {00040000000200000004000000}
+        Zoom.Brush.Kind = None
+        Zoom.Pen.Fill.Color = claSilver
+        TabOrder = 0
+        Size.Width = 400.000000000000000000
+        Size.Height = 342.000000000000000000
+        Size.PlatformDefault = False
+        ColorPaletteIndex = 9
+        object TMarksTipTool
+          Format.CustomPosition = True
+          Format.Left = 0
+          Format.TextAlignment = taCenter
+          Format.Top = 0
+          Format.Visible = False
+          MouseDelay = 0
+          Style = smsLabelValue
+        end
+      end
+    end
+  end
+  object Layout2: TLayout
+    Align = Top
+    Size.Width = 803.000000000000000000
+    Size.Height = 45.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object Label1: TLabel
+      FocusControl = CBAgent
+      Position.X = 8.000000000000000000
+      Position.Y = 11.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Trailing
+      Text = '&AI Agent:'
+      TabOrder = 0
+    end
+    object CBAgent: TComboBox
+      Items.Strings = (
+        'Google Gemini')
+      ItemIndex = 0
+      Position.X = 81.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 136.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      OnChange = CBAgentChange
+    end
+    object Label2: TLabel
+      FocusControl = EditAPIKey
+      Position.X = 240.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 54.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'API &Key:'
+      TabOrder = 2
+    end
+    object EditAPIKey: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 3
+      Password = True
+      Position.X = 302.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 275.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TextPrompt = 'Enter your API key'
+      OnChangeTracking = EditAPIKeyChangeTracking
+    end
+    object Button1: TButton
+      Enabled = False
+      Position.X = 616.000000000000000000
+      Position.Y = 8.000000000000000000
+      TabOrder = 4
+      Text = '&GO !'
+      TextSettings.Trimming = None
+      OnClick = Button1Click
+    end
+  end
+  object Memo1: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Lines.Strings = (
+      
+        'Give me the list of mountains by elevation in csv format, just t' +
+        'he list')
+    Align = Top
+    Position.Y = 45.000000000000000000
+    Size.Width = 803.000000000000000000
+    Size.Height = 87.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Viewport.Width = 799.000000000000000000
+    Viewport.Height = 83.000000000000000000
+  end
+end
