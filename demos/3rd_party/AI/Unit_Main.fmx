@@ -4,21 +4,23 @@ object Form_AI_Demo: TForm_AI_Demo
   Caption = 'TeeBI AI Agent Demo (Google Gemini)'
   ClientHeight = 498
   ClientWidth = 803
+  Position = OwnerFormCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnClose = FormClose
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
     Size.Width = 803.000000000000000000
-    Size.Height = 366.000000000000000000
+    Size.Height = 311.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object BIGrid1: TBIGrid
       Align = Client
       Size.Width = 392.000000000000000000
-      Size.Height = 366.000000000000000000
+      Size.Height = 311.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
     end
@@ -28,7 +30,7 @@ object Form_AI_Demo: TForm_AI_Demo
       MinSize = 20.000000000000000000
       Position.X = 392.000000000000000000
       Size.Width = 11.000000000000000000
-      Size.Height = 366.000000000000000000
+      Size.Height = 311.000000000000000000
       Size.PlatformDefault = False
     end
     object BIChart1: TBIChart
@@ -36,7 +38,7 @@ object Form_AI_Demo: TForm_AI_Demo
       Padding.Top = 24.000000000000000000
       Position.X = 403.000000000000000000
       Size.Width = 400.000000000000000000
-      Size.Height = 366.000000000000000000
+      Size.Height = 311.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
       object BITChart1: TBITChart
@@ -45,11 +47,13 @@ object Form_AI_Demo: TForm_AI_Demo
         Legend.Symbol.Shadow.Visible = False
         Legend.Title.Font.StyleExt = {00070000000000000004000000}
         SubFoot.Font.StyleExt = {00040000000200000004000000}
+        Title.Text.Strings = (
+          'TBITChart')
         Zoom.Brush.Kind = None
         Zoom.Pen.Fill.Color = claSilver
         TabOrder = 0
         Size.Width = 400.000000000000000000
-        Size.Height = 342.000000000000000000
+        Size.Height = 287.000000000000000000
         Size.PlatformDefault = False
         ColorPaletteIndex = 9
         object TMarksTipTool
@@ -67,7 +71,7 @@ object Form_AI_Demo: TForm_AI_Demo
   object Layout2: TLayout
     Align = Top
     Size.Width = 803.000000000000000000
-    Size.Height = 45.000000000000000000
+    Size.Height = 100.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object Label1: TLabel
@@ -117,12 +121,46 @@ object Form_AI_Demo: TForm_AI_Demo
     end
     object Button1: TButton
       Enabled = False
+      StyledSettings = [Family, Size, FontColor]
       Position.X = 616.000000000000000000
       Position.Y = 8.000000000000000000
       TabOrder = 4
       Text = '&GO !'
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
       TextSettings.Trimming = None
       OnClick = Button1Click
+    end
+    object Text1: TText
+      Position.X = 225.000000000000000000
+      Position.Y = 35.000000000000000000
+      Size.Width = 240.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Don'#39't have a key yet? Get a free one from: '
+    end
+    object Text2: TText
+      Cursor = crHandPoint
+      Position.X = 473.000000000000000000
+      Position.Y = 35.000000000000000000
+      Size.Width = 233.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'http://aistudio.google.com/app/apikey'
+      TextSettings.Font.StyleExt = {04040000000000000004000000}
+      OnClick = Text2Click
+    end
+    object ComboExample: TComboBox
+      Items.Strings = (
+        'Highest mountains'
+        'Car sales')
+      ItemIndex = 0
+      Position.X = 8.000000000000000000
+      Position.Y = 70.000000000000000000
+      Size.Width = 169.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      OnChange = ComboExampleChange
     end
   end
   object Memo1: TMemo
@@ -130,10 +168,12 @@ object Form_AI_Demo: TForm_AI_Demo
     DataDetectorTypes = []
     Lines.Strings = (
       
-        'Give me the list of mountains by elevation in csv format, just t' +
-        'he list')
+        'Give me the list of the highest 10 mountains by elevation in csv' +
+        ' format, just the list')
+    StyledSettings = [Family, Size, FontColor]
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
     Align = Top
-    Position.Y = 45.000000000000000000
+    Position.Y = 100.000000000000000000
     Size.Width = 803.000000000000000000
     Size.Height = 87.000000000000000000
     Size.PlatformDefault = False
