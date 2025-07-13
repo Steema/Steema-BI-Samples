@@ -249,6 +249,7 @@ type
     FloatFormat : String;
 
     function DataToString(const AData:TDataItem; const AIndex:TInteger):String;
+    class procedure SaveToFile(const AText,AFileName:String); static;
   end;
 
   TBIItemsSource=class(TBISource)
@@ -1418,10 +1419,18 @@ begin
 
   if not result then
   begin
-    // Try removing ThousandSeparator from string. (Locale-dependant)
-    tmp:=RemoveChar(Value,Settings.ThousandSeparator);
+    // Try removing ThousandSeparator from string. (Locale-dependant) only
+    // if there are both Thousand and Decimal present in the string:
 
-    result:=TryStrToFloat(tmp,AFloat,Settings);
+    if (Pos(Settings.ThousandSeparator,Value)>0) and
+       (Pos(Settings.DecimalSeparator,Value)>0) then
+    begin
+      tmp:=RemoveChar(Value,Settings.ThousandSeparator);
+
+      result:=TryStrToFloat(tmp,AFloat,Settings);
+    end
+    else
+      tmp:=Value;
 
     if not result then
        // Try also removing possible currency symbols at start or end ($, €, etc)
@@ -3009,6 +3018,11 @@ begin
   else
     result:=AData.DataToString(AIndex);
   end;
+end;
+
+class procedure TBITextExport.SaveToFile(const AText, AFileName: String);
+begin
+  TFile.WriteAllText(AFileName,AText);
 end;
 
 { TDataSelect }
