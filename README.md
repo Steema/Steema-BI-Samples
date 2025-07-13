@@ -28,7 +28,7 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - Automatic relationships between columns (master-detail), indexes and foreign keys
 
-- [Import data](https://github.com/Steema/BI/wiki/importing) from files, databases, objects (ORM) in one or few lines of code
+- [Import data](https://github.com/Steema/BI/wiki/importing) from files, databases, objects (ORM), [AI](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/AI) in one or few lines of code
 
 - [Export data](https://github.com/Steema/BI/wiki/exporting) (to csv,pdf,html,xml,excel,json), comparisons and manipulations
 
@@ -61,6 +61,9 @@ Data1 := TBICSV.FromFile( 'mydata.csv' );  // also From TStrings, String etc
 Data1 := TBIDB.From( SQLConnection1 ); // loads all tables in one line of code
 Data1 := TBIJson.From ...
 Data1 := TBIXML.From ... // import different formats
+
+// import from Artificial Intelligence AI agents, like Google Gemini:
+Data1 := TBIAI.From('Give me the list of the highest 10 mountains﻿ by elevation in csv format, just the list');
 
 // from arrays, TCollection, custom Records (via RTTI):
 Data1 : TTypeProvider<TCustomer>.Create(Self, MyArrayOfCustomers).Data; 
