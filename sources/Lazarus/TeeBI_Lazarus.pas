@@ -26,6 +26,7 @@ uses
   BI.Grid.Plugin,
   BI.Gridify,
   BI.GuessLinks,
+  BI.Html.Parser,
   BI.Html,
   BI.Info,
   BI.JSON.FPC,

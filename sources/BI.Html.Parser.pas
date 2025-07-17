@@ -17,6 +17,18 @@ interface
   HTML-Parser is licensed with a MIT license
 }
 
+{$IFDEF FPC}
+// PENDING TO USE A FREEPASCAL HTML PARSER
+uses
+  BI.HTML;
+
+type
+  THTMLParserEngine=class(THTMLEngine)
+  end;
+
+implementation
+{$ELSE}
+
 uses
   BI.HTML,
   parser;  // <-- HTML-Parser unit
@@ -145,6 +157,7 @@ function THTMLParserEngine.Text: String;
 begin
   result:=Node.Text;
 end;
+{$ENDIF}
 
 initialization
   TBIHTML.EngineClass:=THTMLParserEngine;
