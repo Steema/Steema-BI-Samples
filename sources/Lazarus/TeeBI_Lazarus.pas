@@ -4,6 +4,7 @@ procedure Register;
 implementation
 uses
   TeeBIRegister,
+  BI.AI,
   BI.Arrays,
   BI.Arrays.Strings,
   BI.CollectionItem,

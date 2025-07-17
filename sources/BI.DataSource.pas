@@ -428,8 +428,8 @@ type
   // Examples:
   //
   // if TStringToFloat.TryConvert('123,456.78') then ...
-  // if TStringToFloat.TryConvert('€ 123.45') then ...
-  // var tmp : Double ; tmp:=TStringToFloat.Convert('£99,123.56789');
+  // if TStringToFloat.TryConvert('  123.45') then ...
+  // var tmp : Double ; tmp:=TStringToFloat.Convert(' 99,123.56789');
   //
   // NOTE: This function might be SLOW, compared to plain numbers like: '123.45'
   //
@@ -1361,7 +1361,7 @@ end;
 // http://www.xe.com/symbols.php
 function IsCurrencySymbol(const Value:Char):Boolean; overload;
 const
-  Currencies : Array[0..4] of Char =('$','€','¢','£','¥');  //fix for versions <D21
+  Currencies : Array[0..4] of Char =('$',' ',' ',' ',' ');  //fix for versions <D21
 
 var t : Integer;
 begin
@@ -1404,7 +1404,7 @@ end;
 // Examples:
 //
 // TryStringToFloat('123,456.78');
-// TryStringToFloat('€ 123.45');
+// TryStringToFloat('  123.45');
 //
 // NOTE: This function might be SLOW, compared to plain numbers like: '123.45'
 
@@ -1433,7 +1433,7 @@ begin
       tmp:=Value;
 
     if not result then
-       // Try also removing possible currency symbols at start or end ($, €, etc)
+       // Try also removing possible currency symbols at start or end ($,  , etc)
        result:=TryStrToFloat(RemoveCurrency(tmp),AFloat,Settings);
   end;
 end;
@@ -1455,7 +1455,7 @@ begin
     result:=TryStrToFloat(tmp,AFloat,Settings);
 
     if not result then
-       // Try also removing possible currency symbols at start or end ($, €, etc)
+       // Try also removing possible currency symbols at start or end ($,  , etc)
        result:=TryStrToFloat(RemoveCurrency(tmp),AFloat,Settings);
   end;
 end;
@@ -1478,7 +1478,7 @@ begin
     result:=TryStrToFloat(tmp,AFloat,Settings);
 
     if not result then
-       // Try also removing possible currency symbols at start or end ($, €, etc)
+       // Try also removing possible currency symbols at start or end ($,  , etc)
        result:=TryStrToFloat(RemoveCurrency(tmp),AFloat,Settings);
   end;
 end;
@@ -3021,8 +3021,20 @@ begin
 end;
 
 class procedure TBITextExport.SaveToFile(const AText, AFileName: String);
+{$IFDEF FPC}
+var m : TStringStream;
+{$ENDIF}
 begin
+  {$IFDEF FPC}
+  m:=TStringStream.Create(AText);
+  try
+    m.SaveToFile(AFileName);
+  finally
+    m.Free;
+  end;
+  {$ELSE}
   TFile.WriteAllText(AFileName,AText);
+  {$ENDIF}
 end;
 
 { TDataSelect }

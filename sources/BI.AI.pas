@@ -62,10 +62,15 @@ implementation
 
 
 uses
+  {$IFDEF FPC}
+  fpHttpClient, jsonParser
+  {$ELSE}
   System.Net.HttpClient, System.JSON, System.IOUtils,
 
   // Units used to avoid "inline" not-expansion hints:
-  System.Generics.Collections, System.Net.URLClient, System.NetConsts;
+  System.Generics.Collections, System.Net.URLClient, System.NetConsts
+  {$ENDIF}
+  ;
 
 { TBIAI }
 
@@ -75,6 +80,19 @@ begin
 end;
 
 class function TBIAI.From(const Question:String; const Agent:TAgent; const Key:String): TDataItem;
+
+const
+  GeminiURL  ='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  CopilotURL ='https://??';
+  ChatGPTURL ='https://api.openai.com/v1/chat/completions'; // 'https://api.openai.com/v1/responses';
+  GrokURL    ='http://api.x.ai/v1/chat/completions';
+
+{$IFDEF FPC}
+// Work in progress
+begin
+  result:=nil;
+end;
+{$ELSE}
 
   function GeminiOutput(const JSON:String):String;
   const
@@ -116,12 +134,6 @@ class function TBIAI.From(const Question:String; const Agent:TAgent; const Key:S
 
     DoError('AI Google Gemini error: Wrong response');
   end;
-
-const
-  GeminiURL  ='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  CopilotURL ='https://??';
-  ChatGPTURL ='https://api.openai.com/v1/chat/completions'; //'https://api.openai.com/v1/responses';
-  GrokURL    ='http://api.x.ai/v1/chat/completions';
 
 var
   Response : IHTTPResponse;
@@ -220,5 +232,6 @@ begin
 
   result:=TBIFileSource.FromText(tmpOutput);
 end;
+{$ENDIF}
 
 end.
