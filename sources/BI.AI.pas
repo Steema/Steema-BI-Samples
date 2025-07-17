@@ -16,11 +16,14 @@ interface
   The AI agent will return a response and TeeBI will try to visualize these
   results.
 
-  Don't have a Google Gemini key yet?
+  Don't have a AI key yet?
 
-  Get a free personal PRIVATE Google Gemini API key here:
+  Get a free personal PRIVATE key here:
 
-  https://aistudio.google.com/app/apikey
+  Google Gemini     : https://aistudio.google.com/app/apikey
+  Microsoft Copilot :
+  OpenAI ChatGPT    :
+  X Grok            :
 
   Example code:
 
@@ -29,12 +32,11 @@ interface
   // One line of code, call Gemini and get a data structure:
   Data1:=TBIAI.From('your_api_key',
      'Give me the list of mountains by elevation in csv format, just the list',
-     TBIAI.GoogleGemini);
+     TBIAI.TAgent.Gemini);
 
   // Visualize it:
   BIGrid1.Data:=Data1;
   BIChart1.Data:=Data1;
-
 
 }
 
@@ -49,10 +51,11 @@ type
 
   TBIAI=class(TBISource)
   public
-    const
-      GoogleGemini='Gemini';
+    type
+      TAgent=(Gemini,Copilot,ChatGPT,Grok);
 
-    class function From(const Key,Question,Agent:String):TDataItem; static;
+    class function From(const Question:String; const Agent:TAgent;
+                        const Key:String):TDataItem; static;
   end;
 
 implementation
@@ -71,7 +74,7 @@ begin
   raise EBIAI.Create(AMessage);
 end;
 
-class function TBIAI.From(const Key, Question, Agent: String): TDataItem;
+class function TBIAI.From(const Question:String; const Agent:TAgent; const Key:String): TDataItem;
 
   function GeminiOutput(const JSON:String):String;
   const
@@ -115,50 +118,107 @@ class function TBIAI.From(const Key, Question, Agent: String): TDataItem;
   end;
 
 const
-  GeminiURL='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  GeminiURL  ='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  CopilotURL ='https://??';
+  ChatGPTURL ='https://api.openai.com/v1/chat/completions'; //'https://api.openai.com/v1/responses';
+  GrokURL    ='http://api.x.ai/v1/chat/completions';
 
 var
   Response : IHTTPResponse;
   Body : TStringStream;
   Http : THTTPClient;
+  tmpOutput : String;
 begin
   result:=nil;
 
-  if SameText(Agent,GoogleGemini) then
-  begin
-    if Key.Trim='' then
-       DoError('AI API Key missing');
+  if Key.Trim='' then
+     DoError('AI API Key missing');
 
-    if Question.Trim='' then
-       DoError('AI Question missing');
+  if Question.Trim='' then
+     DoError('AI Question missing');
 
-    { DEBUG: if TFile.Exists('Gemini_Output.json') then
-       result:=TBIFileSource.FromText(GeminiOutput(TFile.ReadAllText('Gemini_Output.json')))
-    else
-    }
-    begin
-      Body:=TStringStream.Create('{"contents": [{"parts": [{"text": "'+Question.Trim+'"}]}]}');
-      try
-        Http:=THTTPClient.Create;
+  { DEBUG: if TFile.Exists('AI_Output.txt') then
+     result:=TBIFileSource.FromText(TFile.ReadAllText('AI_Output.txt')))
+  else
+  }
+
+  Http:=THTTPClient.Create;
+  try
+    Http.ContentType:='application/json';
+
+    case Agent of
+      Gemini :
+      begin
+        Http.CustomHeaders['X-goog-api-key']:=Key;
+
+        Body:=TStringStream.Create('{"contents": [{"parts": [{"text": "'+Question.Trim+'"}]}]}');
         try
-          Http.ContentType:='application/json';
-          Http.CustomHeaders['X-goog-api-key']:=Key;
-
           Response:=Http.Post(GeminiURL, Body);
-
-          // DEBUG: TBITextExport.SaveToFile(Response.ContentAsString,'Gemini_Output.json');
-
-          result:=TBIFileSource.FromText(GeminiOutput(Response.ContentAsString));
+          tmpOutput:=GeminiOutput(Response.ContentAsString);
         finally
-          Http.Free;
+          Body.Free;
         end;
-      finally
-        Body.Free;
+      end;
+
+      Copilot:
+      begin
+        tmpOutput:='Pending to implement';
+      end;
+
+      ChatGPT:
+      begin
+        Http.CustomHeaders['Authorization']:='Bearer '+Key;
+
+        { Models:
+
+          gpt-4.1
+          gpt-4.1-mini
+          gpt-4.1-nano
+          gpt-4.5-preview
+          gpt-4o
+          gpt-4o-mini
+          o1
+          o1-mini
+          o1-pro
+          o3
+          o3-mini
+          o4-mini
+        }
+
+        Body:=TStringStream.Create('{"model": "gpt-4.1-mini", "messages": [{"role": "user", "content": "'+Question.Trim+'"}] }');
+        try
+          Response:=Http.Post(ChatGPTURL, Body);
+          tmpOutput:=Response.ContentAsString;
+        finally
+          Body.Free;
+        end;
+      end;
+
+      Grok:
+      begin
+        Http.CustomHeaders['Authorization']:='Bearer '+Key;
+
+        Body:=TStringStream.Create('{"messages": [{"role": "user", "content": "'+
+            Question.Trim+'"}], "model": "grok-3-latest", "stream": false, "temperature": 0 }');
+        try
+          Response:=Http.Post(GrokURL, Body);
+          tmpOutput:=Response.ContentAsString;
+        finally
+          Body.Free;
+        end;
       end;
     end;
-  end
-  else
-     DoError('AI Agent: '+Agent+' not supported');
+
+  finally
+    Http.Free;
+  end;
+
+  // DEBUG: TBITextExport.SaveToFile(tmpOutput,'AI_Output.txt');
+
+  if tmpOutput.Trim='' then
+     DoError('Empty response from AI');
+
+  result:=TBIFileSource.FromText(tmpOutput);
 end;
 
 end.

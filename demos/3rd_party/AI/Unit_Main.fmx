@@ -74,44 +74,21 @@ object Form_AI_Demo: TForm_AI_Demo
     Size.Height = 100.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    object Label1: TLabel
-      FocusControl = CBAgent
-      Position.X = 8.000000000000000000
-      Position.Y = 11.000000000000000000
-      Size.Width = 65.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Trailing
-      Text = '&AI Agent:'
-      TabOrder = 0
-    end
-    object CBAgent: TComboBox
-      Items.Strings = (
-        'Google Gemini')
-      ItemIndex = 0
-      Position.X = 81.000000000000000000
-      Position.Y = 8.000000000000000000
-      Size.Width = 136.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      OnChange = CBAgentChange
-    end
     object Label2: TLabel
       FocusControl = EditAPIKey
-      Position.X = 240.000000000000000000
+      Position.X = 192.000000000000000000
       Position.Y = 10.000000000000000000
       Size.Width = 54.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'API &Key:'
-      TabOrder = 2
+      TabOrder = 0
     end
     object EditAPIKey: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 3
+      TabOrder = 1
       Password = True
-      Position.X = 302.000000000000000000
+      Position.X = 254.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 275.000000000000000000
       Size.Height = 22.000000000000000000
@@ -122,45 +99,74 @@ object Form_AI_Demo: TForm_AI_Demo
     object Button1: TButton
       Enabled = False
       StyledSettings = [Family, Size, FontColor]
-      Position.X = 616.000000000000000000
+      Position.X = 568.000000000000000000
       Position.Y = 8.000000000000000000
-      TabOrder = 4
+      TabOrder = 2
       Text = '&GO !'
       TextSettings.Font.StyleExt = {00070000000000000004000000}
       TextSettings.Trimming = None
       OnClick = Button1Click
     end
     object Text1: TText
-      Position.X = 225.000000000000000000
+      Position.X = 177.000000000000000000
       Position.Y = 35.000000000000000000
       Size.Width = 240.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       Text = 'Don'#39't have a key yet? Get a free one from: '
     end
-    object Text2: TText
+    object TextKeyLink: TText
       Cursor = crHandPoint
-      Position.X = 473.000000000000000000
+      Position.X = 425.000000000000000000
       Position.Y = 35.000000000000000000
-      Size.Width = 233.000000000000000000
+      Size.Width = 360.000000000000000000
       Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
       Text = 'http://aistudio.google.com/app/apikey'
       TextSettings.Font.StyleExt = {04040000000000000004000000}
-      OnClick = Text2Click
+      TextSettings.HorzAlign = Leading
+      OnClick = TextKeyLinkClick
     end
     object ComboExample: TComboBox
       Items.Strings = (
         'Highest mountains'
         'Car sales')
       ItemIndex = 0
-      Position.X = 8.000000000000000000
+      Position.X = 234.000000000000000000
       Position.Y = 70.000000000000000000
       Size.Width = 169.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 7
+      TabOrder = 5
       OnChange = ComboExampleChange
+    end
+    object ListAgents: TListBox
+      Position.X = 8.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 143.000000000000000000
+      Size.Height = 82.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 6
+      DisableFocusEffect = True
+      ItemIndex = 0
+      Items.Strings = (
+        'Google Gemini'
+        'Microsoft Copilot'
+        'OpenAI ChatGPT'
+        'X Grok')
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      OnChange = ListAgentsChange
+      Viewport.Width = 139.000000000000000000
+      Viewport.Height = 78.000000000000000000
+    end
+    object Label1: TLabel
+      FocusControl = ComboExample
+      Position.X = 159.000000000000000000
+      Position.Y = 75.000000000000000000
+      Text = 'Example:'
+      TabOrder = 7
     end
   end
   object Memo1: TMemo
