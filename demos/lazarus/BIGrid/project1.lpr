@@ -1,19 +1,25 @@
 program project1;
 
-{$mode delphi}
+{$mode objfpc}{$H+}
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$IFDEF UNIX}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  {$ENDIF}
+  {$IFDEF HASAMIGA}
+  athreads,
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Unit1
-  { you can add units after this };
+  Forms, Unit1;
 
 {$R *.res}
 
 begin
-  RequireDerivedFormResource := True;
+  RequireDerivedFormResource:=True;
+  Application.Scaled:=True;
+  {$PUSH}{$WARN 5044 OFF}
+  Application.MainFormOnTaskbar:=True;
+  {$POP}
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
   Application.Run;

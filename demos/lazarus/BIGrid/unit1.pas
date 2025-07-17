@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, BI_VCL_Grid, BI_Persist;
+  StdCtrls, Interfaces, VCLBI.Grid, BI.Persist;
 
 { TForm1 }
 
@@ -32,15 +32,12 @@ implementation
 {$R *.lfm}
 
 uses
-  BI_VCL_DataSelect;
+  VCLBI.DataSelect;
 
 { TForm1 }
 
 procedure TForm1.FormCreate(Sender: TObject);
-var v:Variant;
-  o:TObject;
 begin
-  o:=v;
   Grid:=TBIGrid.Create(Self);
   Grid.Align:=alClient;
   Grid.Parent:=Self;
