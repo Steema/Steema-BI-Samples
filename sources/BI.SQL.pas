@@ -475,7 +475,7 @@ var
       if By[t].DatePart=TDateTimePart.None then
          result:=result+' '+tmp
       else
-         result:=result+' '+By[t].DatePart.ToString+'('+tmp+')';
+         result:=result+' '+By[t].DatePart.ToCode+'('+tmp+')';
 
       if AddAsName then
          result:=result+AsName(By[t].Name);

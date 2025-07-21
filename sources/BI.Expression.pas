@@ -466,7 +466,8 @@ type
     class function Max:Integer; static;
     function ToString:String; overload;
     class function ToString(const Index:Integer):String; overload; inline; static;
-    class function ToCode(const Index:Integer):String; static;
+    class function ToCode(const Index:Integer):String; overload; static;
+    function ToCode: String; overload;
   end;
 
   TDateTimePartExpression=class(TParameterExpression)
@@ -1515,7 +1516,7 @@ end;
 
 const
   DateParts:Array[0..22] of String=(
-                     '',
+                     '', // None
            'Millisecond',
       'HundredsOfSecond',
         'TenthsOfSecond',
@@ -1614,6 +1615,11 @@ end;
 function TDateTimePartHelper.ToString: String;
 begin
   result:=Texts[Self];
+end;
+
+function TDateTimePartHelper.ToCode: String;
+begin
+  result:=DateParts[Ord(Self)];
 end;
 
 class function TDateTimePartHelper.ToCode(const Index: Integer): String;
