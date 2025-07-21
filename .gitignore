@@ -53,3 +53,4 @@ sources/Compiled/
 sources/Temp/
 sources/packages/lib/x86_64-win64/
 sources/Lazarus/
+demos/lazarus/Components/backup/
