@@ -24,7 +24,7 @@ A simple class to implement in-memory database complex structures, to provide:
   ![](https://raw.github.com/Steema/BI/master/docs/img/geo_chart_usa_counties.png)
 
 
-- Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access (compressed binary streams of raw arrays)
+- Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access ([compressed](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/d7zip) binary streams of raw arrays)
 
 - Automatic relationships between columns (master-detail), indexes and foreign keys
 
@@ -35,7 +35,7 @@ A simple class to implement in-memory database complex structures, to provide:
 - Supported development environments: 
 
   *  Embarcadero RAD Studio Athens 12.3, and from Studio XE4 and up (Delphi and C++)
-  *  Lazarus / FreePascal
+  *  [Lazarus](https://www.lazarus-ide.org/) / FreePascal
   
 ### Getting started
 
