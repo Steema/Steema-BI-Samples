@@ -1,23 +1,35 @@
 object Form35: TForm35
   Left = 0
   Top = 0
-  Caption = 'Form35'
-  ClientHeight = 553
-  ClientWidth = 655
+  Caption = 'TeeBI use 7z zip compression with Data items'
+  ClientHeight = 470
+  ClientWidth = 414
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
+  Position = poScreenCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 24
+    Top = 8
+    Width = 314
+    Height = 14
+    Caption = 'Make sure the 7z.dll (32 or 64bit) can be located !!'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Button1: TButton
     Left = 24
     Top = 40
-    Width = 129
+    Width = 153
     Height = 25
     Caption = 'Data to Stream'
     TabOrder = 0
@@ -25,20 +37,18 @@ object Form35: TForm35
   end
   object Memo1: TMemo
     Left = 24
-    Top = 144
-    Width = 321
-    Height = 273
-    Lines.Strings = (
-      'Memo1')
+    Top = 96
+    Width = 353
+    Height = 353
     TabOrder = 1
   end
-  object Stream: TButton
-    Left = 192
+  object TestStream: TButton
+    Left = 216
     Top = 40
-    Width = 89
+    Width = 161
     Height = 25
     Caption = 'Stream'
     TabOrder = 2
-    OnClick = StreamClick
+    OnClick = TestStreamClick
   end
 end

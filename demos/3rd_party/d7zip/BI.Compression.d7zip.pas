@@ -69,7 +69,7 @@ type
 implementation
 
 uses
-  System.SysUtils, System.IOUtils, BI.Arrays,
+  Winapi.Windows, System.SysUtils, System.IOUtils, BI.Arrays,
   SevenZip; // <-- d7zip compression unit
 
 
@@ -78,18 +78,21 @@ uses
 function Td7ZipCompression.Compress(const AStream: TStream;
   const AName: String): TMemoryStream;
 var Arch : I7zOutArchive;
+    tmpTime : TFileTime;
 begin
-  result:=TMemoryStream.Create;
-
   Arch:=CreateOutArchive(CLSID_CFormat7z);
+
+  tmpTime:=CurrentFileTime;
+
   Arch.AddStream(AStream, soReference, 4, //Ord(TFileAttribute.faArchive),
-     CurrentFileTime, CurrentFileTime, AName, False, False);
+     tmpTime, tmpTime, AName, False, False);
 
 //  SetCompressionLevel(Arch, 5);
 //  SevenZipSetCompressionMethod(Arch, m7BZip2);
 //  Arch.SetPassword('password');
 //  Arch.SaveToFile('c:\test.zip');
 
+  result:=TMemoryStream.Create;
   Arch.SaveToStream(result);
 end;
 
@@ -99,17 +102,17 @@ var Arch : I7zInArchive;
     strm : IInStream;
     t : Integer;
 begin
-  result:=TMemoryStream.Create;
-
   Arch:=CreateInArchive(CLSID_CFormat7z);
-  strm:=T7zStream.Create(AStream, soOwned);
+  strm:=T7zStream.Create(AStream, soReference);
   Arch.OpenStream(strm);
 
   for t:=0 to Arch.NumberOfItems-1 do
       if not Arch.ItemIsFolder[t] then
-         if SameText(Arch.ItemName[t],AName) then
+         if SameText(Arch.ItemPath[t],AName) then
          begin
+           result:=TMemoryStream.Create;
            Arch.ExtractItem(t,result,False);
+
            Exit;
          end;
 
@@ -134,7 +137,7 @@ begin
 
   for t:=0 to result.Count-1 do
   begin
-    tmpFile:=TPath.Combine(tmpTemp,Arch.ItemName[t]);
+    tmpFile:=TPath.Combine(tmpTemp,Arch.ItemPath[t]);
 
     tmpStream:=TFileStream.Create(tmpFile,fmOpenWrite);
     try

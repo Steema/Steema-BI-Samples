@@ -12,9 +12,10 @@ type
   TForm35 = class(TForm)
     Button1: TButton;
     Memo1: TMemo;
-    Stream: TButton;
+    TestStream: TButton;
+    Label1: TLabel;
     procedure Button1Click(Sender: TObject);
-    procedure StreamClick(Sender: TObject);
+    procedure TestStreamClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -32,10 +33,15 @@ implementation
 uses
   System.Diagnostics, BI.DataItem, BI.Compression;
 
+// Returns True is streams A and B are not empty and contain identical bytes
 function Same(const A,B:TStream):Boolean;
 var tmp : Int64;
 begin
   tmp:=A.Size;
+
+  if tmp=0 then
+     raise Exception.Create('Error: Stream is empty');
+
 
   result:=tmp=B.Size;
 
@@ -45,11 +51,11 @@ begin
 end;
 
 const
-  Data='R Datasets'; //'TechProducts';
+  Data='TechProducts'; //'R Datasets';
 
 procedure TForm35.Button1Click(Sender: TObject);
 const
-  BenchTimes=10;
+  BenchTimes=20;
 
   procedure TestNormal;
   var tmp : TStream;
@@ -85,10 +91,12 @@ const
       tmpTime : Int64;
       t : Integer;
   begin
+    // Test zip compression
     t1:=TStopwatch.StartNew;
 
+    // This is to bench the time it takes to save DataItem to a stream, nothing to do with zip or unzip
     for t:=1 to BenchTimes do
-        TStore.DataToStream(Data,True).Free;
+        TStore.DataToStream(Data,True).Free;  // <-- just data to a dummy stream
 
     tmpTime:=t1.ElapsedMilliseconds;
 
@@ -96,9 +104,9 @@ const
     tmpSize:=tmp.Size;
     tmp.Free;
 
-    Memo1.Lines.Add('Zipped '+AName+' size: '+tmpSize.ToString+' time: '+tmpTime.ToString);
+    Memo1.Lines.Add('Zipped '+AName+' size: '+tmpSize.ToString+' time: '+tmpTime.ToString+' count: '+BenchTimes.ToString);
 
-    // Unzip
+    // Now test unzip decompression
     tmp:=TStore.DataToStream(Data,True);
     try
       t1:=TStopwatch.StartNew;
@@ -154,7 +162,7 @@ begin
   Memo1.Clear;
 end;
 
-procedure TForm35.StreamClick(Sender: TObject);
+procedure TForm35.TestStreamClick(Sender: TObject);
 const
   BenchTimes=1;
 
@@ -167,6 +175,7 @@ const
 
       tmpOut : TStream;
   begin
+    // Test compression speed
     t1:=TStopwatch.StartNew;
 
     for t:=1 to BenchTimes do
@@ -184,8 +193,9 @@ const
     try
       tmpSize:=tmp.Size;
 
-      Memo1.Lines.Add('Zipped '+AName+' size: '+tmpSize.ToString+' time: '+tmpTime.ToString);
+      Memo1.Lines.Add('Zipped '+AName+' size: '+tmpSize.ToString+' time: '+tmpTime.ToString+' count: '+BenchTimes.ToString);
 
+      // Test de-compression speed
       t1:=TStopwatch.StartNew;
 
       for t:=1 to BenchTimes do
