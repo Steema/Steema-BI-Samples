@@ -60,37 +60,33 @@ uses
 
 procedure TFormSpeed.BRunClick(Sender: TObject);
 var t1 : TStopwatch;
-    MyThread: TThread;
+  //  MyThread: TThread;
 begin
   BRun.Enabled:=False;
   Rectangle1.Visible:=True;
   AniIndicator1.Enabled:=True;
 
-  try
-    // Clear results
-    Speed.Clear;
+  // Clear results
+  Speed.Clear;
 
-    t1:=TStopwatch.StartNew;
+  t1:=TStopwatch.StartNew;
 
-    MyThread := TThread.CreateAnonymousThread(procedure begin
-      BRun.Enabled:=False;
+ // MyThread := TThread.CreateAnonymousThread(procedure begin
+    BRun.Enabled:=False;
 
-      Speed.Run;
+    Speed.Run;
 
-      LTotal.Text:='Total time: '+t1.ElapsedMilliseconds.ToString+' msec';
+    LTotal.Text:='Total time: '+t1.ElapsedMilliseconds.ToString+' msec';
 
-      // Refresh results at Grid
-      BIGrid1.RefreshData;
+    // Refresh results at Grid
+    BIGrid1.RefreshData;
 
-      Rectangle1.Visible:=False;
-      AniIndicator1.Enabled:=False;
-    end);
-
-    MyThread.Start;
-
-  finally
+    Rectangle1.Visible:=False;
+    AniIndicator1.Enabled:=False;
     BRun.Enabled:=True;
-  end;
+
+ //end);
+//  MyThread.Start;
 end;
 
 procedure TFormSpeed.FormCreate(Sender: TObject);
