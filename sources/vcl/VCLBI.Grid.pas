@@ -235,7 +235,10 @@ begin
   FGridFilters.Free;
   FAlternate.Free;
 
-  IDataSet.Close; // Avoid AV in Lazarus LCL Grid (FDataLink.Free)
+  {$IFDEF FPC}
+  if IDataSet<>nil then
+     IDataSet.Close; // Avoid AV in Lazarus LCL Grid (FDataLink.Free)
+  {$ENDIF}
 
   IPluginRight.Free;
   IPlugin.Free;
