@@ -21,6 +21,7 @@ type
     CheckBox1: TCheckBox;
     ListBox1: TListBox;
     Button1: TButton;
+    ListBox2: TListBox;
     procedure FormCreate(Sender: TObject);
     procedure BITChart1AddSeries(Sender: TCustomChartSeries);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -63,15 +64,18 @@ begin
 end;
 
 function TUSADemo_Form.EducationField:TDataItem;
+var tmp : Integer;
 begin
   case ListBox1.ItemIndex of
-    0: result:=Education[13];
-    1: result:=Education[21];
-    2: result:=Education[29];
-    3: result:=Education[37];
+    0: tmp:=12;
+    1: tmp:=20;
+    2: tmp:=28;
+    3: tmp:=36;
   else
-    result:=Education[45];
+    tmp:=44;
   end;
+
+  result:=Education[tmp + ListBox2.ItemIndex -1];
 end;
 
 procedure TUSADemo_Form.DoQuery;
@@ -125,6 +129,8 @@ begin
   Education:=TStore.Load('BISamples','US Education 1970-2014 by counties')['USA_Counties_Education'];
 
   SetupChart;
+
+  ListBox2.ItemIndex:=1;
 
   ListBox1.ItemIndex:=0;
   ListBox1Click(Self);

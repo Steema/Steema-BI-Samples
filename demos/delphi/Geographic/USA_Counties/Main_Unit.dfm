@@ -400,7 +400,7 @@ object USADemo_Form: TUSADemo_Form
         454E44AE426082}
     end
     object CheckBox1: TCheckBox
-      Left = 432
+      Left = 712
       Top = 29
       Width = 97
       Height = 17
@@ -425,13 +425,28 @@ object USADemo_Form: TUSADemo_Form
       OnClick = ListBox1Click
     end
     object Button1: TButton
-      Left = 560
-      Top = 25
+      Left = 712
+      Top = 52
       Width = 75
       Height = 25
       Caption = 'Edit...'
       TabOrder = 2
       OnClick = Button1Click
+    end
+    object ListBox2: TListBox
+      Left = 400
+      Top = 14
+      Width = 217
+      Height = 59
+      Columns = 2
+      ItemHeight = 15
+      Items.Strings = (
+        '< High School'
+        'High School'
+        'Some College'
+        'Bachelor')
+      TabOrder = 3
+      OnClick = ListBox1Click
     end
   end
   object BIGrid1: TBIGrid
