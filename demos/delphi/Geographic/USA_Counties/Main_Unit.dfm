@@ -16,8 +16,8 @@ object USADemo_Form: TUSADemo_Form
   TextHeight = 15
   object Splitter1: TSplitter
     Left = 180
-    Top = 105
-    Height = 512
+    Top = 137
+    Height = 480
     ExplicitLeft = 287
     ExplicitTop = 111
     ExplicitHeight = 699
@@ -26,14 +26,15 @@ object USADemo_Form: TUSADemo_Form
     Left = 0
     Top = 0
     Width = 844
-    Height = 105
+    Height = 137
     Align = alTop
     TabOrder = 0
+    ExplicitTop = -6
     object Image1: TImage
       Left = 1
       Top = 1
       Width = 163
-      Height = 103
+      Height = 135
       Align = alLeft
       AutoSize = True
       Center = True
@@ -398,22 +399,22 @@ object USADemo_Form: TUSADemo_Form
         DCE845EF32614115024E09C2CBAF2601A33B62381D15955DB024CFD05503A324
         CF9704A3248F9104A3248F9104A3248FD1FF016AED9E9BEE87956D0000000049
         454E44AE426082}
+      ExplicitHeight = 103
     end
     object CheckBox1: TCheckBox
       Left = 712
-      Top = 29
+      Top = 45
       Width = 97
       Height = 17
       Caption = 'Marks'
       TabOrder = 0
       OnClick = CheckBox1Click
     end
-    object ListBox1: TListBox
+    object Education_Year: TListBox
       Left = 208
       Top = 14
-      Width = 169
-      Height = 59
-      Columns = 2
+      Width = 57
+      Height = 99
       ItemHeight = 15
       Items.Strings = (
         '1970'
@@ -422,23 +423,22 @@ object USADemo_Form: TUSADemo_Form
         '2000'
         '2010')
       TabOrder = 1
-      OnClick = ListBox1Click
+      OnClick = Education_YearClick
     end
     object Button1: TButton
-      Left = 712
-      Top = 52
-      Width = 75
+      Left = 568
+      Top = 68
+      Width = 87
       Height = 25
-      Caption = 'Edit...'
+      Caption = 'Edit Chart...'
       TabOrder = 2
       OnClick = Button1Click
     end
-    object ListBox2: TListBox
-      Left = 400
+    object Education_Title: TListBox
+      Left = 280
       Top = 14
-      Width = 217
-      Height = 59
-      Columns = 2
+      Width = 97
+      Height = 99
       ItemHeight = 15
       Items.Strings = (
         '< High School'
@@ -446,26 +446,64 @@ object USADemo_Form: TUSADemo_Form
         'Some College'
         'Bachelor')
       TabOrder = 3
-      OnClick = ListBox1Click
+      OnClick = Education_YearClick
+    end
+    object ColorPalette: TCheckBox
+      Left = 712
+      Top = 22
+      Width = 97
+      Height = 17
+      Caption = '&Color Palette'
+      Checked = True
+      State = cbChecked
+      TabOrder = 4
+      OnClick = ColorPaletteClick
+    end
+    object CBSkia: TCheckBox
+      Left = 712
+      Top = 68
+      Width = 97
+      Height = 17
+      Caption = '&Skia Graphics'
+      TabOrder = 5
+      OnClick = CBSkiaClick
+    end
+    object CBSpeed: TCheckBox
+      Left = 712
+      Top = 91
+      Width = 97
+      Height = 17
+      Caption = 'Show Speed'
+      TabOrder = 6
+      OnClick = CBSpeedClick
+    end
+    object ButtonPen1: TButtonPen
+      Left = 568
+      Top = 18
+      Width = 87
+      Caption = '&Borders...'
+      TabOrder = 7
     end
   end
   object BIGrid1: TBIGrid
     Left = 0
-    Top = 105
+    Top = 137
     Width = 180
-    Height = 512
+    Height = 480
     Align = alLeft
     UseDockManager = False
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
     Alternate.Enabled = True
+    ExplicitTop = 105
+    ExplicitHeight = 512
   end
   object BIChart1: TBIChart
     Left = 183
-    Top = 105
+    Top = 137
     Width = 661
-    Height = 512
+    Height = 480
     Align = alClient
     UseDockManager = False
     DoubleBuffered = False
@@ -473,12 +511,13 @@ object USADemo_Form: TUSADemo_Form
     ParentBackground = True
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitLeft = 186
+    ExplicitTop = 105
+    ExplicitHeight = 512
     object BITChart1: TBITChart
       Left = 0
       Top = 24
       Width = 661
-      Height = 488
+      Height = 456
       BackWall.Brush.Gradient.Direction = gdBottomTop
       BackWall.Brush.Gradient.EndColor = clWhite
       BackWall.Brush.Gradient.StartColor = 15395562
@@ -532,6 +571,7 @@ object USADemo_Form: TUSADemo_Form
       OnAddSeries = BITChart1AddSeries
       ParentColor = True
       TabOrder = 0
+      ExplicitLeft = 3
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 9
       object TMarksTipTool
@@ -541,6 +581,25 @@ object USADemo_Form: TUSADemo_Form
         Format.Top = 0
         Format.Visible = False
         Style = smsLabelValue
+      end
+      object ChartTool1: TRepaintMonitor
+        Active = False
+        Shape.AutoSize = False
+        Shape.Color = clGray
+        Shape.Cursor = crHandPoint
+        Shape.Emboss.HorizSize = 0
+        Shape.Emboss.VertSize = 0
+        Shape.Font.Color = clWhite
+        Shape.Left = 10
+        Shape.Shadow.HorizSize = 0
+        Shape.Shadow.VertSize = 0
+        Shape.Shadow.Visible = False
+        Shape.Text = '33fps 65'
+        Shape.Top = 10
+        Shape.Transparency = 41
+        Shape.Visible = False
+        Height = 50
+        Width = 70
       end
     end
   end

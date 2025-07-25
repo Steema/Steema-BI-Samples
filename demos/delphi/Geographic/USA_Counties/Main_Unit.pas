@@ -2,12 +2,20 @@ unit Main_Unit;
 
 interface
 
+{
+  Note: This demo requires the "Pro" version of TeeChart components.
+
+  https://www.steema.com
+}
+
+
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, VCLTee.TeEngine, Vcl.Grids,
   VCLTee.TeeProcs, VCLTee.Chart, VCLBI.Chart.Plugin, VCLBI.Chart,
   VCLBI.DataControl, VCLBI.Grid, Vcl.Imaging.pngimage, BI.DataItem, BI.Persist,
-  BI.Query, VCLTee.TeeTools, Vcl.ComCtrls, Vcl.StdCtrls;
+  BI.Query, VCLTee.TeeTools, Vcl.ComCtrls, Vcl.StdCtrls,
+  VCLTee.TeeWorldSeries, VCLTee.TeCanvas, VCLTee.TeePenDlg;
 
 type
   TUSADemo_Form = class(TForm)
@@ -19,15 +27,23 @@ type
     BIChart1: TBIChart;
     BIQuery1: TBIQuery;
     CheckBox1: TCheckBox;
-    ListBox1: TListBox;
+    Education_Year: TListBox;
     Button1: TButton;
-    ListBox2: TListBox;
+    Education_Title: TListBox;
+    ColorPalette: TCheckBox;
+    ChartTool1: TRepaintMonitor;
+    CBSkia: TCheckBox;
+    CBSpeed: TCheckBox;
+    ButtonPen1: TButtonPen;
     procedure FormCreate(Sender: TObject);
     procedure BITChart1AddSeries(Sender: TCustomChartSeries);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure CheckBox1Click(Sender: TObject);
-    procedure ListBox1Click(Sender: TObject);
+    procedure Education_YearClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure ColorPaletteClick(Sender: TObject);
+    procedure CBSpeedClick(Sender: TObject);
+    procedure CBSkiaClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -36,6 +52,7 @@ type
     function EducationField:TDataItem;
     procedure DoQuery;
     procedure SetupChart;
+    function WorldSeries:TWorldSeries;
   public
     { Public declarations }
   end;
@@ -48,9 +65,10 @@ implementation
 {$R *.dfm}
 
 uses
-  BI.Geographic, VCLTee.TeeWorldSeries, VCLTee.TeeSurfa, VCLTee.TeeSkia,
+  BI.Geographic, VCLTee.TeeSurfa,
+  VCLTee.TeeSkia, VCLTee.TeeGDIPlus,
   VCLBI.Grid.DBGrid,
-//  VCLBI.Grid.TeeGrid,
+//  VCLBI.Grid.TeeGrid, // <-- use TeeGrid instead of standard TDBGrid
   VCLTee.Grid, VCLTee.EditChar;
 
 procedure TUSADemo_Form.Button1Click(Sender: TObject);
@@ -58,15 +76,44 @@ begin
   EditChart(Self,BIChart1.Chart)
 end;
 
+procedure TUSADemo_Form.CBSkiaClick(Sender: TObject);
+begin
+  if CBSkia.Checked then
+     BIChart1.Chart.Canvas:=TTeeSkiaCanvas.Create
+  else
+     BIChart1.Chart.Canvas:=TGDIPlusCanvas.Create;
+end;
+
+procedure TUSADemo_Form.CBSpeedClick(Sender: TObject);
+begin
+  ChartTool1.Visible:=CBSpeed.Checked;
+end;
+
 procedure TUSADemo_Form.CheckBox1Click(Sender: TObject);
 begin
   BIChart1.Chart[0].Marks.Visible:=CheckBox1.Checked;
 end;
 
+function TUSADemo_Form.WorldSeries:TWorldSeries;
+begin
+  result:=(BIChart1.Chart[0] as TWorldSeries);
+end;
+
+procedure TUSADemo_Form.ColorPaletteClick(Sender: TObject);
+var S : TWorldSeries;
+begin
+  S:=WorldSeries;
+
+  S.UsePalette:=ColorPalette.Checked;
+  S.UseColorRange:=not S.UsePalette;
+
+  S.PaletteStyle:=psRainbow;
+end;
+
 function TUSADemo_Form.EducationField:TDataItem;
 var tmp : Integer;
 begin
-  case ListBox1.ItemIndex of
+  case Education_Year.ItemIndex of
     0: tmp:=12;
     1: tmp:=20;
     2: tmp:=28;
@@ -75,7 +122,7 @@ begin
     tmp:=44;
   end;
 
-  result:=Education[tmp + ListBox2.ItemIndex -1];
+  result:=Education[tmp + Education_Title.ItemIndex -1];
 end;
 
 procedure TUSADemo_Form.DoQuery;
@@ -97,13 +144,10 @@ begin
 end;
 
 procedure TUSADemo_Form.BITChart1AddSeries(Sender: TCustomChartSeries);
-var S : TWorldSeries;
 begin
-  S:=(BIChart1.Chart[0] as TWorldSeries);
+  ColorPaletteClick(Self);
 
-  S.UseColorRange:=False;
-  S.UsePalette:=True;
-  S.PaletteStyle:=psRainbow;
+  ButtonPen1.LinkPen(WorldSeries.Pen);
 end;
 
 procedure TUSADemo_Form.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -122,21 +166,19 @@ end;
 
 procedure TUSADemo_Form.FormCreate(Sender: TObject);
 begin
-  //BIChart1.Chart.Canvas:=TTeeSkiaCanvas.Create;
-
-  TGeo.Check;  // Locate and open geographic database
+  TGeo.Check;  // Init geographic database
 
   Education:=TStore.Load('BISamples','US Education 1970-2014 by counties')['USA_Counties_Education'];
 
   SetupChart;
 
-  ListBox2.ItemIndex:=1;
+  Education_Title.ItemIndex:=1;
 
-  ListBox1.ItemIndex:=0;
-  ListBox1Click(Self);
+  Education_Year.ItemIndex:=0;
+  Education_YearClick(Self);
 end;
 
-procedure TUSADemo_Form.ListBox1Click(Sender: TObject);
+procedure TUSADemo_Form.Education_YearClick(Sender: TObject);
 begin
   DoQuery;
 end;
