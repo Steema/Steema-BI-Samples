@@ -84,7 +84,7 @@ implementation
 uses
   {$IF CompilerVersion>32}
   {System.}Generics.Collections,
-  {$IFEND}
+  {$ENDIF}
   SysUtils, BI.Arrays;
 
 { TStandardJSON }

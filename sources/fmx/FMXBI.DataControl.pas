@@ -219,7 +219,7 @@ type
     {$IFDEF FMX}
     {$IF CompilerVersion>=32}
     property OnResized;
-    {$IFEND}
+    {$ENDIF}
     {$ENDIF}
 
     {$IFNDEF FMX}
