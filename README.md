@@ -19,7 +19,7 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
-- Geographic database (Countries, States, Provinces...) to automatically create summary geo queries, TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
+- [Geographic database](https://github.com/Steema/TeeBI/tree/master/demos/delphi/Geographic/USA_Counties) (Countries, States, Provinces...) to automatically create summary geo queries, TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
 
   ![](https://raw.github.com/Steema/BI/master/docs/img/geo_chart_usa_counties.png)
 
@@ -52,7 +52,7 @@ A simple class to implement in-memory database complex structures, to provide:
 ### Example code
 
 ```pascal
-uses BI.DataItem, BI.CSV, BI.Db, BI.Xml, BI.Json;
+uses BI.DataItem, BI.CSV, BI.Db, BI.Xml, BI.Json, BI.AI;
 
 var Data1 : TDataItem;
 Data1 := TBICSV.FromFile( 'mydata.csv' );  // also From TStrings, String etc
