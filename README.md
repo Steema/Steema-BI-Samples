@@ -21,7 +21,8 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - [Geographic database](https://github.com/Steema/TeeBI/tree/master/demos/delphi/Geographic/USA_Counties) (Countries, States, Provinces...) to automatically create summary geo queries, TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
 
-  ![](https://raw.github.com/Steema/BI/master/docs/img/geo_chart_usa_counties.png)
+##
+  ![](https://raw.github.com/Steema/BI/master/docs/img/vcl_demo_geo_chart_usa_counties.png)
 
 
 - Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access ([compressed](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/d7zip) binary streams of raw arrays)
