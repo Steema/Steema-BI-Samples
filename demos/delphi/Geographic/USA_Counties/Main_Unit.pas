@@ -6,6 +6,8 @@ interface
   Note: This demo requires the "Pro" version of TeeChart components.
 
   https://www.steema.com
+
+  Usage of TeeGrid is optional.
 }
 
 
@@ -35,6 +37,7 @@ type
     CBSkia: TCheckBox;
     CBSpeed: TCheckBox;
     ButtonPen1: TButtonPen;
+    MarksTool1: TMarksTipTool;
     procedure FormCreate(Sender: TObject);
     procedure BITChart1AddSeries(Sender: TCustomChartSeries);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -157,7 +160,9 @@ end;
 
 procedure TUSADemo_Form.SetupChart;
 begin
-  BIChart1.Options.Legend:=TBIChartLegend.Hide;
+//  BIChart1.Options.Legend:=TBIChartLegend.Hide;
+  BIChart1.Options.Title:=TBIChartTitle.Custom;
+
   BIChart1.Chart.ClipPoints:=False;
   BIChart1.Chart.Gradient.Visible:=False;
   BIChart1.Chart.BackWall.Hide;

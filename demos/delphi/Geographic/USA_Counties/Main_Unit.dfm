@@ -29,7 +29,7 @@ object USADemo_Form: TUSADemo_Form
     Height = 137
     Align = alTop
     TabOrder = 0
-    ExplicitTop = -6
+    ExplicitWidth = 838
     object Image1: TImage
       Left = 1
       Top = 1
@@ -496,8 +496,7 @@ object USADemo_Form: TUSADemo_Form
     ParentColor = False
     TabOrder = 1
     Alternate.Enabled = True
-    ExplicitTop = 105
-    ExplicitHeight = 512
+    ExplicitHeight = 463
   end
   object BIChart1: TBIChart
     Left = 183
@@ -511,8 +510,8 @@ object USADemo_Form: TUSADemo_Form
     ParentBackground = True
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitTop = 105
-    ExplicitHeight = 512
+    ExplicitWidth = 655
+    ExplicitHeight = 463
     object BITChart1: TBITChart
       Left = 0
       Top = 24
@@ -571,15 +570,17 @@ object USADemo_Form: TUSADemo_Form
       OnAddSeries = BITChart1AddSeries
       ParentColor = True
       TabOrder = 0
-      ExplicitLeft = 3
+      ExplicitWidth = 655
+      ExplicitHeight = 439
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 9
-      object TMarksTipTool
+      object MarksTool1: TMarksTipTool
         Format.CustomPosition = True
         Format.Left = 0
         Format.TextAlignment = taCenter
         Format.Top = 0
         Format.Visible = False
+        MouseDelay = 0
         Style = smsLabelValue
       end
       object ChartTool1: TRepaintMonitor
