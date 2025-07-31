@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  TChart output                              }
-{  Copyright (c) 2015-2025 by Steema Software }
+{  Copyright (c) 2015-2016 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit FMXBI.Chart;
@@ -116,6 +116,7 @@ type
   TBIChartDimensions=(Automatic, View2D, Orthogonal, View3D);
   TBIChartLegend=(Automatic, Show, Hide);
   TBIChartMarks=(Automatic, Show, Hide);
+  TBIChartTitle=(Automatic, Custom);
   TBISeriesDirection=(Automatic, Horizontal, Vertical);
 
   TBIChart=class;
@@ -130,6 +131,7 @@ type
     FMode: TBIChartMode;
     FSeriesDirection: TBISeriesDirection;
     FStacked: TBIChartStacked;
+    FTitle: TBIChartTitle;
     FXYZMode: TBIChart3DMode;
 
     IChart : TBIChart;
@@ -146,6 +148,7 @@ type
     procedure InitChartDimensions;
     procedure InitChartLegend;
     procedure InitChartMarks;
+    procedure InitChartTitle(Value:String='');
     procedure InitSeries2D;
     procedure InitSeries3D;
 
@@ -163,6 +166,7 @@ type
     procedure SetSeries3D(const Value: TChartSeriesClass);
     procedure SetSeriesDirection(const Value: TBISeriesDirection);
     procedure SetStacked(const Value: TBIChartStacked);
+    procedure SetTitle(const Value: TBIChartTitle);
     procedure SetXYZMode(const Value: TBIChart3DMode);
   public
     Constructor Create(const AChart:TBIChart);
@@ -190,6 +194,8 @@ type
                           default TBISeriesDirection.Automatic;
     property Stacked:TBIChartStacked read FStacked write SetStacked
                         default TBIChartStacked.Automatic;
+    property Title:TBIChartTitle read FTitle write SetTitle
+                        default TBIChartTitle.Automatic;
     property XYZMode:TBIChart3DMode read FXYZMode write SetXYZMode default TBIChart3DMode.Automatic;
   end;
 
@@ -792,7 +798,7 @@ begin
     tmp[0]:=AData;
     Fill(tmp);
 
-    Chart.Title.Caption:=AData.Name;
+    Options.InitChartTitle(AData.Name);
   end;
 end;
 
@@ -809,10 +815,18 @@ procedure TBIChart.Paint;
 {$ELSE}
 procedure TBIChart.WMPaint(var Message: TWMPaint);
 {$ENDIF}
+var tmp : String;
 begin
   if IDirtyData<>nil then
   begin
+    if Options.Title=TBIChartTitle.Automatic then
+       tmp:=''
+    else
+       tmp:=Chart.Title.Caption;
+
     Chart.Init(DoFreeSeries);
+
+    Chart.Title.Caption:=tmp;
 
     if not (csLoading in ComponentState) then
        ApplyData(IDirtyData);
@@ -1961,32 +1975,39 @@ procedure TBIChartOptions.Finish;
   var tmp : TChartSeries;
   begin
     for tmp in IChart.Chart.SeriesList do
-        if tmp is TCustomSeries then
-        begin
-          {$IFDEF TEEPRO}
-          TCustomStackSeriesAccess(tmp).Stacked:=CustomSeriesStack;
-
-          if (tmp is TAreaSeries) and
-             (TCustomStackSeriesAccess(tmp).Stacked<>cssStack) and
-             (TCustomStackSeriesAccess(tmp).Stacked<>cssStack100) then
-               tmp.Transparency:=20;
-          {$ENDIF}
-
-          // Lots of points? Make them single or small "dots"
-          if tmp.Count>(IChart.Chart.Width {$IFDEF FMX}*0.5{$ELSE}div 2{$ENDIF}) then
-             TCustomSeries(tmp).Pointer.Style:=TSeriesPointerStyle.psSmallDot;
-        end
-        else
-        if tmp is TCustomBarSeries then
-           TCustomBarSeries(tmp).MultiBar:=CustomBarStack
-        else
-        if tmp is TPieSeries then
-           TPieSeries(tmp).MultiPie:=PieStack
+    begin
+      if tmp is TCustomSeries then
+      begin
         {$IFDEF TEEPRO}
-        else
-          TThreeDChart.FinishSeries(IChart.Chart,tmp,FStacked)
+        TCustomStackSeriesAccess(tmp).Stacked:=CustomSeriesStack;
+
+        if (tmp is TAreaSeries) and
+           (TCustomStackSeriesAccess(tmp).Stacked<>cssStack) and
+           (TCustomStackSeriesAccess(tmp).Stacked<>cssStack100) then
+             tmp.Transparency:=20;
         {$ENDIF}
-        ;
+
+        // Lots of points? Make them single or small "dots"
+        if tmp.Count>(IChart.Chart.Width {$IFDEF FMX}*0.5{$ELSE}div 2{$ENDIF}) then
+           TCustomSeries(tmp).Pointer.Style:=TSeriesPointerStyle.psSmallDot;
+      end
+      else
+      if tmp is TCustomBarSeries then
+         TCustomBarSeries(tmp).MultiBar:=CustomBarStack
+      else
+      if tmp is TPieSeries then
+         TPieSeries(tmp).MultiPie:=PieStack
+      {$IFDEF TEEPRO}
+      else
+      begin
+        TThreeDChart.FinishSeries(IChart.Chart,tmp,FStacked);
+
+        if Legend=TBIChartLegend.Automatic then
+           TThreeDChart.TryPaletteLegend(IChart.Chart,tmp);
+      end;
+      {$ENDIF}
+      ;
+    end;
   end;
 
 begin
@@ -2096,6 +2117,18 @@ begin
      IChart.Chart.Legend.Visible:=FLegend=TBIChartLegend.Show;
 end;
 
+procedure TBIChartOptions.InitChartTitle(Value:String);
+begin
+  if FTitle=TBIChartTitle.Automatic then
+  begin
+    if Value='' then
+       if Items.Y.Count>0 then
+          Value:=Items.Y[0].Name;
+
+    IChart.Chart.Title.Caption:=Value;
+  end;
+end;
+
 procedure TBIChartOptions.SetLegend(const Value: TBIChartLegend);
 begin
   if FLegend<>Value then
@@ -2200,6 +2233,17 @@ begin
        // Pending: try to change to new stacked if <> automatic, without
        // forcing call to DirectRefresh
        IChart.DirectRefresh;
+  end;
+end;
+
+procedure TBIChartOptions.SetTitle(const Value: TBIChartTitle);
+begin
+  if FTitle<>Value then
+  begin
+    FTitle:=Value;
+
+    if not Loading then
+       InitChartTitle;
   end;
 end;
 
