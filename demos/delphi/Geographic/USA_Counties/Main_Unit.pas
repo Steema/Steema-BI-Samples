@@ -160,9 +160,9 @@ end;
 
 procedure TUSADemo_Form.SetupChart;
 begin
-//  BIChart1.Options.Legend:=TBIChartLegend.Hide;
   BIChart1.Options.Title:=TBIChartTitle.Custom;
 
+  // Cosmetics
   BIChart1.Chart.ClipPoints:=False;
   BIChart1.Chart.Gradient.Visible:=False;
   BIChart1.Chart.BackWall.Hide;

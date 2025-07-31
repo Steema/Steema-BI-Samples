@@ -580,7 +580,6 @@ object USADemo_Form: TUSADemo_Form
         Format.TextAlignment = taCenter
         Format.Top = 0
         Format.Visible = False
-        MouseDelay = 0
         Style = smsLabelValue
       end
       object ChartTool1: TRepaintMonitor
