@@ -19,6 +19,8 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - SQL-like high-speed [queries and summaries](https://github.com/Steema/BI/wiki/queries) by code or "select" scripts
 
+- Multi-dimensional Excel-like pivot tables, with drag & drop editor
+  
 - [Geographic database](https://github.com/Steema/TeeBI/tree/master/demos/delphi/Geographic/USA_Counties) (Countries, States, Provinces...) to automatically create summary geo queries, TeeChart world maps, and [statistics](https://github.com/Steema/BI/wiki/statistics)
 
 ##
