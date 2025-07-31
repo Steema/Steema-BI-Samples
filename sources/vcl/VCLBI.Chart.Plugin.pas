@@ -124,6 +124,10 @@ type
     procedure SetParentComponent(AParent: TComponent); override;
     procedure ShowHideAxesWalls(const AVisible:Boolean);
 
+    {$IFDEF TEEPRO}
+    procedure ShowPaletteLegend(const ASeries:TChartSeries);
+    {$ENDIF}
+
     class procedure TrySetName(const AComponent:TComponent; const APrefix:String); static;
 
     property Series2D:TChartSeriesClass read FSeries2D write FSeries2D;
@@ -168,8 +172,10 @@ uses
   {$IFDEF FMX}
   FMXTee.Tools,
   FMXTee.Series.Bubble, // <-- Bubble for FMX only in "Pro" TeeChart
+  FMXTee.Tools.LegendPalette,
+  FMXTee.Editor.Tools.LegendPalette,
   {$ELSE}
-  VCLTee.TeeTools,
+  VCLTee.TeeTools, VCLTee.TeeLegendPalette, VCLTee.TeeLegendPaletteEditor,
   {$ENDIF}
   {$ENDIF}
 
@@ -865,6 +871,15 @@ begin
   Axes.Visible:=AVisible;
   Walls.Back.Pen.Visible:=AVisible;
 end;
+
+{$IFDEF TEEPRO}
+procedure TBITChart.ShowPaletteLegend(const ASeries:TChartSeries);
+var tmp : TLegendPaletteTool;
+begin
+  tmp:=TryAddUniqueTool(Owner,TLegendPaletteTool,'LegendPalette') as TLegendPaletteTool;
+  tmp.Series:=ASeries;
+end;
+{$ENDIF}
 
 procedure TBITChart.CreateMulti2D(const X,Y,Z:TDataItem; const ADirection:TBIChartDirection);
 {

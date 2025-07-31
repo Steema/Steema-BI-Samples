@@ -60,6 +60,8 @@ type
 
     class function SetSeries3D(const AChart:TBITChart;
                                const AClass:TChartSeriesClass):Boolean; static;
+
+    class procedure TryPaletteLegend(const AChart:TBITChart; const ASeries:TChartSeries); static;
   end;
 
 implementation
@@ -367,6 +369,15 @@ begin
      end
      else
        raise EBIException.Create('Error: Series3D class must inherit from TCustom3DSeries');
+end;
+
+class procedure TThreeDChart.TryPaletteLegend(const AChart:TBITChart; const ASeries: TChartSeries);
+begin
+  if ASeries is TCustom3DPaletteSeries then
+  begin
+    AChart.Legend.Hide;
+    AChart.ShowPaletteLegend(ASeries);
+  end;
 end;
 
 initialization
