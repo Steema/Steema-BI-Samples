@@ -138,37 +138,6 @@ object FormSummary: TFormSummary
       Height = 208
       Align = alTop
       ItemHeight = 13
-      Items.Strings = (
-        ' 0 One Measure'
-        ' 1 Two Measures'
-        ' 2 Three Measures'
-        ' 3 One GroupBy (auto)'
-        ' 4 One GroupBy (columns)'
-        ' 5 Two GroupBy (auto)'
-        ' 6 Two GroupBy (all rows)'
-        ' 7 Three GroupBy (auto)'
-        ' 8 Three GroupBy (all rows)'
-        ' 9 Three GroupBy (2 at columns)'
-        '10 Two Measures, One GroupBy (auto)'
-        '11 By Year'
-        '12 By Year and ShipVia'
-        '13 By Year, Quarter, ShipVia'
-        '14 By Year, Quarter, Month, ShipVia'
-        '15 By Year, Quarter, Month, ShipVia, Category'
-        '16 By Year and Discontinued (boolean)'
-        '17 By Year and UnitPrice (histogram)'
-        '18 By Year, Quarter, ShipVia and Shipper.CompanyName'
-        '19 Expression Measure'
-        '20 Expression Measure by Year'
-        '21 Measure by Expression'
-        '22 Measure by Length(Customers CompanyName)'
-        '23 Quantity Min and Max, by Year and ShipVia'
-        '24 By CompanyName (text histogram)'
-        '25 By Discontinued (boolean histogram)'
-        '26 One GroupBy (columns) SORTED'
-        '27 First Order Quantity by Product'
-        '28 Last Order Quantity by Product'
-        '29 By CategoryName, CategoryID (redundant)')
       PopupMenu = PopupMenu1
       TabOrder = 0
       OnClick = LBTestClick
@@ -243,7 +212,7 @@ object FormSummary: TFormSummary
     Top = 41
     Width = 876
     Height = 539
-    ActivePage = TabSQL
+    ActivePage = TabVisualizer
     Align = alClient
     TabOrder = 2
     OnChange = PageControl1Change
@@ -405,6 +374,8 @@ object FormSummary: TFormSummary
         Align = alTop
         TabOrder = 1
         OnChange = MemoSQLChange
+        ExplicitLeft = -1
+        ExplicitTop = 59
       end
       object BIGridSQL: TBIGrid
         Left = 0

@@ -33,8 +33,10 @@ type
 
     Destructor Destroy; override;
 
+    class procedure AddExamples(const AItems:TStrings); static;
     function Count:Integer;
     function CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;
+
     procedure LoadData(const AStore:String='');
   end;
 
@@ -49,6 +51,43 @@ uses
 function TSampleSummaries.Count:Integer;
 begin
   result:=30;
+end;
+
+class procedure TSampleSummaries.AddExamples(const AItems:TStrings);
+begin
+  AItems.Clear;
+
+  AItems.Add(' 0 One Measure');
+  AItems.Add(' 1 Two Measures');
+  AItems.Add(' 2 Three Measures');
+  AItems.Add(' 3 One GroupBy (auto)');
+  AItems.Add(' 4 One GroupBy (columns)');
+  AItems.Add(' 5 Two GroupBy (auto)');
+  AItems.Add(' 6 Two GroupBy (all rows)');
+  AItems.Add(' 7 Three GroupBy (auto)');
+  AItems.Add(' 8 Three GroupBy (all rows)');
+  AItems.Add(' 9 Three GroupBy (2 at columns)');
+  AItems.Add('10 Two Measures, One GroupBy (auto)');
+  AItems.Add('11 By Year');
+  AItems.Add('12 By Year and ShipVia');
+  AItems.Add('13 By Year, Quarter, ShipVia');
+  AItems.Add('14 By Year, Quarter, Month, ShipVia');
+  AItems.Add('15 By Year, Quarter, Month, ShipVia, Category');
+  AItems.Add('16 By Year and Discontinued (boolean)');
+  AItems.Add('17 By Year and UnitPrice (histogram)');
+  AItems.Add('18 By Year, Quarter, ShipVia and Shipper.CompanyName');
+  AItems.Add('19 Expression Measure');
+  AItems.Add('20 Expression Measure by Year');
+  AItems.Add('21 Measure by Expression');
+  AItems.Add('22 Measure by Length(Customers CompanyName)');
+  AItems.Add('23 Quantity Min and Max, by Year and ShipVia');
+  AItems.Add('24 By CompanyName (text histogram)');
+  AItems.Add('25 By Discontinued (boolean histogram)');
+  AItems.Add('26 One GroupBy (columns) SORTED');
+  AItems.Add('27 First Order Quantity by Product');
+  AItems.Add('28 Last Order Quantity by Product');
+  AItems.Add('29 By CategoryName, CategoryID (redundant)');
+
 end;
 
 function TSampleSummaries.CreateSummary(const AOwner:TComponent; const AIndex:Integer):TSummary;

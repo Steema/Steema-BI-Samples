@@ -34,7 +34,7 @@ uses
   VCLBI.Editor.ControlTree, BI.SQL, VCLBI.GridForm,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Chart, VCLTee.TeeTools,
   VCLBI.Chart.Plugin, VCLBI.DataControl,
-  VCLBI.Grid;
+  VCLBI.Grid, VCLTee.TeeProcs;
 
 type
   TFormSummary = class(TForm)
@@ -206,6 +206,8 @@ begin
   CBStyle.ItemIndex:=0;
 
   (BIGrid1.Plugin.GetObject as TBIDBGrid).OnDblClick:=GridClick;
+
+  TSampleSummaries.AddExamples(LBTest.Items);
 end;
 
 procedure TFormSummary.GridClick(Sender: TObject);

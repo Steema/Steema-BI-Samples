@@ -742,7 +742,10 @@ begin
     AGroup.Control.Align:=TUICommon.AlignClient;
 
     if AParent is TWinControl then
-       AGroup.Control.Parent:=TWinControl(AParent);
+    begin
+      AGroup.Control.Parent:=TWinControl(AParent);
+      AGroup.Control.Parent.Realign;
+    end;
   end;
 end;
 
@@ -3020,7 +3023,7 @@ begin
   FLabel.WordWrap:=False;
   FLabel.AutoSize:=True;
   {$ELSE}
-  FLabel.Font.Size:=Round(FLabel.Font.Size*1.2);
+//  FLabel.Font.Size:=Round(FLabel.Font.Size*1.2);
   FLabel.Font.Style:=[fsBold];
 
   FLabel.Height:=18;
