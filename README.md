@@ -101,6 +101,10 @@ Data1 := TChartData.From(Series1);
 
 - [TeeChart VCL/FMX](https://www.steema.com/product/vcl)
 - [TeeGrid Control](https://www.steema.com/product/gridvcl)
+- [BI Composer Control](https://github.com/Steema/TeeBI/tree/master/demos/delphi/Visualization/Composer)
+
+  ![](https://github.com/Steema/TeeBI/blob/6e319af71c7fc245b4b9779b433e93c8ae11092c/demos/delphi/Visualization/Composer/TeeBI_Composer_Example_Screenshot.png)
+
 
 ### Deprecated
 
