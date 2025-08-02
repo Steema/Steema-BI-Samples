@@ -34,7 +34,7 @@ uses
   VCLBI.Editor.ControlTree, BI.SQL, VCLBI.GridForm,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Chart, VCLTee.TeeTools,
   VCLBI.Chart.Plugin, VCLBI.DataControl,
-  VCLBI.Grid, VCLTee.TeeProcs;
+  VCLBI.Grid;
 
 type
   TFormSummary = class(TForm)
