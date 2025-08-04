@@ -49,3 +49,8 @@ begin
 end;
 
 ```
+
+Use of charts is totally optional, data dimensions can be displayed in many ways, including just normal grids:
+
+<img width="1303" height="1291" alt="image" src="https://github.com/user-attachments/assets/489ab072-d588-4f2d-81a2-338c6a1ae37b" />
+
