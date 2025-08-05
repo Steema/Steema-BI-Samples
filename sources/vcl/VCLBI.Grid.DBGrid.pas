@@ -1703,7 +1703,9 @@ begin
   begin
     IWasDragging:=True;
     inherited;
-    TFilterGrid(IAssociated).ColumnMoved(FromIndex,ToIndex,IndicatorOffset);
+
+    if IAssociated<>nil then
+       TFilterGrid(IAssociated).ColumnMoved(FromIndex,ToIndex,IndicatorOffset);
   end;
 end;
 
@@ -1712,7 +1714,9 @@ procedure TBIDBGrid.ColumnMoved(FromIndex, ToIndex: Integer);
 begin
   IWasDragging:=True;
   inherited;
-  TFilterGrid(IAssociated).ColumnMoved(FromIndex,ToIndex,IndicatorOffset);
+
+  if IAssociated<>nil then
+     TFilterGrid(IAssociated).ColumnMoved(FromIndex,ToIndex,IndicatorOffset);
 end;
 {$ENDIF}
 
