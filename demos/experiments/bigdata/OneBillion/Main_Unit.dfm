@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 0
   Caption = 'TeeBI - One Billion Row big data'
   ClientHeight = 359
-  ClientWidth = 329
+  ClientWidth = 377
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -39,7 +39,7 @@ object MainForm: TMainForm
     Top = 24
     Width = 213
     Height = 25
-    Caption = 'Create One Billion Row data'
+    Caption = 'Create One Billion big data'
     TabOrder = 0
     OnClick = BCreateClick
   end

@@ -16,21 +16,21 @@ object FormCreate: TFormCreate
   TextHeight = 15
   object Label1: TLabel
     Left = 86
-    Top = 92
+    Top = 68
     Width = 123
     Height = 15
     Caption = 'Quantity of Customers:'
   end
   object Label2: TLabel
     Left = 96
-    Top = 121
+    Top = 97
     Width = 113
     Height = 15
     Caption = 'Quantity of Products:'
   end
   object Label3: TLabel
     Left = 60
-    Top = 150
+    Top = 126
     Width = 149
     Height = 15
     Caption = 'Average sales per Customer:'
@@ -50,21 +50,21 @@ object FormCreate: TFormCreate
   end
   object Label5: TLabel
     Left = 40
-    Top = 247
+    Top = 223
     Width = 126
     Height = 15
     Caption = 'Data is saved to this file:'
   end
   object LFileName: TLabel
     Left = 40
-    Top = 271
+    Top = 247
     Width = 58
     Height = 15
     Caption = 'big_data.bi'
   end
   object Button1: TButton
     Left = 64
-    Top = 200
+    Top = 176
     Width = 145
     Height = 25
     Caption = 'Create Database'
@@ -73,7 +73,7 @@ object FormCreate: TFormCreate
   end
   object ECustomers: TEdit
     Left = 232
-    Top = 89
+    Top = 65
     Width = 65
     Height = 23
     Alignment = taRightJustify
@@ -82,7 +82,7 @@ object FormCreate: TFormCreate
   end
   object EProducts: TEdit
     Left = 232
-    Top = 118
+    Top = 94
     Width = 65
     Height = 23
     Alignment = taRightJustify
@@ -91,7 +91,7 @@ object FormCreate: TFormCreate
   end
   object ESales: TEdit
     Left = 232
-    Top = 147
+    Top = 123
     Width = 65
     Height = 23
     Alignment = taRightJustify
@@ -100,14 +100,14 @@ object FormCreate: TFormCreate
   end
   object Memo1: TMemo
     Left = 40
-    Top = 308
+    Top = 276
     Width = 257
-    Height = 89
+    Height = 141
     TabOrder = 4
   end
   object Button2: TButton
-    Left = 134
-    Top = 420
+    Left = 130
+    Top = 436
     Width = 75
     Height = 25
     Caption = 'Close'
@@ -116,7 +116,7 @@ object FormCreate: TFormCreate
   end
   object ButtonView: TButton
     Left = 222
-    Top = 200
+    Top = 176
     Width = 75
     Height = 25
     Caption = 'View...'

@@ -2,13 +2,32 @@ unit Main_Unit;
 
 interface
 
+{
+  This example shows how TeeBI can work with a big quantity of data.
+
+  1) It creates a dummy database of One Billion cells (thousand millions)
+
+  2) Data is saved to a disk file in your TEMP folder: "big_data.bi" (4.5GB)
+
+  3) It is a Windows 64bit executable because more than 3GB of memory are needed.
+
+
+  The "Query and Visualize" form uses this big data to do some visualizations.
+
+  Note: Use of charts (free TeeChart or "Pro" version) is optional.
+        See $DEFINE USE_CHARTS at Query_BigData unit
+}
+
+
 uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, System.Diagnostics,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  System.IOUtils,
+
   BI.DataItem;
 
-// Please enable the 64bit platform
+// Please enable the 64bit platform, 32bit can only use 3GB of memory
 {$IFNDEF CPUX64}
 {$WARN 'This example requires more than 3GB of available RAM memory.'}
 {$ENDIF}
@@ -38,7 +57,7 @@ type
   public
     { Public declarations }
 
-    Data : TDataItem;
+    Data : TDataItem;  // <-- the data
   end;
 
 var
@@ -50,8 +69,8 @@ implementation
 
 uses
   Create_BigData, Query_BigData,
-  System.IOUtils, BI.Persist, BI.UI,
-  VCLBI.DataViewer;
+
+  BI.Persist, BI.UI, VCLBI.DataViewer;
 
 // Show the dialog to create and save a dummy big data file
 procedure TMainForm.BCreateClick(Sender: TObject);
@@ -92,6 +111,7 @@ begin
   end;
 end;
 
+// Show the example queries form
 procedure TMainForm.BQueryClick(Sender: TObject);
 begin
   with TFormQuery.Create(Self) do
@@ -117,7 +137,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   LFileName.Caption:=TPath.Combine(TPath.GetTempPath,'big_data.bi');
 
-  BLoad.Enabled:=TFile.Exists(LFileName.Caption);
+  BLoad.Enabled:=TFile.Exists(LFileName.Caption);  // can we load it?
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);

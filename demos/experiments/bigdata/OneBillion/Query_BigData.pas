@@ -2,6 +2,12 @@ unit Query_BigData;
 
 interface
 
+{
+  Several examples of queries, summaries and visualizations using the huge
+  big data items.
+
+}
+
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VCLBI.DataControl, VCLBI.Visualizer,
@@ -45,7 +51,7 @@ uses
 
   VCLBI.Editor.Visualizer, VCLBI.Editor.Query,
 
-  BI.Summary, BI.Geographic;
+  BI.Summary, BI.Geographic, BI.Expression;
 
 procedure TFormQuery.BOptionsClick(Sender: TObject);
 begin
@@ -59,12 +65,12 @@ end;
 
 procedure TFormQuery.FormCreate(Sender: TObject);
 begin
-  TGeo.Check;
+  TGeo.Check;  // <-- make sure the geographic database is loaded
 end;
 
 procedure TFormQuery.FormDestroy(Sender: TObject);
 begin
-  BIComposer1.DestroyData;
+  BIComposer1.DestroyData;  // free last example
 end;
 
 procedure TFormQuery.LBExampleClick(Sender: TObject);
@@ -72,20 +78,29 @@ procedure TFormQuery.LBExampleClick(Sender: TObject);
   procedure ShowExample(const AData:TDataItem);
   begin
     BIComposer1.DestroyData;
-    BIComposer1.Data:=AData;
+    BIComposer1.Data:=AData;  // <-- show
   end;
 
 begin
   case LBExample.ItemIndex of
     0 : begin
+          // Number of Customers per Country
+
           BIQuery1.Clear;
           BIQuery1.Measures.Add(Data['Customers'],TAggregate.Count);
           BIQuery1.Dimensions.Add(TGeo.Country.Name);
 
           ShowExample(BIQuery1.Calculate);
         end;
-  end;
 
+    1 : begin
+          BIQuery1.Clear;
+          BIQuery1.Measures.Add(Data['Sales']['Total'],TAggregate.Sum);
+          BIQuery1.Dimensions.Add(Data['Sales']['Date']).DatePart:=TDateTimePart.Year;
+
+          ShowExample(BIQuery1.Calculate);
+        end;
+  end;
 
   BQuery.Enabled:=LBExample.ItemIndex<>-1;
   BOptions.Enabled:=BQuery.Enabled;

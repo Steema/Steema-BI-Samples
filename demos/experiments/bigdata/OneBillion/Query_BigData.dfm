@@ -1,7 +1,7 @@
 object FormQuery: TFormQuery
   Left = 0
   Top = 0
-  Caption = 'TeeBI - One Billion Row data'
+  Caption = 'TeeBI - One Billion big data'
   ClientHeight = 568
   ClientWidth = 869
   Color = clBtnFace
@@ -10,6 +10,8 @@ object FormQuery: TFormQuery
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  Position = poOwnerFormCenter
+  WindowState = wsMaximized
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   TextHeight = 15
@@ -26,9 +28,7 @@ object FormQuery: TFormQuery
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = 408
-    ExplicitTop = 392
-    ExplicitWidth = 185
+    ExplicitWidth = 863
     object BOptions: TButton
       Left = 232
       Top = 10
@@ -58,9 +58,11 @@ object FormQuery: TFormQuery
     Align = alLeft
     ItemHeight = 15
     Items.Strings = (
-      'Customers per Country')
+      'Customers per Country'
+      'Yearly Sales')
     TabOrder = 1
     OnClick = LBExampleClick
+    ExplicitHeight = 510
   end
   object BIComposer1: TBIComposer
     Left = 227
@@ -73,10 +75,8 @@ object FormQuery: TFormQuery
     TabOrder = 2
     Groups = <>
     Values = <>
-    ExplicitLeft = 244
-    ExplicitTop = 180
-    ExplicitWidth = 400
-    ExplicitHeight = 250
+    ExplicitWidth = 636
+    ExplicitHeight = 510
   end
   object BIQuery1: TBIQuery
     Left = 68

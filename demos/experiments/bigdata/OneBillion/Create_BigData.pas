@@ -103,6 +103,26 @@ begin
           Suffix[Random(Length(Suffix))];
 end;
 
+const
+  BigCountries:Array of Integer=[
+36,
+76,
+124,
+156,
+250,
+276,
+356,
+360,
+392,
+484,
+566,
+643,
+710,
+724,
+818,
+826,
+840];
+
 function TFormCreate.RandomCustomers(const AQuantity:Integer):TDataItem;
 var t : Integer;
     Countries : TDataItem;
@@ -111,12 +131,12 @@ begin
   result:=TDataItem.Create(True);
   result.Name:='Customers';
 
-  Countries:=TGeo.Country.Countries;
-
   result.Items.Add('ID',TDataKind.dkInt32);
   result.Items.Add('Name',TDataKind.dkText);
   result.Items.Add('IsCompany',TDataKind.dkBoolean);
-  result.Items.Add('Country',TDataKind.dkInt32).Master:=Countries['ISO-3166-Num'];
+  result.Items.Add('Country',TDataKind.dkInt32);
+
+  Countries:=TGeo.Country.Countries;
 
   result.Resize(AQuantity);
 
@@ -126,6 +146,11 @@ begin
     result[1].TextData[t]:=Random_Customer_Name;
     result[2].BooleanData[t]:=Random(101)<50;
 
+    // Give precedence to some countries, then the rest
+
+    if Random(100)<50 then
+       tmpCountry:=BigCountries[Random(Length(BigCountries))]
+    else
     repeat
       tmpCountry:=Countries[5].Int32Data[Random(Countries.Count)];
     until tmpCountry<>0;
@@ -154,6 +179,12 @@ begin
   end;
 end;
 
+function CurrentYear:Word;
+var Month,Day:Word;
+begin
+  DecodeDate(Now,result,Month,Day);
+end;
+
 function TFormCreate.RandomSales(const AQuantity: Integer): TDataItem;
 var t : Integer;
     tmpDate : TDateTime;
@@ -170,9 +201,9 @@ begin
 
   result.Resize(AQuantity);
 
-  DeltaTime:=50000/AQuantity;
+  DeltaTime:=5000/AQuantity;
 
-  tmpDate:=EncodeDate(2025,1,1);
+  tmpDate:=EncodeDate(CurrentYear-10,1,1);
 
   for t:=0 to AQuantity-1 do
   begin
@@ -207,6 +238,8 @@ procedure TFormCreate.Button1Click(Sender: TObject);
     BigData:=TDataItem.Create(True);
     BigData.Name:='One Billion Data';
 
+    // Add dummy tables
+
     Customers:=RandomCustomers(StrToInt(ECustomers.Text));
     BigData.Items.Add(Customers);
 
@@ -219,8 +252,10 @@ procedure TFormCreate.Button1Click(Sender: TObject);
     Sales:=RandomSales(StrToInt(ESales.Text)*Customers.Count);
     BigData.Items.Add(Sales);
 
-    // Link tables after adding them to BigData:
+    // Link tables after adding them to BigData.
+    // This enables querying columns from different tables transparently.
 
+    Customers['Country'].Master:=TGeo.Country.Countries['ISO-3166-Num'];
     Products['Category'].Master:=Categories['ID'];
     Sales['Customer'].Master:=Customers['ID'];
     Sales['Product'].Master:=Products['ID'];
