@@ -883,7 +883,7 @@ begin
   else
   begin
     result:=AddDirect(AExpression,Aggregate);
-    result.KeepSource:=True;
+    result.KeepSource:=AExpression is TDataItemExpression;
 
     Append(result);
   end;
@@ -1056,7 +1056,7 @@ begin
   else
   begin
     result:=AddDirect(AExpression);
-    result.KeepSource:=True;
+    result.KeepSource:=AExpression is TDataItemExpression;
 
     Append(result);
   end;
