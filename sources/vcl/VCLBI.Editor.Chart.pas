@@ -34,7 +34,7 @@ uses
   VCLTee.TeeEdit, VCLTee.TeeWorldSeries, VCLTee.TeeMapSeries,
   {$ENDIF}
 
-  VCLBI.Editor.ListItems, VCLTee.TeeProcs;
+  VCLBI.Editor.ListItems, VCLTee.TeeProcs, VCLTee.EditChar;
 
 // XE6 dcc32 BUG, workaround not available
 {$IF CompilerVersion>27}
@@ -127,6 +127,9 @@ type
     CBMap: TComboBox;
     CBCities: TCheckBox;
     CBMap3D: TCheckBox;
+    GroupBox4: TGroupBox;
+    CBAutoTitle: TCheckBox;
+    BEditTitle: TButton;
     procedure PageControl1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -168,6 +171,8 @@ type
     procedure CBMapChange(Sender: TObject);
     procedure LBFinancialClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure CBAutoTitleClick(Sender: TObject);
+    procedure BEditTitleClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -281,6 +286,16 @@ end;
 procedure TBIChartEditor.CBAutoMapClick(Sender: TObject);
 begin
   CBMap.Enabled:=not CBAutoMap.Checked;
+end;
+
+procedure TBIChartEditor.CBAutoTitleClick(Sender: TObject);
+begin
+  if CBAutoTitle.Checked then
+     Chart.Options.Title:=TBIChartTitle.Automatic
+  else
+     Chart.Options.Title:=TBIChartTitle.Custom;
+
+  BEditTitle.Enabled:=Chart.Options.Title=TBIChartTitle.Custom;
 end;
 
 procedure TBIChartEditor.CBCloseChange(Sender: TObject);
@@ -760,6 +775,7 @@ begin
   RGView.ItemIndex:=Ord(Chart.Options.Dimensions);
   RGLegend.ItemIndex:=Ord(Chart.Options.Legend);
   RGMarks.ItemIndex:=Ord(Chart.Options.Marks);
+  CBAutoTitle.Checked:=Chart.Options.Title=TBIChartTitle.Automatic;
 end;
 
 procedure TBIChartEditor.Recreate;
@@ -856,6 +872,11 @@ begin
 
   A.ItemIndex:=tmpNewA;
   B.ItemIndex:=tmpNewB;
+end;
+
+procedure TBIChartEditor.BEditTitleClick(Sender: TObject);
+begin
+  EditChartTitle(Self,Chart.Chart.Title);
 end;
 
 procedure TBIChartEditor.BSwapXYClick(Sender: TObject);

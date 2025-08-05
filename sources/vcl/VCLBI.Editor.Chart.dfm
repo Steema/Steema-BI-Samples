@@ -20,7 +20,7 @@ object BIChartEditor: TBIChartEditor
     Top = 0
     Width = 491
     Height = 360
-    ActivePage = TabOptions
+    ActivePage = TabView
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
@@ -776,6 +776,35 @@ object BIChartEditor: TBIChartEditor
           'Hide')
         TabOrder = 3
         OnClick = RGMarksClick
+      end
+      object GroupBox4: TGroupBox
+        Left = 11
+        Top = 211
+        Width = 254
+        Height = 50
+        Caption = '&Title:'
+        TabOrder = 4
+        object CBAutoTitle: TCheckBox
+          Left = 8
+          Top = 20
+          Width = 117
+          Height = 17
+          Caption = 'Automatic'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+          OnClick = CBAutoTitleClick
+        end
+        object BEditTitle: TButton
+          Left = 131
+          Top = 16
+          Width = 75
+          Height = 25
+          Caption = 'Edit...'
+          Enabled = False
+          TabOrder = 1
+          OnClick = BEditTitleClick
+        end
       end
     end
     object TabChart: TTabSheet
