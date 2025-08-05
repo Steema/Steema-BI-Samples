@@ -25,10 +25,19 @@ type
     procedure Fill;
     procedure SetData(const Value: TDataItem);
   public
+    type
+      TDataSizes=record
+      public
+        Tables,
+        Columns,
+        Rows,
+        Cells : Int64;
+      end;
+
     Constructor Create(const AData:TDataItem); overload;
 
     class procedure GetMinMax(const AData:TDataItem; out AMin,AMax:Extended); static;
-    class function TotalCount(const AData:TDataItem):Int64; static;
+    class function Sizes(const AData:TDataItem):TDataSizes; static;
 
     property Data:TDataItem read FData write SetData;
   end;
@@ -147,27 +156,37 @@ begin
      Fill;
 end;
 
-class function TDataInfo.TotalCount(const AData: TDataItem): Int64;
+// Returns the sizes of AData, recursively (the amount of rows, columns, cells and tables)
+class function TDataInfo.Sizes(const AData: TDataItem): TDataSizes;
 
-  function CountOf(const AData: TDataItem):Int64;
+  procedure Process(const AData: TDataItem);
   var t : Integer;
   begin
-    if AData.AsTable then
+    if AData<>nil then
     begin
-      result:=0;
+      if AData.AsTable then
+      begin
+        Inc(result.Tables);
+
+        Inc(result.Columns,AData.Items.Count);
+        Inc(result.Rows,AData.Count);
+
+        // Rows * Columns
+        Inc(result.Cells,AData.Count*AData.Items.Count);
+      end;
 
       for t:=0 to AData.Items.Count-1 do
-          Inc(result,CountOf(AData[t]));
-    end
-    else
-       result:=AData.Count;
+          Process(AData[t]);
+    end;
   end;
 
 begin
-  if AData=nil then
-     result:=0
-  else
-     result:=CountOf(AData);
+  result.Tables:=0;
+  result.Columns:=0;
+  result.Rows:=0;
+  result.Cells:=0;
+
+  Process(AData);
 end;
 
 { TDataItemsInfo }
