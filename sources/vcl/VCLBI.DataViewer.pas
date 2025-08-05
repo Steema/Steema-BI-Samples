@@ -1,7 +1,7 @@
 {*********************************************}
 {  TeeBI Software Library                     }
 {  DataViewer VCL                             }
-{  Copyright (c) 2015-2016 by Steema Software }
+{  Copyright (c) 2015-2025 by Steema Software }
 {  All Rights Reserved                        }
 {*********************************************}
 unit VCLBI.DataViewer;
@@ -128,6 +128,20 @@ end;
 
 // Change the items and data panels alignment, depending on their visibility
 procedure TDataViewer.CheckPanelDataAlign;
+
+  procedure TryMaximizeData;
+  var tmp : Integer;
+  begin
+    if Items<>nil then
+       if Items.Data<>nil then
+       begin
+         tmp:=(100+Items.Data.Count*36);
+
+         if PanelItems.Height>tmp then
+            PanelData.Height:=PanelItems.Height-tmp;
+       end;
+  end;
+
 var Old : Boolean;
 begin
   SplitterData.Visible:=PanelItemsGrid.Visible and PanelData.Visible;
@@ -139,7 +153,9 @@ begin
        PanelData.Align:=alBottom;
 
        if Old then
-          PanelData.Height:=Height div 2;
+          PanelData.Height:=Height div 2
+       else
+          TryMaximizeData;
      end
      else
         PanelData.Align:=alClient;
@@ -152,6 +168,18 @@ begin
 end;
 
 procedure TDataViewer.DataGridDataChange(Sender: TObject);
+
+  procedure ShowCurrentRecord(const ACurrent:Integer);
+  begin
+    if RecordView.Provider=nil then
+    begin
+      RecordView.Provider:=TSingleRecord.Create(Self);
+      TSingleRecord(RecordView.Provider).Source:=(Sender as TBIGrid).Data;
+    end;
+
+    TSingleRecord(RecordView.Provider).Row:=ACurrent;
+  end;
+
 var tmp : TDataSet;
     tmpSource : TDataSource;
 begin
@@ -164,15 +192,7 @@ begin
   LRow.Caption:=IntToStr(tmp.RecNo)+'/'+IntToStr(tmp.RecordCount);
 
   if CBRecord.Checked then
-  begin
-    if RecordView.Provider=nil then
-    begin
-      RecordView.Provider:=TSingleRecord.Create(Self);
-      TSingleRecord(RecordView.Provider).Source:=(Sender as TBIGrid).Data;
-    end;
-
-    TSingleRecord(RecordView.Provider).Row:=tmp.RecNo-1;
-  end;
+     ShowCurrentRecord(tmp.RecNo-1);
 end;
 
 procedure TDataViewer.CBViewDataClick(Sender: TObject);
