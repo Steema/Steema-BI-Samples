@@ -28,9 +28,11 @@ uses
   {$IFNDEF FPC}
   System.UITypes,
   {$ENDIF}
-  VCL.Controls, VCL.Forms, Data.DB, BI.DataItem,
-  BI.DataSource, BI.Dataset, VCL.Graphics, Vcl.ComCtrls,
-  BI.UI, VCLBI.DataControl, BI.Expression, BI.Grid.Plugin;
+  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics, Vcl.ComCtrls,
+  Data.DB,
+
+  BI.DataItem, BI.DataSource, BI.Dataset,
+  BI.UI, BI.Expression, BI.Grid.Plugin, VCLBI.DataControl;
 
 type
   TBIGrid=class;
@@ -82,6 +84,7 @@ type
 
     procedure ChangedRow(Sender: TObject; Field: TField);
     procedure ControlDblClick(Sender:TObject);
+    function ExistsSplitter:TSplitter;
     function GetCurrentRow: Integer;
     function GetDataSource: TDataSource;
     function GetFilter: TExpression;
@@ -182,7 +185,7 @@ uses
   {$ENDIF}
 
   VCLBI.Grid.DBGrid, // <-- default plugin
-  VCL.Dialogs, VCL.ExtCtrls,
+  VCL.Dialogs,
   BI.Persist, BI.Arrays, BI.Languages.English, BI.Store.Component;
 
 type
@@ -475,6 +478,7 @@ end;
 procedure TBIGrid.HideShowItems;
 var tmp,
     tmpParent : TWinControl;
+    tmpSplitter : TSplitter;
 begin
   // Destroy right-side grid
 
@@ -497,6 +501,9 @@ begin
     if (tmpParent<>nil) and (tmpParent.Align<>TAlign.alClient) then
        tmpParent.Align:=TAlign.alClient;
   end;
+
+  tmpSplitter:=ExistsSplitter;
+  tmpSplitter.Free;
 end;
 
 procedure TBIGrid.Invalidate;
@@ -518,17 +525,17 @@ begin
      result:=nil;
 end;
 
+function TBIGrid.ExistsSplitter:TSplitter;
+var t : Integer;
+begin
+  for t:=0 to ControlCount-1 do
+      if Controls[t] is TSplitter then
+         Exit(TSplitter(Controls[t]));
+
+  result:=nil;
+end;
+
 procedure TBIGrid.TryShowItems;
-
-  function ExistsSplitter:TSplitter;
-  var t : Integer;
-  begin
-    for t:=0 to ControlCount-1 do
-        if Controls[t] is TSplitter then
-           Exit(TSplitter(Controls[t]));
-
-    result:=nil;
-  end;
 
   function AddSplitter:TSplitter;
   begin
