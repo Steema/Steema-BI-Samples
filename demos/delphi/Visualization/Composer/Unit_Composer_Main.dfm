@@ -27,7 +27,7 @@ object MainForm: TMainForm
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitTop = 3
+    ExplicitWidth = 1385
     object Button1: TButton
       Left = 5
       Top = 9
@@ -39,7 +39,7 @@ object MainForm: TMainForm
     end
     object ButtonQuery: TButton
       Left = 136
-      Top = 11
+      Top = 9
       Width = 75
       Height = 25
       Caption = 'Query...'
@@ -56,9 +56,7 @@ object MainForm: TMainForm
     Align = alLeft
     Caption = 'PanelLeft'
     TabOrder = 1
-    ExplicitLeft = 928
-    ExplicitTop = 104
-    ExplicitHeight = 745
+    ExplicitHeight = 847
     object PanelExample: TPanel
       Left = 1
       Top = 1
@@ -89,8 +87,7 @@ object MainForm: TMainForm
       ItemHeight = 15
       TabOrder = 1
       OnClick = LBTestClick
-      ExplicitLeft = 2
-      ExplicitTop = 30
+      ExplicitHeight = 812
     end
   end
   object PanelRight: TPanel
@@ -100,10 +97,8 @@ object MainForm: TMainForm
     Height = 864
     Align = alClient
     TabOrder = 2
-    ExplicitLeft = 944
-    ExplicitTop = 88
-    ExplicitWidth = 417
-    ExplicitHeight = 769
+    ExplicitWidth = 1034
+    ExplicitHeight = 847
     object Splitter2: TSplitter
       Left = 1
       Top = 471
@@ -119,11 +114,8 @@ object MainForm: TMainForm
       Width = 1038
       Height = 89
       Align = alBottom
-      ScrollBars = ssBoth
+      ScrollBars = ssVertical
       TabOrder = 0
-      ExplicitLeft = -88
-      ExplicitTop = 680
-      ExplicitWidth = 505
     end
     object BIGrid1: TBIGrid
       Left = 1
@@ -136,9 +128,8 @@ object MainForm: TMainForm
       ParentColor = False
       TabOrder = 1
       Alternate.Enabled = True
-      ExplicitLeft = -88
-      ExplicitTop = 440
-      ExplicitWidth = 505
+      ExplicitTop = 460
+      ExplicitWidth = 1032
     end
     object BIComposer1: TBIComposer
       Left = 1
@@ -151,10 +142,8 @@ object MainForm: TMainForm
       TabOrder = 2
       Groups = <>
       Values = <>
-      ExplicitLeft = -88
-      ExplicitTop = 50
-      ExplicitWidth = 505
-      ExplicitHeight = 353
+      ExplicitWidth = 1032
+      ExplicitHeight = 453
     end
   end
 end

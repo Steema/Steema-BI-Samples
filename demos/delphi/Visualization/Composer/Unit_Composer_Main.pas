@@ -120,7 +120,7 @@ begin
   TDataAccess(Data).KeepProvider:=True; // <-- hack, to remove in future updates
 
   // Set the query results to grid and composer:
-  BIGrid1.BindTo(Data);
+  BIGrid1.Data:=Data;
   BIComposer1.Data:=Data;
 end;
 
