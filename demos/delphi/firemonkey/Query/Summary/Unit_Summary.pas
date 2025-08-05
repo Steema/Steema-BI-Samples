@@ -78,7 +78,7 @@ begin
   ByCompany:=Summary.AddGroupBy(Demo['Shippers']['CompanyName']);
   ByCompany.Name := 'Shippers';
 
-  // NOTE: Delphi 10.1 Berlin Firemonkey Grid is capable of displaying
+  // NOTE: Delphi 10.1 Berlin and up Firemonkey Grid is capable of displaying
   // sub-tables, thus TGroupByLayout.Columns is supported
 
   ByCompany.Layout:=TGroupByLayout.Rows; // <-- optional
