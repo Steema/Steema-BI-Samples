@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'TeeBI - One Billion Row big data'
+  Caption = 'TeeBI - One Billion cells big data'
   ClientHeight = 359
   ClientWidth = 377
   Color = clBtnFace
