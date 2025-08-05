@@ -28,6 +28,7 @@ type
     Constructor Create(const AData:TDataItem); overload;
 
     class procedure GetMinMax(const AData:TDataItem; out AMin,AMax:Extended); static;
+    class function TotalCount(const AData:TDataItem):Int64; static;
 
     property Data:TDataItem read FData write SetData;
   end;
@@ -144,6 +145,29 @@ begin
      Resize(0)
   else
      Fill;
+end;
+
+class function TDataInfo.TotalCount(const AData: TDataItem): Int64;
+
+  function CountOf(const AData: TDataItem):Int64;
+  var t : Integer;
+  begin
+    if AData.AsTable then
+    begin
+      result:=0;
+
+      for t:=0 to AData.Items.Count-1 do
+          Inc(result,CountOf(AData[t]));
+    end
+    else
+       result:=AData.Count;
+  end;
+
+begin
+  if AData=nil then
+     result:=0
+  else
+     result:=CountOf(AData);
 end;
 
 { TDataItemsInfo }
