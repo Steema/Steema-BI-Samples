@@ -195,7 +195,8 @@ end;
 // Remove data
 procedure TSingleSourceProvider.ClearSource;
 begin
-  FSource.Clear;
+  if FSource<>nil then
+     FSource.Clear;
 end;
 
 procedure TSingleSourceProvider.Notify(const AEvent:TBIEvent);
