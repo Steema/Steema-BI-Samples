@@ -1,6 +1,6 @@
 program TeeBI_Tests;
 
-{$IF CompilerVersion<>37}
+{.$IF CompilerVersion<>37}
 {$DEFINE USECONSOLE}
 
 {.$DEFINE TESTINSIGHT}
@@ -9,7 +9,7 @@ program TeeBI_Tests;
 {$DEFINE USECONSOLE}
 {$ENDIF}
 
-{$ENDIF}
+{.$ENDIF}
 
 {$IFDEF USECONSOLE}
 {$APPTYPE CONSOLE}
