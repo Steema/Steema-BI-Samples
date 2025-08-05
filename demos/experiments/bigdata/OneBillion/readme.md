@@ -7,8 +7,7 @@ This demo shows TeeBI capabilities with big quantities of data, rows and cells.
 - It first creates a default dummy database of One Billion cells (thousand millions).
 - Data is saved to a disk file in your TEMP folder: "big_data.bi" (4.5GB) in aprox 4 seconds.
 
-
-<img width="262" height="383" alt="image" src="https://github.com/user-attachments/assets/c71c3833-62d6-413e-9b9d-da724493c90b" />
+![TeeBI Create Big Data One Billion cells](https://raw.github.com/Steema/BI/master/demos/experiments/bigdata/OneBillion/img/TeeBI_OneBillion_bigdata_Create.png)
 
 ```delphi
 var BigData : TDataItem;
@@ -16,7 +15,7 @@ var BigData : TDataItem;
 ```
 Once data has been created it can be loaded again from disk in aprox 2.5 seconds.
 
-<img width="262" height="296" alt="image" src="https://github.com/user-attachments/assets/303495b7-d94d-42ce-ac47-504475d77d44" />
+![TeeBI Create Big Data One Billion cells](https://raw.github.com/Steema/BI/master/demos/experiments/bigdata/OneBillion/img/TeeBI_OneBillion_bigdata_Load.png)
 
 ```delphi
 var BigData : TDataItem;
@@ -28,7 +27,7 @@ var BigData : TDataItem;
 ### Queries traversing so many millions of rows are not immediate, of course !
 But you can run them in a normal laptop.
 
-<img width="1453" height="695" alt="image" src="https://github.com/user-attachments/assets/dc443141-9c46-469c-b68b-fa1d4c83ad20" />
+![TeeBI Create Big Data One Billion cells](https://raw.github.com/Steema/BI/master/demos/experiments/bigdata/OneBillion/img/TeeBI_OneBillion_Query_Yearly_Sales.png)
 
 ```delphi
   // Sum the amount of Sales year by year, all rows:
@@ -40,8 +39,8 @@ But you can run them in a normal laptop.
    
 ```
 
+![TeeBI Create Big Data One Billion cells](https://raw.github.com/Steema/BI/master/demos/experiments/bigdata/OneBillion/img/TeeBI_OneBillion_Query_by_Country.png)
 
-<img width="338" height="459" alt="image" src="https://github.com/user-attachments/assets/67fb1d6b-26df-4370-b206-0350602023b9" />
 
 ```delphi
   // Number of Customers per Country
