@@ -1633,10 +1633,7 @@ begin
      Hops.Add(By[0].Source,True)
   else
   for t:=0 to ActiveMeasuresCount-1 do
-  begin
-    ActiveMeasures[t].CalcData;
-    Hops.Add(ActiveMeasures[t].Source,True);
-  end;
+      Hops.Add(ActiveMeasures[t].Source,True);
 
   if UseFilter and (Filter<>nil) then
      Hops.Add(Filter,False);
@@ -1977,7 +1974,27 @@ procedure TSummary.Calculate(const AData:TDataItem);
     AResult.History.Times.Total:=AResult.History.Times.Calculating;
   end;
 
+  procedure CheckMeasures;
+  var t : Integer;
+      tmp : TDataItem;
+  begin
+    for t:=0 to ActiveMeasuresCount-1 do
+    begin
+      ActiveMeasures[t].CalcData;  // <-- mandatory for each measure
+
+      // Data that is a table can only be aggregated as Count. Like in sql: Count(*)
+      tmp:=ActiveMeasures[t].Data;
+
+      if tmp<>nil then
+         if tmp.Kind=dkUnknown then // as table
+            if ActiveMeasures[t].Aggregate<>TAggregate.Count then
+               raise EBIException.CreateFmt(BIMsg_Summary_WrongAggregate,[tmp.Name]);
+    end;
+  end;
+
 begin
+  CheckMeasures;
+
   AData.AsTable:=True;
   DoCalculate(AData);
   TDataItemAccess(AData).ClearDelay;
