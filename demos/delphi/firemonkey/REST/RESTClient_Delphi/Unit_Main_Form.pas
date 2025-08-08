@@ -30,7 +30,8 @@ uses
   FMX.Grid.Style,
   {$ENDIF}
   
-  FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FMX.Edit;
+  FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FMX.Edit,
+  REST.Types;
 
 type
   TREST_BIWeb = class(TForm)
@@ -52,6 +53,8 @@ type
     procedure Edit1ChangeTracking(Sender: TObject);
   private
     { Private declarations }
+
+    procedure AdjustColumnWidths;
   public
     { Public declarations }
   end;
@@ -67,6 +70,8 @@ procedure TREST_BIWeb.Button1Click(Sender: TObject);
 begin
   RESTClient1.BaseURL:=Edit1.Text+'&format=.json';
   RESTRequest1.Execute;
+
+  AdjustColumnWidths;
 end;
 
 procedure TREST_BIWeb.Edit1ChangeTracking(Sender: TObject);
@@ -76,13 +81,19 @@ end;
 
 procedure TREST_BIWeb.FormCreate(Sender: TObject);
 begin
-  RESTRequest1.Execute;
-
   Edit1.Text:='http://steema.cat:15015/?data=sqlite_demo|customers';
+
+  Button1Click(Self);
+end;
+
+procedure TREST_BIWeb.AdjustColumnWidths;
+var t : Integer;
+begin
+  for t:=0 to Grid1.ColumnCount-1 do
+      Grid1.Columns[t].Width:=80;
 end;
 
 initialization
-ReportMemoryLeaksOnShutdown := True;
 finalization
-CheckSynchronize;
+  CheckSynchronize;
 end.

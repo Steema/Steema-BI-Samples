@@ -11,13 +11,14 @@ object REST_BIWeb: TREST_BIWeb
   DesignerMasterStyle = 0
   object Grid1: TGrid
     Align = Client
+    CanFocus = True
     ClipChildren = True
     Size.Width = 785.000000000000000000
     Size.Height = 577.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 6
-    RowCount = 0
     RowHeight = 21.000000000000000000
+    RowCount = 0
     Viewport.Width = 781.000000000000000000
     Viewport.Height = 552.000000000000000000
   end
@@ -59,8 +60,8 @@ object REST_BIWeb: TREST_BIWeb
     AcceptCharset = 'UTF-8, *;q=0.8'
     BaseURL = 'http://steema.cat:15015/?data=sqlite_demo|customers&format=.json'
     Params = <>
-    HandleRedirects = True
     RaiseExceptionOn500 = False
+    SynchronizedEvents = False
     Left = 216
     Top = 232
   end
