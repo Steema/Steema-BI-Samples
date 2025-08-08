@@ -21,7 +21,6 @@ object MainPDF: TMainPDF
       Position.Y = 16.000000000000000000
       TabOrder = 0
       Text = 'Generate'
-      TextSettings.Trimming = None
       OnClick = BCreatePDFClick
     end
     object CBAuto: TCheckBox
@@ -101,7 +100,6 @@ object MainPDF: TMainPDF
       CustomIcon = <
         item
         end>
-      TextSettings.Trimming = None
       IsSelected = True
       Size.Width = 43.000000000000000000
       Size.Height = 26.000000000000000000
@@ -124,7 +122,6 @@ object MainPDF: TMainPDF
       CustomIcon = <
         item
         end>
-      TextSettings.Trimming = None
       IsSelected = False
       Size.Width = 41.000000000000000000
       Size.Height = 26.000000000000000000

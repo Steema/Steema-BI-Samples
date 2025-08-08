@@ -161,16 +161,17 @@ begin
     // Set Data item
     tmp.Data:=BIGrid1.Data;
 
+    // Just in case, release browser locked pdf file, before saving it again
+    WebBrowserPDF.Navigate('about:blank');
+    WebBrowserPDF.FinishLoading;
+
+
     // Temporary file name to save PDF
     tmpFile:=TPath.Combine(TPath.GetTempPath,'deleteme.pdf');
 
     if TFile.Exists(tmpFile) then
        TFile.Delete(tmpFile);
 
-
-    // Just in case, release browser locked pdf file, before saving it again
-    WebBrowserPDF.Navigate('about:blank');
-    WebBrowserPDF.FinishLoading;
 
     // Let some time to web browser to unlock the file
     //Sleep(500);
