@@ -11,13 +11,11 @@ object DataManager: TDataManager
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 224
@@ -33,8 +31,6 @@ object DataManager: TDataManager
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 427
-    ExplicitWidth = 547
     object PanelOk: TPanel
       Left = 444
       Top = 0
@@ -43,7 +39,6 @@ object DataManager: TDataManager
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 358
       object BOk: TButton
         Left = 14
         Top = 8
@@ -106,7 +101,6 @@ object DataManager: TDataManager
     BevelOuter = bvNone
     TabOrder = 1
     OnResize = PanelSearchResize
-    ExplicitWidth = 547
     object PanelStores: TPanel
       Left = 359
       Top = 0
@@ -116,7 +110,6 @@ object DataManager: TDataManager
       BevelOuter = bvNone
       TabOrder = 0
       OnResize = PanelStoresResize
-      ExplicitLeft = 273
       object Label1: TLabel
         Left = 11
         Top = 14
@@ -143,6 +136,7 @@ object DataManager: TDataManager
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitLeft = 195
         object BManageStores: TButton
           Left = 5
           Top = 9
@@ -162,7 +156,6 @@ object DataManager: TDataManager
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 273
       object LSearch: TLabel
         Left = 9
         Top = 14
@@ -196,7 +189,6 @@ object DataManager: TDataManager
     OnChange = TreeChange
     OnDblClick = TreeDblClick
     OnExpanding = TreeExpanding
-    ExplicitHeight = 386
   end
   object PageControl1: TPageControl
     Left = 227
@@ -207,22 +199,12 @@ object DataManager: TDataManager
     Align = alClient
     TabOrder = 3
     OnChange = PageControl1Change
-    ExplicitWidth = 320
-    ExplicitHeight = 386
     object TabSettings: TTabSheet
       Caption = 'Settings'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 312
-      ExplicitHeight = 358
     end
     object TabData: TTabSheet
       Caption = 'Data'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 312
-      ExplicitHeight = 358
       object MemoImportLog: TMemo
         Left = 0
         Top = 273
@@ -233,9 +215,6 @@ object DataManager: TDataManager
         TabOrder = 0
         Visible = False
         WordWrap = False
-        ExplicitTop = 269
-        ExplicitWidth = 312
-        ExplicitHeight = 89
       end
       object PanelDataTop: TPanel
         Left = 0
@@ -245,7 +224,6 @@ object DataManager: TDataManager
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 568
         object Label2: TLabel
           Left = 11
           Top = 44
@@ -318,10 +296,6 @@ object DataManager: TDataManager
     object TabLinks: TTabSheet
       Caption = 'Links'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 312
-      ExplicitHeight = 358
     end
   end
   object PopupMenu1: TPopupMenu

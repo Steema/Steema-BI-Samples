@@ -10,35 +10,30 @@ object DataSelector: TDataSelector
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
     Top = 0
     Width = 426
     Height = 457
-    ActivePage = TabComponent
+    ActivePage = TabSource
     Align = alClient
     TabOrder = 0
     OnChange = PageControl1Change
+    ExplicitTop = 2
+    object TabSource: TTabSheet
+      Caption = 'Source'
+      ImageIndex = 2
+    end
     object TabStore: TTabSheet
       Caption = 'Store'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabComponent: TTabSheet
       Caption = 'Component'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0

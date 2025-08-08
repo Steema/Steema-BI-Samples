@@ -95,6 +95,7 @@ object DataViewer: TDataViewer
       Height = 3
       Cursor = crVSplit
       Align = alBottom
+      OnMoved = SplitterDataMoved
       ExplicitTop = 0
       ExplicitWidth = 400
     end
@@ -260,6 +261,7 @@ object DataViewer: TDataViewer
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitLeft = -2
     object DataTotals: TStringGrid
       Left = 0
       Top = 600

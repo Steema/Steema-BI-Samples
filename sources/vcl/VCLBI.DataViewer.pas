@@ -63,10 +63,13 @@ type
     procedure ItemsAfterInsert(DataSet: TDataSet);
     procedure DataGridDataChange(Sender: TObject);
     procedure CBRecordClick(Sender: TObject);
+    procedure SplitterDataMoved(Sender: TObject);
   private
     { Private declarations }
     DataStats,
     DataMap : TDataItem;
+
+    DataHeight : Integer;
 
     procedure CheckPanelDataAlign;
     procedure GetKind(Sender: TField; var Text: string; DisplayText: Boolean);
@@ -100,7 +103,7 @@ implementation
 uses
   VCLBI.GridForm, BI.UI,
   BI.DataSource, BI.Persist, VCLBI.DataManager,
-  VCLBI.DataTree, BI.Languages.English,
+  BI.Languages.English,
   VCLBI.Grid.DBGrid, BI.Info, BI.SingleRecord;
 
 { TDataViewer }
@@ -135,10 +138,12 @@ procedure TDataViewer.CheckPanelDataAlign;
     if Items<>nil then
        if Items.Data<>nil then
        begin
-         tmp:=(100+Items.Data.Count*36);
+         tmp:=DataHeight;
 
-         if PanelItems.Height>tmp then
-            PanelData.Height:=PanelItems.Height-tmp;
+         if tmp=0 then
+            tmp:=50;
+
+         PanelData.Height:=Round(tmp*PanelItems.Height*0.01);
        end;
   end;
 
@@ -160,6 +165,7 @@ begin
      else
         PanelData.Align:=alClient;
 
+  // Reset splitter to bottom position:
   if SplitterData.Visible then
   begin
     SplitterData.Align:=TAlign.alTop;
@@ -315,17 +321,6 @@ begin
   DataStats.Free;
 end;
 
-// Slow?
-function Roots(const ATree:TTreeView):Integer;
-var t : Integer;
-begin
-  result:=0;
-
-  for t:=0 to ATree.Items.Count-1 do
-      if ATree.Items[t].Parent=nil then
-         Inc(result);
-end;
-
 function CheckName(const S:String):String;
 begin
   if S='' then
@@ -341,6 +336,9 @@ begin
   else
      LName.Caption:=CheckName(FData.Name);
 end;
+
+type
+  TDataManagerAccess=class(TDataManager);
 
 procedure TDataViewer.Select(const AData: TDataItem);
 
@@ -371,18 +369,10 @@ begin
     SelectedChange(Self);
   end
   else
-  begin
-    TDataTree.Fill(FData,Tree,True);
-
-    if Roots(Tree)=1 then
-    begin
-      Tree.Items[0].Expanded:=True;
-      Tree.Items[0].Selected:=True;
-    end;
-  end;
+    TDataManagerAccess(Tree.Owner).FillData([FData]);
 
   // When viewing in-memory Data (not from a TStore), hide Stores panel
-  (Tree.Owner as TDataManager).PanelStores.Visible:=StoresVisible;
+  TDataManager(Tree.Owner).PanelStores.Visible:=StoresVisible;
 end;
 
 function TDataViewer.Selected: TDataItem;
@@ -416,6 +406,11 @@ begin
      Sender.AsInteger:=Ord(tmp)
   else
      raise EBIException.Create('Error: Wrong data kind: '+Text);
+end;
+
+procedure TDataViewer.SplitterDataMoved(Sender: TObject);
+begin
+  DataHeight:=Round(PanelData.Height*100/PanelItems.Height);
 end;
 
 procedure TDataViewer.FillData(const AData:TDataItem);

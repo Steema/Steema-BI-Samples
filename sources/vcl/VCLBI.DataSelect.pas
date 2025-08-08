@@ -9,15 +9,19 @@ unit VCLBI.DataSelect;
 interface
 
 {
- This dialog enables selecting a "Data" object that can be used for example
- to change a BIGrid.Data property.
+ This dialog enables selecting a "Data" TDataItem object.
+
+ It can be used for example to change a BIGrid or BIChart Data property, or
+ in the BIQuery editor to choose the query items.
 
  "Data" can be selected from:
 
- - Any persisted data in a "Store" (disk cache)
+ - Any persisted data in a "Store" (disk folder cache with *.bi data files)
 
  - Any TComponent that is supported, for example a BIQuery, or content from a
    TMemo that will be imported automatically.
+
+ - The current source TDataItem structure of the AData parameter
 
 }
 
@@ -46,6 +50,7 @@ type
     Panel1: TPanel;
     BNew: TButton;
     CustomData1: TMenuItem;
+    TabSource: TTabSheet;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -60,7 +65,8 @@ type
   private
     { Private declarations }
 
-    IManager : TDataManager;
+    IManager,
+    ISources : TDataManager;
     IComp : TDataComponent;
     FOnSelect: TNotifyEvent;
 
@@ -75,6 +81,7 @@ type
     procedure SelectedItem(Sender: TObject);
     procedure TryAddImport(const AKind:TDataDefinitionKind);
   protected
+    procedure FillSourcesTab(const AData:TDataProvider);
     procedure SetEdited(const AEdited:TComponent);
   public
     { Public declarations }
@@ -117,6 +124,9 @@ begin
   if PageControl1.ActivePage=TabStore then
      result:=IManager.SelectedData
   else
+  if PageControl1.ActivePage=TabSource then
+     result:=ISources.SelectedData
+  else
      result:=IComp.Data(Owner);
 end;
 
@@ -125,14 +135,63 @@ begin
   if PageControl1.ActivePage=TabStore then
      IManager.SelectData(nil)
   else
+  if PageControl1.ActivePage=TabSource then
+     ISources.SelectData(nil)
+  else
      IComp.Select(nil);
 
   BClear.Enabled:=False;
   BOK.Enabled:=True;
 end;
 
+function LastParentOf(const AData: TDataItem): TDataItem;
+begin
+  result:=AData;
+
+  while result<>nil do
+    if result.Parent=nil then
+       Exit
+    else
+       result:=result.Parent;
+end;
+
 type
+  TDataManagerAccess=class(TDataManager);
   TDataAccess=class(TDataItem);
+
+procedure TDataSelector.FillSourcesTab(const AData:TDataProvider);
+var Source : TDataArray;
+
+  procedure Add(const AData:TDataItem);
+  var tmp : TDataItem;
+  begin
+    tmp:=LastParentOf(AData);
+
+    if not Source.Exists(tmp) then
+       Source.Add(tmp);
+  end;
+
+  procedure AddQuery(const AQuery:TBIQuery);
+  var t : Integer;
+  begin
+    for t:=0 to AQuery.Dimensions.Count-1 do
+       Add(AQuery.Dimensions[t].Data);
+
+    for t:=0 to AQuery.Measures.Count-1 do
+       Add(AQuery.Measures[t].Data);
+  end;
+
+var tmp : TDataProvider;
+begin
+  Source:=nil;
+
+  if AData is TBIQuery then
+     AddQuery(TBIQuery(AData));
+
+  TDataManagerAccess(ISources).FillData(Source);
+end;
+
+type
   TDataComponentAccess=class(TDataComponent);
 
 procedure TDataSelector.Select(const AData:TDataItem);
@@ -140,12 +199,19 @@ var tmp : TDataProvider;
 begin
   tmp:=TDataAccess(AData).GetProvider;
 
-  if tmp is TDataDelayProvider then
+  FillSourcesTab(tmp);
+
+  if (TStore.StoreOf(AData)<>nil) or
+     (tmp is TDataDelayProvider) then // Store
      IManager.SelectData(AData)
   else
   begin
     IComp.Select(tmp);
-    PageControl1.ActivePage:=TabComponent;
+
+    if IComp.Tree.Selected=nil then
+       PageControl1.ActivePage:=TabSource
+    else
+       PageControl1.ActivePage:=TabComponent;
   end;
 end;
 
@@ -270,6 +336,9 @@ begin
   if PageControl1.ActivePage=TabStore then
      result:=IManager.SelectedData<>nil
   else
+  if PageControl1.ActivePage=TabSource then
+     result:=ISources.SelectedData<>nil
+  else
      result:=TDataComponentAccess(IComp).SelectedHasData;
 end;
 
@@ -333,6 +402,12 @@ begin
   IComp:=TDataComponent.Create(Self);
   IComp.OnSelected:=SelectedItem;
   IComp.OnFilter:=FilterSelf;
+
+  ISources:=TDataManager.Embed(Self,TabSource);
+  TDataManagerAccess(ISources).StartEmpty:=True;
+
+  ISources.Align:=TAlign.alClient;
+  ISources.PanelStores.Visible:=False;
 
   TUICommon.AddForm(IComp,TabComponent);
 end;

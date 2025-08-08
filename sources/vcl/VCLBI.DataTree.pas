@@ -31,6 +31,10 @@ type
                             const GetText:TNodeGetText<T>); overload; static;
     {$ENDIF}
 
+    class procedure Fill(const AData: TDataArray; const ATree: TTreeView;
+                         const AddLeaves:Boolean=True;
+                         const AddNames:Boolean=True); overload; static;
+
     class procedure Fill(const AData: TDataItem; const ATree: TTreeView;
                          const AddLeaves:Boolean=True;
                          const AddNames:Boolean=True); overload; static;
@@ -159,7 +163,7 @@ begin
 end;
 {$ENDIF}
 
-class procedure TDataTree.Fill(const AData: TDataItem; const ATree: TTreeView;
+class procedure TDataTree.Fill(const AData: TDataArray; const ATree: TTreeView;
           const AddLeaves:Boolean; const AddNames:Boolean);
 
   function CheckName(const S:String):String;
@@ -186,14 +190,23 @@ class procedure TDataTree.Fill(const AData: TDataItem; const ATree: TTreeView;
     end;
   end;
 
+var t : Integer;
 begin
   ATree.Items.BeginUpdate;
   try
     ATree.Items.Clear;
-    Add(nil,AData);
+
+    for t:=Low(AData) to High(AData) do
+        Add(nil,AData[t]);
   finally
     ATree.Items.EndUpdate;
   end;
+end;
+
+class procedure TDataTree.Fill(const AData: TDataItem; const ATree: TTreeView;
+          const AddLeaves:Boolean; const AddNames:Boolean);
+begin
+  Fill([AData],ATree,AddLeaves,AddNames);
 end;
 
 end.

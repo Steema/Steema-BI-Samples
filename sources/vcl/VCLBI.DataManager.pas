@@ -134,6 +134,10 @@ type
 
     constructor CreateStore(const AOwner: TComponent; const AStore: String='');
     procedure SetFilterTree(const Value: TDataManagerFilter);
+  protected
+    StartEmpty : Boolean; // When True, the Tree of data items will not be filled
+
+    procedure FillData(const AData:TDataArray);
   public
     { Public declarations }
 
@@ -193,7 +197,7 @@ uses
   {$ELSE}
   System.IOUtils, System.Diagnostics,
   {$ENDIF}
-  BI.Arrays, VCLBI.Menus;
+  BI.Arrays, VCLBI.Menus, VCLBI.DataTree;
 
 Constructor TDataManager.CreateStore(const AOwner: TComponent; const AStore: String='');
 begin
@@ -511,6 +515,28 @@ begin
   IEditor.Data['Parallel']:=BoolToStr(CBParallel.Checked,True);
 end;
 
+// Slow?
+function Roots(const ATree:TTreeView):Integer;
+var t : Integer;
+begin
+  result:=0;
+
+  for t:=0 to ATree.Items.Count-1 do
+      if ATree.Items[t].Parent=nil then
+         Inc(result);
+end;
+
+procedure TDataManager.FillData(const AData: TDataArray);
+begin
+  TDataTree.Fill(AData,Tree,True);
+
+  if Roots(Tree)=1 then
+  begin
+    Tree.Items[0].Expanded:=True;
+    Tree.Items[0].Selected:=True;
+  end;
+end;
+
 procedure TDataManager.FillTree(const AStore:String);
 begin
   IFillingTree:=True;
@@ -717,6 +743,9 @@ end;
 
 procedure TDataManager.FormShow(Sender: TObject);
 begin
+  if StartEmpty then
+     Exit;
+
   TUICommon.LoadPosition(Self,'DataManager');
 
   if IStore='' then
