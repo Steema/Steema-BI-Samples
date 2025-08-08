@@ -1,4 +1,4 @@
-object Form17: TForm17
+object Main_Form: TMain_Form
   Left = 0
   Top = 0
   Caption = 'TeeBI Firemonkey - Simple Summary Example'
@@ -9,6 +9,7 @@ object Form17: TForm17
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignerMasterStyle = 0
   object BIGrid1: TBIGrid
     Align = Client

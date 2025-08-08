@@ -21,6 +21,7 @@ type
   TFormHistogramText = class(TForm)
     BIGrid1: TBIGrid;
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
 
@@ -60,6 +61,11 @@ begin
 
   // Accessing Grid properties and methods
   (BIGrid1.Plugin.GetObject as TBIFMXGrid).Grid.Columns[1].Width := 150;
+end;
+
+procedure TFormHistogramText.FormDestroy(Sender: TObject);
+begin
+  BIGrid1.Data.Free;
 end;
 
 end.

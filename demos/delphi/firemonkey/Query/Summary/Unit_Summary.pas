@@ -19,22 +19,24 @@ uses
   FMXBI.DataControl;
 
 type
-  TForm17 = class(TForm)
+  TMain_Form = class(TForm)
     BIGrid1: TBIGrid;
     Layout1: TLayout;
     Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     Demo : TDataItem;
+
     function Grid:TGrid;
   public
     { Public declarations }
   end;
 
 var
-  Form17: TForm17;
+  Main_Form: TMain_Form;
 
 implementation
 
@@ -43,7 +45,7 @@ implementation
 uses
   BI.Persist, BI.DataSource, Unit_Histogram_Text, FMXBI.Grid.Grid;
 
-procedure TForm17.Button1Click(Sender: TObject);
+procedure TMain_Form.Button1Click(Sender: TObject);
 begin
   with TFormHistogramText.Create(Self) do
   try
@@ -53,7 +55,7 @@ begin
   end;
 end;
 
-procedure TForm17.FormCreate(Sender: TObject);
+procedure TMain_Form.FormCreate(Sender: TObject);
 var Summary : TSummary;
     ByCustomer : TGroupBy;
     ByCompany : TGroupBy;
@@ -95,7 +97,12 @@ begin
   Grid.Columns[2].Width := 150;
 end;
 
-function TForm17.Grid: TGrid;
+procedure TMain_Form.FormDestroy(Sender: TObject);
+begin
+  BIGrid1.Data.Free;
+end;
+
+function TMain_Form.Grid: TGrid;
 begin
   if BIGrid1.Plugin.GetObject is TBIFMXGrid then
      result:=(BIGrid1.Plugin.GetObject as TBIFMXGrid).Grid

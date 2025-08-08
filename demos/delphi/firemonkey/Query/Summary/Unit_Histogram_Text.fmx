@@ -9,6 +9,7 @@ object FormHistogramText: TFormHistogramText
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignerMasterStyle = 0
   object BIGrid1: TBIGrid
     Align = Client
