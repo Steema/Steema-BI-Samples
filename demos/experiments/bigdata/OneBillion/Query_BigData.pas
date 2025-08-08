@@ -25,6 +25,7 @@ type
     BIComposer1: TBIComposer;
     BOptions: TButton;
     BQuery: TButton;
+    LQueryTime: TLabel;
     procedure LBExampleClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -32,6 +33,8 @@ type
     procedure BQueryClick(Sender: TObject);
   private
     { Private declarations }
+
+    procedure ExecuteQuery;
   public
     { Public declarations }
 
@@ -49,7 +52,13 @@ uses
   VCLBI.Chart.Financial, VCLBI.Editor.Visualizer.Chart,
   {$ENDIF}
 
-  VCLBI.Editor.Visualizer, VCLBI.Editor.Query,
+  {$IFDEF FPC}
+  BI.FPC,
+  {$ELSE}
+  System.Diagnostics,
+  {$ENDIF}
+
+  VCLBI.Editor.Visualizer, VCLBI.Editor.Query, BI.UI,
 
   BI.Summary, BI.Geographic, BI.Expression;
 
@@ -58,9 +67,26 @@ begin
   TVisualizerEditor.Edit(Self,BIComposer1);
 end;
 
+procedure TFormQuery.ExecuteQuery;
+
+  procedure ShowExample(const AData:TDataItem);
+  begin
+    BIComposer1.DestroyData;
+    BIComposer1.Data:=AData;  // <-- show
+  end;
+
+var s : TStopWatch;
+begin
+  s:=TStopwatch.StartNew;
+  ShowExample(BIQuery1.Calculate);
+
+  LQueryTime.Caption:=TCommonUI.MSecToString(s.ElapsedMilliseconds);
+end;
+
 procedure TFormQuery.BQueryClick(Sender: TObject);
 begin
-  TBIQueryEditor.Edit(Self,BIQuery1);
+  if TBIQueryEditor.Edit(Self,BIQuery1) then
+     ExecuteQuery;
 end;
 
 procedure TFormQuery.FormCreate(Sender: TObject);
@@ -74,33 +100,31 @@ begin
 end;
 
 procedure TFormQuery.LBExampleClick(Sender: TObject);
-
-  procedure ShowExample(const AData:TDataItem);
-  begin
-    BIComposer1.DestroyData;
-    BIComposer1.Data:=AData;  // <-- show
-  end;
-
 begin
+  BIQuery1.Clear;
+
   case LBExample.ItemIndex of
     0 : begin
           // Number of Customers per Country
-
-          BIQuery1.Clear;
           BIQuery1.Measures.Add(Data['Customers'],TAggregate.Count);
           BIQuery1.Dimensions.Add(TGeo.Country.Name);
-
-          ShowExample(BIQuery1.Calculate);
         end;
 
     1 : begin
-          BIQuery1.Clear;
+          // Yearly Sales (sum of Sales Total, year by year
           BIQuery1.Measures.Add(Data['Sales']['Total'],TAggregate.Sum);
           BIQuery1.Dimensions.Add(Data['Sales']['Date']).DatePart:=TDateTimePart.Year;
+        end;
 
-          ShowExample(BIQuery1.Calculate);
+    2 : begin
+          // Count of Sales per Product Category and sale Year
+          BIQuery1.Measures.Add(Data['Sales'],TAggregate.Count);
+          BIQuery1.Dimensions.Add(Data['Sales']['Date']).DatePart:=TDateTimePart.Year;
+          BIQuery1.Dimensions.Add(Data['Categories']['Category']);
         end;
   end;
+
+  ExecuteQuery;
 
   BQuery.Enabled:=LBExample.ItemIndex<>-1;
   BOptions.Enabled:=BQuery.Enabled;

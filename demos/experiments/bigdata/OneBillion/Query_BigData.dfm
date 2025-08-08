@@ -28,7 +28,12 @@ object FormQuery: TFormQuery
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 863
+    object LQueryTime: TLabel
+      Left = 100
+      Top = 13
+      Width = 3
+      Height = 15
+    end
     object BOptions: TButton
       Left = 232
       Top = 10
@@ -59,10 +64,10 @@ object FormQuery: TFormQuery
     ItemHeight = 15
     Items.Strings = (
       'Customers per Country'
-      'Yearly Sales')
+      'Yearly Sales'
+      'Count of Sales per Category, Year')
     TabOrder = 1
     OnClick = LBExampleClick
-    ExplicitHeight = 510
   end
   object BIComposer1: TBIComposer
     Left = 227
@@ -75,8 +80,6 @@ object FormQuery: TFormQuery
     TabOrder = 2
     Groups = <>
     Values = <>
-    ExplicitWidth = 636
-    ExplicitHeight = 510
   end
   object BIQuery1: TBIQuery
     Left = 68

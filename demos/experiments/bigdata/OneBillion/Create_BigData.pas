@@ -12,7 +12,12 @@ interface
 uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, System.IOUtils,
+
+  {$IFDEF FPC}
+  BI.FPC,
+  {$ELSE}
   System.Diagnostics,
+  {$ENDIF}
 
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
 
@@ -223,10 +228,10 @@ var tmp : TDataInfo.TDataSizes;
 begin
   tmp:=TDataInfo.Sizes(AData);
 
-  ALines.Add(' Tables  : '+Format('%.0n',[tmp.Tables+0.0]));
-  ALines.Add(' Columns : '+Format('%.0n',[tmp.Columns+0.0]));
-  ALines.Add(' Rows    : '+Format('%.0n',[tmp.Rows+0.0]));
-  ALines.Add(' Cells   : '+Format('%.0n',[tmp.Cells+0.0]));
+  ALines.Add(' Tables  : '+TCommonUI.ThousandsToString(tmp.Tables));
+  ALines.Add(' Columns : '+TCommonUI.ThousandsToString(tmp.Columns));
+  ALines.Add(' Rows    : '+TCommonUI.ThousandsToString(tmp.Rows));
+  ALines.Add(' Cells   : '+TCommonUI.ThousandsToString(tmp.Cells));
 end;
 
 procedure TFormCreate.Button1Click(Sender: TObject);
