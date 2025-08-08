@@ -366,9 +366,13 @@ end;
 procedure TBIGrid.SetDataDirect(const Value: TDataItem);
 
   procedure DoSetData;
+  var WasEnabled : Boolean;
   begin
     if IDataSet=nil then
        IDataSet:=TBIDataset.Create(Self);
+
+    WasEnabled:=not IDataSet.ControlsDisabled;
+    IDataSet.DisableControls;
 
     IDataSet.Close;
 
@@ -376,6 +380,9 @@ procedure TBIGrid.SetDataDirect(const Value: TDataItem);
     IDataSet.Data:=Value;
 
     IPlugin.BindTo(IDataSet);
+
+    if WasEnabled then
+       IDataSet.EnableControls;
 
     DataSource.OnDataChange:=ChangedRow;
     IDataset.AfterPost:=UpdatedData;
