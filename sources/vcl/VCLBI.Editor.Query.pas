@@ -117,6 +117,8 @@ type
     SBColUp: TSpeedButton;
     SBColDown: TSpeedButton;
     Label8: TLabel;
+    SplitterRows: TSplitter;
+    Splitter1: TSplitter;
     procedure FormCreate(Sender: TObject);
     procedure ListRowsDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -792,6 +794,8 @@ begin
     TryAddMasters(IMasterFilter.Add);
 
     ISelector.RefreshTree(IMasterFilter);
+
+    TDataSelectorAccess(ISelector).FillSourcesTab(IQuery);
   end;
 end;
 
@@ -1116,6 +1120,12 @@ begin
   RGPercentage.ItemIndex:=Ord(tmp.Calculation.Percentage);
   RGRunning.ItemIndex:=Ord(tmp.Calculation.Running);
   CBRunningRows.Checked:=tmp.Calculation.RunningByRows;
+
+  // Disable Aggregate and MissingAsZero when the measure Data is a table.
+  // In this case, only Count(*) is a valid aggregation
+
+  CBAggregate.Enabled:=(tmp.Data<>nil) and (tmp.Data.Kind<>dkUnknown);
+  CBMissingAsZero.Enabled:=CBAggregate.Enabled;
 end;
 
 procedure TBIQueryEditor.SetItemProperties(const ACurrent:TQueryDimension);

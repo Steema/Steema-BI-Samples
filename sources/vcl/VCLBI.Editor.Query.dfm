@@ -10,6 +10,7 @@ object BIQueryEditor: TBIQueryEditor
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  ShowHint = True
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -80,6 +81,14 @@ object BIQueryEditor: TBIQueryEditor
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
+      object SplitterRows: TSplitter
+        Left = 185
+        Top = 75
+        Height = 237
+        ExplicitLeft = 320
+        ExplicitTop = 108
+        ExplicitHeight = 100
+      end
       object PanelRows: TPanel
         Left = 0
         Top = 75
@@ -89,6 +98,7 @@ object BIQueryEditor: TBIQueryEditor
         Color = clWhite
         ParentBackground = False
         TabOrder = 0
+        ExplicitTop = 72
         object Panel1: TPanel
           Left = 1
           Top = 1
@@ -243,6 +253,7 @@ object BIQueryEditor: TBIQueryEditor
             Top = 22
             Width = 23
             Height = 22
+            Hint = 'Swap rows and columns'
             Glyph.Data = {
               36050000424D3605000000000000360400002800000010000000100000000100
               08000000000000010000C40E0000C40E00000001000000000000000000000000
@@ -305,8 +316,6 @@ object BIQueryEditor: TBIQueryEditor
             Align = alRight
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitLeft = 112
-            ExplicitTop = -4
             object SBColUp: TSpeedButton
               Left = 8
               Top = 6
@@ -382,22 +391,34 @@ object BIQueryEditor: TBIQueryEditor
         end
       end
       object PanelMeasures: TPanel
-        Left = 185
+        Left = 188
         Top = 75
-        Width = 457
+        Width = 454
         Height = 237
         Align = alClient
         TabOrder = 2
+        ExplicitLeft = 185
+        ExplicitWidth = 457
+        object Splitter1: TSplitter
+          Left = 176
+          Top = 42
+          Height = 194
+          Align = alRight
+          ExplicitLeft = 228
+          ExplicitTop = 68
+          ExplicitHeight = 100
+        end
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 455
+          Width = 452
           Height = 41
           Align = alTop
           BevelOuter = bvNone
           Color = clWhite
           ParentBackground = False
           TabOrder = 0
+          ExplicitWidth = 455
           object Label1: TLabel
             Left = 5
             Top = 5
@@ -443,7 +464,7 @@ object BIQueryEditor: TBIQueryEditor
         object ListMeasures: TCheckListBox
           Left = 1
           Top = 42
-          Width = 181
+          Width = 175
           Height = 194
           Align = alClient
           ItemHeight = 17
@@ -451,21 +472,23 @@ object BIQueryEditor: TBIQueryEditor
           OnClick = ListMeasuresClick
           OnClickCheck = ListRowsClickCheck
           OnDragOver = ListMeasuresDragOver
+          ExplicitWidth = 181
         end
         object Panel5: TPanel
-          Left = 182
+          Left = 179
           Top = 42
           Width = 274
           Height = 194
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 2
+          ExplicitLeft = 182
           object PageOptions: TPageControl
             Left = 0
             Top = 0
             Width = 274
             Height = 194
-            ActivePage = TabItem
+            ActivePage = TabMeasureOptions
             Align = alClient
             TabOrder = 0
             Visible = False
