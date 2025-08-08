@@ -31,9 +31,11 @@ type
     class procedure AddItems(const AData:TDataItem; const AItems:TStrings); static;
     class procedure AddInfo(const AData:TDataItem; const AItems:TStrings); static;
     class procedure AddKinds(const AItems:TStrings); static;
-    class function BytesToString(const Bytes: Int64): String; static;
+
+    class function BytesToString(const Bytes: Int64): String; static;  // 3.4GB
     class function IsURL(const AFileName:String):Boolean; static;
-    class function MSecToString(const MSec:Int64):String; static;
+    class function MSecToString(const MSec:Int64):String; static;  // 2h 1min 30sec
+    class function ThousandsToString(const Value: Int64): String; static; // 1,234,567
     class function ToBooleanString(const Bool:Boolean):String; static;
     class function UniqueName(const AComponent:TComponent):String; static;
   end;
@@ -156,6 +158,7 @@ begin
   end;
 end;
 
+// Adds all available data kind names in order
 class procedure TCommonUI.AddKinds(const AItems: TStrings);
 begin
   AItems.BeginUpdate;
@@ -197,23 +200,36 @@ begin
   end;
 end;
 
+class function TCommonUI.ThousandsToString(const Value: Int64): String;
+begin
+  result:=Format('%.0n',[Value+0.0]);
+end;
+
 class function TCommonUI.BytesToString(const Bytes: Int64): String;
 const
-  B = 1; //byte
+  B  = 1; //byte
   KB = 1024 * B; //kilobyte
   MB = 1024 * KB; //megabyte
   GB = 1024 * MB; //gigabyte
+  TB = Int64(1024) * GB; //terabyte
+  PB = 1024 * TB; //petabyte
 begin
+  if bytes > PB then
+     result:= FormatFloat('0.## PB', Bytes / PB)
+  else
+  if bytes > TB then
+     result:= FormatFloat('0.## TB', Bytes / TB)
+  else
   if bytes > GB then
-     result:= FormatFloat('0.## GB', bytes / GB)
+     result:= FormatFloat('0.## GB', Bytes / GB)
   else
   if bytes > MB then
-     result:= FormatFloat('0.## MB', bytes / MB)
+     result:= FormatFloat('0.## MB', Bytes / MB)
   else
   if bytes > KB then
-     result:= FormatFloat('0.## KB', bytes / KB)
+     result:= FormatFloat('0.## KB', Bytes / KB)
   else
-     result:= FormatFloat('0.## bytes', bytes) ;
+     result:= FormatFloat('0.## bytes', Bytes) ;
 end;
 
 class function TCommonUI.IsURL(const AFileName: String): Boolean;
