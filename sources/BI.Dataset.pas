@@ -1722,7 +1722,8 @@ procedure TBIDataset.TBIMasterDataLink.ResetIndex;
   // Refresh the ICursor index with the new detail rows
   procedure RefreshDetailDataset(const AIndex:TCursorIndex=nil);
   begin
-    if IsActive(DetailDataSet) and
+    if Active and
+       IsActive(DetailDataSet) and
        (DataSource<>nil) and IsActive(DataSource.DataSet) then
     begin
       ICursor.PrepareIndex(AIndex);
@@ -1816,6 +1817,7 @@ begin
 end;
 
 end.
+
 
 
 
