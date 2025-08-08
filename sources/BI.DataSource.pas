@@ -249,7 +249,7 @@ type
     FloatFormat : String;
 
     function DataToString(const AData:TDataItem; const AIndex:TInteger):String;
-    class procedure SaveToFile(const AText,AFileName:String); static;
+    class procedure SaveToFile(const AText,AFileName:String); overload; static;
   end;
 
   TBIItemsSource=class(TBISource)
