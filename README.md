@@ -1,5 +1,7 @@
 # TeeBI
 ### Telegram forums: [https://t.me/steema_bi](https://t.me/steema_bi)
+[![https://t.me/steema_bi](https://raw.github.com/Steema/BI/master/docs/img/Telegram_Icon.png)](https://t.me/steema_bi)
+
 
 ![TeeBI Gridify and Colorize](https://raw.github.com/Steema/BI/master/docs/img/TeeBI_Gridify_colored.png)
 
@@ -31,7 +33,7 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - Automatic relationships between columns (master-detail), indexes and foreign keys
 
-- [Import data](https://github.com/Steema/BI/wiki/importing) from files, databases, objects (ORM), [AI](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/AI) in one or few lines of code
+- [Import data](https://github.com/Steema/TeeBI/tree/master/demos/delphi/vcl/Import) from files, databases, objects (ORM), [AI](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/AI) in one or few lines of code
 
 - [Export data](https://github.com/Steema/BI/wiki/exporting) (to csv,pdf,html,xml,excel,json), comparisons and manipulations
 
