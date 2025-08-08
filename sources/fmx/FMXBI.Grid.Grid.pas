@@ -214,6 +214,7 @@ begin
   BindingList.Free;
   BindSource.Free;
 
+  IFMXGrid.Parent:=nil;  // Workaround Florence, Model=nil AV
   IFMXGrid.Free;
 
   inherited;
