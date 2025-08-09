@@ -15,7 +15,7 @@ A simple class to implement in-memory database complex structures, to provide:
 
 - [Big-data ready](https://github.com/Steema/TeeBI/tree/master/demos/experiments/bigdata/OneBillion), billions of cells supported
 
-- Multi-platform (Windows, Mac OSX, Android, iOS, Linux and more), for VCL, Firemonkey, Delphi and C++
+- Multi-platform (Windows, Mac OSX, Android, iOS, Linux and more), for VCL, Firemonkey, Delphi and C++. 100% Pure Pascal, no dependencies, no server, just RTL.
 
 - Automatic [visualizations](https://github.com/Steema/BI/wiki/visualization) of complex structures ([charts](https://github.com/Steema/BI/wiki/bichart), grids, optional [TeeGrid](https://github.com/Steema/TeeGrid-VCL-FMX-Samples) and more)
 
@@ -29,7 +29,7 @@ A simple class to implement in-memory database complex structures, to provide:
   ![](https://raw.github.com/Steema/BI/master/docs/img/vcl_demo_geo_chart_usa_counties.png)
 
 
-- Transparent [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access ([compressed](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/d7zip) binary streams of raw arrays)
+- Transparent optional [remote web server](https://rawgit.com/Steema/BI/master/demos/online/remote_web/index.htm) fast data access ([compressed](https://github.com/Steema/TeeBI/tree/master/demos/3rd_party/d7zip) binary streams of raw arrays)
 
 - Automatic relationships between columns (master-detail), indexes and foreign keys
 
